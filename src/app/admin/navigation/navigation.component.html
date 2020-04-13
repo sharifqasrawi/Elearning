@@ -1,0 +1,35 @@
+<div class="adminNav">
+	<nav class="navbar navbar-expand navbar-dark">
+		<a class="navbar-brand" style="font-style:italic;" [routerLink]="['/admin', 'dashboard']">
+			<fa-icon [icon]="faAdmin"></fa-icon>
+			Administation
+		</a>
+		<ul class="navbar-nav">
+			<li class="nav-item dropdown " appDropdown>
+				<a style="cursor: pointer;" class="nav-link dropdown-toggle" role="button" >
+					<fa-icon [icon]="faUsers"></fa-icon>
+					Users
+					<span class="caret"></span>
+				</a>
+
+				<div class="dropdown-menu">
+					<h3 class="dropdown-header">Users Management</h3>
+					<a class="dropdown-item" 
+						[routerLink]="['/admin', 'users' , 'new-user']"
+						>
+						<fa-icon [icon]="faAddUser"></fa-icon>
+						New User
+                    </a>
+                    <div class="dropdown-divider"></div> 
+                    <a class="dropdown-item"
+						[routerLink]="['/admin', 'users']"
+						>
+						<fa-icon [icon]="faListUsers"></fa-icon>
+						List Users
+					</a>
+
+				</div>
+			</li>
+		</ul>
+	</nav>
+</div>

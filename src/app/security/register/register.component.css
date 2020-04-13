@@ -1,0 +1,17 @@
+.regBox {
+    width: 100%;
+    margin: 0 auto;
+    padding: 16px;
+    background-color: rgb(255, 238, 238);
+    box-shadow: 2px 2px 2px grey;
+    /* height: 400px;
+    overflow-y: auto; */
+}
+
+button {
+    float: right;
+}
+
+.ng-invalid.ng-touched{
+    border-color: red;
+}

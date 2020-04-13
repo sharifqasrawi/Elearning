@@ -1,0 +1,175 @@
+
+<div class="regBox">
+
+    <h2>
+        <fa-icon [icon]="faRegister"></fa-icon>
+        Register a new user
+    </h2>
+    <hr>
+    <div *ngIf="errors">
+        <div class="alert alert-danger" *ngFor="let error of errors">
+            {{ error }}
+        </div>
+    </div>
+
+    <div class="alert alert-success text-center" *ngIf="registerd">
+        <h1>Thank you for registering</h1>
+        <h3>A confirmation email was sent to your email. Please confirm your email in order to sign in</h3>
+    </div>
+ 
+    <form class="form-horizontal" [formGroup]="regForm"(ngSubmit)="onSubmit()" *ngIf="!registerd">
+
+        <div class="form-group">
+            <label >First Name:</label>
+            <input 
+                type="text" 
+                name="firstName"
+                id="firstName"
+                placeholder="Enter your first name" 
+                class="form-control"
+                formControlName="firstName">
+            <span 
+                class="small text-danger"
+                *ngIf="!regForm.controls.firstName.valid && regForm.controls.firstName.touched">
+                First name is required
+            </span>
+        </div>
+
+        <div class="form-group">
+            <label >Last Name:</label>
+            <input 
+                type="text" 
+                name="lastName"
+                id="lastName"
+                placeholder="Enter your last name" 
+                class="form-control"
+                formControlName="lastName">
+            <span 
+                class="small text-danger"
+                *ngIf="!regForm.controls.lastName.valid && regForm.controls.lastName.touched">
+                Last name is required
+            </span>
+        </div>
+
+
+
+        <div class="form-group">
+            <label >Email:</label>
+            <input 
+                type="email" 
+                name="email"
+                id="email"
+                placeholder="Enter your email" 
+                class="form-control"
+                formControlName="email">
+            <span 
+                class="small text-danger"
+                *ngIf="!regForm.controls.email.valid && regForm.controls.email.touched">
+                Please enter a valid email address
+            </span>
+        </div>
+
+        <div class="form-group">
+            <label >Country:</label>
+            <!-- <input type="text" placeholder="Enter your country" class="form-control"> -->
+            <select 
+                name="country" 
+                id="country" 
+                class="form-control"
+                formControlName="country">
+
+                <option value="">Select your country</option>
+                <option [value]="c.name" *ngFor="let c of listCountries">
+                    {{c.name}}
+                </option>
+            </select>
+            <span 
+                class="small text-danger"
+                *ngIf="!regForm.controls.country.valid && regForm.controls.country.touched">
+                Country is required
+            </span>
+        </div>
+
+        <div class="form-group">
+            <label>Gender: </label>
+            <div class="form-check-inline ml-2">
+                <label class="form-check-label">
+                <input 
+                    type="radio" 
+                    class="form-check-input" 
+                    value="male"
+                    formControlName="gender">Male
+                </label>
+            </div>
+            <div class="form-check-inline">
+                <label class="form-check-label">
+                <input 
+                    type="radio" 
+                    class="form-check-input" 
+                    value="female"
+                    formControlName="gender">Female
+                </label>
+            </div>
+            <div class="form-check-inline">
+                <label class="form-check-label">
+                <input 
+                    type="radio" 
+                    class="form-check-input" 
+                    value="custom"
+                    formControlName="gender">Custom
+                </label>
+            </div>
+
+            <span 
+                class="small text-danger"
+                *ngIf="!regForm.controls.gender.valid && regForm.controls.gender.touched">
+                Gender is required
+            </span>
+        </div>
+
+        <div formGroupName="password">
+            <div class="form-group">
+                <label >Password:</label>
+                <input 
+                    type="password" 
+                    name="password"
+                    id="password"
+                    placeholder="Enter a password" 
+                    class="form-control"
+                    formControlName="password">
+                <span 
+                    class="small text-danger"
+                    *ngIf="!regForm.get('password.password').valid && regForm.get('password.password').touched">
+                    Password length must be at least 8 charcters
+                </span>
+            </div>
+    
+            <div class="form-group">
+                <label >Confirm Password:</label>
+                <input 
+                    type="password"
+                    name="cpassword"
+                    id="cpassword" 
+                    placeholder="Re-Enter your password" 
+                    class="form-control"
+                    formControlName="cpassword">
+
+                <span 
+                    class="small text-danger"
+                    *ngIf="!regForm.controls.password.valid && regForm.controls.password.touched">
+                    Password do not match
+                </span>
+            </div>
+    
+        </div>
+        
+        <button 
+            type="submit" 
+            class="btn btn-primary"
+            [disabled]="!regForm.valid || loading">
+            {{ !loading ? 'Register' : 'Registering' }}
+        </button>
+
+    </form>
+    <div class="clearfix"></div>
+</div>

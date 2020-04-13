@@ -1,0 +1,141 @@
+<div class="container">
+	<div class="alert alert-secondary">
+		<h1>
+			<span [matBadge]="usersCount" matBadgeColor="primary" matBadgeOverlap="false">
+				<fa-icon [icon]='faList'></fa-icon>
+				List Users
+			</span>
+		</h1>
+	</div>
+	
+	<div class="row">
+		<div class="col-lg-3 mb-2">
+			<div class="input-group">
+				<div class="input-group-prepend">
+					<span class="input-group-text">
+						<fa-icon [icon]="faSearch"></fa-icon>
+					</span>
+				</div>
+				<input type="text" class="form-control" placeholder="Search..."
+						(keyup)="onSearch($event)">
+			</div>
+		</div>
+		<div class="col-lg-7 mb-2">
+
+		</div>
+		<div class="col-lg-2 mb-2">
+			<!-- <button class="btn btn-warning btn-block text-light float-right" (click)="onRefresh()">
+				Refresh
+			</button> -->
+			<button mat-raised-button class="btn-block" color="accent" (click)="onRefresh()">Refresh</button>
+		</div>
+	</div>
+
+	<hr>
+
+	<h1 class="alert alert-info text-center" *ngIf="loading">
+		Loading...
+	</h1>
+
+	<h1 class="alert alert-warning text-center" *ngIf="deleting">
+		Deleting...
+	</h1>
+
+	<div *ngIf="errors">
+		<div class="alert alert-danger" *ngFor="let error of errors">
+			<strong>{{error}}</strong>
+		</div>
+	</div>
+
+
+	<div *ngIf="users">
+		<div class="card mb-4" *ngFor="let user of users">
+			<div class="card-header">
+				<strong class="text-success" *ngIf="user.isActive">{{ user.firstName + ' ' + user.lastName }}</strong>
+				<strong class="text-danger" *ngIf="!user.isActive">{{ user.firstName + ' ' + user.lastName }}</strong>
+				<div class="float-right dropdown" appDropdown>
+					<a class="btn btn-primary btn-sm dropdown-toggle text-light" role="button">
+						Manage
+						<span class="caret"></span>
+					</a>
+					<div class="dropdown-menu">
+						<a class="dropdown-item btn-link"
+							[routerLink]="['/admin', 'users' ,'edit-user']"
+							[queryParams]="{userId: user.id, editMode: true}"
+							style="cursor: pointer;">
+							Edit
+						</a>
+						<div class="dropdown-divider btn-link"></div>
+						<button class="dropdown-item"
+							style="cursor: pointer;"
+							[disabled]="deleting"
+							(click)="onDelete(user.id)">
+							Delete
+					</button>
+
+					</div>
+				</div>
+			</div>
+			<div class="card-body">
+				<div class="row">
+					<div class="col-lg-4">
+						<strong>Email:</strong>
+						<hr>
+						<p class="text-success" *ngIf="user.emailConfirmed">
+							{{ user.email }}
+							<fa-icon [icon]="faCheckCircle"></fa-icon>
+						</p>
+						<p class="text-danger" *ngIf="!user.emailConfirmed">
+							{{ user.email }}
+							<fa-icon [icon]="faTimesCircle"></fa-icon>
+						</p>
+					</div>
+					<div class="col-lg-2">
+						<strong>Gender:</strong>
+						<hr>
+						<span *ngIf="user.gender === 'male' || user.gender === 'custom'"> <fa-icon [icon]="faMale"></fa-icon> </span>
+						<span *ngIf="user.gender === 'female' || user.gender === 'custom'"> <fa-icon [icon]="faFemale"></fa-icon> </span>
+					</div>
+					<div class="col-lg-2">
+						<strong>Country:</strong>
+						<hr>
+						<p>
+							{{ user.country }}</p>
+					</div>
+					<div class="col-lg-2">
+						<strong>Admin:</strong>
+						<hr>
+						<p class="text-success" *ngIf="user.isAdmin" > <fa-icon [icon]="faCheck"></fa-icon> </p>
+						<p class="text-danger" *ngIf="!user.isAdmin" > <fa-icon [icon]="faTimes"></fa-icon> </p>
+					</div>
+					<div class="col-lg-2">
+						<strong>Author:</strong>
+						<hr>
+						<p class="text-success" *ngIf="user.isAuthor" > <fa-icon [icon]="faCheck"></fa-icon> </p>
+						<p class="text-danger" *ngIf="!user.isAuthor" > <fa-icon [icon]="faTimes"></fa-icon> </p>
+					</div>
+				</div>
+			</div>
+			<div class="card-footer">
+				
+					<strong>Created at:</strong>
+					{{ user.createdAt | date:'medium' }}
+				
+				<div class="float-right">
+					<button class="btn btn-success btn-sm"
+							*ngIf="!user.isActive"
+							[disabled]="updatingStatus"
+							(click)="onChangeStatus(user.id, 'activate')">
+						Activate
+					</button>
+					<button class="btn btn-danger btn-sm"
+							*ngIf="user.isActive"
+							[disabled]="updatingStatus"
+							(click)="onChangeStatus(user.id, 'deactivate')">
+						Deactivate
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

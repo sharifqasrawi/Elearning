@@ -1,0 +1,19 @@
+<div class="container content0">
+    <div class="alert alert-success text-center" *ngIf="confirmed">
+        <h1>Thank you for confirming your email address. You can now login to your account.</h1>
+        <p>
+           <a [routerLink]="['/auth']" routerLinkActive="active" >
+            Login now
+        </a>
+        </p>
+    </div>
+
+    <div *ngIf="errors">
+        <div class="alert alert-danger text-center"
+            *ngFor='let error of errors'>
+            <h2>
+                {{error}}
+            </h2>
+        </div>
+    </div>
+</div>

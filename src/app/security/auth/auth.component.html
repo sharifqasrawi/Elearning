@@ -1,0 +1,12 @@
+<div class="container content0">
+    <div class="row">
+        <div class="col-lg-12">
+            <app-login *ngIf="isLogin"></app-login>
+            <app-register *ngIf="!isLogin"></app-register>
+            <button class="btn btn-link  btn-sm mt-3"
+                    (click)="onChangeAuthMode()">
+                {{ isLogin ? 'Don\'t have an account yet? Register now.': 'Already have an account? Login now.'}}
+            </button>
+        </div>
+    </div>
+</div>

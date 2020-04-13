@@ -1,0 +1,70 @@
+<div class="loginBox">
+    
+    <div *ngIf="errors">
+        <div class="alert alert-danger" *ngFor="let error of errors">
+            <strong>{{error}}</strong> 
+            <button 
+                class="btn btn-sm btn-warning" 
+                style="float: right;"
+                *ngIf="!sending && error === 'Account not activated'"
+                (click)="resendConfirmationLink()"
+                [disabled]="confirmationLinkSent || !loginForm.controls.username.valid">
+                {{ !confirmationLinkSent ? 'Resend confirmation link' : 'Confirmation link sent' }}
+            </button>
+
+            <span 
+                *ngIf="sending"
+                class="btn btn-warning btn-sm" 
+                style="float: right;">
+                Sending...
+            </span>
+
+            <div class="clearfix"></div>
+        </div>
+    </div>
+
+    <h2>
+        <fa-icon [icon]="faLogin"></fa-icon>
+        Login
+    </h2>
+    <hr>
+    <form class="form-horizontal" [formGroup]="loginForm"(ngSubmit)="onSubmit()">
+
+        <div class="form-group">
+            <label >Email:</label>
+            <input 
+                type="email" 
+                formControlName="username"
+                placeholder="Enter your email" 
+                class="form-control">
+            <span class="small text-danger" *ngIf="!loginForm.controls.username.valid && loginForm.controls.username.touched">
+                Please enter a valid email address
+            </span>
+        </div>
+
+
+        <div class="form-group">
+            <label >Password:</label>
+            <input 
+                type="password" 
+                formControlName="password"
+                placeholder="Enter a password" 
+                class="form-control">
+            <span class="small text-danger" *ngIf="!loginForm.controls.password.valid && loginForm.controls.password.touched">
+                Please enter your password
+            </span>
+
+            <p>
+                <a [routerLink]="['/forgot-password']" >
+                    Forgot my password
+                </a>
+            </p>
+        </div>
+
+        <button type="submit" class="btn btn-primary" [disabled]="!loginForm.valid || loading">
+            {{ !loading ? 'Login' : 'loading...' }}
+        </button>
+
+    </form>
+<div class="clearfix"></div>
+</div>

@@ -1,0 +1,83 @@
+<nav
+	class="navbar navbar-expand-md fixed-top navbar-dark">
+	<!-- Brand -->
+	<a class="navbar-brand" href="#">Qasrawi.fr</a>
+
+	<!-- Toggler/collapsibe Button -->
+	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+		<span class="navbar-toggler-icon"></span>
+	</button>
+
+	<!-- Navbar links -->
+	<div class="collapse navbar-collapse" id="collapsibleNavbar">
+		<ul class="navbar-nav mr-auto">
+			<li class="nav-item">
+				<a class="nav-link" [routerLink]="[ '/home' ]" routerlinkactive="active">
+					<fa-icon [icon]="faHome"></fa-icon>
+					Home
+				</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" [routerLink]="[ '/about-me' ]" routerlinkactive="active">
+					<fa-icon [icon]="faAbout"></fa-icon>
+					About me
+				</a>
+			</li>
+			<li class="nav-item" *ngIf="isAdmin">
+				<a class="nav-link" [routerLink]="[ '/admin' ]" routerlinkactive="active">
+					<fa-icon [icon]="faChessKing"></fa-icon>
+					Administration
+				</a>
+			</li>
+			<li class="nav-item">
+				<div class="input-group">
+					<div class="input-group-prepend">
+						<span class="input-group-text">
+							<fa-icon [icon]="faSearch"></fa-icon>
+						</span>
+					</div>
+					<input type="text" class="form-control" placeholder="Search...">
+					<button class="btn btn-info btn-sm" type="submit">Go</button>
+				</div>
+			</li>
+		</ul>
+		<ul class="navbar-nav">
+			<li class="nav-item" *ngIf="!isAuthenticated">
+				<a class="nav-link" [routerLink]="[ '/auth' ]" routerlinkactive="active">
+					<fa-icon [icon]="faLogin"></fa-icon>
+					Login
+				</a>
+			</li>
+			<!-- <li class="nav-item" 
+						          *ngIf="isAuthenticated">
+						        <a class="nav-link" 
+						           style="cursor: pointer;" 
+						           (click)="onLogout()">
+						            <fa-icon [icon]="faLogin"></fa-icon>
+						            {{ firstName + ' ' + lastName }}
+						        </a>
+						      </li> -->
+
+
+			<li class="nav-item dropdown " appDropdown *ngIf="isAuthenticated">
+				<a style="cursor: pointer;" class="nav-link dropdown-toggle" role="button">
+					<fa-icon [icon]="faLogin"></fa-icon>
+					{{ firstName + ' ' + lastName }}
+					<span class="caret"></span>
+				</a>
+
+				<div class="dropdown-menu">
+					<h3 class="dropdown-header">Dropdown header</h3>
+					<a class="dropdown-item" href="#">Link 2</a>
+					<a class="dropdown-item" href="#">Link 3</a>
+
+					<h3 class="dropdown-header">User</h3>
+					<a class="dropdown-item" style="cursor: pointer;" (click)="onLogout()">
+						<fa-icon [icon]="faLogout"></fa-icon>
+						Logout
+					</a>
+				</div>
+			</li>
+		</ul>
+	</div>
+</nav>
