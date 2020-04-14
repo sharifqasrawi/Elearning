@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
-import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
+import { FormGroup, FormControl, FormArray, Validators, FormBuilder, AbstractControl } from '@angular/forms';
 
 import { faUserEdit } from '@fortawesome/free-solid-svg-icons';
 
@@ -22,15 +22,45 @@ export class RegisterComponent implements OnInit, OnDestroy {
   errors: { errors: string[] } = null;
   loading = false;
   registerd = false;
+  hidePwd = true;
+  hideCpwd = true;
+
+  /** Returns a FormArray with the name 'formArray'. */
+  get formArray(): AbstractControl | null { return this.regForm.get('formArray'); }
 
   constructor(private http: HttpClient,
-    private store: Store<fromApp.AppState>
+    private store: Store<fromApp.AppState>,
+    private _formBuilder: FormBuilder
   ) { }
+
 
   ngOnInit(): void {
     this.http.get('https://restcountries.eu/rest/v2/all').subscribe((resData: any[]) => {
       this.listCountries = resData;
     })
+
+    this.regForm = this._formBuilder.group({
+      formArray: this._formBuilder.array([
+        this._formBuilder.group({
+          firstName: new FormControl(null, [Validators.required]),
+          lastName: new FormControl(null, [Validators.required]),
+        }),
+        this._formBuilder.group({
+          email: new FormControl(null, [Validators.required, Validators.email]),
+        }),
+        this._formBuilder.group({
+          country: new FormControl(null, [Validators.required]),
+        }),
+        this._formBuilder.group({
+          gender: new FormControl('custom', [Validators.required]),
+        }),
+        this._formBuilder.group({
+          password: new FormControl(null, [Validators.required, Validators.minLength(8)]),
+          cpassword: new FormControl(null, [Validators.required, Validators.minLength(8)]),
+        }, { validators: this.checkPasswords }),
+      ])
+    });
+
 
     this.store.select('register').subscribe(regState => {
       this.errors = regState.errors;
@@ -38,18 +68,18 @@ export class RegisterComponent implements OnInit, OnDestroy {
       this.registerd = regState.registerd;
     });
 
-    this.regForm = new FormGroup({
-      firstName: new FormControl(null, [Validators.required]),
-      lastName: new FormControl(null, [Validators.required]),
-      email: new FormControl(null, [Validators.required, Validators.email]),
-      country: new FormControl(null, [Validators.required]),
-      gender: new FormControl(null, [Validators.required]),
-      password: new FormGroup({
-        password: new FormControl(null, [Validators.required, Validators.minLength(8)]),
-        cpassword: new FormControl(null, [Validators.required, Validators.minLength(8)]),
-      },
-        [this.checkPasswords])
-    });
+    // this.regForm = new FormGroup({
+    //   firstName: new FormControl(null, [Validators.required]),
+    //   lastName: new FormControl(null, [Validators.required]),
+    //   email: new FormControl(null, [Validators.required, Validators.email]),
+    //   country: new FormControl(null, [Validators.required]),
+    //   gender: new FormControl(null, [Validators.required]),
+    //   password: new FormGroup({
+    //     password: new FormControl(null, [Validators.required, Validators.minLength(8)]),
+    //     cpassword: new FormControl(null, [Validators.required, Validators.minLength(8)]),
+    //   },
+    //     [this.checkPasswords])
+    // });
 
   }
 
@@ -57,15 +87,14 @@ export class RegisterComponent implements OnInit, OnDestroy {
     if (!this.regForm.valid)
       return;
 
-
     this.store.dispatch(new RegisterActions.RegisterStart({
-      email: this.regForm.value.email,
-      password: this.regForm.value.password.password,
-      confirmPassword: this.regForm.value.password.cpassword,
-      firstName: this.regForm.value.firstName,
-      lastName: this.regForm.value.lastName,
-      country: this.regForm.value.country,
-      gender: this.regForm.value.gender
+      firstName: this.regForm.value.formArray[0].firstName,
+      lastName: this.regForm.value.formArray[0].lastName,
+      email: this.regForm.value.formArray[1].email,
+      country: this.regForm.value.formArray[2].country,
+      gender: this.regForm.value.formArray[3].gender,
+      password: this.regForm.value.formArray[4].password,
+      confirmPassword: this.regForm.value.formArray[4].cpassword
     }));
 
   }

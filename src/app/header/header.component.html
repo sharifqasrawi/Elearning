@@ -23,6 +23,12 @@
 					About me
 				</a>
 			</li>
+			<li class="nav-item">
+				<a class="nav-link" [routerLink]="[ '/contact-us' ]" routerlinkactive="active">
+					<fa-icon [icon]="faEnvelopeOpenText"></fa-icon>
+					Contact us
+				</a>
+			</li>
 			<li class="nav-item" *ngIf="isAdmin">
 				<a class="nav-link" [routerLink]="[ '/admin' ]" routerlinkactive="active">
 					<fa-icon [icon]="faChessKing"></fa-icon>

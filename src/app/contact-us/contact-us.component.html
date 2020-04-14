@@ -1,0 +1,100 @@
+<div class="container content0">
+	<h1>
+		<fa-icon [icon]="faEnvelopeOpenText"></fa-icon>
+		Contact us
+	</h1>
+    <hr>
+    
+    <div *ngIf="errors">
+		<div class="alert alert-danger" *ngFor="let error of errors">
+			<strong>{{error}}</strong>
+		</div>
+    </div>
+
+    
+	<div class="contactBox">
+        <h3>
+            <strong>
+                <fa-icon [icon]="faEdit"></fa-icon>
+				Send us a message
+			</strong>
+		</h3>
+		<hr>
+        <div *ngIf="sent">
+            <div class="alert alert-success text-center">
+                <h2>Your message was sent successfully</h2>
+            </div>
+        </div>
+        <form class="form-horizontal" [formGroup]="form" (ngSubmit)="onSubmit()" *ngIf="!sent">
+            <mat-vertical-stepper #linearVerticalStepper="matVerticalStepper" 
+                formArrayName="formArray" 
+                [linear]="true" 
+                class="p-2"
+                style="background: rgb(255, 251, 251);">
+            <mat-step formGroupName="0" [stepControl]="formArray?.get([0])">
+                <ng-template matStepLabel>Fill out your name</ng-template>
+               
+                <mat-form-field  class="full-width">
+                    <mat-label>Your Name</mat-label>
+                    <input matInput formControlName="name" required>
+                    <mat-error>This field is required</mat-error>
+                </mat-form-field>
+                <div>
+                    <button mat-button matStepperNext>Next</button>
+                </div>
+            </mat-step>
+
+        
+            <mat-step formGroupName="1" [stepControl]="formArray?.get([1])">
+                <ng-template matStepLabel>
+                    <div>Fill out your email address</div>
+                </ng-template>
+                <mat-form-field class="full-width">
+                    <mat-label>Email address</mat-label>
+                    <input matInput placeholder="Ex. laurnace@example.com" formControlName="email">
+                    <mat-error>Please enter a valid email address.</mat-error>
+                </mat-form-field>
+                <div>
+                    <button mat-button matStepperPrevious>Back</button>
+                    <button mat-button matStepperNext>Next</button>
+                </div>
+            </mat-step>
+
+            <mat-step formGroupName="2" [stepControl]="formArray?.get([2])">
+                <ng-template matStepLabel>
+                    <div>Fill out message subject</div>
+                </ng-template>
+                <mat-form-field  class="full-width">
+                    <mat-label>Subject</mat-label>
+                    <input matInput formControlName="subject" required>
+                    <mat-error>This field is required</mat-error>
+                </mat-form-field>
+                <div>
+                    <button mat-button matStepperPrevious>Back</button>
+                    <button mat-button matStepperNext>Next</button>
+                </div>
+            </mat-step>
+        
+            <mat-step formGroupName="3" [stepControl]="formArray?.get([3])">
+                <ng-template matStepLabel>
+                    <div>Fill out your message</div>
+                </ng-template>
+                <mat-form-field class="full-width">
+                    <mat-label>Text</mat-label>
+                    <textarea matInput formControlName="text" required></textarea>
+                    <mat-error>This field is required</mat-error>
+                  </mat-form-field>
+                <div>
+                    <button mat-button (click)="linearVerticalStepper.reset()">Reset</button>
+                    <button mat-button matStepperPrevious>Back</button>
+                    <button mat-raised-button color="accent" matStepperNext
+                            [disabled]="!form.valid || sending">
+                        {{ !sending ? 'Send' : 'Sending...' }}
+                    </button>
+                </div>
+            </mat-step>
+
+        </mat-vertical-stepper>
+        </form>
+	</div>
+</div>

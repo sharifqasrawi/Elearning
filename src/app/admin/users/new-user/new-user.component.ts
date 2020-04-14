@@ -1,3 +1,4 @@
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Component, OnInit, OnDestroy } from '@angular/core';
@@ -9,7 +10,6 @@ import { ThemePalette } from '@angular/material/core';
 
 import * as fromApp from '../../../store/app.reducer';
 import * as UsersActions from '../store/users.actions';
-import { User } from './../../../models/user.model';
 
 @Component({
   selector: 'app-new-user',
@@ -40,7 +40,8 @@ export class NewUserComponent implements OnInit, OnDestroy {
     private http: HttpClient,
     private store: Store<fromApp.AppState>,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private snackBar: MatSnackBar
   ) { }
 
   ngOnInit(): void {
@@ -123,6 +124,11 @@ export class NewUserComponent implements OnInit, OnDestroy {
 
       if (!this.errors) {
         this.regForm.reset();
+
+        this.snackBar.open('User created successfully', 'Okay',
+          {
+            duration: 2000
+          });
       }
     }
     else {
@@ -137,6 +143,11 @@ export class NewUserComponent implements OnInit, OnDestroy {
         isAuthor: this.regForm.value.isAuthor ?? false,
         emailConfirmed: this.regForm.value.emailConfirmed ?? false
       }));
+
+      this.snackBar.open('User updated successfully', 'Okay',
+      {
+        duration: 2000
+      });
 
       this.router.navigate(['/admin', 'users']);
     }

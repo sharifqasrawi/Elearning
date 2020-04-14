@@ -5,3 +5,16 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .content0 {
     padding-top: 100px;
 }
+
+.chipLink{
+    color: white;
+}
+
+.chipLink:hover {
+    color: white;
+    text-decoration: none;
+}
+
+.full-width{
+    width: 100%;
+}

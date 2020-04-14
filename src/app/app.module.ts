@@ -23,6 +23,8 @@ import { SharedModule } from './shared/shared.module';
 import { SecurityModule } from './security/security.module';
 import { UsersEffects } from './admin/users/store/users.effects';
 import { MaterialModule } from './material-module';
+import { ContactUsComponent } from './contact-us/contact-us.component';
+import { MessagesEffects } from './admin/messages/store/messages.effects';
 // import { AuthInterceptorService } from './security/auth-interceptor.service';
 
 
@@ -33,12 +35,13 @@ import { MaterialModule } from './material-module';
     HomeComponent,
     FooterComponent,
     AboutmeComponent,
+    ContactUsComponent,
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     StoreModule.forRoot(fromApp.appReducer),
-    EffectsModule.forRoot([LoginEffects, RegisterEffects, UsersEffects]),
+    EffectsModule.forRoot([LoginEffects, RegisterEffects, UsersEffects, MessagesEffects]),
     MaterialModule,
     MatNativeDateModule,
     FormsModule,

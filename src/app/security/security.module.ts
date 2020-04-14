@@ -10,6 +10,7 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { AuthComponent } from './auth/auth.component';
+import { MaterialModule } from '../material-module';
 
 
 @NgModule({
@@ -25,6 +26,7 @@ import { AuthComponent } from './auth/auth.component';
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
+        MaterialModule,
         FontAwesomeModule,
         SecurityRoutingModule,
     ],

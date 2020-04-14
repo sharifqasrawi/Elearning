@@ -33,9 +33,9 @@ export class ResetPasswordComponent implements OnInit {
     this.resetPwdForm = new FormGroup({
       passwordGroup: new FormGroup({
         password: new FormControl(null, [Validators.required, Validators.minLength(8)]),
-        cpassword: new FormControl(null, [Validators.required])
+        cpassword: new FormControl(null, [Validators.required, Validators.minLength(8)])
       },
-        this.checkPasswords)
+        [this.checkPasswords])
     });
   }
 
@@ -49,7 +49,7 @@ export class ResetPasswordComponent implements OnInit {
         Email: this.email,
         Password: this.resetPwdForm.value.passwordGroup.password,
         ConfirmPassword: this.resetPwdForm.value.passwordGroup.cpassword,
-        Token: this.token.replace(/\s/g, '+') 
+        Token: this.token.replace(/\s/g, '+')
 
       }).subscribe(() => {
         this.loading = false;

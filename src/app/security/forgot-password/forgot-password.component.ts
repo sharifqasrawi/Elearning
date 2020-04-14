@@ -1,9 +1,11 @@
+import { map, catchError } from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { faQuestionCircle, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 import { environment } from './../../../environments/environment';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-forgot-password',
@@ -17,6 +19,7 @@ export class ForgotPasswordComponent implements OnInit {
   resetPwdForm: FormGroup;
   emailSent = false;
   sending = false;
+  errors: string[] = null;
 
   constructor(private http: HttpClient) { }
 
@@ -30,18 +33,27 @@ export class ForgotPasswordComponent implements OnInit {
     if (!this.resetPwdForm.valid)
       return;
 
-      this.sending = true;
-      this.http.post(environment.API_BASE_URL + 'account/forgot-password',
-        {
-          email: this.resetPwdForm.value.email
-        } 
-      )
-      .subscribe(() => {
-        this.emailSent = true;
+    this.sending = true;
+    this.http.post(environment.API_BASE_URL + 'account/forgot-password',
+      {
+        email: this.resetPwdForm.value.email
+      }
+    ).pipe(
+      map(resData => {
         this.sending = false;
-      });
+        this.emailSent = true;
+        this.errors = null;
+      }),
+      catchError(errRes => {
+        this.errors = errRes.error.errors;
+        this.sending = false;
+        this.emailSent = false;
+        return of();
+      })
+    ).subscribe();
+
   }
 
 
-  
+
 }

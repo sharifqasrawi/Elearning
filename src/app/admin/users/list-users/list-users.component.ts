@@ -1,3 +1,4 @@
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
@@ -42,7 +43,8 @@ export class ListUsersComponent implements OnInit, OnDestroy {
 
   constructor(
     private store: Store<fromApp.AppState>,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private snackBar: MatSnackBar
   ) { }
 
   ngOnInit(): void {
@@ -88,10 +90,26 @@ export class ListUsersComponent implements OnInit, OnDestroy {
 
   onRefresh() {
     this.store.dispatch(new UsersActions.FetchStart());
+
+    this.snackBar.open('List refreshed', 'Okay',
+      {
+        duration: 2000
+      });
   }
 
   onChangeStatus(userId: string, option: string) {
     this.store.dispatch(new UsersActions.SetActiveDeactiveStart({ userId: userId, option: option }));
+
+    let message = '';
+    if (option === 'activate')
+      message = 'User activated';
+    else
+      message = 'User Deactivated';
+
+    this.snackBar.open(message, 'Okay',
+      {
+        duration: 2000
+      });
   }
 
   onDelete(userId: string) {
@@ -102,8 +120,14 @@ export class ListUsersComponent implements OnInit, OnDestroy {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result)
+      if (result) {
         this.store.dispatch(new UsersActions.DeleteStart(userId));
+
+        this.snackBar.open('User deleted successfully', 'Okay',
+          {
+            duration: 2000
+          });
+      }
     });
 
   }

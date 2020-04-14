@@ -12,6 +12,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { AdminRoutingModule } from './admin-routing.module';
 import { SharedModule } from '../shared/shared.module';
 import { NewUserComponent } from './users/new-user/new-user.component';
+import { ListMessagesComponent } from './messages/list-messages/list-messages.component';
+import { ListCategoriesComponent } from './categories/list-categories/list-categories.component';
 
 @NgModule({
     declarations: [
@@ -20,6 +22,8 @@ import { NewUserComponent } from './users/new-user/new-user.component';
         ListUsersComponent,
         DashboardComponent,
         NewUserComponent,
+        ListMessagesComponent,
+        ListCategoriesComponent,
     ],
     imports: [
         CommonModule,

@@ -4,12 +4,12 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Store } from '@ngrx/store';
 import { Effect, Actions, ofType } from '@ngrx/effects';
+import { of } from 'rxjs';
 
 import { environment } from './../../../../environments/environment';
 
 import * as fromApp from '../../../store/app.reducer';
 import * as UsersActions from './users.actions';
-import { of } from 'rxjs';
 
 export interface RegisterResponseData {
     user: User

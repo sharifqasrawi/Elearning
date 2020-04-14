@@ -5,7 +5,33 @@
 			Administation
 		</a>
 		<ul class="navbar-nav">
-			<li class="nav-item dropdown " appDropdown>
+			<li class="nav-item dropdown ml-2" appDropdown>
+				<a style="cursor: pointer;" class="nav-link dropdown-toggle" role="button" >
+					<fa-icon [icon]="faCogs"></fa-icon>
+					Categories
+					<span class="caret"></span>
+				</a>
+
+				<div class="dropdown-menu">
+					<h3 class="dropdown-header">Categories Management</h3>
+					<a class="dropdown-item" 
+						[routerLink]="['/admin', 'users' , 'new-user']"
+						>
+						<fa-icon [icon]="faAddUser"></fa-icon>
+						New Category
+                    </a>
+                    <div class="dropdown-divider"></div> 
+                    <a class="dropdown-item"
+						[routerLink]="['/admin', 'users']"
+						>
+						<fa-icon [icon]="faListUsers"></fa-icon>
+						List Categories
+					</a>
+
+				</div>
+			</li>
+
+			<li class="nav-item dropdown ml-3" appDropdown>
 				<a style="cursor: pointer;" class="nav-link dropdown-toggle" role="button" >
 					<fa-icon [icon]="faUsers"></fa-icon>
 					Users
@@ -29,6 +55,15 @@
 					</a>
 
 				</div>
+			</li>
+
+			<li class="nav-item ml-3">
+				<a 
+					class="nav-link"
+					[routerLink]="['/admin', 'messages']">
+					<fa-icon [icon]="faEnvelopeSquare"></fa-icon>
+					Messages
+				</a>
 			</li>
 		</ul>
 	</nav>
