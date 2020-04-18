@@ -1,0 +1,67 @@
+
+<div class="adminPageTop">
+    <h1>
+        <mat-icon>file_copy</mat-icon>
+        Uploaded Files
+    </h1>
+
+    <hr>
+
+    <div *ngIf="errorsDir">
+        <div class="alert alert-danger" *ngFor="let error of errorsDir">
+            {{error}}
+        </div>
+    </div>
+
+    <div *ngIf="errorsFiles">
+        <div class="alert alert-danger" *ngFor="let error of errorsFiles">
+            {{error}}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-10">
+            <mat-form-field style="width: 100%;">
+                <mat-label>Path</mat-label>
+                <mat-select  required [(ngModel)]="path" >
+                <mat-option>--</mat-option>
+                <mat-option *ngFor="let p of listPaths" [value]="p.path" (click)="onSelectDirectory()">
+                    {{p.path}}
+                </mat-option>
+                </mat-select>       
+            </mat-form-field>
+            <span class="text-danger small" *ngIf="!path || path === ''">
+                Choose a directory
+            </span>
+        </div>
+
+        <div class="col-lg-2">
+            <a mat-raised-button
+                    [routerLink]="['/admin', 'files', 'upload']"
+                    color="accent"
+                    class="btn-block mt-1"
+                    >
+                <fa-icon [icon]="faUpload"></fa-icon>
+                Upload File
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="adminPageBottom row mt-4">
+    <div class="col-lg-12">
+        <div *ngIf="loading">
+            <mat-spinner></mat-spinner>
+        </div>
+
+        <div *ngIf="!loading && loaded">
+            <div *ngFor="let file of files">
+                <img [src]="getImage(file.downloadPath)" *ngIf="isImage(file.fileType)" alt="No Preview" class="filePreview"> 
+                
+                <div *ngIf="isPdf(file.fileType)"class="filePreview">
+                    <strong class="text-center">PDF</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

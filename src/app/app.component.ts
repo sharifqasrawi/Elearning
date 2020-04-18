@@ -1,4 +1,3 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 
@@ -15,26 +14,10 @@ export class AppComponent implements OnInit {
   userId: string = null;
   userAdmin = false;
 
-  constructor(private store: Store<fromApp.AppState>, private http: HttpClient) { }
+  
+  constructor(private store: Store<fromApp.AppState>) { }
 
   ngOnInit() {
     this.store.dispatch(new LoginActions.AutoLogin());
-
-    // this.store.select('login').subscribe(authState => {
-    //   if (authState) {
-    //     this.userId = authState.user.Id;
-    //   }
-    // })
-
-    // this.http.get('https://localhost:44383/users/user-roles',
-    //   {
-    //     params: new HttpParams().set('id', this.userId)
-    //   }).subscribe((res: { userRoles: { isAdmin: boolean, isAuthor: boolean } }) => {
-    //     this.userAdmin = res.userRoles.isAdmin;
-        
-    //     this.store.dispatch(new LoginActions.SetAdmin(res.userRoles.isAdmin));
-    //   });
-
-
   }
 }

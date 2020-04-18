@@ -9,17 +9,19 @@
                     {{ isLogin ? 'Don\'t have an account yet? Register now.': 'Already have an account? Login now.'}}
                 </button> -->
 
-                <mat-chip-list >
-                    <mat-chip 
-                        class="mt-5"
-                        style="cursor: pointer;"
-                        color="accent" 
-                        selected
-                        (click)="onChangeAuthMode()">
-                        {{ isLogin ? 'Don\'t have an account yet? Register now.': 'Already have an account? Login now.'}}
-                    
-                    </mat-chip>
-                </mat-chip-list>
+                <div class="changeAuthMode">
+                    <mat-chip-list>
+                        <mat-chip 
+                            class="mt-5"
+                            color="accent"
+                            style="cursor: pointer;" 
+                            selected
+                            (click)="onChangeAuthMode()">
+                            {{ isLogin ? 'Don\'t have an account yet? Register now.': 'Already have an account? Login now.'}}
+                        
+                        </mat-chip>
+                    </mat-chip-list>
+                </div>
             </div>
         </div>
     </div>

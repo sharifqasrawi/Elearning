@@ -2,10 +2,65 @@
     margin-top: 70px;
     width: 100%;
     height: 70px;
-    background-color: rgb(75, 95, 150);
+    background-color: rgb(64, 66, 73);
     padding-top: 10px;
     position: fixed;
     top: 0;
     left: 0;
     z-index: 50;
 }
+
+.admin-sidenav-container {
+    position: absolute;
+    top: 60px;
+    bottom: 60px;
+    left: 0;
+    right: 0;
+  }
+  
+  .admin-sidenav-sidenav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 200px;
+    background: rgba(75, 75, 75, 0.5);
+  
+  }
+  
+  .admin-sidenav-sidenav a {
+    color: white;
+  }
+  
+  .example-container {
+    height: 500px;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+  }
+  .example-sidenav-content {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+  }
+  .example-sidenav {
+     user-select: none;
+  }
+  .full-width {
+    width: 100%;
+  }
+  .menu-button {
+    transition: 300ms ease-in-out;
+    transform: rotate(0deg);
+  }
+  .menu-button.rotated {
+    transform: rotate(180deg);
+  }
+  .submenu {
+    overflow-y: hidden;
+    transition: transform 300ms ease;
+    transform: scaleY(0);
+    transform-origin: top;
+    padding-left: 30px;
+  }
+  .submenu.expanded {
+    transform: scaleY(1);
+  }

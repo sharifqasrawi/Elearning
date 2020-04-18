@@ -7,25 +7,18 @@ import { AboutmeComponent } from './aboutme/aboutme.component';
 import { AdminGuard } from './security/admin.guard';
 import { ContactUsComponent } from './contact-us/contact-us.component';
 import { NotFoundComponent } from './shared/not-found/not-found.component';
+import { LayoutComponent } from './layout/layout.component';
 
 
 const routes: Routes = [
   {
-    path: '', children: [
+    path: '', component: LayoutComponent, children: [
       { path: 'home', component: HomeComponent },
       { path: 'contact-us', component: ContactUsComponent },
       { path: 'about-me', component: AboutmeComponent, canActivate: [AuthGuard] },
       { path: '', redirectTo: '/home', pathMatch: 'full' },
-    ]
+    ],
   },
-  
-  // {
-  //   path: 'admin', children: [
-  //     { path: '', component: MainComponent },
-  //     { path: 'dashboard', component: DashboardComponent },
-  //     { path: 'list-users', component: ListUsersComponent },
-  //   ]
-  // },
   { path: '**', component: NotFoundComponent }
 ];
 

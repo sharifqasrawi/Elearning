@@ -10,6 +10,8 @@ import { ThemePalette } from '@angular/material/core';
 
 import * as fromApp from '../../../store/app.reducer';
 import * as UsersActions from '../store/users.actions';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmDialogComponent } from 'src/app/shared/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-new-user',
@@ -35,13 +37,16 @@ export class NewUserComponent implements OnInit, OnDestroy {
   loading = false;
   created = false;
   userId: string = null;
+  hidePwd = true;
+  hideCpwd = true;
 
   constructor(
     private http: HttpClient,
     private store: Store<fromApp.AppState>,
     private route: ActivatedRoute,
     private router: Router,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
@@ -145,16 +150,25 @@ export class NewUserComponent implements OnInit, OnDestroy {
       }));
 
       this.snackBar.open('User updated successfully', 'Okay',
-      {
-        duration: 2000
-      });
+        {
+          duration: 2000
+        });
 
       this.router.navigate(['/admin', 'users']);
     }
   }
 
   onCancel() {
-    this.router.navigate(['/admin', 'users']);
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '360px',
+      data: { header: 'Confirm cancel', message: 'Cancel and discard all changes?' }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result)
+        this.router.navigate(['/admin', 'users']);
+    });
+
   }
 
   ngOnDestroy() {

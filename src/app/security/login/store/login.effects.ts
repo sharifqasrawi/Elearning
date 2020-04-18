@@ -9,7 +9,9 @@ import { environment } from './../../../../environments/environment';
 
 import { AuthService } from './../../auth.service';
 import * as LoginActions from './login.actions';
-import { User } from 'src/app/models/user.model';
+import { User } from './../../../models/user.model';
+
+import * as jwt_decode from 'jwt-decode';
 
 export interface LoginResponseData {
     id: string,
@@ -72,7 +74,7 @@ export class LoginEffects {
         tap(() => {
             this.authService.clearLogoutTimer();
             localStorage.removeItem('userData');
-            this.router.navigate(['/']);
+            this.router.navigate(['/', 'home']);
         })
     );
 
@@ -106,7 +108,16 @@ export class LoginEffects {
 
 
             if (loadedUser.token) {
-                // this.user.next(loadedUser);
+
+                const decodedToken: {
+                    exp: number,
+                    iat: number,
+                    role: string,
+                    unique_name: string,
+                    given_name: string,
+                    family_name: string,
+                } = jwt_decode(loadedUser.token);
+
                 const expirationDuration =
                     new Date(userData.expiresIn).getTime() -
                     new Date().getTime();
@@ -116,10 +127,10 @@ export class LoginEffects {
                     userId: loadedUser.id,
                     token: loadedUser.token,
                     expirationDate: new Date(userData.expiresIn),
-                    firstName: loadedUser.firstName,
-                    lastName: loadedUser.lastName,
-                    isAdmin: loadedUser.isAdmin,
-                    isAuthor: loadedUser.isAuthor,
+                    firstName: decodedToken.given_name,
+                    lastName: decodedToken.family_name,
+                    isAdmin: decodedToken.role === 'Admin',
+                    isAuthor: decodedToken.role === 'Author',
                     redirect: false
                 });
 
@@ -129,84 +140,84 @@ export class LoginEffects {
     );
 
 
-    @Effect()
-    autoLogin2 = this.actions$.pipe(
-        ofType(LoginActions.AUTO_LOGIN),
-        switchMap(() => {
-            const userData: {
-                username: string;
-                id: string;
-                token: string;
-                expiresIn: string;
-            } = JSON.parse(localStorage.getItem('userData'));
+    // @Effect()
+    // autoLogin2 = this.actions$.pipe(
+    //     ofType(LoginActions.AUTO_LOGIN),
+    //     switchMap(() => {
+    //         const userData: {
+    //             username: string;
+    //             id: string;
+    //             token: string;
+    //             expiresIn: string;
+    //         } = JSON.parse(localStorage.getItem('userData'));
 
-            if (!userData)
-                return of();
+    //         if (!userData)
+    //             return of();
 
-            return this.http.get(environment.API_BASE_URL + 'users/user',
-                {
-                    params: new HttpParams().set('id', userData.id)
-                })
-                .pipe(
-                    map((res: {
-                        user: {
-                            firstName: string,
-                            lastName: string,
-                            username: string,
-                            country: string;
-                            gender: string,
-                            id: string,
-                            isAdmin: boolean,
-                            isAuthor: boolean
-                        }
-                    }) => {
+    //         return this.http.get(environment.API_BASE_URL + 'users/user',
+    //             {
+    //                 params: new HttpParams().set('id', userData.id)
+    //             })
+    //             .pipe(
+    //                 map((res: {
+    //                     user: {
+    //                         firstName: string,
+    //                         lastName: string,
+    //                         username: string,
+    //                         country: string;
+    //                         gender: string,
+    //                         id: string,
+    //                         isAdmin: boolean,
+    //                         isAuthor: boolean
+    //                     }
+    //                 }) => {
 
-                        const loadedUser = new User(
-                            res.user.firstName,
-                            res.user.lastName,
-                            res.user.username,
-                            res.user.country,
-                            res.user.gender,
-                            res.user.isAdmin,
-                            res.user.isAuthor,
-                            userData.id,
-                            userData.token,
-                            new Date(userData.expiresIn)
-                        );
+    //                     const loadedUser = new User(
+    //                         res.user.firstName,
+    //                         res.user.lastName,
+    //                         res.user.username,
+    //                         res.user.country,
+    //                         res.user.gender,
+    //                         res.user.isAdmin,
+    //                         res.user.isAuthor,
+    //                         userData.id,
+    //                         userData.token,
+    //                         new Date(userData.expiresIn)
+    //                     );
 
-                        if (loadedUser.token) {
+    //                     if (loadedUser.token) {
 
-                            const expirationDate = new Date(userData.expiresIn);
-                            const expiresIn = expirationDate.getTime() - (new Date()).getTime();
-                            this.authService.setLogoutTimer(expiresIn);
+    //                         const expirationDate = new Date(userData.expiresIn);
+    //                         const expiresIn = expirationDate.getTime() - (new Date()).getTime();
+    //                         this.authService.setLogoutTimer(expiresIn);
 
 
-                            return new LoginActions.LoginSuccess({
-                                email: loadedUser.email,
-                                userId: loadedUser.id,
-                                token: loadedUser.token,
-                                expirationDate: new Date(userData.expiresIn),
-                                firstName: loadedUser.firstName,
-                                lastName: loadedUser.lastName,
-                                isAdmin: loadedUser.isAdmin,
-                                isAuthor: loadedUser.isAuthor,
-                                redirect: false
-                            });
+    //                         return new LoginActions.LoginSuccess({
+    //                             email: loadedUser.email,
+    //                             userId: loadedUser.id,
+    //                             token: loadedUser.token,
+    //                             expirationDate: new Date(userData.expiresIn),
+    //                             firstName: loadedUser.firstName,
+    //                             lastName: loadedUser.lastName,
+    //                             isAdmin: loadedUser.isAdmin,
+    //                             isAuthor: loadedUser.isAuthor,
+    //                             redirect: false
+    //                         });
 
-                        }
-                        return { type: 'DUMMY' };
-                    })
-                )
-        }),
+    //                     }
+    //                     return { type: 'DUMMY' };
+    //                 })
+    //             )
+    //     }),
 
-    );
+    // );
 
     @Effect({ dispatch: false })
     authRedirect = this.actions$.pipe(
         ofType(LoginActions.LOGIN_SUCCESS),
         tap((authSuccessAction: LoginActions.LoginSuccess) => {
             if (authSuccessAction.payload.redirect) {
-                this.router.navigate(['/']);
+                this.router.navigate(['/', 'home']);
             }
         })
     );

@@ -14,6 +14,14 @@ import { SharedModule } from '../shared/shared.module';
 import { NewUserComponent } from './users/new-user/new-user.component';
 import { ListMessagesComponent } from './messages/list-messages/list-messages.component';
 import { ListCategoriesComponent } from './categories/list-categories/list-categories.component';
+import { NewCategoryComponent } from './categories/new-category/new-category.component';
+import { TrashedCategoriesComponent } from './categories/trashed-categories/trashed-categories.component';
+import { ListDirectoriesComponent } from './directories/list-directories/list-directories.component';
+import { NewDirectoryComponent } from './directories/new-directory/new-directory.component';
+import { PhysicalDirectoriesComponent } from './directories/physical-directories/physical-directories.component';
+import { FileUploadComponent } from './files/file-upload/file-upload.component';
+import { ListFilesComponent } from './files/list-files/list-files.component';
+import { DragAndDropDirectiveDirective } from './files/drag-and-drop-directive.directive';
 
 @NgModule({
     declarations: [
@@ -24,6 +32,14 @@ import { ListCategoriesComponent } from './categories/list-categories/list-categ
         NewUserComponent,
         ListMessagesComponent,
         ListCategoriesComponent,
+        NewCategoryComponent,
+        TrashedCategoriesComponent,
+        ListDirectoriesComponent,
+        NewDirectoryComponent,
+        PhysicalDirectoriesComponent,
+        FileUploadComponent,
+        ListFilesComponent,
+        DragAndDropDirectiveDirective,
     ],
     imports: [
         CommonModule,

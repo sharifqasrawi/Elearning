@@ -1,10 +1,11 @@
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { SelectionModel } from '@angular/cdk/collections';
 import { Store } from '@ngrx/store';
 import { MatTableDataSource } from '@angular/material/table';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { faEnvelope, faEye, faEyeSlash, faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faEnvelope, faEye, faEyeSlash, faSearch, faChessKing } from '@fortawesome/free-solid-svg-icons';
 
 import * as fromApp from '../../../store/app.reducer';
 import * as MessagesActions from './../store/messages.actions';
@@ -22,14 +23,16 @@ export class ListMessagesComponent implements OnInit {
   faEye = faEye;
   faEyeSlash = faEyeSlash;
   faSearch = faSearch;
+  faChessKing = faChessKing;
 
 
   messages: Message[] = null;
   loading = false;
   loaded = false;
 
-  displayedColumns: string[] = ['id', 'name', 'email', 'subject' ,'dateTime', 'isSeen'];
+  displayedColumns: string[] = ['id', 'name', 'email', 'subject', 'dateTime', 'isSeen', 'actions'];
   dataSource: MatTableDataSource<Message>;
+  // selection = new SelectionModel<Message>(true, []);
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -63,8 +66,8 @@ export class ListMessagesComponent implements OnInit {
     });
   }
 
-  onSelect(id: number){
-    
+  onSelect(id: number) {
+
   }
 
 
@@ -83,6 +86,27 @@ export class ListMessagesComponent implements OnInit {
       this.dataSource.paginator.firstPage();
     }
   }
+
+  // /** Whether the number of selected elements matches the total number of rows. */
+  // isAllSelected() {
+  //   const numSelected = this.selection.selected.length;
+  //   const numRows = this.dataSource.data.length;
+  //   return numSelected === numRows;
+  // }
+  //  /** Selects all rows if they are not all selected; otherwise clear selection. */
+  //  masterToggle() {
+  //   this.isAllSelected() ?
+  //       this.selection.clear() :
+  //       this.dataSource.data.forEach(row => this.selection.select(row));
+  // }
+
+  // /** The label for the checkbox on the passed row */
+  // checkboxLabel(row?: Message): string {
+  //   if (!row) {
+  //     return `${this.isAllSelected() ? 'select' : 'deselect'} all`;
+  //   }
+  //   return `${this.selection.isSelected(row) ? 'deselect' : 'select'} row ${row.id + 1}`;
+  // }
 }
 
 

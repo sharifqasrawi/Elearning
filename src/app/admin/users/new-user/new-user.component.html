@@ -1,5 +1,5 @@
-<div class="container">
-	<div class="alert alert-secondary">
+<div class="adminPageTop">
+	<div >
 		<h1 *ngIf="!editMode">
 			<fa-icon [icon]="faUserPlus"></fa-icon>
 			Create New User
@@ -10,7 +10,9 @@
 			Edit User
 		</h1>
 	</div>
-
+	<hr>
+</div>
+<div class="adminPageBottom">
     <div *ngIf="errors">
 		<div class="alert alert-danger" *ngFor="let error of errors">
 			<strong>{{error}}</strong>
@@ -21,17 +23,12 @@
         <strong>User Created</strong>
     </div>
 
-	<form class="form-horizontal" [formGroup]="regForm" (ngSubmit)="onSubmit()">
+	<form [formGroup]="regForm" (ngSubmit)="onSubmit()">
 
         <label>Role:</label>
 		<div class="row">
 			<div class="col-lg-6">
 				<div class="form-group">
-					<!-- <div class="form-check">
-						<label class="form-check-label">
-							<input type="checkbox" class="form-check-input"  id="isAdmin" name="isAdmin" formControlName="isAdmin">Admin
-						</label>
-					</div> -->
 
 					<mat-slide-toggle
 						[color]="colorPrimary"
@@ -45,11 +42,6 @@
 			</div>
 			<div class="col-lg-6">
 				<div class="form-group">
-					<!-- <div class="form-check">
-						<label class="form-check-label">
-							<input type="checkbox" class="form-check-input"  id="isAuthor" name="isAuthor" formControlName="isAuthor">Author
-						</label>
-					</div> -->
 
 					<mat-slide-toggle
 						[color]="colorAccent"
@@ -63,37 +55,41 @@
 			</div>
 		</div>
 
-        <div class="form-group">
-			<label>First Name:</label>
-			<input type="text" name="firstName" id="firstName" placeholder="Enter user's first name" class="form-control" formControlName="firstName">
-			<span class="small text-danger" *ngIf="!regForm.controls.firstName.valid && regForm.controls.firstName.touched">
-				First name is required
-			</span>
+		<div class="row">
+			<div class="col-lg-6">
+				<mat-form-field class="full-width">
+					<mat-label>First Name </mat-label>
+					<input type="text" matInput formControlName="firstName" 
+							placeholder="Enter user's first name">
+					<mat-error *ngIf="!regForm.controls.firstName.valid && regForm.controls.firstName.touched">
+						First name is required.
+					</mat-error>
+				</mat-form-field>
+			</div>
+			<div class="col-lg-6">
+				<mat-form-field class="full-width">
+					<mat-label>Last Name </mat-label>
+					<input type="text" matInput formControlName="lastName" 
+							placeholder="Enter user's last name">
+					<mat-error *ngIf="!regForm.controls.lastName.valid && regForm.controls.lastName.touched">
+						Last name is required.
+					</mat-error>
+				</mat-form-field>
+			</div>
+		</div>
+ 
+		 <div class="form-group">
+			<mat-form-field class="full-width">
+				<mat-label>Email </mat-label>
+				<input type="email" matInput formControlName="email" 
+						placeholder="Enter user's email">
+				<mat-error *ngIf="!regForm.controls.email.valid && regForm.controls.email.touched">
+					Please enter a valid email address.
+				</mat-error>
+			</mat-form-field>
 		</div>
 
-		<div class="form-group">
-			<label>Last Name:</label>
-			<input type="text" name="lastName" id="lastName" placeholder="Enter user's last name" class="form-control" formControlName="lastName">
-			<span class="small text-danger" *ngIf="!regForm.controls.lastName.valid && regForm.controls.lastName.touched">
-				Last name is required
-			</span>
-		</div>
-
-
-		<div class="form-group">
-			<label>Email:</label>
-			<input type="email" name="email" id="email" placeholder="Enter user's email" class="form-control" formControlName="email">
-			<span class="small text-danger" *ngIf="!regForm.controls.email.valid && regForm.controls.email.touched">
-				Please enter a valid email address
-			</span>
-        </div>
-        
         <div class="form-group">
-            <!-- <div class="form-check">
-                <label class="form-check-label">
-                    <input type="checkbox" class="form-check-input" id="emailConfirmed" name="emailConfirmed" formControlName="emailConfirmed">Email Confirmed
-                </label>
-			</div> -->
 			
 			<mat-slide-toggle
 				[color]="colorWarn"
@@ -106,18 +102,6 @@
         </div>
 
 		<div class="form-group">
-			<!-- <label>Country:</label> -->
-			<!-- <input type="text" placeholder="Enter your country" class="form-control"> -->
-			<!-- <select name="country" id="country" class="form-control" formControlName="country">
-
-				<option value="">Select user's country</option>
-				<option [value]="c.name" *ngFor="let c of listCountries">
-					{{c.name}}
-				</option>
-			</select> -->
-			<!-- <span class="small text-danger" *ngIf="!regForm.controls.country.valid && regForm.controls.country.touched">
-				Country is required
-			</span> -->
 
 			<mat-form-field style="width: 100%;">
 				<mat-label>Country</mat-label>
@@ -127,7 +111,9 @@
 					{{c.name}}
 				  </mat-option>
 				</mat-select>
-				<mat-error *ngIf="!regForm.controls.country.valid && regForm.controls.country.touched">Please choose a country</mat-error>
+				<mat-error *ngIf="!regForm.controls.country.valid && regForm.controls.country.touched">
+					Country is required.
+				</mat-error>
 				
 			  </mat-form-field>
 
@@ -141,49 +127,52 @@
 				<mat-radio-button class="ml-2" value="female">Female</mat-radio-button>
 				<mat-radio-button class="ml-2" value="custom">Custom</mat-radio-button>
 			</mat-radio-group>
-
+			<br>
 			<span class="small text-danger" *ngIf="!regForm.controls.gender.valid && regForm.controls.gender.touched">
 				Gender is required
 			</span>
 		</div>
 
-		<div formGroupName="password" *ngIf="!editMode">
-			<div class="form-group">
-				<label>Password:</label>
-				<input type="password" 
-					name="password" 
-					id="password" 
-					placeholder="Enter a password" 
-					class="form-control" 
-					formControlName="password"
-					>
-				<span class="small text-danger" *ngIf="!regForm.get('password.password').valid && regForm.get('password.password').touched">
-					Password length must be at least 8 charcters
-				</span>
+		<div class="row" formGroupName="password" *ngIf="!editMode">
+			<div class="col-lg-6">
+				<mat-form-field class="full-width">
+					<mat-label>Enter a password</mat-label>
+					<input matInput formControlName="password" required [type]="hidePwd ? 'password' : 'text'">
+					<button  type="button" mat-icon-button matSuffix (click)="hidePwd = !hidePwd" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePwd">
+						<mat-icon>{{hidePwd ? 'visibility_off' : 'visibility'}}</mat-icon>
+					</button>
+					<mat-error>Password length must be at least 8 charcters</mat-error>
+				</mat-form-field>
 			</div>
-
-			<div class="form-group">
-				<label>Confirm Password:</label>
-				<input type="password" name="cpassword" id="cpassword" placeholder="Re-Enter the password" class="form-control" formControlName="cpassword">
-
-				<span class="small text-danger" *ngIf="!regForm.controls.password.valid && regForm.controls.password.touched">
-					Password do not match
-				</span>
+			<div class="col-lg-6">
+				<mat-form-field  class="full-width">
+					<mat-label>Confirm your password</mat-label>
+					<input matInput formControlName="cpassword" required [type]="hideCpwd ? 'password' : 'text'">
+					<button type="button" mat-icon-button matSuffix (click)="hideCpwd = !hideCpwd" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hideCpwd">
+						<mat-icon>{{hideCpwd ? 'visibility_off' : 'visibility'}}</mat-icon>
+					</button>
+				</mat-form-field>
+				<mat-error class="small" *ngIf="!regForm.controls.password.valid && regForm.controls.password.touched">
+					Passwords do not match
+				</mat-error>
 			</div>
 
 		</div>
 
-		<button type="submit" class="btn btn-primary" [disabled]="!regForm.valid || loading" >
-			<span *ngIf="!editMode">{{ !loading ? 'Create' : 'Creating...' }}</span>
-			<span *ngIf="editMode">{{ !loading ? 'Save' : 'Saving...' }}</span>
-		</button>
+		<div class="float-right">
+			<button
+				type="button"
+				mat-raised-button
+				color="warn"
+				class="mr-3"
+				(click)="onCancel()">
+				Cancel
+			</button>
+			<button type="submit" mat-raised-button color="primary" [disabled]="!regForm.valid || loading" >
+				<span *ngIf="!editMode">{{ !loading ? 'Create' : 'Creating...' }}</span>
+				<span *ngIf="editMode">{{ !loading ? 'Save' : 'Saving...' }}</span>
+			</button>
 
-		<button
-			type="button"
-			 class="btn btn-secondary ml-3"
-			 (click)="onCancel()">
-			Cancel
-		</button>
-
+		</div>
 	</form>
 </div>

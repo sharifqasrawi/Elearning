@@ -1,0 +1,50 @@
+.admin-container {
+    height: 91.4vh;
+    /* border: 1px solid rgba(0, 0, 0, 0.5); */
+    /* margin-top: 70px; */
+  }
+  .admin-sidenav-content {
+    /* display: flex; */
+    height: 100%;
+    /* align-items: center; */
+    /* justify-content: center; */
+    padding-top: 25px;
+    margin-bottom: 50px;
+  }
+  .admin-sidenav {
+     user-select: none;
+     width: 250px;
+     background-color: rgb(61, 61, 61);
+  }
+
+  .admin-container .admin-sidenav a,
+  .admin-container .admin-sidenav span,
+   .adminNavColor{
+    color: lightgrey;
+  }
+
+  .menu-button {
+    transition: 300ms ease-in-out;
+    transform: rotate(0deg);
+  }
+  .menu-button.rotated {
+    transform: rotate(180deg);
+  }
+  .submenu {
+    overflow-y: auto;
+    height: 0;
+    transition: transform 300ms ease;
+    transform: scaleY(0);
+    transform-origin: top;
+    padding-left: 30px;
+  }
+
+  .submenu.expanded {
+    transform: scaleY(1);
+    height: auto;
+  }
+
+  .menu-spacer {
+    flex: 1 1 auto;
+  }
+  

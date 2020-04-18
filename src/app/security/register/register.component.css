@@ -6,6 +6,8 @@
     box-shadow: 7px 7px 7px 7px rgb(197, 195, 195);
     /* height: 400px;
     overflow-y: auto; */
+
+    animation: loginBoxAnim 0.4s forwards ease-in-out;
 }
 
 button {
@@ -24,3 +26,59 @@ button {
     margin-top: 16px;
   }
   
+
+  
+@keyframes loginBoxAnim {
+    0% {
+        opacity: 0;
+      }
+      20% {
+        opacity: 0.2;
+      }
+      40% {
+        opacity: 0.4;
+      }
+      60%{
+        opacity: 0.6;
+      }
+      80%{
+        opacity: 0.8;
+      }
+      100% {
+        opacity: 1;
+      }
+}
+
+.error {
+    animation: errorAnim 0.4s forwards ease-in-out;
+}
+
+@keyframes errorAnim {
+    0% {
+        transform: translateX(-50%);
+        opacity: 0;
+    }
+    50% {
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.registerMsg {
+    animation: registeredAnim 0.4s forwards ease-in-out;
+}
+
+
+@keyframes registeredAnim {
+    0% {
+        transform: translateY(-50%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}

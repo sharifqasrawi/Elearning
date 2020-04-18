@@ -126,7 +126,7 @@ export class UsersEffects {
     setActiveDeactive = this.actions$.pipe(
         ofType(UsersActions.SET_ACTIVE_DEACTIVE_START),
         switchMap((data: UsersActions.SetActiveDeactiveStart) => {
-            return this.http.post<{ userId: string, isActive: boolean }>(environment.API_BASE_URL + 'users/act-deact',
+            return this.http.put<{ userId: string, isActive: boolean }>(environment.API_BASE_URL + 'users/act-deact',
                 {
                     UserId: data.payload.userId,
                     Option: data.payload.option
@@ -170,7 +170,7 @@ export class UsersEffects {
                 IsAdmin: userData.payload.isAdmin,
                 IsAuthor: userData.payload.isAuthor
             };
-            return this.http.post<RegisterResponseData>(environment.API_BASE_URL + 'users/update-user',
+            return this.http.put<RegisterResponseData>(environment.API_BASE_URL + 'users/update-user',
                 user,
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)

@@ -1,10 +1,11 @@
 <div class="container content0">
-	<h1>
-		<fa-icon [icon]="faEnvelopeOpenText"></fa-icon>
-		Contact us
-	</h1>
-    <hr>
-    
+    <div class="adminPageTop">
+        <h1>
+            <fa-icon [icon]="faEnvelopeOpenText"></fa-icon>
+            Contact us
+        </h1>
+        <hr>
+    </div>
     <div *ngIf="errors">
 		<div class="alert alert-danger" *ngFor="let error of errors">
 			<strong>{{error}}</strong>

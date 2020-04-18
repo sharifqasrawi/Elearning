@@ -1,141 +1,203 @@
-<div class="container">
-	<div class="alert alert-secondary">
-		<h1>
-			<span [matBadge]="usersCount" matBadgeColor="primary" matBadgeOverlap="false">
-				<fa-icon [icon]='faList'></fa-icon>
-				List Users
-			</span>
-		</h1>
-	</div>
+<div class="adminPageTop">
+  <h1>
+    <fa-icon [icon]='faList'></fa-icon>
+    List Users
+    [ {{usersCount}} ]
+  </h1>
 	
-	<div class="row">
-		<div class="col-lg-3 mb-2">
-			<div class="input-group">
-				<div class="input-group-prepend">
-					<span class="input-group-text">
-						<fa-icon [icon]="faSearch"></fa-icon>
-					</span>
-				</div>
-				<input type="text" class="form-control" placeholder="Search..."
-						(keyup)="onSearch($event)">
-			</div>
-		</div>
-		<div class="col-lg-7 mb-2">
-
-		</div>
-		<div class="col-lg-2 mb-2">
-			<!-- <button class="btn btn-warning btn-block text-light float-right" (click)="onRefresh()">
-				Refresh
-			</button> -->
-			<button mat-raised-button class="btn-block" color="accent" (click)="onRefresh()">Refresh</button>
-		</div>
-	</div>
-
 	<hr>
-
-	<h1 class="alert alert-info text-center" *ngIf="loading">
-		Loading...
-	</h1>
-
-	<h1 class="alert alert-warning text-center" *ngIf="deleting">
-		Deleting...
-	</h1>
-
-	<div *ngIf="errors">
-		<div class="alert alert-danger" *ngFor="let error of errors">
-			<strong>{{error}}</strong>
-		</div>
-	</div>
-
-
-	<div *ngIf="users">
-		<div class="card mb-4" *ngFor="let user of users">
-			<div class="card-header">
-				<strong class="text-success" *ngIf="user.isActive">{{ user.firstName + ' ' + user.lastName }}</strong>
-				<strong class="text-danger" *ngIf="!user.isActive">{{ user.firstName + ' ' + user.lastName }}</strong>
-				<div class="float-right dropdown" appDropdown>
-					<a class="btn btn-primary btn-sm dropdown-toggle text-light" role="button">
-						Manage
-						<span class="caret"></span>
-					</a>
-					<div class="dropdown-menu">
-						<a class="dropdown-item btn-link"
-							[routerLink]="['/admin', 'users' ,'edit-user']"
-							[queryParams]="{userId: user.id, editMode: true}"
-							style="cursor: pointer;">
-							Edit
-						</a>
-						<div class="dropdown-divider btn-link"></div>
-						<button class="dropdown-item"
-							style="cursor: pointer;"
-							[disabled]="deleting"
-							(click)="onDelete(user.id)">
-							Delete
-					</button>
-
-					</div>
-				</div>
-			</div>
-			<div class="card-body">
-				<div class="row">
-					<div class="col-lg-4">
-						<strong>Email:</strong>
-						<hr>
-						<p class="text-success" *ngIf="user.emailConfirmed">
-							{{ user.email }}
-							<fa-icon [icon]="faCheckCircle"></fa-icon>
-						</p>
-						<p class="text-danger" *ngIf="!user.emailConfirmed">
-							{{ user.email }}
-							<fa-icon [icon]="faTimesCircle"></fa-icon>
-						</p>
-					</div>
-					<div class="col-lg-2">
-						<strong>Gender:</strong>
-						<hr>
-						<span *ngIf="user.gender === 'male' || user.gender === 'custom'"> <fa-icon [icon]="faMale"></fa-icon> </span>
-						<span *ngIf="user.gender === 'female' || user.gender === 'custom'"> <fa-icon [icon]="faFemale"></fa-icon> </span>
-					</div>
-					<div class="col-lg-2">
-						<strong>Country:</strong>
-						<hr>
-						<p>
-							{{ user.country }}</p>
-					</div>
-					<div class="col-lg-2">
-						<strong>Admin:</strong>
-						<hr>
-						<p class="text-success" *ngIf="user.isAdmin" > <fa-icon [icon]="faCheck"></fa-icon> </p>
-						<p class="text-danger" *ngIf="!user.isAdmin" > <fa-icon [icon]="faTimes"></fa-icon> </p>
-					</div>
-					<div class="col-lg-2">
-						<strong>Author:</strong>
-						<hr>
-						<p class="text-success" *ngIf="user.isAuthor" > <fa-icon [icon]="faCheck"></fa-icon> </p>
-						<p class="text-danger" *ngIf="!user.isAuthor" > <fa-icon [icon]="faTimes"></fa-icon> </p>
-					</div>
-				</div>
-			</div>
-			<div class="card-footer">
-				
-					<strong>Created at:</strong>
-					{{ user.createdAt | date:'medium' }}
-				
-				<div class="float-right">
-					<button class="btn btn-success btn-sm"
-							*ngIf="!user.isActive"
-							[disabled]="updatingStatus"
-							(click)="onChangeStatus(user.id, 'activate')">
-						Activate
-					</button>
-					<button class="btn btn-danger btn-sm"
-							*ngIf="user.isActive"
-							[disabled]="updatingStatus"
-							(click)="onChangeStatus(user.id, 'deactivate')">
-						Deactivate
-					</button>
-				</div>
-			</div>
-		</div>
-	</div>
+    
+    <div class="row ">
+      
+        <div class="col-lg-2 mb-3">
+          <button 
+              mat-raised-button 
+              class="btn-block mt-1" 
+			  color="primary"
+			  (click)="onCreate()">
+              Create
+          </button>
+      </div>
+        <div class="col-lg-2 mb-3">
+            <button 
+                mat-raised-button 
+                class="btn-block mt-1" 
+                color="accent"
+                (click)="onRefresh()">
+                Refresh
+            </button>
+        </div>
+        <div class="col-lg-8 mb-3" >
+          <mat-form-field >
+              <mat-label>
+                  <fa-icon [icon]="faSearch"></fa-icon>
+                  Search
+              </mat-label>
+              <input matInput (keyup)="applyFilter($event)" 
+                  placeholder="Find a user"
+				 [(ngModel)]="searchValue">
+				 <button mat-button *ngIf="searchValue" matSuffix mat-icon-button aria-label="Clear" (click)="searchValue=null">
+					<mat-icon class="small">close</mat-icon>
+				 </button>
+            </mat-form-field>
+      </div>
+    </div>
 </div>
+<div class="adminPageBottom">
+    <div *ngIf="errors">
+      <div class="alert alert-danger" *ngFor="let error of errors">
+        <strong>{{error}}</strong>
+      </div>
+    </div>
+
+      <div class="example-container mat-elevation-z8">
+        <div class="example-loading-shade"
+             *ngIf="loading || deleting || updatingStatus">
+          <mat-spinner *ngIf="loading || deleting || updatingStatus"></mat-spinner>
+          <!-- <div class="example-rate-limit-reached" *ngIf="isRateLimitReached">
+            GitHub's API rate limit has been reached. It will be reset in one minute.
+          </div> -->
+        </div>
+      
+      
+      <div class="example-table-container">
+        <table mat-table [dataSource]="dataSource" matSort>
+      
+          <!-- ID Column -->
+          <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+            <td mat-cell *matCellDef="let row"> {{row.id | slice:0:4}}... </td>
+          </ng-container>
+        
+          <!-- First Name Column -->
+          <ng-container matColumnDef="firstName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> First Name </th>
+            <td mat-cell *matCellDef="let row"> {{row.firstName}} </td>
+          </ng-container>
+      
+          <!-- Last Name Column -->
+          <ng-container matColumnDef="lastName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Last Name </th>
+            <td mat-cell *matCellDef="let row"> {{row.lastName}} </td>
+          </ng-container>
+
+           <!-- Email Column -->
+           <ng-container matColumnDef="email">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
+            <td mat-cell *matCellDef="let row"> {{row.email }} </td>
+		  </ng-container>
+		  
+		     <!-- Email Confirmed Column -->
+			 <ng-container matColumnDef="emailConfirmed" >
+				<th mat-header-cell *matHeaderCellDef mat-sort-header> Confirmed </th>
+				<td mat-cell *matCellDef="let row" class="text-center"> 
+					<span class="text-success" *ngIf="row.emailConfirmed" > <fa-icon [icon]="faCheck"></fa-icon> </span>
+					<span class="text-danger" *ngIf="!row.emailConfirmed" > <fa-icon [icon]="faTimes"></fa-icon> </span>
+				</td>
+			  </ng-container>
+      
+
+            <!-- Country Column -->
+            <ng-container matColumnDef="country">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Country </th>
+                <td mat-cell *matCellDef="let row"> {{row.country}} </td>
+            </ng-container>
+
+            <!-- Gender Column -->
+            <ng-container matColumnDef="gender">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Gender </th>
+                <td mat-cell *matCellDef="let row" class="text-center">  
+					<span *ngIf="row.gender === 'male' || row.gender === 'custom'"> <fa-icon [icon]="faMale"></fa-icon> male </span>
+					<span *ngIf="row.gender === 'female' || row.gender === 'custom'"> <fa-icon [icon]="faFemale"></fa-icon> female </span>	
+				</td>
+			</ng-container>
+			
+			 <!-- Admin Column -->
+			 <ng-container matColumnDef="isAdmin">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Admin </th>
+                <td mat-cell *matCellDef="let row" class="text-center"> 
+					<span class="text-success" *ngIf="row.isAdmin" > <fa-icon [icon]="faCheck"></fa-icon> </span>
+					<span class="text-danger" *ngIf="!row.isAdmin" > <fa-icon [icon]="faTimes"></fa-icon> </span>
+				</td>
+			</ng-container>
+			
+			<!-- Author Column -->
+			<ng-container matColumnDef="isAuthor">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Author </th>
+                <td mat-cell *matCellDef="let row" class="text-center"> 
+					<span class="text-success" *ngIf="row.isAuthor" > <fa-icon [icon]="faCheck"></fa-icon> </span>
+					<span class="text-danger" *ngIf="!row.isAuthor" > <fa-icon [icon]="faTimes"></fa-icon> </span>
+			 	</td>
+            </ng-container>
+
+			<!-- Active Column -->
+			<ng-container matColumnDef="isActive">
+				<th mat-header-cell *matHeaderCellDef mat-sort-header> Active </th>
+				<td mat-cell *matCellDef="let row" class="text-center"> 
+					<span class="text-success" *ngIf="row.isActive" > <fa-icon [icon]="faCheck"></fa-icon> </span>
+					<span class="text-danger" *ngIf="!row.isActive" > <fa-icon [icon]="faTimes"></fa-icon> </span>	
+				</td>
+			</ng-container>
+
+			<!-- Created at Column -->
+			<ng-container matColumnDef="createdAt">
+				<th mat-header-cell *matHeaderCellDef mat-sort-header> Created </th>
+				<td mat-cell *matCellDef="let row"> {{row.createdAt | date:'medium'}} </td>
+			</ng-container>
+
+          
+              <!-- Actions Column -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>
+              Actions
+          </th>
+          <td mat-cell *matCellDef="let row" class="pl-3">
+
+            <a mat-icon-button [matMenuTriggerFor]="menu">
+              <mat-icon>settings</mat-icon>
+            </a>
+            <mat-menu #menu="matMenu" [overlapTrigger]="false">
+              <a class="dropdown-item btn-link"
+                  [routerLink]="['/admin', 'users' ,'edit-user']"
+                  [queryParams]="{userId: row.id, editMode: true}"
+                  style="cursor: pointer;">
+                  Edit
+              </a>
+              <button class="dropdown-item"
+                        style="cursor: pointer;"
+                        (click)="onDelete(row.id)">
+                      Delete
+              </button>
+              <button class="dropdown-item text-success"
+                        *ngIf="!row.isActive"
+                        (click)="onChangeStatus(row.id, 'activate')">
+                      Activate
+              </button>
+				      <button class="dropdown-item text-danger"
+					          	*ngIf="row.isActive"
+                      (click)="onChangeStatus(row.id, 'deactivate')">
+                      Deactivate
+			      	</button>
+            </mat-menu>
+
+          </td>
+        </ng-container>
+
+      
+          <tr mat-header-row *matHeaderRowDef="displayedColumns;"></tr>
+          <tr 
+            mat-row 
+            *matRowDef="let row; columns: displayedColumns;" 
+            class="catRow">
+          </tr>
+        </table>
+      </div>
+        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+      </div>
+</div>
+
+
+      <!-- Copyright 2019 Google LLC. All Rights Reserved.
+    Use of this source code is governed by an MIT-style license that
+    can be found in the LICENSE file at http://angular.io/license -->
+

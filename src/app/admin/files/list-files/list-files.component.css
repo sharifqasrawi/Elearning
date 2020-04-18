@@ -1,0 +1,12 @@
+a:hover {
+    text-decoration: none;
+}
+.filePreview {
+    width: 220px;
+    height: 220px;
+    box-shadow: 3px 3px 3px grey;
+    margin-right: 20px;
+    margin-bottom: 20px;
+    float: left;
+    text-align: center;
+}

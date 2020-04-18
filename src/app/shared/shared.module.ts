@@ -4,6 +4,7 @@ import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.componen
 import { MatDialogModule, MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { NotFoundComponent } from './not-found/not-found.component';
+import { DiscardChangesComponent } from './discard-changes/discard-changes.component';
 
 
 @NgModule({
@@ -11,6 +12,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
         DropdownDirective,
         ConfirmDialogComponent,
         NotFoundComponent,
+        DiscardChangesComponent,
     ],
     imports: [
         MatDialogModule,

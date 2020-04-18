@@ -1,6 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { 
+    margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif;
+    background-color: rgb(233, 221, 233);
+
+}
 
 .content0 {
     padding-top: 100px;
@@ -18,3 +22,45 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .full-width{
     width: 100%;
 }
+
+
+.adminPageTop{
+    animation: animAdminPageTop 0.3s forwards ease-in-out;
+  }
+
+  @keyframes animAdminPageTop {
+    0% {
+      transform: translateY(-100%);
+      opacity: 0;
+    }
+
+    50% {
+      opacity: 0.2;
+    }
+
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  .adminPageBottom{
+    animation: animAdminPageBottom 0.3s forwards ease-in-out;
+  }
+
+  @keyframes animAdminPageBottom {
+    0% {
+      transform: translateY(50%);
+      opacity: 0;
+    }
+
+    
+    50% {
+      opacity: 0.2;
+    }
+
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }

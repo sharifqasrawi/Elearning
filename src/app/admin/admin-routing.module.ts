@@ -10,6 +10,12 @@ import { NewUserComponent } from './users/new-user/new-user.component';
 import { UsersResolverService } from './users/users-resolver.service';
 import { ListMessagesComponent } from './messages/list-messages/list-messages.component';
 import { MessagesResolverService } from './messages/messages-resolver.service';
+import { ListCategoriesComponent } from './categories/list-categories/list-categories.component';
+import { TrashedCategoriesComponent } from './categories/trashed-categories/trashed-categories.component';
+import { ListDirectoriesComponent } from './directories/list-directories/list-directories.component';
+import { FileUploadComponent } from './files/file-upload/file-upload.component';
+import { DirectoriesResolverService } from './directories/directories-resolver.service';
+import { ListFilesComponent } from './files/list-files/list-files.component';
 
 
 const routes: Routes = [
@@ -24,13 +30,30 @@ const routes: Routes = [
         ]
       },
       {
+        path: 'categories', children: [
+          { path: '', component: ListCategoriesComponent, pathMatch: 'full' },
+          { path: 'trashed', component: TrashedCategoriesComponent },
+        ]
+      },
+      {
         path: 'messages', children: [
           { path: '', component: ListMessagesComponent, pathMatch: 'full', resolve: [MessagesResolverService] }
         ]
       },
+      {
+        path: 'directories', children: [
+          { path: '', component: ListDirectoriesComponent, pathMatch: 'full'}
+        ]
+      },
+      {
+        path: 'files', children: [
+          { path: '', component: ListFilesComponent, pathMatch: 'full', resolve: [DirectoriesResolverService]},
+          { path: 'upload', component: FileUploadComponent, resolve: [DirectoriesResolverService]}
+        ]
+      },
       { path: '', redirectTo: '/admin/dashboard', pathMatch: 'full' }
     ],
-    // canActivate: [AdminGuard]
+    canActivate: [AdminGuard]
   },
 ];
 

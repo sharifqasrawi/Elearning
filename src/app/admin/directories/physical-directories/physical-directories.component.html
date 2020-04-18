@@ -1,0 +1,25 @@
+
+<h4 mat-dialog-title>
+    Physical Directories In: [ {{ data.path }} ]
+</h4>
+<hr>
+
+<div mat-dialog-content>
+    <ul class="list-group">
+        <li class="list-group-item" *ngFor="let dir of directories">
+            <span class="badge badge-info"> {{ dir.name }}</span>
+            
+            {{ dir.path }}
+        </li>
+    </ul>
+
+    <div *ngIf="errors">
+        <div class="alert alert-danger" *ngFor="let error of errors">
+            {{error}}
+        </div>
+    </div>
+</div>
+
+<div mat-dialog-actions class="mt-3 float-right">
+    <button type="button" mat-raised-button color="warn" cdkFocusInitial (click)="onClose()">Close</button>
+</div>

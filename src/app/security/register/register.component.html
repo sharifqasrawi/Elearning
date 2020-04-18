@@ -7,8 +7,16 @@
 	<hr>
 
 	<div class="alert alert-success text-center" *ngIf="registerd">
-		<h1>Thank you for registering</h1>
-		<h3>A confirmation email was sent to your email. Please confirm your email in order to sign in</h3>
+        <div class="registerMsg">
+		    <h1>Thank you for registering</h1>
+            <h3>A confirmation email was sent to your email. Please confirm your email in order to sign in</h3>
+        </div>
+    </div>
+    
+    <div class="mb-3" *ngIf="errors">
+		<div class="alert alert-danger error" *ngFor="let error of errors">
+			{{ error }}
+		</div>
 	</div>
 
 	<form class="form-horizontal" [formGroup]="regForm" (ngSubmit)="onSubmit()" *ngIf="!registerd">
@@ -105,7 +113,7 @@
                         <mat-form-field class="full-width">
                             <mat-label>Enter a password</mat-label>
                             <input matInput formControlName="password" required [type]="hidePwd ? 'password' : 'text'">
-                            <button mat-icon-button matSuffix (click)="hidePwd = !hidePwd" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePwd">
+                            <button  type="button" mat-icon-button matSuffix (click)="hidePwd = !hidePwd" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePwd">
                                 <mat-icon>{{hidePwd ? 'visibility_off' : 'visibility'}}</mat-icon>
                             </button>
                             <mat-error>Password length must be at least 8 charcters</mat-error>
@@ -115,7 +123,7 @@
                         <mat-form-field  class="full-width">
                             <mat-label>Confirm your password</mat-label>
                             <input matInput formControlName="cpassword" required [type]="hideCpwd ? 'password' : 'text'">
-                            <button mat-icon-button matSuffix (click)="hideCpwd = !hideCpwd" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hideCpwd">
+                            <button  type="button" mat-icon-button matSuffix (click)="hideCpwd = !hideCpwd" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hideCpwd">
                                 <mat-icon>{{hideCpwd ? 'visibility_off' : 'visibility'}}</mat-icon>
                             </button>
                         </mat-form-field>
@@ -133,10 +141,4 @@
             </mat-step>
         </mat-vertical-stepper>
     </form>
-
-    <div class="mt-3" *ngIf="errors">
-		<div class="alert alert-danger" *ngFor="let error of errors">
-			{{ error }}
-		</div>
-	</div>
 </div>

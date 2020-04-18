@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { StoreModule } from '@ngrx/store';
@@ -25,6 +25,10 @@ import { UsersEffects } from './admin/users/store/users.effects';
 import { MaterialModule } from './material-module';
 import { ContactUsComponent } from './contact-us/contact-us.component';
 import { MessagesEffects } from './admin/messages/store/messages.effects';
+import { CategoriesEffects } from './admin/categories/store/categories.effects';
+import { LayoutComponent } from './layout/layout.component';
+import { DirectoriesEffects } from './admin/directories/store/directories.effects';
+import { FilesEffects } from './admin/files/store/files.effects';
 // import { AuthInterceptorService } from './security/auth-interceptor.service';
 
 
@@ -36,12 +40,21 @@ import { MessagesEffects } from './admin/messages/store/messages.effects';
     FooterComponent,
     AboutmeComponent,
     ContactUsComponent,
+    LayoutComponent,
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     StoreModule.forRoot(fromApp.appReducer),
-    EffectsModule.forRoot([LoginEffects, RegisterEffects, UsersEffects, MessagesEffects]),
+    EffectsModule.forRoot([
+      LoginEffects,
+      RegisterEffects, 
+      UsersEffects, 
+      MessagesEffects, 
+      CategoriesEffects, 
+      DirectoriesEffects,
+      FilesEffects
+    ]),
     MaterialModule,
     MatNativeDateModule,
     FormsModule,
