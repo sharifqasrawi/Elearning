@@ -86,6 +86,32 @@ export function directoriesReducer(state: State = initialState, action: Director
                 creating: false,
                 errors: [...action.payload],
             };
+
+        ////////////////
+        case DirectoriesActions.DELETE_START:
+            return {
+                ...state,
+                loading: true,
+                errors: null,
+            };
+        case DirectoriesActions.DELETE_SUCCESS:
+            const directoryToDeleteIndex = state.directories.findIndex(d => d.id === action.payload);
+            const directoriesAfterDelete = [...state.directories];
+            directoriesAfterDelete.splice(directoryToDeleteIndex, 1);
+
+
+            return {
+                ...state,
+                loading: false,
+                directories: directoriesAfterDelete
+            };
+        case DirectoriesActions.DELETE_FAIL:
+            return {
+                ...state,
+                loading: false,
+                errors: [...action.payload],
+            };
+
         default:
             return state;
     }

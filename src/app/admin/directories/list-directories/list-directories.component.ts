@@ -13,6 +13,7 @@ import * as fromApp from '../../../store/app.reducer';
 import * as DirectoriesActions from '../store/directories.actions';
 import { Directory } from './../../../models/directory.model';
 import { PhysicalDirectoriesComponent } from '../physical-directories/physical-directories.component';
+import { ConfirmDialogComponent } from 'src/app/shared/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-list-directories',
@@ -31,7 +32,7 @@ export class ListDirectoriesComponent implements OnInit {
 
   count = 0;
 
-  displayedColumns: string[] = ['name', 'path', 'createdAt', 'actions'];
+  displayedColumns: string[] = ['id', 'name', 'path', 'createdAt', 'actions'];
   dataSource: MatTableDataSource<Directory>;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -45,16 +46,16 @@ export class ListDirectoriesComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-  
+    this.store.dispatch(new DirectoriesActions.FetchStart());
+
     this.store.select('directories').subscribe(dirState => {
       this.directories = dirState.directories;
       this.loading = dirState.loading;
       this.creating = dirState.creating;
       this.errors = dirState.errors;
+      this.setTable();
     });
 
-    this.store.dispatch(new DirectoriesActions.FetchStart());
-    this.setTable();
   }
 
 
@@ -70,6 +71,18 @@ export class ListDirectoriesComponent implements OnInit {
     });
   }
 
+  onDelete(id: number) {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '300px',
+      data: { header: 'Confirmation', message: 'Delete this directory ?' }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result)
+        this.store.dispatch(new DirectoriesActions.DeleteStart(id));
+    });
+
+  }
 
   onFetchPhysical(path: string) {
     const dialogRef = this.dialog.open(PhysicalDirectoriesComponent, {

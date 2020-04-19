@@ -93,7 +93,7 @@ export class DirectoriesEffects {
                         return new DirectoriesActions.CreateSuccess(resData.directory);
                     }),
                     catchError(errorRes => {
-                        
+
                         switch (errorRes.status) {
                             case 403:
                             case 401:
@@ -104,6 +104,37 @@ export class DirectoriesEffects {
                                 return of(new DirectoriesActions.CreateFail(errorRes.error.errors));
                             default:
                                 return of(new DirectoriesActions.CreateFail(['Oops! An error occured']));
+                        }
+                    })
+                )
+        })
+    );
+
+    @Effect()
+    deleteDirectory = this.actions$.pipe(
+        ofType(DirectoriesActions.DELETE_START),
+        switchMap((dirData: DirectoriesActions.DeleteStart) => {
+            return this.http.delete<{ deletedDirId: number }>(environment.API_BASE_URL + 'directories/delete',
+                {
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    params: new HttpParams().set('dirId', dirData.payload.toString())
+                })
+                .pipe(
+                    map(resData => {
+                        return new DirectoriesActions.DeleteSuccess(resData.deletedDirId);
+                    }),
+                    catchError(errorRes => {
+
+                        switch (errorRes.status) {
+                            case 403:
+                            case 401:
+                                return of(new DirectoriesActions.DeleteFail(['Access Denied']));
+                            case 404:
+                                return of(new DirectoriesActions.DeleteFail(['Error 404. Not Found']));
+                            case 400:
+                                return of(new DirectoriesActions.DeleteFail(errorRes.error.errors));
+                            default:
+                                return of(new DirectoriesActions.DeleteFail(['Oops! An error occured']));
                         }
                     })
                 )

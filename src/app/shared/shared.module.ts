@@ -5,7 +5,10 @@ import { MatDialogModule, MAT_DIALOG_DEFAULT_OPTIONS } from '@angular/material/d
 import { MatButtonModule } from '@angular/material/button';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { DiscardChangesComponent } from './discard-changes/discard-changes.component';
+import { ImgViewerComponent } from './img-viewer/img-viewer.component';
+import { PdfViewerModalComponent } from './pdf-viewer-modal/pdf-viewer-modal.component';
 
+import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 @NgModule({
     declarations: [
@@ -13,10 +16,13 @@ import { DiscardChangesComponent } from './discard-changes/discard-changes.compo
         ConfirmDialogComponent,
         NotFoundComponent,
         DiscardChangesComponent,
+        ImgViewerComponent,
+        PdfViewerModalComponent,
     ],
     imports: [
         MatDialogModule,
-        MatButtonModule
+        MatButtonModule,
+        PdfViewerModule
     ],
     exports: [
         DropdownDirective

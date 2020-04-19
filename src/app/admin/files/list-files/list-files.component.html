@@ -1,67 +1,157 @@
-
 <div class="adminPageTop">
-    <h1>
-        <mat-icon>file_copy</mat-icon>
-        Uploaded Files
-    </h1>
+  <h1>
+    <mat-icon>file_copy</mat-icon>
+    Uploaded Files
+  </h1>
 
-    <hr>
+  <hr>
 
-    <div *ngIf="errorsDir">
-        <div class="alert alert-danger" *ngFor="let error of errorsDir">
-            {{error}}
-        </div>
+  <div *ngIf="errorsDir">
+    <div class="alert alert-danger" *ngFor="let error of errorsDir">
+      {{error}}
     </div>
+  </div>
 
-    <div *ngIf="errorsFiles">
-        <div class="alert alert-danger" *ngFor="let error of errorsFiles">
-            {{error}}
-        </div>
+  <div *ngIf="errorsFiles">
+    <div class="alert alert-danger" *ngFor="let error of errorsFiles">
+      {{error}}
     </div>
+  </div>
 
-    <div class="row">
-        <div class="col-lg-10">
-            <mat-form-field style="width: 100%;">
-                <mat-label>Path</mat-label>
-                <mat-select  required [(ngModel)]="path" >
-                <mat-option>--</mat-option>
-                <mat-option *ngFor="let p of listPaths" [value]="p.path" (click)="onSelectDirectory()">
-                    {{p.path}}
-                </mat-option>
-                </mat-select>       
-            </mat-form-field>
-            <span class="text-danger small" *ngIf="!path || path === ''">
-                Choose a directory
-            </span>
-        </div>
-
-        <div class="col-lg-2">
-            <a mat-raised-button
-                    [routerLink]="['/admin', 'files', 'upload']"
-                    color="accent"
-                    class="btn-block mt-1"
-                    >
-                <fa-icon [icon]="faUpload"></fa-icon>
-                Upload File
-            </a>
-        </div>
+  <div class="row">
+    <div class="col-lg-2 mb-3">
+      <a mat-raised-button [routerLink]="['/admin', 'files', 'upload']" color="primary" class="btn-block mt-1">
+        <fa-icon [icon]="faUpload"></fa-icon>
+        Upload File
+      </a>
     </div>
+    <div class="col-lg-2 mb-3">
+      <button mat-raised-button class="btn-block mt-1" color="accent" (click)="onRefresh()">
+        Refresh
+      </button>
+    </div>
+    <div class="col-lg-8 mb-3">
+      <mat-form-field>
+        <mat-label>
+          <fa-icon [icon]="faSearch"></fa-icon>
+          Search
+        </mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="By: Name, Path">
+      </mat-form-field>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-12 mb-3">
+      <mat-form-field style="width: 100%;">
+        <mat-label>Directory</mat-label>
+        <mat-select [(ngModel)]="path" >
+          <mat-option  (click)="onSelectDirectory()">All</mat-option>
+          <mat-option *ngFor="let p of listPaths" [value]="p.path" (click)="onSelectDirectory()">
+            {{p.path}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
 </div>
 
-<div class="adminPageBottom row mt-4">
-    <div class="col-lg-12">
-        <div *ngIf="loading">
-            <mat-spinner></mat-spinner>
-        </div>
+<div class="adminPageBottom row mb-5">
+  <div class="col-lg-12">
 
-        <div *ngIf="!loading && loaded">
-            <div *ngFor="let file of files">
-                <img [src]="getImage(file.downloadPath)" *ngIf="isImage(file.fileType)" alt="No Preview" class="filePreview"> 
-                
-                <div *ngIf="isPdf(file.fileType)"class="filePreview">
-                    <strong class="text-center">PDF</strong>
-                </div>
-            </div>
-        </div>
+
+    <div class="dataTable-container mat-elevation-z8">
+      <div class="dataTable-loading-shade" *ngIf="loading">
+        <mat-spinner *ngIf="loading "></mat-spinner>
+      </div>
+
+      <div class="dataTable-table-container">
+        <table mat-table [dataSource]="dataSource" matSort>
+
+          <!-- Id Column -->
+          <ng-container matColumnDef="id">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Id </th>
+            <td mat-cell *matCellDef="let row"> {{row.id}} </td>
+          </ng-container>
+
+          <!-- Image  Column -->
+          <ng-container matColumnDef="downloadPath">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Image </th>
+            <td mat-cell *matCellDef="let row" >
+              <img [src]="getImage(row.downloadPath)" *ngIf="isImage(row.fileType)" alt="No Preview"
+                class="filePreview" (click)="onViewImage(row.downloadPath)">
+
+              <img src="../../../../assets/images/pdf.png" *ngIf="isPdf(row.fileType)" alt="No Preview"
+                class="filePreview" (click)="onViewPdfFile(row.downloadPath)">
+            </td>
+          </ng-container>
+
+          <!-- originalFileName at en Column -->
+          <ng-container matColumnDef="originalFileName">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> File Name </th>
+            <td mat-cell *matCellDef="let row"> {{row.originalFileName}} </td>
+          </ng-container>
+
+          <!-- directory  Column -->
+          <ng-container matColumnDef="uploadDirectory">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Directory</th>
+            <td mat-cell *matCellDef="let row"> {{row.uploadDirectory.path}} </td>
+          </ng-container>
+
+          <!-- fileType at en Column -->
+          <ng-container matColumnDef="fileType">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Type </th>
+            <td mat-cell *matCellDef="let row"> {{row.fileType}} </td>
+          </ng-container>
+
+          <!-- uploadDateTime at en Column -->
+          <ng-container matColumnDef="uploadDateTime">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Upload Date </th>
+            <td mat-cell *matCellDef="let row"> {{row.uploadDateTime | date:'medium'}} </td>
+          </ng-container>
+
+
+          <!-- Actions Column -->
+          <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef>
+              Actions
+            </th>
+            <td mat-cell *matCellDef="let row" class="pl-3">
+
+              <a mat-icon-button [matMenuTriggerFor]="menu">
+                <mat-icon>settings</mat-icon>
+              </a>
+              <mat-menu #menu="matMenu" [overlapTrigger]="false">
+                <a class="dropdown-item" style="cursor: pointer;" [href]="row.downloadPath" target="_blank">
+                  Download
+                </a>
+                <button type="button" class="dropdown-item" style="cursor: pointer;" (click)="onDelete(row.id);">
+                  Delete
+                </button>
+                <!-- <a class="dropdown-item btn-link"
+            style="cursor: pointer;"
+            (click)="onEditCategory(row.id, true);">
+            Edit
+          </a>
+          <button class="dropdown-item"
+            style="cursor: pointer;"
+            (click)="onTrash(row.id);">
+            Trash
+          </button> -->
+              </mat-menu>
+
+            </td>
+          </ng-container>
+
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns;"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+          </tr>
+        </table>
+      </div>
+      <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
     </div>
+
+
+  </div>
 </div>

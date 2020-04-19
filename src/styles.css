@@ -64,3 +64,17 @@ body {
       opacity: 1;
     }
   }
+
+  
+.no-padding .mat-dialog-container {
+  padding: 0 !important;
+  background-color: transparent;
+}
+
+.no-scrolls .mat-dialog-container {
+  overflow: hidden !important;
+}
+
+.backdropBg {
+  background-color: rgba(0, 0, 0, 0.9);
+}

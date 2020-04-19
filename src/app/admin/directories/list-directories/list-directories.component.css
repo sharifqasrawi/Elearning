@@ -13,12 +13,12 @@ table {
   
 
    /* Structure */
-.example-container {
+.dataTable-container {
     position: relative;
     min-height: 200px;
   }
   
-  .example-table-container {
+  .dataTable-table-container {
     position: relative;
     min-height: 350px;
     max-height: 500px;
@@ -29,7 +29,7 @@ table {
     width: 100%;
   }
   
-  .example-loading-shade {
+  .dataTable-loading-shade {
     position: absolute;
     top: 0;
     left: 0;
@@ -42,7 +42,7 @@ table {
     justify-content: center;
   }
   
-  .example-rate-limit-reached {
+  .dataTable-rate-limit-reached {
     color: #980000;
     max-width: 360px;
     text-align: center;

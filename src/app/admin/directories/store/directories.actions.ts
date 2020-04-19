@@ -14,6 +14,10 @@ export const CREATE_START = '[Directories] Create Start';
 export const CREATE_SUCCESS = '[Directories] Create Success';
 export const CREATE_FAIL = '[Directories] Create Fail';
 
+export const DELETE_START = '[Directories] Delete Start';
+export const DELETE_SUCCESS = '[Directories] Delete Success';
+export const DELETE_FAIL = '[Directories] Delete Fail';
+
 
 export class FetchStart implements Action {
     readonly type = FETCH_START;
@@ -72,6 +76,27 @@ export class CreateFail implements Action {
     constructor(public payload: string[]) { }
 }
 
+
+/////////////
+
+export class DeleteStart implements Action {
+    readonly type = DELETE_START;
+
+    constructor(public payload: number) { }
+}
+
+export class DeleteSuccess implements Action {
+    readonly type = DELETE_SUCCESS;
+
+    constructor(public payload: number) { }
+}
+
+export class DeleteFail implements Action {
+    readonly type = DELETE_FAIL;
+
+    constructor(public payload: string[]) { }
+}
+
 export type DirectoriesActions =
     | FetchStart
     | FetchSuccess
@@ -82,4 +107,7 @@ export type DirectoriesActions =
     | CreateStart
     | CreateSuccess
     | CreateFail
+    | DeleteStart
+    | DeleteSuccess
+    | DeleteFail
     ;

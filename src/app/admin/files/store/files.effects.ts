@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { of } from 'rxjs';
 import { map, switchMap, catchError } from 'rxjs/operators';
 
@@ -39,6 +39,37 @@ export class FilesEffects {
                                 return of(new FilesActions.FetchFail(errorRes.error.errors));
                             default:
                                 return of(new FilesActions.FetchFail(['Oops! An error occured']));
+                        }
+                    })
+                )
+        })
+    );
+
+    @Effect()
+    deleteFile = this.actions$.pipe(
+        ofType(FilesActions.DELETE_START),
+        switchMap((fileData: FilesActions.DeleteStart) => {
+            
+            return this.http.delete<{ deletedFileId: number }>(environment.API_BASE_URL + 'files/delete',
+                {
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    params: new HttpParams().set('fileId', fileData.payload.toString())
+                })
+                .pipe(
+                    map(resData => {
+                        return new FilesActions.DeleteSuccess(resData.deletedFileId);
+                    }),
+                    catchError(errorRes => {
+                        switch (errorRes.status) {
+                            case 403:
+                            case 401:
+                                return of(new FilesActions.DeleteFail(['Access Denied']));
+                            case 404:
+                                return of(new FilesActions.DeleteFail(['Error 404. Not Found']));
+                            case 400:
+                                return of(new FilesActions.DeleteFail(errorRes.error.errors));
+                            default:
+                                return of(new FilesActions.DeleteFail(['Oops! An error occured']));
                         }
                     })
                 )
