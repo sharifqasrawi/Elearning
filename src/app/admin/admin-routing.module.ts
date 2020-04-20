@@ -1,3 +1,6 @@
+import { ListEmailsComponent } from './messages/list-emails/list-emails.component';
+import { NewEmailComponent } from './messages/new-email/new-email.component';
+import { ViewMessageComponent } from './messages/view-message/view-message.component';
 import { AdminGuard } from './../security/admin.guard';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
@@ -37,7 +40,10 @@ const routes: Routes = [
       },
       {
         path: 'messages', children: [
-          { path: '', component: ListMessagesComponent, pathMatch: 'full', resolve: [MessagesResolverService] }
+          { path: '', component: ListMessagesComponent, pathMatch: 'full' },
+          { path: 'send-email', component: NewEmailComponent },
+          { path: 'sent-emails', component: ListEmailsComponent },
+          { path: ':id', component: ViewMessageComponent,  resolve: [MessagesResolverService] }
         ]
       },
       {

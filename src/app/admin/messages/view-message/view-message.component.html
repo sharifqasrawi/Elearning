@@ -1,0 +1,35 @@
+<div class="adminPageTop">
+    <h1>
+        <fa-icon [icon]="faUser"></fa-icon>
+        {{ message.name }} [ {{ message.email }} ]
+    </h1>
+    <hr>
+
+    <div class="float-right">
+        <button mat-raised-button color="primary">
+            <fa-icon [icon]="faReply"></fa-icon> Reply
+        </button>
+        <button mat-raised-button color="accent" class="ml-3" (click)="onGoBack()">
+            <fa-icon [icon]="faBackward"></fa-icon>
+            Back
+        </button>
+    </div>
+</div>
+<div class="clearfix"></div>
+<div class="adminPageBottom">
+    <h3>
+        <strong>Subject:</strong>
+    </h3>
+    <p class="subject">
+        {{ message.subject }}
+    </p>
+    <h3>
+        <strong>Message:</strong>
+    </h3>
+    <pre class="subject message">{{ message.text }}</pre>
+    <div class="details">
+        <p class="badge badge-primary"><strong>Received: </strong> {{ message.dateTime | date:'medium' }}</p>
+        <p class="badge badge-info" *ngIf="message.isSeen"><strong>Seen: </strong>
+            {{ message.seenDateTime | date:'medium' }}</p>
+    </div>
+</div>

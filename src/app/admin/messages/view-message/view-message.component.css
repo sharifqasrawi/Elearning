@@ -1,0 +1,17 @@
+.subject {
+    padding: 12px;
+    background-color: rgb(236, 233, 233);
+    border: 1px dotted grey;
+    border-radius: 5px;
+}
+
+.message {
+    font-size: 14px;
+    height: 300px;
+}
+
+.details{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}

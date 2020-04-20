@@ -24,7 +24,8 @@
     <div *ngIf="uploading">
         <mat-progress-bar mode="indeterminate"></mat-progress-bar>
     </div>
-    <div class="dropzone" appDragAndDropDirective (fileDropped)="onFileDropped($event)">
+    <div class="dropzone" appDragAndDropDirective (fileDropped)="onFileDropped($event)" 
+        [ngStyle]="{'background-color': files.length > 0 ? '#bef5ad' : 'rgb(209, 216, 216)'}">
         <input 
             type="file" 
             #fileDropRef 

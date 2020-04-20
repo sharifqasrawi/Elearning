@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { CountUpModule } from 'ngx-countup';
 
 import { NavigationComponent } from './navigation/navigation.component';
 import { MainComponent } from './main/main.component';
@@ -22,6 +23,9 @@ import { PhysicalDirectoriesComponent } from './directories/physical-directories
 import { FileUploadComponent } from './files/file-upload/file-upload.component';
 import { ListFilesComponent } from './files/list-files/list-files.component';
 import { DragAndDropDirectiveDirective } from './files/drag-and-drop-directive.directive';
+import { ViewMessageComponent } from './messages/view-message/view-message.component';
+import { NewEmailComponent } from './messages/new-email/new-email.component';
+import { ListEmailsComponent } from './messages/list-emails/list-emails.component';
 
 @NgModule({
     declarations: [
@@ -40,6 +44,9 @@ import { DragAndDropDirectiveDirective } from './files/drag-and-drop-directive.d
         FileUploadComponent,
         ListFilesComponent,
         DragAndDropDirectiveDirective,
+        ViewMessageComponent,
+        NewEmailComponent,
+        ListEmailsComponent,
     ],
     imports: [
         CommonModule,
@@ -48,6 +55,7 @@ import { DragAndDropDirectiveDirective } from './files/drag-and-drop-directive.d
         FormsModule,
         ReactiveFormsModule,
         FontAwesomeModule,
+        CountUpModule,
         AdminRoutingModule,
         SharedModule,
     ],

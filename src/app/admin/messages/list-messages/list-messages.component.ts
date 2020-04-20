@@ -1,5 +1,7 @@
+import { Router } from '@angular/router';
+import { ConfirmDialogComponent } from './../../../shared/confirm-dialog/confirm-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { SelectionModel } from '@angular/cdk/collections';
 import { Store } from '@ngrx/store';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -23,23 +25,24 @@ export class ListMessagesComponent implements OnInit {
   faEye = faEye;
   faEyeSlash = faEyeSlash;
   faSearch = faSearch;
-  faChessKing = faChessKing;
 
 
   messages: Message[] = null;
+  errors: string[] = null;
   loading = false;
   loaded = false;
 
   displayedColumns: string[] = ['id', 'name', 'email', 'subject', 'dateTime', 'isSeen', 'actions'];
   dataSource: MatTableDataSource<Message>;
-  // selection = new SelectionModel<Message>(true, []);
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   constructor(
     private store: Store<fromApp.AppState>,
-    private snachBar: MatSnackBar
+    private snachBar: MatSnackBar,
+    private dialog: MatDialog,
+    private router: Router,
   ) {
 
   }
@@ -52,9 +55,11 @@ export class ListMessagesComponent implements OnInit {
       this.messages = messagesState.messages;
       this.loading = messagesState.loading;
       this.loaded = messagesState.loaded;
+      this.errors = messagesState.errors;
+
+      this.setTable();
     });
 
-    this.setTable();
   }
 
   onRefresh() {
@@ -67,10 +72,25 @@ export class ListMessagesComponent implements OnInit {
   }
 
   onSelect(id: number) {
-
+    this.router.navigate(['admin', 'messages', id]);
   }
 
+  onDelete(id: number) {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent,
+      {
+        width: '250px',
+        data: { header: 'Confirmation', message: 'Delete this message ?' }
+      });
 
+    dialogRef.afterClosed().subscribe(result => {
+      if (result)
+        this.store.dispatch(new MessagesActions.DeleteStart(id));
+    });
+  }
+
+  onChangeSeen(id: number) {
+    this.store.dispatch(new MessagesActions.ChangeSeenStart(id));
+  }
 
   private setTable() {
     this.dataSource = new MatTableDataSource(this.messages);

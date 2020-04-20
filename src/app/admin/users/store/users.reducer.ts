@@ -98,7 +98,8 @@ export function usersReducer(
         case UsersActions.UPDATE_START:
             return {
                 ...state,
-                loading: true
+                loading: true,
+                created: false,
             };
 
         case UsersActions.UPDATE_SUCCESS:
@@ -125,6 +126,7 @@ export function usersReducer(
             return {
                 ...state,
                 loading: false,
+                created: true,
                 users: updatedUsers0
             };
 

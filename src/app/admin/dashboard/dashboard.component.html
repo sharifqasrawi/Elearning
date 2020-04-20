@@ -1,5 +1,63 @@
 <div class="adminPageTop ">
+    <h1>
+        <mat-icon>dashboard</mat-icon>
+        Dashboard
+    </h1>
+    <hr>
+</div>
 
-<h1 class="alert alert-success">Dashboard</h1>
+<div class="adminPageBottom">
+    <!-- <div class="categories">
+        <span [countUp]="categroiesCount" >0</span>
+    </div> -->
 
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card-counter primary">
+                <mat-icon class="icon">view_quilt</mat-icon>
+                <span [countUp]="categroiesCount" class="count-numbers">0</span>
+                <span class="count-name">Categories</span>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card-counter danger">
+                <mat-icon class="icon">mail_outline</mat-icon>
+                <span [countUp]="sentEmailsCount" class="count-numbers">0</span>
+                <span class="count-name">Sent Emails</span>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card-counter success">
+                <mat-icon class="icon">message</mat-icon>
+                <span [countUp]="messagesCount" class="count-numbers">0</span>
+                <span class="count-name">Messages</span>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card-counter info">
+                <mat-icon class="icon">supervised_user_circle</mat-icon>
+                <span [countUp]="usersCount" class="count-numbers">0</span>
+                <span class="count-name">Users</span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card-counter darkorange">
+                <mat-icon class="icon">dynamic_feed</mat-icon>
+                <span [countUp]="directoriesCount" class="count-numbers">0</span>
+                <span class="count-name">Directories</span>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card-counter darkcyan">
+                <mat-icon class="icon">file_copy</mat-icon>
+                <span [countUp]="filesCount" class="count-numbers">0</span>
+                <span class="count-name">Files</span>
+            </div>
+        </div>
+    </div>
 </div>

@@ -2,7 +2,7 @@
     <h1>
         <fa-icon [icon]="faTrashAlt"></fa-icon>
         Trashed Categories
-        [ {{ count }} ]
+        [ <span [countUp]="count" >0</span> ]
     </h1>
     <hr>
     
@@ -38,17 +38,17 @@
       </div>
     </div>
 
-      <div class="example-container mat-elevation-z8">
-        <div class="example-loading-shade"
+      <div class="dataTable-container mat-elevation-z8">
+        <div class="dataTable-loading-shade"
              *ngIf="loading || deleting">
           <mat-spinner *ngIf="loading  || deleting"></mat-spinner>
-          <!-- <div class="example-rate-limit-reached" *ngIf="isRateLimitReached">
+          <!-- <div class="admin-rate-limit-reached" *ngIf="isRateLimitReached">
             GitHub's API rate limit has been reached. It will be reset in one minute.
           </div> -->
         </div>
       
       
-      <div class="example-table-container">
+      <div class="dataTable-table-container">
         <table mat-table [dataSource]="dataSource" matSort>
       
           <!-- ID Column -->

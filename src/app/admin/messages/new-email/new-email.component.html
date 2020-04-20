@@ -1,0 +1,52 @@
+<div class="adminPageTop">
+    <h1>
+        <mat-icon>email</mat-icon>
+        Send Email
+    </h1>
+    <hr>
+</div>
+
+<div class="adminPageBottom">
+    <div *ngIf="errors">
+        <div class="alert alert-danger" *ngFor="let error of errors">
+            {{ error }}
+        </div>
+    </div>
+
+    <div class="alert alert-success" *ngIf="sent">
+        <strong>Email sent successfully.</strong>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+        <mat-form-field class="full-width mt-3">
+            <mat-label>Email</mat-label>
+            <input type="email" formControlName="email" matInput required>
+            <mat-error>Please enter a valid email address.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="full-width mt-3">
+            <mat-label>Subject</mat-label>
+            <input formControlName="subject" matInput required>
+            <mat-error>This field is required.</mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="full-width mt-3">
+            <mat-label>Message</mat-label>
+            <textarea formControlName="message" rows="15" matInput required></textarea>
+            <mat-error>This field is required.</mat-error>
+        </mat-form-field>
+
+        <div class="float-right">
+            <a mat-raised-button color="accent" class="mr-3" 
+            [routerLink]="['/admin', 'messages', 'sent-emails']">
+                Cancel
+            </a>
+
+            <button mat-raised-button color="primary" [disabled]="!form.valid || sending">
+                Send
+                <mat-icon class="ml-1">send</mat-icon>
+            </button>
+        </div>
+    </form>
+</div>

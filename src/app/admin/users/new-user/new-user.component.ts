@@ -12,6 +12,7 @@ import * as fromApp from '../../../store/app.reducer';
 import * as UsersActions from '../store/users.actions';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from 'src/app/shared/confirm-dialog/confirm-dialog.component';
+import { NotifierService } from 'angular-notifier';
 
 @Component({
   selector: 'app-new-user',
@@ -40,17 +41,19 @@ export class NewUserComponent implements OnInit, OnDestroy {
   hidePwd = true;
   hideCpwd = true;
 
+  ;
+
   constructor(
     private http: HttpClient,
     private store: Store<fromApp.AppState>,
     private route: ActivatedRoute,
     private router: Router,
     private snackBar: MatSnackBar,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private notifier: NotifierService
   ) { }
 
   ngOnInit(): void {
-
     this.route.queryParams.subscribe((params: Params) => {
       this.userId = params.userId;
       this.editMode = params.editMode;
@@ -61,6 +64,16 @@ export class NewUserComponent implements OnInit, OnDestroy {
         this.loading = usersState.loading;
         this.errors = usersState.errors;
         this.created = usersState.created;
+
+        if (this.created) {
+          this.regForm.reset();
+        
+          this.router.navigate(['/admin', 'users']);
+          this.snackBar.open('User Saved successfully', 'Okay',
+            {
+              duration: 2000
+            });
+        }
       });
 
     this.http.get('https://restcountries.eu/rest/v2/all').subscribe((resData: any[]) => {
@@ -103,10 +116,11 @@ export class NewUserComponent implements OnInit, OnDestroy {
         },
           [this.checkPasswords])
       });
+
     }
 
-
   }
+
 
   onSubmit() {
     if (!this.regForm.valid)
@@ -126,15 +140,6 @@ export class NewUserComponent implements OnInit, OnDestroy {
         emailConfirmed: this.regForm.value.emailConfirmed ?? false
       }));
 
-
-      if (!this.errors) {
-        this.regForm.reset();
-
-        this.snackBar.open('User created successfully', 'Okay',
-          {
-            duration: 2000
-          });
-      }
     }
     else {
       this.store.dispatch(new UsersActions.UpdateStart({
@@ -149,12 +154,7 @@ export class NewUserComponent implements OnInit, OnDestroy {
         emailConfirmed: this.regForm.value.emailConfirmed ?? false
       }));
 
-      this.snackBar.open('User updated successfully', 'Okay',
-        {
-          duration: 2000
-        });
 
-      this.router.navigate(['/admin', 'users']);
     }
   }
 
