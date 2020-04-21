@@ -1,15 +1,20 @@
 .admin-container {
-    height: 91.4vh;
-    /* border: 1px solid rgba(0, 0, 0, 0.5); */
-    /* margin-top: 70px; */
-  }
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+ 
+}
+
   .admin-sidenav-content {
     /* display: flex; */
-    height: 100%;
-    /* align-items: center; */
-    /* justify-content: center; */
+    height: 91.3vh;
     padding-top: 25px;
-    margin-bottom: 50px;
+    /* padding-bottom: 150px; */
+    flex: 1;
   }
   .admin-sidenav {
      user-select: none;
@@ -48,3 +53,20 @@
     flex: 1 1 auto;
   }
   
+  .admin-is-mobile .admin-toolbar {
+    position: fixed;
+    /* Make sure the toolbar will stay on top of the content as it scrolls past. */
+    z-index: 2;
+  }
+
+  .admin-is-mobile .admin-sidenav-container {
+    /* When the sidenav is fixed, don't constrain the height of the sidenav container. This allows the
+       `<body>` to be our scrolling element for mobile layouts. */
+    flex: 1 0 auto;
+  }
+
+.toolBarButtons {
+  position: absolute;
+  right: 100px;
+  top: 10px;
+}

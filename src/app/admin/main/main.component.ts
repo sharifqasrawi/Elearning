@@ -2,13 +2,13 @@ import { Title } from '@angular/platform-browser';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
-import { faChessKing } from '@fortawesome/free-solid-svg-icons';
 import { map } from 'rxjs/operators';
 
 import * as fromApp from '../../store/app.reducer';
 import * as LoginActions from '../../security/login/store/login.actions';
+import { MediaMatcher } from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-main',
@@ -17,7 +17,7 @@ import * as LoginActions from '../../security/login/store/login.actions';
 })
 export class MainComponent implements OnInit, OnDestroy {
 
-  faChessKing = faChessKing;
+  mobileQuery: MediaQueryList;
 
 
   @ViewChild('sidenav') sidenav: MatSidenav;
@@ -40,9 +40,17 @@ export class MainComponent implements OnInit, OnDestroy {
     private store: Store<fromApp.AppState>,
     private snackBar: MatSnackBar,
     private titleService: Title,
+    changeDetectorRef: ChangeDetectorRef,
+    media: MediaMatcher
   ) {
     this.titleService.setTitle('Admin');
+
+    this.mobileQuery = media.matchMedia('(max-width: 993px)');
+    this._mobileQueryListener = () => changeDetectorRef.detectChanges();
+    this.mobileQuery.addListener(this._mobileQueryListener);
   }
+
+  private _mobileQueryListener: () => void;
 
   ngOnInit(): void {
 
@@ -78,6 +86,7 @@ export class MainComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.userSub.unsubscribe();
+    this.mobileQuery.removeListener(this._mobileQueryListener);
   }
 
   mouseenter() {
