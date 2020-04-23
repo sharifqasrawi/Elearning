@@ -1,9 +1,14 @@
+import { ListTagsComponent } from './tags/list-tags/list-tags.component';
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+
+
+import { NewCourseComponent } from './courses/new-course/new-course.component';
+import { ListCoursesComponent } from './courses/list-courses/list-courses.component';
 import { ListEmailsComponent } from './messages/list-emails/list-emails.component';
 import { NewEmailComponent } from './messages/new-email/new-email.component';
 import { ViewMessageComponent } from './messages/view-message/view-message.component';
 import { AdminGuard } from './../security/admin.guard';
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
 
 
 import { MainComponent } from './main/main.component';
@@ -19,6 +24,7 @@ import { ListDirectoriesComponent } from './directories/list-directories/list-di
 import { FileUploadComponent } from './files/file-upload/file-upload.component';
 import { DirectoriesResolverService } from './directories/directories-resolver.service';
 import { ListFilesComponent } from './files/list-files/list-files.component';
+import { TrashedCoursesComponent } from './courses/trashed-courses/trashed-courses.component';
 
 
 const routes: Routes = [
@@ -34,8 +40,16 @@ const routes: Routes = [
       },
       {
         path: 'categories', children: [
-          { path: '', component: ListCategoriesComponent, pathMatch: 'full' },
           { path: 'trashed', component: TrashedCategoriesComponent },
+          { path: '', component: ListCategoriesComponent, pathMatch: 'full' },
+        ]
+      },
+      {
+        path: 'courses', children: [
+          { path: 'new-course', component: NewCourseComponent },
+          { path: 'trashed', component: TrashedCoursesComponent },
+          { path: ':slug', component: NewCourseComponent },
+          { path: '', component: ListCoursesComponent, pathMatch: 'full' }
         ]
       },
       {
@@ -43,18 +57,23 @@ const routes: Routes = [
           { path: '', component: ListMessagesComponent, pathMatch: 'full' },
           { path: 'send-email', component: NewEmailComponent },
           { path: 'sent-emails', component: ListEmailsComponent },
-          { path: ':id', component: ViewMessageComponent,  resolve: [MessagesResolverService] }
+          { path: ':id', component: ViewMessageComponent, resolve: [MessagesResolverService] }
         ]
       },
       {
         path: 'directories', children: [
-          { path: '', component: ListDirectoriesComponent, pathMatch: 'full'}
+          { path: '', component: ListDirectoriesComponent, pathMatch: 'full' }
+        ]
+      },
+      {
+        path: 'tags', children: [
+          { path: '', component: ListTagsComponent, pathMatch: 'full' }
         ]
       },
       {
         path: 'files', children: [
-          { path: '', component: ListFilesComponent, pathMatch: 'full', resolve: [DirectoriesResolverService]},
-          { path: 'upload', component: FileUploadComponent, resolve: [DirectoriesResolverService]}
+          { path: '', component: ListFilesComponent, pathMatch: 'full', resolve: [DirectoriesResolverService] },
+          { path: 'upload', component: FileUploadComponent, resolve: [DirectoriesResolverService] }
         ]
       },
       { path: '', redirectTo: '/admin/dashboard', pathMatch: 'full' }

@@ -1,0 +1,29 @@
+<h3 mat-dialog-title>
+    Choose image: 
+</h3>
+<hr>
+<div mat-dialog-content>
+    <mat-form-field style="width: 100%;" appearance="legacy">
+        <mat-label>Directory</mat-label>
+        <mat-select [(ngModel)]="path">
+            <mat-option (click)="onSelectDirectory()">All</mat-option>
+            <mat-option *ngFor="let d of directories" [value]="d.path" (click)="onSelectDirectory()">
+                {{d.path}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <div class="imagesBox">
+        <div class="float-left  image" *ngFor="let file of files">
+            <img [src]="file.downloadPath" alt="no preview"
+            style="cursor: pointer;"
+            (click)="onSelectImage(file.downloadPath)"
+            [class.selected]="selectedImage === file.downloadPath">
+        </div>
+    </div>
+</div>
+<div mat-dialog-actions class="float-right mt-2">
+    <button mat-raised-button color="accent" (click)="onClear()">Clear selection</button>
+    <button mat-raised-button color="warn" cdkFocusInitial (click)="onNoClick()">Cancel</button>
+    <button mat-raised-button color="primary" [disabled]="!selectedImage" (click)="onChoose()">Choose</button>
+</div>

@@ -1,0 +1,163 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="adminPageTop">
+        <div class="row">
+            <div class="col-lg-8">
+                <h1 class="mt-1">
+                    <mat-icon>add_to_queue</mat-icon>
+                    Create new course
+                </h1>
+            </div>
+            <div class="col-lg-2">
+                <button type="button" mat-raised-button color="warn" class="btn-block mt-1" (click)="onCancel()">
+                    Cancel
+                </button>
+            </div>
+            <div class="col-lg-2">
+                <button type="submit" mat-raised-button color="accent" class="btn-block mt-1"
+                        [disabled]="!form.valid || creating">
+                    {{ creating ? 'Saving' : 'Save' }}
+                </button>
+            </div>
+        </div>
+        <hr>
+
+    </div>
+
+    <div class="adminPageBottom mb-5">
+
+        <div class="row">
+            <div class="col-lg-8">
+                <mat-form-field class="full-width" appearance="legacy">
+                    <mat-label>Title (en) </mat-label>
+                    <input type="text" matInput formControlName="title_EN" required placeholder="Enter course title">
+                    <mat-error *ngIf="!form.controls.title_EN.valid && form.controls.title_EN.touched">
+                        This field is required.
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-lg-2">
+                <mat-form-field class="full-width" appearance="legacy">
+                    <mat-label>Duration </mat-label>
+                    <input type="text" matInput formControlName="duration" required placeholder="Enter course duration">
+                    <mat-error *ngIf="!form.controls.duration.valid && form.controls.duration.touched">
+                        This field is required.
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-lg-2">
+                <div class="form-group mt-3">
+                    <mat-slide-toggle [color]="colorPrimary" [checked]="checkedPub" id="isPublished" name="isPublished"
+                        formControlName="isPublished">
+                        Published
+                    </mat-slide-toggle>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-lg-6">
+                <mat-form-field style="width: 100%;" appearance="legacy" >
+                    <mat-label>Categeory</mat-label>
+                    <mat-select name="category" id="category" required formControlName="category">
+                        <mat-option>--</mat-option>
+                        <mat-option *ngFor="let c of listCategories" [value]="c.id">
+                            {{c.title_EN}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="!form.controls.category.valid && form.controls.category.touched">
+                        This field is required.
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-lg-2">
+                <mat-form-field style="width: 100%;" appearance="legacy" >
+                <mat-label>Level</mat-label>
+                    <mat-select name="level" id="level" required formControlName="level">
+                        <mat-option>--</mat-option>
+                        <mat-option *ngFor="let l of listLevels" [value]="l">
+                            {{l}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="!form.controls.level.valid && form.controls.level.touched">
+                        This field is required.
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-lg-2">
+                <mat-form-field class="full-width" appearance="legacy">
+                    <mat-label>Price </mat-label>
+                    <input type="text" matInput formControlName="price" required placeholder="Enter course price">
+                    <span matPrefix>€&nbsp;</span>
+                    <mat-error *ngIf="!form.controls.price.valid && form.controls.price.touched">
+                        This field is required.
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-lg-2">
+                <div class="form-group mt-3">
+                    <mat-slide-toggle [color]="colorAccent" [checked]="checkedFree" id="isFree" name="isFree"
+                        formControlName="isFree">
+                        Free
+                    </mat-slide-toggle>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-8">
+                <mat-form-field class="full-width" appearance="legacy">
+                    <mat-label>Image </mat-label>
+                    <input readonly type="text" matInput formControlName="imagePath" required placeholder="Enter course image">
+                    <mat-icon (click)="selectImage()" style="cursor: pointer;" matSuffix>mode_edit</mat-icon>
+                    <mat-error *ngIf="!form.controls.imagePath.valid && form.controls.imagePath.touched">
+                        This field is required.
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-lg-4">
+                <mat-form-field class="full-width" appearance="legacy">
+                    <mat-chip-list #chipList aria-label="Language selection">
+                      <mat-chip *ngFor="let lang of languages" [selectable]="selectable"
+                               [removable]="removable" (removed)="remove(lang)">
+                        {{lang}}
+                        <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                      </mat-chip>
+                      <input placeholder="Languages"
+                            required
+                            formControlName="languages"
+                             [matChipInputFor]="chipList"
+                             [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                             [matChipInputAddOnBlur]="addOnBlur"
+                             (matChipInputTokenEnd)="add($event)">
+                             <mat-error *ngIf="!form.controls.languages.valid && form.controls.languages.touched">
+                                This field is required.
+                            </mat-error>
+                    </mat-chip-list>
+                  </mat-form-field>
+                  
+            </div>
+        </div>
+
+
+        <div class="row mt-3">
+            <div class="col-lg-6">
+                <label>Description *</label>
+                <textarea [froalaEditor]="froalaOptions" formControlName="description_EN" required></textarea>
+                <span class="small text-danger"
+                    *ngIf="!form.controls.description_EN.valid && form.controls.description_EN.touched">
+                    This field is required.
+                </span>
+            </div>
+
+            <div class="col-lg-6">
+                <label>Prerequisites *</label>
+                <textarea [froalaEditor]="froalaOptions2" formControlName="prerequisites_EN" required></textarea>
+                <span class="small text-danger"
+                    *ngIf="!form.controls.prerequisites_EN.valid && form.controls.prerequisites_EN.touched">
+                    This field is required.
+                </span>
+            </div>
+        </div>
+    </div>
+</form>

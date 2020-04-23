@@ -1,0 +1,135 @@
+<div class="adminPageTop">
+    <h1>
+        <mat-icon>airplay</mat-icon>
+        Courses
+    </h1>
+    <hr>
+
+    <div class="row ">
+        <div class="col-lg-2 mb-3">
+            <a mat-raised-button class="btn-block mt-1" color="primary" style="text-decoration: none;"
+                [routerLink]="['/admin', 'courses', 'new-course']">
+                Create
+            </a>
+        </div>
+        <div class="col-lg-2 mb-3">
+            <button mat-raised-button class="btn-block mt-1" color="accent" (click)="onRefresh()">
+                Refresh
+            </button>
+        </div>
+        <div class="col-lg-8 mb-3">
+            <mat-form-field>
+                <mat-label>
+                    <fa-icon [icon]="faSearch"></fa-icon>
+                    Search
+                </mat-label>
+                <input matInput (keyup)="applyFilter($event)" placeholder="Search key">
+            </mat-form-field>
+        </div>
+    </div>
+</div>
+
+<div class="adminPageBottom">
+    <div *ngIf="errors">
+        <div class="alert alert-danger" *ngFor="let error of errors">
+            <strong>{{error}}</strong>
+        </div>
+    </div>
+
+    <div class="dataTable-container mat-elevation-z8">
+        <div class="dataTable-loading-shade" *ngIf="loading || deleting">
+            <mat-spinner *ngIf="loading || deleting"></mat-spinner>
+        </div>
+
+        <div class="dataTable-table-container">
+            <table mat-table [dataSource]="dataSource" matSort>
+
+                <!-- ID Column -->
+                <ng-container matColumnDef="id">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> ID </th>
+                    <td mat-cell *matCellDef="let row"> {{row.id}} </td>
+                </ng-container>
+
+                <!-- title en Column -->
+                <ng-container matColumnDef="title_EN">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Title (en) </th>
+                    <td mat-cell *matCellDef="let row"> {{row.title_EN}} </td>
+                </ng-container>
+
+                <!-- category Column -->
+                <ng-container matColumnDef="category">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Category </th>
+                    <td mat-cell *matCellDef="let row"> {{row.category.title_EN}} </td>
+                </ng-container>
+
+
+                <!-- Level Column -->
+                <ng-container matColumnDef="level">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Level </th>
+                    <td mat-cell *matCellDef="let row"> {{row.level}}  </td>
+                </ng-container>
+
+                <!-- Duration Column -->
+                <ng-container matColumnDef="duration">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Duration </th>
+                    <td mat-cell *matCellDef="let row"> {{row.duration }} </td>
+                </ng-container>
+
+
+                <!-- isPublished Column -->
+                <ng-container matColumnDef="isPublished">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Published </th>
+                    <td mat-cell *matCellDef="let row">
+                        <span class="text-success" *ngIf="row.isPublished">
+                            <fa-icon [icon]="faCheck"></fa-icon>
+                        </span>
+                        <span class="text-danger" *ngIf="!row.isPublished">
+                            <fa-icon [icon]="faTimes"></fa-icon>
+                        </span>
+                    </td>
+                </ng-container>
+
+                <!-- Author Column -->
+                <ng-container matColumnDef="author">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Author </th>
+                    <td mat-cell *matCellDef="let row"> {{row.author.firstName}} {{ row.author.lastName }} </td>
+                </ng-container>
+
+                <!-- Created at Column -->
+                <ng-container matColumnDef="createdAt">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Created At </th>
+                    <td mat-cell *matCellDef="let row"> {{row.createdAt | date:'medium'}} </td>
+                </ng-container>
+
+                <!-- Actions Column -->
+                <ng-container matColumnDef="actions">
+                    <th mat-header-cell *matHeaderCellDef>
+                        Actions
+                    </th>
+                    <td mat-cell *matCellDef="let row" class="pl-3">
+
+                        <a mat-icon-button [matMenuTriggerFor]="menu">
+                            <mat-icon>settings</mat-icon>
+                        </a>
+                        <mat-menu #menu="matMenu" [overlapTrigger]="false">
+                            <!-- <a class="dropdown-item btn-link" style="cursor: pointer;"
+                                (click)="onEditCategory(row.id, true);">
+                                Edit
+                            </a> -->
+                            <button class="dropdown-item" style="cursor: pointer;" (click)="onTrash(row.id);">
+                                Trash
+                            </button>
+                        </mat-menu>
+
+                    </td>
+                </ng-container>
+
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns;"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+                </tr>
+            </table>
+        </div>
+        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+    </div>
+</div>

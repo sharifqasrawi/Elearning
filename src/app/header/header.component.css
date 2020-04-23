@@ -1,21 +1,75 @@
+
 nav {
-   height: 70px;
+    height: 70px;
     background-color: purple;
     font-size: 16px;
-    box-shadow: 0 2px 4px 2px rgb(31, 0, 31);
+    box-shadow: 0 2px 4px 4px rgb(58, 0, 58);
 }
 
-nav li {
-    margin: 0 10px 0 10px;
+nav a {
+    margin-right: 20px;
 }
 
-input {
-    background-color: rgb(110, 2, 110);
-    border-color: purple;
-    
+.admin-sidenav-content {
+    /* display: flex; */
+    /* padding-bottom: 150px; */
+    flex: 1;
 }
-input:focus {
-    background-color: rgb(100, 0, 100);
+
+.admin-sidenav {
+    user-select: none;
+    width: 100%;
+    background-color: rgba(24, 0, 88, .8);
+    padding: 15px;
+
+}
+
+.admin-container .admin-sidenav a, .admin-container .admin-sidenav span, .adminNavColor {
     color: lightgrey;
-    border-color: rgb(138, 0, 138);
+    font-size: 18px;
+   text-align: center;
+}
+
+.menu-button {
+    transition: 300ms ease-in-out;
+    transform: rotate(0deg);
+}
+
+.menu-button.rotated {
+    transform: rotate(180deg);
+}
+
+.submenu {
+    overflow-y: auto;
+    height: 0;
+    transition: transform 300ms ease;
+    transform: scaleY(0);
+    transform-origin: top;
+    padding-left: 30px;
+}
+
+.submenu.expanded {
+    transform: scaleY(1);
+    height: auto;
+}
+
+.menu-spacer {
+    flex: 1 1 auto;
+}
+
+.admin-is-mobile .admin-toolbar {
+    position: fixed;
+    /* Make sure the toolbar will stay on top of the content as it scrolls past. */
+    z-index: 2;
+}
+
+.admin-is-mobile .admin-sidenav-container {
+    /* When the sidenav is fixed, don't constrain the height of the sidenav container. This allows the
+         `<body>` to be our scrolling element for mobile layouts. */
+    flex: 1 0 auto;
+}
+
+
+.hidden {
+    display: none;
 }

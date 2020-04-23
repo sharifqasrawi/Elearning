@@ -36,6 +36,7 @@
                     <mat-icon mat-list-icon>dashboard</mat-icon>
                     Dashboard
                 </a>
+                
                 <mat-list-item (click)="showSubmenuCategories = !showSubmenuCategories" class="parent">
                     <span class="full-width">Categories</span>
                     <mat-icon mat-list-icon class="adminNavColor">view_quilt</mat-icon>
@@ -49,6 +50,24 @@
                         Published
                     </a>
                     <a mat-list-item [routerLink]="['/admin', 'categories', 'trashed']">
+                        <mat-icon mat-list-icon>delete</mat-icon>
+                        Trash
+                    </a>
+                </div>
+
+                <mat-list-item (click)="showSubmenuCourses = !showSubmenuCourses" class="parent">
+                    <span class="full-width">Courses</span>
+                    <mat-icon mat-list-icon class="adminNavColor">airplay</mat-icon>
+                    <mat-icon class="menu-button adminNavColor" [ngClass]="{'rotated' : showSubmenuCourses}">
+                        expand_more
+                    </mat-icon>
+                </mat-list-item>
+                <div class="submenu" [ngClass]="{'expanded' : showSubmenuCourses}">
+                    <a mat-list-item [routerLink]="['/admin', 'courses']">
+                        <mat-icon mat-list-icon>done_all</mat-icon>
+                        Published
+                    </a>
+                    <a mat-list-item [routerLink]="['/admin', 'courses', 'trashed']">
                         <mat-icon mat-list-icon>delete</mat-icon>
                         Trash
                     </a>
@@ -103,6 +122,19 @@
                     <a mat-list-item [routerLink]="['/admin', 'directories']">
                         <mat-icon mat-list-icon>dynamic_feed</mat-icon>
                         Directories
+                    </a>
+                </div>
+
+                <mat-list-item (click)="showSubmenuTags = !showSubmenuTags" class="parent">
+                    <span class="full-width">Tags Management</span>
+                    <mat-icon mat-list-icon class="adminNavColor">loyalty</mat-icon>
+                    <mat-icon class="menu-button adminNavColor" [ngClass]="{'rotated' : showSubmenuTags}">expand_more
+                    </mat-icon>
+                </mat-list-item>
+                <div class="submenu" [ngClass]="{'expanded' : showSubmenuTags}">
+                    <a mat-list-item [routerLink]="['/admin', 'tags']">
+                        <mat-icon mat-list-icon>loyalty</mat-icon>
+                        Tags
                     </a>
                 </div>
 

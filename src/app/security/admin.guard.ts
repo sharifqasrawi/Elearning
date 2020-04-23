@@ -35,7 +35,8 @@ export class AdminGuard implements CanActivate {
                 if (isAuth && isAdmin) {
                     return true;
                 }
-                return this.router.createUrlTree(['/security']);
+                this.router.navigate(['/security', 'auth'], {queryParams: {returnUrl: router.url}});
+                return false;
             })
             // tap(isAuth => {
             //   if (!isAuth) {

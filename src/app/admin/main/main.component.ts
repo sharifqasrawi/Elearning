@@ -24,9 +24,11 @@ export class MainComponent implements OnInit, OnDestroy {
   isExpanded = true;
   isShowing = false;
   showSubmenuCategories = false;
+  showSubmenuCourses = false;
   showSubmenuUsers = false;
   showSubmenuDirs = false;
   showSubmenuMessages = false;
+  showSubmenuTags = false;
 
   navOpened = true;
 

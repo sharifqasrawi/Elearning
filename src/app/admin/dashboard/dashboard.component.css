@@ -64,6 +64,16 @@
     color: #FFF;
   }  
 
+  .card-counter.coral{
+    background-color: coral;
+    color: #FFF;
+  }  
+
+  .card-counter.crimson{
+    background-color: crimson;
+    color: #FFF;
+  }  
+
   .card-counter i{
     font-size: 5em;
     opacity: 0.2;

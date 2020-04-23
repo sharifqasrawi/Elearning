@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import {
   faHome,
   faUserAlt,
@@ -17,6 +17,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 
 import * as fromApp from '../store/app.reducer';
 import * as LoginActions from '../security/login/store/login.actions';
+import { MediaMatcher } from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-header',
@@ -33,6 +34,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   faSearch = faSearch;
   faEnvelopeOpenText = faEnvelopeOpenText;
 
+  mobileQuery: MediaQueryList;
+
   isAuthenticated = false;
   private userSub: Subscription;
 
@@ -40,7 +43,20 @@ export class HeaderComponent implements OnInit, OnDestroy {
   lastName: string = null;
   isAdmin = false;
 
-  constructor(private store: Store<fromApp.AppState>, private snackBar: MatSnackBar) { }
+  navOpened = false;
+  showSubmenuUser = false;
+
+  constructor(
+    private store: Store<fromApp.AppState>,
+    private snackBar: MatSnackBar,
+    changeDetectorRef: ChangeDetectorRef,
+    media: MediaMatcher) {
+    this.mobileQuery = media.matchMedia('(max-width: 993px)');
+    this._mobileQueryListener = () => changeDetectorRef.detectChanges();
+    this.mobileQuery.addListener(this._mobileQueryListener);
+  }
+
+  private _mobileQueryListener: () => void;
 
   ngOnInit(): void {
 
@@ -67,7 +83,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   onLogout() {
     this.store.dispatch(new LoginActions.Logout());
 
-    this.snackBar.open('Good Bye !! ' , 'Thanks!',
+    this.snackBar.open('Good Bye !! ', 'Thanks!',
       {
         duration: 2000
       });
@@ -75,6 +91,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.userSub.unsubscribe();
+    this.mobileQuery.removeListener(this._mobileQueryListener);
   }
+
 
 }

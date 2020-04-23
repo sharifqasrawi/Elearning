@@ -4,10 +4,12 @@ import { map } from 'rxjs/operators';
 
 import * as fromApp from '../../store/app.reducer';
 import * as CategoriesActions from '../categories/store/categories.actions';
+import * as CoursesActions from '../courses/store/courses.actions';
 import * as UsersActions from '../users/store/users.actions';
 import * as MessagesActions from '../messages/store/messages.actions';
 import * as DirectoriesActions from '../directories/store/directories.actions';
 import * as FilesActions from '../files/store/files.actions';
+import * as TagsActions from '../tags/store/tags.actions';
 
 @Component({
   selector: 'app-dashboard',
@@ -23,6 +25,8 @@ export class DashboardComponent implements OnInit {
   directoriesCount = 0;
   filesCount = 0;
   sentEmailsCount = 0;
+  coursesCount = 0;
+  tagsCount = 0;
 
   constructor(
     private store: Store<fromApp.AppState>
@@ -31,11 +35,13 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
 
     this.store.dispatch(new CategoriesActions.FetchStart());
+    this.store.dispatch(new CoursesActions.FetchStart());
     this.store.dispatch(new UsersActions.FetchStart());
     this.store.dispatch(new MessagesActions.FetchStart());
     this.store.dispatch(new MessagesActions.FetchEmailsStart());
     this.store.dispatch(new DirectoriesActions.FetchStart());
     this.store.dispatch(new FilesActions.FetchStart());
+    this.store.dispatch(new TagsActions.FetchStart());
 
     this.store.select('categories')
       .pipe(
@@ -43,6 +49,14 @@ export class DashboardComponent implements OnInit {
       )
       .subscribe(count => {
         this.categroiesCount = count;
+      });
+
+    this.store.select('courses')
+      .pipe(
+        map(state => state.courses.length)
+      )
+      .subscribe(count => {
+        this.coursesCount = count;
       });
 
     this.store.select('users')
@@ -73,6 +87,14 @@ export class DashboardComponent implements OnInit {
       )
       .subscribe(count => {
         this.filesCount = count;
+      });
+
+      this.store.select('tags')
+      .pipe(
+        map(state => state.tags.length)
+      )
+      .subscribe(count => {
+        this.tagsCount = count;
       });
   }
 

@@ -1,3 +1,4 @@
+import { TagsEffects } from './admin/tags/store/tags.effects';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
@@ -27,6 +28,7 @@ import { MaterialModule } from './material-module';
 import { ContactUsComponent } from './contact-us/contact-us.component';
 import { MessagesEffects } from './admin/messages/store/messages.effects';
 import { CategoriesEffects } from './admin/categories/store/categories.effects';
+import { CoursesEffects } from './admin/courses/store/courses.effects';
 import { LayoutComponent } from './layout/layout.component';
 import { DirectoriesEffects } from './admin/directories/store/directories.effects';
 import { FilesEffects } from './admin/files/store/files.effects';
@@ -93,8 +95,10 @@ const customNotifierOptions: NotifierOptions = {
       UsersEffects, 
       MessagesEffects, 
       CategoriesEffects, 
+      CoursesEffects,
       DirectoriesEffects,
-      FilesEffects
+      FilesEffects,
+      TagsEffects
     ]),
     MaterialModule,
     MatNativeDateModule,
@@ -102,6 +106,7 @@ const customNotifierOptions: NotifierOptions = {
     ReactiveFormsModule,
     BrowserAnimationsModule,
     FontAwesomeModule,
+    
     NotifierModule.withConfig(customNotifierOptions),
     SharedModule,
     SecurityModule,

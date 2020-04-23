@@ -11,14 +11,10 @@
 
                 <div class="changeAuthMode">
                     <mat-chip-list>
-                        <mat-chip 
-                            class="mt-5"
-                            color="accent"
-                            style="cursor: pointer;" 
-                            selected
+                        <mat-chip class="mt-5" color="accent" style="cursor: pointer;" selected
                             (click)="onChangeAuthMode()">
                             {{ isLogin ? 'Don\'t have an account yet? Register now.': 'Already have an account? Login now.'}}
-                        
+
                         </mat-chip>
                     </mat-chip-list>
                 </div>

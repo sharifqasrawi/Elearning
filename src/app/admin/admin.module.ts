@@ -5,6 +5,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { CountUpModule } from 'ngx-countup';
+import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
+import 'froala-editor/js/plugins.pkgd.min.js';
 
 import { NavigationComponent } from './navigation/navigation.component';
 import { MainComponent } from './main/main.component';
@@ -26,6 +28,11 @@ import { DragAndDropDirectiveDirective } from './files/drag-and-drop-directive.d
 import { ViewMessageComponent } from './messages/view-message/view-message.component';
 import { NewEmailComponent } from './messages/new-email/new-email.component';
 import { ListEmailsComponent } from './messages/list-emails/list-emails.component';
+import { ListCoursesComponent } from './courses/list-courses/list-courses.component';
+import { NewCourseComponent } from './courses/new-course/new-course.component';
+import { ListTagsComponent } from './tags/list-tags/list-tags.component';
+import { NewTagComponent } from './tags/new-tag/new-tag.component';
+import { TrashedCoursesComponent } from './courses/trashed-courses/trashed-courses.component';
 
 @NgModule({
     declarations: [
@@ -47,6 +54,11 @@ import { ListEmailsComponent } from './messages/list-emails/list-emails.componen
         ViewMessageComponent,
         NewEmailComponent,
         ListEmailsComponent,
+        ListCoursesComponent,
+        NewCourseComponent,
+        ListTagsComponent,
+        NewTagComponent,
+        TrashedCoursesComponent,
     ],
     imports: [
         CommonModule,
@@ -56,6 +68,8 @@ import { ListEmailsComponent } from './messages/list-emails/list-emails.componen
         ReactiveFormsModule,
         FontAwesomeModule,
         CountUpModule,
+        FroalaEditorModule.forRoot(), 
+        FroalaViewModule.forRoot(),
         AdminRoutingModule,
         SharedModule,
     ],

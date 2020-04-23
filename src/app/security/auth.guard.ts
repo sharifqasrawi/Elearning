@@ -22,7 +22,7 @@ export class AuthGuard implements CanActivate {
 
   canActivate(
     route: ActivatedRouteSnapshot,
-    router: RouterStateSnapshot
+    router: RouterStateSnapshot,
   ): boolean | UrlTree | Promise<boolean | UrlTree> | Observable<boolean | UrlTree> {
 
     return this.store.select('login').pipe(
@@ -35,7 +35,11 @@ export class AuthGuard implements CanActivate {
         if (isAuth) {
           return true;
         }
-        return this.router.createUrlTree(['/security']);
+
+        this.router.navigate(['/security', 'auth'], {queryParams: {returnUrl: router.url}});
+        return false;
+
+        // return this.router.createUrlTree(['/security']);
       })
       // tap(isAuth => {
       //   if (!isAuth) {

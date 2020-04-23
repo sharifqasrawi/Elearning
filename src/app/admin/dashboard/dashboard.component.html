@@ -9,6 +9,14 @@
 <div class="adminPageBottom">
     <div class="row">
         <div class="col-md-3">
+            <div class="card-counter coral">
+                <mat-icon class="icon">airplay</mat-icon>
+                <span [countUp]="coursesCount" class="count-numbers">0</span>
+                <span class="count-name">Courses</span>
+            </div>
+        </div>
+
+        <div class="col-md-3">
             <div class="card-counter primary">
                 <mat-icon class="icon">view_quilt</mat-icon>
                 <span [countUp]="categroiesCount" class="count-numbers">0</span>
@@ -32,13 +40,6 @@
             </div>
         </div>
 
-        <div class="col-md-3">
-            <div class="card-counter info">
-                <mat-icon class="icon">supervised_user_circle</mat-icon>
-                <span [countUp]="usersCount" class="count-numbers">0</span>
-                <span class="count-name">Users</span>
-            </div>
-        </div>
     </div>
     <div class="row">
         <div class="col-md-3">
@@ -53,6 +54,20 @@
                 <mat-icon class="icon">file_copy</mat-icon>
                 <span [countUp]="filesCount" class="count-numbers">0</span>
                 <span class="count-name">Files</span>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card-counter info">
+                <mat-icon class="icon">supervised_user_circle</mat-icon>
+                <span [countUp]="usersCount" class="count-numbers">0</span>
+                <span class="count-name">Users</span>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card-counter crimson">
+                <mat-icon class="icon">loyalty</mat-icon>
+                <span [countUp]="tagsCount" class="count-numbers">0</span>
+                <span class="count-name">Tags</span>
             </div>
         </div>
     </div>

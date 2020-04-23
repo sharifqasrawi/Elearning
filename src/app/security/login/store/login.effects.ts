@@ -3,7 +3,7 @@ import { Actions, ofType, Effect } from '@ngrx/effects';
 import { switchMap, catchError, map, tap, concatMap, mergeMap } from 'rxjs/operators';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { of } from 'rxjs';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import { environment } from './../../../../environments/environment';
 
@@ -217,7 +217,8 @@ export class LoginEffects {
         ofType(LoginActions.LOGIN_SUCCESS),
         tap((authSuccessAction: LoginActions.LoginSuccess) => {
             if (authSuccessAction.payload.redirect) {
-                this.router.navigate(['/', 'home']);
+                // this.router.navigate(['/', 'home']);
+                this.router.navigateByUrl(this.route.snapshot.queryParams['returnUrl']);
             }
         })
     );
@@ -226,6 +227,7 @@ export class LoginEffects {
         private actions$: Actions,
         private http: HttpClient,
         private router: Router,
+        private route: ActivatedRoute,
         private authService: AuthService
     ) { }
 }

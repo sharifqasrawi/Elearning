@@ -35,7 +35,7 @@
             <mat-step formGroupName="0" [stepControl]="formArray?.get([0])">
                 <ng-template matStepLabel>Fill out your name</ng-template>
                
-                <mat-form-field  class="full-width">
+                <mat-form-field  class="full-width" appearance="legacy">
                     <mat-label>Your Name</mat-label>
                     <input matInput formControlName="name" required>
                     <mat-error>This field is required</mat-error>
@@ -50,7 +50,7 @@
                 <ng-template matStepLabel>
                     <div>Fill out your email address</div>
                 </ng-template>
-                <mat-form-field class="full-width">
+                <mat-form-field class="full-width" appearance="legacy">
                     <mat-label>Email address</mat-label>
                     <input matInput placeholder="Ex. laurnace@example.com" formControlName="email">
                     <mat-error>Please enter a valid email address.</mat-error>
@@ -65,7 +65,7 @@
                 <ng-template matStepLabel>
                     <div>Fill out message subject</div>
                 </ng-template>
-                <mat-form-field  class="full-width">
+                <mat-form-field  class="full-width" appearance="legacy">
                     <mat-label>Subject</mat-label>
                     <input matInput formControlName="subject" required>
                     <mat-error>This field is required</mat-error>
@@ -80,7 +80,7 @@
                 <ng-template matStepLabel>
                     <div>Fill out your message</div>
                 </ng-template>
-                <mat-form-field class="full-width">
+                <mat-form-field class="full-width" appearance="legacy">
                     <mat-label>Text</mat-label>
                     <textarea matInput formControlName="text" required></textarea>
                     <mat-error>This field is required</mat-error>

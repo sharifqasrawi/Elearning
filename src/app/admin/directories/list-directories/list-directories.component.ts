@@ -11,9 +11,9 @@ import { NewDirectoryComponent } from '../new-directory/new-directory.component'
 
 import * as fromApp from '../../../store/app.reducer';
 import * as DirectoriesActions from '../store/directories.actions';
+import { ConfirmDialogComponent } from './../../../shared/confirm-dialog/confirm-dialog.component';
 import { Directory } from './../../../models/directory.model';
 import { PhysicalDirectoriesComponent } from '../physical-directories/physical-directories.component';
-import { ConfirmDialogComponent } from 'src/app/shared/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-list-directories',

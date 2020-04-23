@@ -4,6 +4,7 @@ import { UploadedFile } from './../../../models/uploadedFile.model';
 
 export interface State {
     files: UploadedFile[],
+    images: UploadedFile[],
     loading: boolean,
     loaded: boolean,
     errors: string[],
@@ -12,6 +13,7 @@ export interface State {
 
 const initialState: State = {
     files: [],
+    images: [],
     errors: null,
     loading: false,
     loaded: false,
@@ -33,7 +35,8 @@ export function filesReducer(state: State = initialState, action: FilesAction.Fi
                 ...state,
                 loading: false,
                 loaded: true,
-                files: [...action.payload]
+                files: [...action.payload],
+                images: [...action.payload.filter(f => f.fileType === '.jpg' || f.fileType === '.jpeg' || f.fileType === '.png' || f.fileType === '.gif')],
             };
         case FilesAction.FETCH_FAIL:
             return {
@@ -52,13 +55,23 @@ export function filesReducer(state: State = initialState, action: FilesAction.Fi
             };
         case FilesAction.DELETE_SUCCESS:
             const fileToDeleteIndex = state.files.findIndex(f => f.id === action.payload);
+            const fileToDelete = state.files.find(f => f.id === action.payload);
+
             const filesAfterDelete = [...state.files];
+            const imagesAfterDelete = [...state.images];
+
             filesAfterDelete.splice(fileToDeleteIndex, 1);
+
+            if (fileToDelete.fileType === '.jpg' || fileToDelete.fileType === '.jpeg' ||
+                fileToDelete.fileType === '.png' || fileToDelete.fileType === '.gif') {
+                    imagesAfterDelete.splice(fileToDeleteIndex, 1);
+            }
 
             return {
                 ...state,
                 deleting: false,
-                files: filesAfterDelete
+                files: filesAfterDelete,
+                images: imagesAfterDelete,
             };
         case FilesAction.DELETE_FAIL:
             return {
