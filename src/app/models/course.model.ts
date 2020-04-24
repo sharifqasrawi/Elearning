@@ -1,5 +1,7 @@
+import { Section } from './section.model';
+import { Tag } from './tag.model';
 import { Category } from './category.model';
-import { User } from './user.model';
+//import { User } from './user.model';
 
 export class Course {
     constructor(
@@ -18,11 +20,13 @@ export class Course {
         public createdBy?: string,
         public updatedBy?: string,
         public createdAt?: Date,
-        public updateAt?: Date,
+        public updatedAt?: Date,
         public publishedAt?: Date,
         public deletedAt?: Date,
         public deletedBy?: string,
-        public author?: User,
-        public category?: Category
+        //public author?: User,
+        public category?: Category,
+        public tags?: Tag[],
+        public sections?: Section[]
     ) { }
 }

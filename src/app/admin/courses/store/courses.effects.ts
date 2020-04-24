@@ -126,6 +126,123 @@ export class CoursesEffects {
     );
 
     @Effect()
+    updateCourse = this.actions$.pipe(
+        ofType(CoursesActions.UPDATE_START),
+        switchMap((courseData: CoursesActions.UpdateStart) => {
+            return this.http.put<{ updatedCourse: Course }>(environment.API_BASE_URL + 'courses/update-course',
+                {
+                    Id: courseData.payload.id,
+                    Title_EN: courseData.payload.title_EN,
+                    Description_EN: courseData.payload.description_EN,
+                    Prerequisites_EN: courseData.payload.prerequisites_EN,
+                    Languages: courseData.payload.languages,
+                    Level: courseData.payload.level,
+                    Duration: courseData.payload.duration,
+                    ImagePath: courseData.payload.imagePath,
+                    Price: courseData.payload.price,
+                    IsFree: courseData.payload.isFree,
+                    IsPublished: courseData.payload.isPublished,
+                    UpdatedBy: this.userName,
+                    Category: {
+                        Id: courseData.payload.category
+                    },
+                    Author: {
+                        Id: this.userId
+                    }
+                },
+                {
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                })
+                .pipe(
+                    map(resData => {
+                        return new CoursesActions.UpdateSuccess(resData.updatedCourse);
+                    }),
+                    catchError(errorRes => {
+                        switch (errorRes.status) {
+                            case 403:
+                            case 401:
+                                return of(new CoursesActions.UpdateFail(['Access Denied']));
+                            case 404:
+                                return of(new CoursesActions.UpdateFail(['Error 404. Not Found']));
+                            case 400:
+                                return of(new CoursesActions.UpdateFail(errorRes.error.errors));
+                            default:
+                                return of(new CoursesActions.UpdateFail(['Oops! An error occured']));
+                        }
+                    })
+                )
+        })
+    );
+
+    @Effect()
+    publishUnpublishCourse = this.actions$.pipe(
+        ofType(CoursesActions.PUBLISH_UNPUBLISH_START),
+        switchMap((courseData: CoursesActions.PublishUnpublishStart) => {
+            return this.http.put<{ updatedCourse: Course }>(environment.API_BASE_URL + 'courses/publish',
+                {
+                    Id: courseData.payload.id,
+                },
+                {
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    params: new HttpParams().set('action', courseData.payload.action)
+                })
+                .pipe(
+                    map(resData => {
+                        return new CoursesActions.PublishUnpublishSuccess(resData.updatedCourse);
+                    }),
+                    catchError(errorRes => {
+                        switch (errorRes.status) {
+                            case 403:
+                            case 401:
+                                return of(new CoursesActions.PublishUnpublishFail(['Access Denied']));
+                            case 404:
+                                return of(new CoursesActions.PublishUnpublishFail(['Error 404. Not Found']));
+                            case 400:
+                                return of(new CoursesActions.PublishUnpublishFail(errorRes.error.errors));
+                            default:
+                                return of(new CoursesActions.PublishUnpublishFail(['Oops! An error occured']));
+                        }
+                    })
+                )
+        })
+    );
+
+    @Effect()
+    addRemoveTagToCourse = this.actions$.pipe(
+        ofType(CoursesActions.ADD_REMOVE_TAG_START),
+        switchMap((courseData: CoursesActions.AddRemoveTagStart) => {
+            return this.http.put<{ updatedCourse: Course }>(environment.API_BASE_URL + 'courses/tag-course',
+                {
+                    courseId: courseData.payload.courseId,
+                    tagId: courseData.payload.tagId
+                },
+                {
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    params: new HttpParams().set('action', courseData.payload.action)
+                })
+                .pipe(
+                    map(resData => {
+                        return new CoursesActions.AddRemoveTagSuccess(resData.updatedCourse);
+                    }),
+                    catchError(errorRes => {
+                        switch (errorRes.status) {
+                            case 403:
+                            case 401:
+                                return of(new CoursesActions.AddRemoveTagFail(['Access Denied']));
+                            case 404:
+                                return of(new CoursesActions.AddRemoveTagFail(['Error 404. Not Found']));
+                            case 400:
+                                return of(new CoursesActions.AddRemoveTagFail(errorRes.error.errors));
+                            default:
+                                return of(new CoursesActions.AddRemoveTagFail(['Oops! An error occured']));
+                        }
+                    })
+                )
+        })
+    );
+
+
+    @Effect()
     trashRestoreCourse = this.actions$.pipe(
         ofType(CoursesActions.TRASH_RESTORE_START),
         switchMap((courseData: CoursesActions.TrashRestoreStart) => {
@@ -156,6 +273,46 @@ export class CoursesEffects {
                                 return of(new CoursesActions.TrashRestoreFail(errorRes.error.errors));
                             default:
                                 return of(new CoursesActions.TrashRestoreFail(['Oops! An error occured']));
+                        }
+                    })
+                )
+        })
+    );
+
+
+    // Sections
+    @Effect()
+    createSection = this.actions$.pipe(
+        ofType(CoursesActions.CREATE_SECTION_START),
+        switchMap((sectionData: CoursesActions.CreateSectionStart) => {
+            return this.http.post<{ updatedCourse: Course }>(environment.API_BASE_URL + 'courses/manage-section',
+                {
+                    course: {
+                        id: sectionData.payload.course.id
+                    },
+                    name_EN: sectionData.payload.name_EN,
+                    order: sectionData.payload.order,
+                    createdBy: this.userName,
+                    updatedBy: this.userName
+                },
+                {
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                })
+                .pipe(
+                    map(resData => {
+                        return new CoursesActions.CreateSectionSuccess(resData.updatedCourse);
+                    }),
+                    catchError(errorRes => {
+                        switch (errorRes.status) {
+                            case 403:
+                            case 401:
+                                return of(new CoursesActions.CreateSectionFail(['Access Denied']));
+                            case 404:
+                                return of(new CoursesActions.CreateSectionFail(['Error 404. Not Found']));
+                            case 400:
+                                return of(new CoursesActions.CreateSectionFail(errorRes.error.errors));
+                            default:
+                                return of(new CoursesActions.CreateSectionFail(['Oops! An error occured']));
                         }
                     })
                 )

@@ -15,7 +15,7 @@ import * as CoursesActions from '../store/courses.actions';
 @Component({
   selector: 'app-trashed-courses',
   templateUrl: './trashed-courses.component.html',
-  styles: ['./trashed-courses.component.css'],
+  styleUrls: ['./trashed-courses.component.css'],
 })
 export class TrashedCoursesComponent implements OnInit {
 
@@ -31,7 +31,7 @@ export class TrashedCoursesComponent implements OnInit {
 
   count = 0;
 
-  displayedColumns: string[] = ['id', 'title_EN', 'category', 'level', 'duration', 'isPublished', 'author', 'createdAt', 'actions'];
+  displayedColumns: string[] = ['id', 'title_EN', 'category', 'level', 'duration', 'createdBy', 'deletedAt', 'actions'];
   dataSource: MatTableDataSource<Course>;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -53,7 +53,7 @@ export class TrashedCoursesComponent implements OnInit {
       this.loaded = state.loaded;
 
 
-      this.count = state.courses.length;
+      this.count = state.trashedCourses.length;
       this.setTable();
     });
 

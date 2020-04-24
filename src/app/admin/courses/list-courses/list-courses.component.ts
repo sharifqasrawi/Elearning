@@ -15,7 +15,7 @@ import * as CoursesActions from '../store/courses.actions';
 @Component({
   selector: 'app-list-courses',
   templateUrl: './list-courses.component.html',
-  styles: ['./list-courses.component.css'],
+  styleUrls: ['./list-courses.component.css'],
 })
 export class ListCoursesComponent implements OnInit {
 
@@ -31,7 +31,7 @@ export class ListCoursesComponent implements OnInit {
 
   count = 0;
 
-  displayedColumns: string[] = ['id', 'title_EN', 'category', 'level', 'duration', 'isPublished', 'author', 'createdAt', 'actions'];
+  displayedColumns: string[] = ['id', 'title_EN', 'category', 'level', 'duration', 'isPublished', 'createdBy', 'createdAt', 'actions'];
   dataSource: MatTableDataSource<Course>;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;

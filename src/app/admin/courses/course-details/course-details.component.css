@@ -1,0 +1,13 @@
+.spacer {
+    height: 35px;
+}
+
+.tab-icon {
+    margin-right: 8px;
+}
+
+.tabs {
+    padding: 14px;
+    overflow-x: hidden;
+    min-height: 700px;
+}

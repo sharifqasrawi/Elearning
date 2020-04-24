@@ -15,11 +15,29 @@ export const CREATE_START = '[Courses] Create Start';
 export const CREATE_SUCCESS = '[Courses] Create Success';
 export const CREATE_FAIL = '[Courses] Create Fail';
 
+export const UPDATE_START = '[Courses] Update Start';
+export const UPDATE_SUCCESS = '[Courses] Update Success';
+export const UPDATE_FAIL = '[Courses] Update Fail';
+
+export const PUBLISH_UNPUBLISH_START = '[Courses] Publish Unpublish Start';
+export const PUBLISH_UNPUBLISH_SUCCESS = '[Courses] Publish Unpublish Success';
+export const PUBLISH_UNPUBLISH_FAIL = '[Courses] Publish Unpublish Fail';
+
 export const TRASH_RESTORE_START = '[Courses] Tash Restore Start';
 export const TRASH_SUCCESS = '[Courses] Tash Success';
 export const RESTORE_SUCCESS = '[Courses] Restore Success';
 export const TRASH_RESTORE_FAIL = '[Courses] Tash Restore Fail';
 
+export const ADD_REMOVE_TAG_START = '[Courses] Add Remove Tag Start';
+export const ADD_REMOVE_TAG_SUCCESS = '[Courses] Remove Tag Success';
+export const ADD_REMOVE_TAG_FAIL = '[Courses] Remove Tag Restore Fail';
+
+export const CREATE_SECTION_START = '[Courses] Create Section Start';
+export const CREATE_SECTION_SUCCESS = '[Courses] Create Section Success';
+export const CREATE_SECTION_FAIL = '[Courses] Create Section Fail';
+
+export const CLEAR_ERRORS = '[Courses] Clear Errors';
+export const CLEAR_STATUS = '[Courses] Clear Status';
 
 
 export class FetchStart implements Action {
@@ -89,13 +107,93 @@ export class CreateFail implements Action {
     constructor(public payload: string[]) { }
 }
 
+//////////
+
+export class UpdateStart implements Action {
+    readonly type = UPDATE_START;
+
+    constructor(public payload: {
+        id: number,
+        title_EN: string,
+        duration: number,
+        isPublished: boolean,
+        category: number,
+        price: number,
+        isFree: boolean,
+        imagePath: string,
+        languages: string,
+        level: string,
+        description_EN: string,
+        prerequisites_EN: string
+    }) { }
+}
+
+export class UpdateSuccess implements Action {
+    readonly type = UPDATE_SUCCESS;
+
+    constructor(public payload: Course) { }
+}
+
+export class UpdateFail implements Action {
+    readonly type = UPDATE_FAIL;
+
+    constructor(public payload: string[]) { }
+}
+
+//////////
+
+export class PublishUnpublishStart implements Action {
+    readonly type = PUBLISH_UNPUBLISH_START;
+
+    constructor(public payload: {
+        id: number,
+        action: string
+    }) { }
+}
+
+export class PublishUnpublishSuccess implements Action {
+    readonly type = PUBLISH_UNPUBLISH_SUCCESS;
+
+    constructor(public payload: Course) { }
+}
+
+export class PublishUnpublishFail implements Action {
+    readonly type = PUBLISH_UNPUBLISH_FAIL;
+
+    constructor(public payload: string[]) { }
+}
+
+
+//////////
+
+export class AddRemoveTagStart implements Action {
+    readonly type = ADD_REMOVE_TAG_START;
+
+    constructor(public payload: {
+        courseId: number,
+        tagId: number,
+        action: string
+    }) { }
+}
+
+export class AddRemoveTagSuccess implements Action {
+    readonly type = ADD_REMOVE_TAG_SUCCESS;
+
+    constructor(public payload: Course) { }
+}
+
+export class AddRemoveTagFail implements Action {
+    readonly type = ADD_REMOVE_TAG_FAIL;
+
+    constructor(public payload: string[]) { }
+}
 
 //////////
 
 export class TrashRestoreStart implements Action {
     readonly type = TRASH_RESTORE_START;
 
-    constructor(public payload: { id: number, action: string}) { }
+    constructor(public payload: { id: number, action: string }) { }
 }
 
 export class TrashSuccess implements Action {
@@ -116,6 +214,41 @@ export class TrashRestoreFail implements Action {
     constructor(public payload: string[]) { }
 }
 
+///////////////
+
+
+export class CreateSectionStart implements Action {
+    readonly type = CREATE_SECTION_START;
+
+    constructor(public payload: {
+        course: { id: number },
+        name_EN: string,
+        order: number,
+    }) { }
+}
+
+
+export class CreateSectionSuccess implements Action {
+    readonly type = CREATE_SECTION_SUCCESS;
+
+    constructor(public payload: Course) { }
+}
+
+export class CreateSectionFail implements Action {
+    readonly type = CREATE_SECTION_FAIL;
+
+    constructor(public payload: string[]) { }
+}
+
+
+/////////////////////
+export class ClearErrors implements Action {
+    readonly type = CLEAR_ERRORS;
+}
+export class ClearStatus implements Action {
+    readonly type = CLEAR_STATUS;
+}
+
 //////////
 
 export type CoursesActions =
@@ -128,8 +261,22 @@ export type CoursesActions =
     | CreateStart
     | CreateSuccess
     | CreateFail
+    | PublishUnpublishStart
+    | PublishUnpublishSuccess
+    | PublishUnpublishFail
+    | AddRemoveTagStart
+    | AddRemoveTagSuccess
+    | AddRemoveTagFail
+    | UpdateStart
+    | UpdateSuccess
+    | UpdateFail
     | TrashRestoreStart
     | RestoreSuccess
     | TrashSuccess
     | TrashRestoreFail
+    | CreateSectionStart
+    | CreateSectionSuccess
+    | CreateSectionFail
+    | ClearErrors
+    | ClearStatus
     ;

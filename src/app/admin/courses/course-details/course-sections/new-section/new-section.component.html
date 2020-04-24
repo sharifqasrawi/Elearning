@@ -1,0 +1,34 @@
+<h2 mat-dialog-title>
+    <fa-icon [icon]="faPlusCircle"></fa-icon>
+    Create new section
+</h2>
+<hr>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()" (change)="formChanged()">
+    <div mat-dialog-content>
+        <mat-form-field class="full-width" appearance="legacy">
+            <mat-label>Name (en) </mat-label>
+            <input type="text" matInput formControlName="name_EN" placeholder="Enter section name">
+            <mat-error *ngIf="!form.controls.name_EN.valid && form.controls.name_EN.touched">
+                This field is required.
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="full-width mt-2" appearance="legacy">
+            <mat-label>Order </mat-label>
+            <input type="number" matInput formControlName="order" placeholder="Enter section order">
+            <mat-error *ngIf="!form.controls.order.valid && form.controls.order.touched">
+                This field is required.
+            </mat-error>
+        </mat-form-field>
+
+    </div>
+
+
+    <div mat-dialog-actions class="float-right">
+        <button type="button" mat-raised-button color="warn" cdkFocusInitial (click)="openDialog()">Cancel</button>
+        <button type="submit" mat-raised-button color="accent" [disabled]="!form.valid">
+            {{ editMode ? 'Save' : 'Create' }}
+        </button>
+    </div>
+</form>

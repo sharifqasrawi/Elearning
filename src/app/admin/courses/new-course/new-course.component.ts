@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { map } from 'rxjs/operators';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { ThemePalette } from '@angular/material/core';
 import { MatChipInputEvent } from '@angular/material/chips';
@@ -11,16 +12,19 @@ import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { ConfirmDialogComponent } from './../../../shared/confirm-dialog/confirm-dialog.component';
 import { ImagePickerComponent } from './../../../shared/image-picker/image-picker.component';
 import { Category } from './../../../models/category.model';
+import { Course } from './../../../models/course.model';
 import * as fromApp from '../../../store/app.reducer';
 import * as CategoriesActions from '../../categories/store/categories.actions';
 import * as CoursesActions from '../store/courses.actions';
+import { CanComponentDeactivate } from './can-deactivate-guard.service';
+import { Observable } from 'rxjs/internal/Observable';
 
 @Component({
   selector: 'app-new-course',
   templateUrl: './new-course.component.html',
-  styles: ['./new-course.component.css'],
+  styleUrls: ['./new-course.component.css'],
 })
-export class NewCourseComponent implements OnInit {
+export class NewCourseComponent implements OnInit, OnDestroy, CanComponentDeactivate {
 
   foralaButtonOptions = {
     'moreText': {
@@ -54,9 +58,13 @@ export class NewCourseComponent implements OnInit {
   checkedPub = false;
   checkedFree = true;
 
+  editMode = false;
+  editedCourseId: number = null;
+  editedCourse: Course = null;
   form: FormGroup;
   creating = false;
   created = false;
+  errors: string[] = null;
 
   // Languages chip list
   visible = true;
@@ -73,8 +81,9 @@ export class NewCourseComponent implements OnInit {
   constructor(
     private dialog: MatDialog,
     private router: Router,
-    private store: Store<fromApp.AppState>
-
+    private route: ActivatedRoute,
+    private store: Store<fromApp.AppState>,
+    private snackBar: MatSnackBar
   ) { }
 
   ngOnInit(): void {
@@ -87,26 +96,68 @@ export class NewCourseComponent implements OnInit {
         this.listCategories = categories;
       });
 
+    this.route.params.subscribe((params: Params) => {
+      this.editedCourseId = params.id;
+    });
+
+    this.route.queryParams.subscribe((params: Params) => {
+      this.editMode = params.editMode;
+    });
+
+
     this.store.select('courses')
       .subscribe(state => {
         this.creating = state.creating;
         this.created = state.created;
+        this.errors = state.errors;
+
+        if (this.created) {
+          this.router.navigate(['/admin', 'courses']);
+          this.snackBar.open('Course Saved', 'Okay', {
+            duration: 2000
+          });
+        }
       });
 
-    this.form = new FormGroup({
-      title_EN: new FormControl(null, [Validators.required]),
-      description_EN: new FormControl(null, [Validators.required]),
-      prerequisites_EN: new FormControl(null, [Validators.required]),
-      languages: new FormControl(null, [Validators.required]),
-      level: new FormControl(null, [Validators.required]),
-      duration: new FormControl(null, [Validators.required]),
-      imagePath: new FormControl(null, [Validators.required]),
-      price: new FormControl(this.checkedFree ? '0.0' : null, [Validators.required]),
-      isFree: new FormControl(this.checkedFree, [Validators.required]),
-      isPublished: new FormControl(null),
-      category: new FormControl(null, [Validators.required])
-    });
 
+    if (!this.editMode) {
+      this.form = new FormGroup({
+        title_EN: new FormControl(null, [Validators.required]),
+        description_EN: new FormControl(null, [Validators.required]),
+        prerequisites_EN: new FormControl(null, [Validators.required]),
+        languages: new FormControl(null, [Validators.required]),
+        level: new FormControl(null, [Validators.required]),
+        duration: new FormControl(null, [Validators.required]),
+        imagePath: new FormControl(null, [Validators.required]),
+        price: new FormControl(this.checkedFree ? '0.0' : null, [Validators.required]),
+        isFree: new FormControl(this.checkedFree, [Validators.required]),
+        isPublished: new FormControl(null),
+        category: new FormControl(null, [Validators.required])
+      });
+    }
+    else {
+
+      this.store.select('courses')
+        .pipe(map(state => state.courses.find(c => c.id === +this.editedCourseId)))
+        .subscribe(course => {
+          this.languages = course.languages.split('-');
+
+          this.form = new FormGroup({
+            title_EN: new FormControl(course.title_EN, [Validators.required]),
+            description_EN: new FormControl(course.description_EN, [Validators.required]),
+            prerequisites_EN: new FormControl(course.prerequisites_EN, [Validators.required]),
+            languages: new FormControl(this.languages.join('-'), [Validators.required]),
+            level: new FormControl(course.level, [Validators.required]),
+            duration: new FormControl(course.duration, [Validators.required]),
+            imagePath: new FormControl(course.imagePath, [Validators.required]),
+            price: new FormControl(course.price, [Validators.required]),
+            isFree: new FormControl(course.isFree, [Validators.required]),
+            isPublished: new FormControl(course.isPublished),
+            category: new FormControl(course.category.id, [Validators.required])
+          });
+
+        });
+    }
   }
 
 
@@ -114,33 +165,58 @@ export class NewCourseComponent implements OnInit {
     if (!this.form.valid)
       return;
 
-    this.store.dispatch(new CoursesActions.CreateStart({
-      title_EN: this.form.value.title_EN,
-      description_EN: this.form.value.description_EN,
-      prerequisites_EN: this.form.value.prerequisites_EN,
-      languages: this.languages.join('-'),
-      level: this.form.value.level,
-      imagePath: this.form.value.imagePath,
-      category: this.form.value.category,
-      duration: this.form.value.duration,
-      isFree: this.form.value.isFree,
-      price: this.form.value.price,
-      isPublished: this.form.value.isPublished
-    }));
+    if (!this.editMode) {
+      this.store.dispatch(new CoursesActions.CreateStart({
+        title_EN: this.form.value.title_EN,
+        description_EN: this.form.value.description_EN,
+        prerequisites_EN: this.form.value.prerequisites_EN,
+        languages: this.languages.join('-'),
+        level: this.form.value.level,
+        imagePath: this.form.value.imagePath,
+        category: this.form.value.category,
+        duration: this.form.value.duration,
+        isFree: this.form.value.isFree,
+        price: this.form.value.price,
+        isPublished: this.form.value.isPublished
+      }));
+    }
+    else {
+      this.store.dispatch(new CoursesActions.UpdateStart({
+        id: this.editedCourseId,
+        title_EN: this.form.value.title_EN,
+        description_EN: this.form.value.description_EN,
+        prerequisites_EN: this.form.value.prerequisites_EN,
+        languages: this.languages.join('-'),
+        level: this.form.value.level,
+        imagePath: this.form.value.imagePath,
+        category: this.form.value.category,
+        duration: this.form.value.duration,
+        isFree: this.form.value.isFree,
+        price: this.form.value.price,
+        isPublished: this.form.value.isPublished
+      }));
+    }
   }
 
 
   onCancel() {
-    const dialogRef = this.dialog.open(ConfirmDialogComponent,
-      {
-        width: '300px',
-        data: { header: 'Confirmation', message: 'Discard all changes and exit ?' }
-      });
+    this.router.navigate(['/admin', 'courses']);
+    // const dialogRef = this.dialog.open(ConfirmDialogComponent,
+    //   {
+    //     width: '300px',
+    //     data: { header: 'Confirmation', message: 'Discard all changes and exit ?' }
+    //   });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result)
-        this.router.navigate(['/admin', 'courses']);
-    });
+    // dialogRef.afterClosed().subscribe(result => {
+    //   if (result)
+    //     this.router.navigate(['/admin', 'courses']);
+    // });
+  }
+
+
+  ngOnDestroy() {
+    this.store.dispatch(new CoursesActions.ClearErrors());
+    this.store.dispatch(new CoursesActions.ClearStatus());
   }
 
   selectImage() {
@@ -152,10 +228,21 @@ export class NewCourseComponent implements OnInit {
       });
 
     dialogRef.afterClosed().subscribe((data: { imagePath: string }) => {
-      this.form.patchValue({
-        imagePath: data.imagePath
-      });
+      if (data) {
+        this.form.patchValue({
+          imagePath: data.imagePath
+        });
+      }
     });
+
+  }
+
+  canDeactivate(): Observable<boolean> | Promise<boolean> | boolean {
+    if (this.form.dirty) {
+      return confirm('Discard all changes and exit ?');
+    } else {
+      return true;
+    }
   }
 
 

@@ -1,0 +1,75 @@
+<div class="row full-width center">
+    <div class="col-lg-12">
+        <div class="row">
+            <div class="col-lg-4  mb-2">
+                <div class="box1">
+                    <img [src]="course.imagePath" alt="no preview">
+                </div>
+            </div>
+            <div class="col-lg-4 mb-2 ">
+                <div class="box2">
+                    <p>
+                        <strong>Category: </strong>
+                        {{ course.category.title_EN }}
+                    </p>
+                    <p>
+                        <strong>Level: </strong>
+                        {{ course.level }}
+                    </p>
+                    <p>
+                        <strong>Languages: </strong>
+                    </p>
+                    <ul>
+                        <li *ngFor="let lang of course.languages.split('-')">
+                            {{lang}}
+                        </li>
+                    </ul>
+                    <p>
+                        <strong>Duration: </strong>
+                        {{ course.duration }} min
+                    </p>
+                    <p>
+                        <strong>Price: </strong>
+                        <span *ngIf="!course.isFree">{{ course.price }} €</span>
+                        <span *ngIf="course.isFree" class="badge badge-warning"> Free </span>
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-4  mb-2 ">
+                <div class="box3">
+                    <p>
+                        <strong>Updated At: </strong>
+                        {{ course.updatedAt | date:'medium' }}
+                    </p>
+                    <p>
+                        <strong>Updated By: </strong>
+                        {{ course.updatedBy  }}
+                    </p>
+
+                    <p>
+                        <strong>Deleted At: </strong>
+                        {{ course.deletedAt | date:'medium' }}
+                    </p>
+                    <p>
+                        <strong>Deleted By: </strong>
+                        {{ course.deletedBy  }}
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+        <div class="row ">
+            <div class="col-lg-6 mb-4 ">
+                <strong>Description:</strong>
+                <hr>
+                <div [innerHTML]="course.description_EN" class="desc"></div>
+            </div>
+            <div class="col-lg-6 mb-4 ">
+                <strong>Prerequisites:</strong>
+                <hr>
+                <div [innerHTML]="course.prerequisites_EN" class="desc"></div>
+            </div>
+        </div>
+    </div>
+</div>

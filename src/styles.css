@@ -141,3 +141,8 @@ table {
 .mat-column-created {
   max-width: 124px;
 }
+
+
+.center {
+  margin: 0 auto;
+}

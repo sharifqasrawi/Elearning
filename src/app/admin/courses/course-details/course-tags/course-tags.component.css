@@ -1,0 +1,28 @@
+.tag {
+    padding: 12px;
+    
+    color: white;
+    float: left;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    border-radius: 15px;
+    
+}
+
+.newTag {
+    background-color: rgb(7, 197, 0);
+}
+
+.currentTag {
+    background-color: rgb(148, 148, 148);
+}
+
+.tag a {
+    color: rgb(182, 41, 69);
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.tag a:hover {
+    color: rgb(177, 66, 88);
+}

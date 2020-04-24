@@ -14,7 +14,7 @@
             </div>
             <div class="col-lg-2">
                 <button type="submit" mat-raised-button color="accent" class="btn-block mt-1"
-                        [disabled]="!form.valid || creating">
+                   >
                     {{ creating ? 'Saving' : 'Save' }}
                 </button>
             </div>
@@ -24,6 +24,11 @@
     </div>
 
     <div class="adminPageBottom mb-5">
+        <div class="row" *ngIf="errors">
+            <div class="col-lg-12">
+                <div class="alert alert-danger" *ngFor="let error of errors">{{error}}</div>
+            </div>
+        </div>
 
         <div class="row">
             <div class="col-lg-8">
@@ -56,8 +61,8 @@
 
 
         <div class="row">
-            <div class="col-lg-6">
-                <mat-form-field style="width: 100%;" appearance="legacy" >
+            <div class="col-lg-8">
+                <mat-form-field style="width: 100%;" appearance="legacy">
                     <mat-label>Categeory</mat-label>
                     <mat-select name="category" id="category" required formControlName="category">
                         <mat-option>--</mat-option>
@@ -70,20 +75,7 @@
                     </mat-error>
                 </mat-form-field>
             </div>
-            <div class="col-lg-2">
-                <mat-form-field style="width: 100%;" appearance="legacy" >
-                <mat-label>Level</mat-label>
-                    <mat-select name="level" id="level" required formControlName="level">
-                        <mat-option>--</mat-option>
-                        <mat-option *ngFor="let l of listLevels" [value]="l">
-                            {{l}}
-                        </mat-option>
-                    </mat-select>
-                    <mat-error *ngIf="!form.controls.level.valid && form.controls.level.touched">
-                        This field is required.
-                    </mat-error>
-                </mat-form-field>
-            </div>
+
             <div class="col-lg-2">
                 <mat-form-field class="full-width" appearance="legacy">
                     <mat-label>Price </mat-label>
@@ -107,35 +99,36 @@
         <div class="row">
             <div class="col-lg-8">
                 <mat-form-field class="full-width" appearance="legacy">
-                    <mat-label>Image </mat-label>
-                    <input readonly type="text" matInput formControlName="imagePath" required placeholder="Enter course image">
-                    <mat-icon (click)="selectImage()" style="cursor: pointer;" matSuffix>mode_edit</mat-icon>
-                    <mat-error *ngIf="!form.controls.imagePath.valid && form.controls.imagePath.touched">
+                    <mat-chip-list #chipList aria-label="Language selection">
+                        <mat-chip *ngFor="let lang of languages" [selectable]="selectable" [removable]="removable"
+                            (removed)="remove(lang)">
+                            {{lang}}
+                            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                        </mat-chip>
+                        <input placeholder="Languages" required formControlName="languages" [matChipInputFor]="chipList"
+                            [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur"
+                            (matChipInputTokenEnd)="add($event)">
+                        <mat-error *ngIf="!form.controls.languages.valid && form.controls.languages.touched">
+                            This field is required.
+                        </mat-error>
+                    </mat-chip-list>
+                 
+                </mat-form-field>
+            
+            </div>
+            <div class="col-lg-4">
+                <mat-form-field style="width: 100%;" appearance="legacy">
+                    <mat-label>Level</mat-label>
+                    <mat-select name="level" id="level" required formControlName="level">
+                        <mat-option>--</mat-option>
+                        <mat-option *ngFor="let l of listLevels" [value]="l">
+                            {{l}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="!form.controls.level.valid && form.controls.level.touched">
                         This field is required.
                     </mat-error>
                 </mat-form-field>
-            </div>
-            <div class="col-lg-4">
-                <mat-form-field class="full-width" appearance="legacy">
-                    <mat-chip-list #chipList aria-label="Language selection">
-                      <mat-chip *ngFor="let lang of languages" [selectable]="selectable"
-                               [removable]="removable" (removed)="remove(lang)">
-                        {{lang}}
-                        <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
-                      </mat-chip>
-                      <input placeholder="Languages"
-                            required
-                            formControlName="languages"
-                             [matChipInputFor]="chipList"
-                             [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                             [matChipInputAddOnBlur]="addOnBlur"
-                             (matChipInputTokenEnd)="add($event)">
-                             <mat-error *ngIf="!form.controls.languages.valid && form.controls.languages.touched">
-                                This field is required.
-                            </mat-error>
-                    </mat-chip-list>
-                  </mat-form-field>
-                  
             </div>
         </div>
 
@@ -157,6 +150,25 @@
                     *ngIf="!form.controls.prerequisites_EN.valid && form.controls.prerequisites_EN.touched">
                     This field is required.
                 </span>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-lg-8">
+                <mat-form-field class="full-width" appearance="legacy">
+                    <mat-label>Image </mat-label>
+                    <input readonly type="text" matInput formControlName="imagePath" required
+                        placeholder="Enter course image">
+                    <mat-icon (click)="selectImage()" style="cursor: pointer;" matSuffix>mode_edit</mat-icon>
+                    <mat-error *ngIf="!form.controls.imagePath.valid && form.controls.imagePath.touched">
+                        This field is required.
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-lg-4">
+                <div class="imagePreview">
+                    <img [src]="form.value.imagePath" alt="no preview" width="100%" height="300">
+                </div>
             </div>
         </div>
     </div>

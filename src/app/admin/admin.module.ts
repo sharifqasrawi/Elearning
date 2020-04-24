@@ -33,6 +33,12 @@ import { NewCourseComponent } from './courses/new-course/new-course.component';
 import { ListTagsComponent } from './tags/list-tags/list-tags.component';
 import { NewTagComponent } from './tags/new-tag/new-tag.component';
 import { TrashedCoursesComponent } from './courses/trashed-courses/trashed-courses.component';
+import { CanDeactivateGuard } from './courses/new-course/can-deactivate-guard.service';
+import { CourseDetailsComponent } from './courses/course-details/course-details.component';
+import { CourseInfoComponent } from './courses/course-details/course-info/course-info.component';
+import { CourseTagsComponent } from './courses/course-details/course-tags/course-tags.component';
+import { CourseSectionsComponent } from './courses/course-details/course-sections/course-sections.component';
+import { NewSectionComponent } from './courses/course-details/course-sections/new-section/new-section.component';
 
 @NgModule({
     declarations: [
@@ -59,6 +65,11 @@ import { TrashedCoursesComponent } from './courses/trashed-courses/trashed-cours
         ListTagsComponent,
         NewTagComponent,
         TrashedCoursesComponent,
+        CourseDetailsComponent,
+        CourseInfoComponent,
+        CourseTagsComponent,
+        CourseSectionsComponent,
+        NewSectionComponent,
     ],
     imports: [
         CommonModule,
@@ -73,5 +84,8 @@ import { TrashedCoursesComponent } from './courses/trashed-courses/trashed-cours
         AdminRoutingModule,
         SharedModule,
     ],
+    providers: [
+        CanDeactivateGuard
+    ]
 })
 export class AdminModule { }

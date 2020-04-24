@@ -105,8 +105,8 @@ export class NewCategoryComponent implements OnInit, OnDestroy {
 
 
   ngOnDestroy() {
-    // this.store.dispatch(new CategoriesActions.ClearErrors());
-    // this.store.dispatch(new CategoriesActions.ClearStatus());
+    this.store.dispatch(new CategoriesActions.ClearErrors());
+    this.store.dispatch(new CategoriesActions.ClearStatus());
   }
 
 }

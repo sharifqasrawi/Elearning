@@ -1,3 +1,4 @@
+import { CoursesResolverService } from './courses/courses-resolver.service';
 import { ListTagsComponent } from './tags/list-tags/list-tags.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
@@ -25,6 +26,8 @@ import { FileUploadComponent } from './files/file-upload/file-upload.component';
 import { DirectoriesResolverService } from './directories/directories-resolver.service';
 import { ListFilesComponent } from './files/list-files/list-files.component';
 import { TrashedCoursesComponent } from './courses/trashed-courses/trashed-courses.component';
+import { CanDeactivateGuard } from './courses/new-course/can-deactivate-guard.service';
+import { CourseDetailsComponent } from './courses/course-details/course-details.component';
 
 
 const routes: Routes = [
@@ -46,9 +49,23 @@ const routes: Routes = [
       },
       {
         path: 'courses', children: [
-          { path: 'new-course', component: NewCourseComponent },
+          {
+            path: 'new-course',
+            component: NewCourseComponent,
+            canDeactivate: [CanDeactivateGuard]
+          },
           { path: 'trashed', component: TrashedCoursesComponent },
-          { path: ':slug', component: NewCourseComponent },
+          {
+            path: 'edit-course/:id/:slug',
+            component: NewCourseComponent,
+            resolve: [CoursesResolverService],
+            canDeactivate: [CanDeactivateGuard]
+          },
+          {
+            path: ':id/:slug',
+            component: CourseDetailsComponent,
+            resolve: [CoursesResolverService],
+          },
           { path: '', component: ListCoursesComponent, pathMatch: 'full' }
         ]
       },
@@ -81,6 +98,8 @@ const routes: Routes = [
     canActivate: [AdminGuard]
   },
 ];
+
+
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

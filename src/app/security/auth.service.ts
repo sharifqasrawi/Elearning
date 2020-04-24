@@ -10,7 +10,7 @@ export class AuthService {
 
   constructor(
     private store: Store<fromApp.AppState>
-  ) {}
+  ) { }
 
   setLogoutTimer(expirationDuration: number) {
     this.tokenExpirationTimer = setTimeout(() => {
