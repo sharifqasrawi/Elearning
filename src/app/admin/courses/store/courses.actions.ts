@@ -33,8 +33,11 @@ export const ADD_REMOVE_TAG_SUCCESS = '[Courses] Remove Tag Success';
 export const ADD_REMOVE_TAG_FAIL = '[Courses] Remove Tag Restore Fail';
 
 export const CREATE_SECTION_START = '[Courses] Create Section Start';
-export const CREATE_SECTION_SUCCESS = '[Courses] Create Section Success';
-export const CREATE_SECTION_FAIL = '[Courses] Create Section Fail';
+export const UPDATE_SECTION_START = '[Courses] Update Section Start';
+export const DELETE_SECTION_START = '[Courses] Delete Section Start';
+export const MANAGE_SECTION_SUCCESS = '[Courses] Manage Section Success';
+export const MANAGE_SECTION_FAIL = '[Courses] Manage Section Fail';
+
 
 export const CLEAR_ERRORS = '[Courses] Clear Errors';
 export const CLEAR_STATUS = '[Courses] Clear Status';
@@ -224,18 +227,42 @@ export class CreateSectionStart implements Action {
         course: { id: number },
         name_EN: string,
         order: number,
+        action: string
     }) { }
 }
 
 
-export class CreateSectionSuccess implements Action {
-    readonly type = CREATE_SECTION_SUCCESS;
+export class UpdateSectionStart implements Action {
+    readonly type = UPDATE_SECTION_START;
+
+    constructor(public payload: {
+        course: { id: number },
+        id: number,
+        name_EN: string,
+        order: number,
+        action: string
+    }) { }
+}
+
+export class DeleteSectionStart implements Action {
+    readonly type = DELETE_SECTION_START;
+
+    constructor(public payload: {
+        course: { id: number },
+        id: number,
+        action: string
+    }) { }
+}
+
+
+export class ManageSectionSuccess implements Action {
+    readonly type = MANAGE_SECTION_SUCCESS;
 
     constructor(public payload: Course) { }
 }
 
-export class CreateSectionFail implements Action {
-    readonly type = CREATE_SECTION_FAIL;
+export class ManageSectionFail implements Action {
+    readonly type = MANAGE_SECTION_FAIL;
 
     constructor(public payload: string[]) { }
 }
@@ -275,8 +302,10 @@ export type CoursesActions =
     | TrashSuccess
     | TrashRestoreFail
     | CreateSectionStart
-    | CreateSectionSuccess
-    | CreateSectionFail
+    | UpdateSectionStart
+    | DeleteSectionStart
+    | ManageSectionSuccess
+    | ManageSectionFail
     | ClearErrors
     | ClearStatus
     ;

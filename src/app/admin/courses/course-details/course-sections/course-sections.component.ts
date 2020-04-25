@@ -1,7 +1,7 @@
+import { ConfirmDialogComponent } from './../../../../shared/confirm-dialog/confirm-dialog.component';
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { faSearch, faTimes, faCheck } from '@fortawesome/free-solid-svg-icons';
-import { Course } from 'src/app/models/course.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -13,6 +13,7 @@ import { Section } from './../../../../models/section.model';
 import { NewSectionComponent } from './new-section/new-section.component';
 
 import * as fromApp from '../../../../store/app.reducer';
+import * as CoursesActions from '../../store/courses.actions';
 
 @Component({
   selector: 'app-course-sections',
@@ -30,8 +31,7 @@ export class CourseSectionsComponent implements OnInit {
 
   errors: string[] = null;
   loading = false;
-  loaded = false;
-  deleting = false;
+  updating = false;
 
   count = 0;
 
@@ -51,22 +51,68 @@ export class CourseSectionsComponent implements OnInit {
 
     this.store.select('courses').subscribe(state => {
       this.sections = [...state.courses.find(c => c.id === this.courseId).sections];
+      this.updating = state.updating;
+      this.loading = state.loading;
+      this.errors = state.errors;
+
       this.setTable();
     });
 
   }
 
-  onEdit() {
+  onDelete(id: number) {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent,
+      {
+        width: '250px',
+        data: { header: 'Confirmation', message: 'Delete this section?' }
+      });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result)
+        this.store.dispatch(new CoursesActions.DeleteSectionStart({
+          course: {
+            id: this.courseId
+          },
+          id: id,
+          action: 'remove'
+        }))
+    });
+  }
+
+  onCreate() {
+
+    const maxOrder = Math.max.apply(Math, this.sections.map(s => s.order));
+
     const dialogRef = this.dialog.open(NewSectionComponent,
       {
         width: '650px',
         disableClose: true,
-        data: { courseId: this.courseId, editMode: false }
+        data: { courseId: this.courseId, editMode: false, order: maxOrder + 1 }
       });
 
-      dialogRef.afterClosed().subscribe(() => {
-        this.setTable();
+    dialogRef.afterClosed().subscribe(() => {
+      this.setTable();
+    });
+  }
+
+  onEdit(sectionId: number, name_EN: string, order: number) {
+    const dialogRef = this.dialog.open(NewSectionComponent,
+      {
+        width: '650px',
+        disableClose: true,
+        data: {
+          courseId: this.courseId,
+          sectionId: sectionId,
+          name_EN: name_EN,
+          order: order,
+          editMode: true
+
+        }
       });
+
+    dialogRef.afterClosed().subscribe(() => {
+      this.setTable();
+    });
   }
 
   onRefresh() {

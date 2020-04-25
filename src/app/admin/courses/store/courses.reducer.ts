@@ -266,7 +266,23 @@ export function coursesReducer(state: State = initialState, action: CoursesActio
                 updated: false,
                 errors: null
             };
-        case CoursesActions.CREATE_SECTION_SUCCESS:
+
+        case CoursesActions.UPDATE_SECTION_START:
+            return {
+                ...state,
+                updating: true,
+                updated: false,
+                errors: null
+            };
+
+        case CoursesActions.DELETE_SECTION_START:
+            return {
+                ...state,
+                updating: true,
+                updated: false,
+                errors: null
+            };
+        case CoursesActions.MANAGE_SECTION_SUCCESS:
             const courseToChangeSectionsIndex = state.courses.findIndex(c => c.id === action.payload.id);
             const courseToChangeSections = state.courses.find(c => c.id === action.payload.id);
             const coursesAfterChangeSections = [...state.courses];
@@ -286,7 +302,7 @@ export function coursesReducer(state: State = initialState, action: CoursesActio
                 updated: true,
                 courses: coursesAfterChangeSections
             };
-        case CoursesActions.CREATE_SECTION_FAIL:
+        case CoursesActions.MANAGE_SECTION_FAIL:
             return {
                 ...state,
                 updating: false,
@@ -296,6 +312,8 @@ export function coursesReducer(state: State = initialState, action: CoursesActio
 
         /////////////////////
 
+
+    
         case CoursesActions.CLEAR_ERRORS:
             return {
                 ...state,

@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-lg-4  mb-2">
                 <div class="box1">
-                    <img [src]="course.imagePath" alt="no preview">
+                    <img [src]="getImage(course.imagePath)" alt="no preview">
                 </div>
             </div>
             <div class="col-lg-4 mb-2 ">
@@ -63,12 +63,12 @@
             <div class="col-lg-6 mb-4 ">
                 <strong>Description:</strong>
                 <hr>
-                <div [innerHTML]="course.description_EN" class="desc"></div>
+                <div [innerHTML]="getSanitizedHtml(course.description_EN)" class="desc"></div>
             </div>
             <div class="col-lg-6 mb-4 ">
                 <strong>Prerequisites:</strong>
                 <hr>
-                <div [innerHTML]="course.prerequisites_EN" class="desc"></div>
+                <div [innerHTML]="getSanitizedHtml(course.prerequisites_EN)" class="desc"></div>
             </div>
         </div>
     </div>

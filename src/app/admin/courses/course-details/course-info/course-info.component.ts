@@ -1,8 +1,8 @@
+import { DomSanitizer } from '@angular/platform-browser';
 import { Component, OnInit, Input } from '@angular/core';
 import { ThemePalette } from '@angular/material/core';
-import { ActivatedRoute, Router, Params } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { map } from 'rxjs/operators';
 
 import { Course } from './../../../../models/course.model';
 import * as fromApp from '../../../../store/app.reducer';
@@ -21,9 +21,9 @@ export class CourseInfoComponent implements OnInit {
   colorPrimary: ThemePalette = 'primary';
 
   constructor(
-    private router: Router,
     private route: ActivatedRoute,
-    private store: Store<fromApp.AppState>
+    private store: Store<fromApp.AppState>,
+    private sanitizer: DomSanitizer
   ) { }
 
   ngOnInit(): void {
@@ -43,4 +43,12 @@ export class CourseInfoComponent implements OnInit {
       });
   }
 
+
+  getImage(imagePath: string) {
+    return this.sanitizer.bypassSecurityTrustResourceUrl(imagePath);
+  }
+
+  getSanitizedHtml(html: string) {
+    return this.sanitizer.bypassSecurityTrustHtml(html);
+  }
 }

@@ -16,7 +16,7 @@
                 </button>
             </div>
             <div class="col-lg-2">
-                <button mat-raised-button color="primary" class="btn-block" (click)="onEdit()">
+                <button mat-raised-button color="primary" class="btn-block" (click)="onCreate()">
                     Create
                 </button>
             </div>
@@ -30,8 +30,8 @@
         </div>
 
         <div class="dataTable-container mat-elevation-z8">
-            <div class="dataTable-loading-shade" *ngIf="loading || deleting">
-                <mat-spinner *ngIf="loading || deleting"></mat-spinner>
+            <div class="dataTable-loading-shade" *ngIf="updating || loading">
+                <mat-spinner *ngIf="updating || loading"></mat-spinner>
             </div>
 
             <div class="dataTable-table-container">
@@ -95,18 +95,12 @@
                                 <mat-icon>settings</mat-icon>
                             </a>
                             <mat-menu #menu="matMenu" [overlapTrigger]="false">
-                                <!-- <a class="dropdown-item btn-link" style="cursor: pointer;"
-                                    [routerLink]="['/admin', 'courses', row.id ,row.slug_EN]">
-                                    Details
-                                </a>
-                                <a class="dropdown-item btn-link" style="cursor: pointer;"
-                                    [routerLink]="['/admin', 'courses', 'edit-course', row.id ,row.slug_EN]"
-                                    [queryParams]="{'editMode': true}">
+                                <button class="dropdown-item" style="cursor: pointer;" (click)="onEdit(row.id, row.name_EN, row.order);">
                                     Edit
-                                </a>
-                                <button class="dropdown-item" style="cursor: pointer;" (click)="onTrash(row.id);">
-                                    Trash
-                                </button> -->
+                                </button>
+                                <button class="dropdown-item" style="cursor: pointer;" (click)="onDelete(row.id);">
+                                    Delete
+                                </button>
                             </mat-menu>
 
                         </td>
