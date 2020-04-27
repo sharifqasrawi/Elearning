@@ -1,7 +1,7 @@
 import { Store } from '@ngrx/store';
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 
 import { DiscardChangesComponent } from './../../../../../shared/discard-changes/discard-changes.component';
@@ -22,7 +22,7 @@ export interface DialogData {
   templateUrl: './new-section.component.html',
   styleUrls: ['./new-section.component.css']
 })
-export class NewSectionComponent implements OnInit {
+export class NewSectionComponent implements OnInit, OnDestroy {
 
   faPlusCircle = faPlusCircle;
 
@@ -40,9 +40,14 @@ export class NewSectionComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: DialogData) { }
 
 
+  ngOnDestroy(): void {
+    this.store.dispatch(new CoursesActions.ClearStatus());
+  }
+
+
   ngOnInit(): void {
     this.editMode = this.data.editMode;
-
+   
     if (!this.editMode) {
       this.form = new FormGroup({
         name_EN: new FormControl(null, [Validators.required]),

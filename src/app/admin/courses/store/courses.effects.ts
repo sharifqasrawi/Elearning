@@ -301,19 +301,19 @@ export class CoursesEffects {
                 })
                 .pipe(
                     map(resData => {
-                        return new CoursesActions.ManageSectionSuccess(resData.updatedCourse);
+                        return new CoursesActions.CreateSectionSuccess(resData.updatedCourse);
                     }),
                     catchError(errorRes => {
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new CoursesActions.ManageSectionFail(['Access Denied']));
+                                return of(new CoursesActions.CreateSectionFail(['Access Denied']));
                             case 404:
-                                return of(new CoursesActions.ManageSectionFail(['Error 404. Not Found']));
+                                return of(new CoursesActions.CreateSectionFail(['Error 404. Not Found']));
                             case 400:
-                                return of(new CoursesActions.ManageSectionFail(errorRes.error.errors));
+                                return of(new CoursesActions.CreateSectionFail(errorRes.error.errors));
                             default:
-                                return of(new CoursesActions.ManageSectionFail(['Oops! An error occured']));
+                                return of(new CoursesActions.CreateSectionFail(['Oops! An error occured']));
                         }
                     })
                 )
@@ -338,19 +338,19 @@ export class CoursesEffects {
                 })
                 .pipe(
                     map(resData => {
-                        return new CoursesActions.ManageSectionSuccess(resData.updatedCourse);
+                        return new CoursesActions.DeleteSectionSuccess(resData.updatedCourse);
                     }),
                     catchError(errorRes => {
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new CoursesActions.ManageSectionFail(['Access Denied']));
+                                return of(new CoursesActions.DeleteSectionFail(['Access Denied']));
                             case 404:
-                                return of(new CoursesActions.ManageSectionFail(['Error 404. Not Found']));
+                                return of(new CoursesActions.DeleteSectionFail(['Error 404. Not Found']));
                             case 400:
-                                return of(new CoursesActions.ManageSectionFail(errorRes.error.errors));
+                                return of(new CoursesActions.DeleteSectionFail(errorRes.error.errors));
                             default:
-                                return of(new CoursesActions.ManageSectionFail(['Oops! An error occured']));
+                                return of(new CoursesActions.DeleteSectionFail(['Oops! An error occured']));
                         }
                     })
                 )
@@ -378,19 +378,138 @@ export class CoursesEffects {
                 })
                 .pipe(
                     map(resData => {
-                        return new CoursesActions.ManageSectionSuccess(resData.updatedCourse);
+                        return new CoursesActions.UpdateSectionSuccess(resData.updatedCourse);
                     }),
                     catchError(errorRes => {
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new CoursesActions.ManageSectionFail(['Access Denied']));
+                                return of(new CoursesActions.UpdateSectionFail(['Access Denied']));
                             case 404:
-                                return of(new CoursesActions.ManageSectionFail(['Error 404. Not Found']));
+                                return of(new CoursesActions.UpdateSectionFail(['Error 404. Not Found']));
                             case 400:
-                                return of(new CoursesActions.ManageSectionFail(errorRes.error.errors));
+                                return of(new CoursesActions.UpdateSectionFail(errorRes.error.errors));
                             default:
-                                return of(new CoursesActions.ManageSectionFail(['Oops! An error occured']));
+                                return of(new CoursesActions.UpdateSectionFail(['Oops! An error occured']));
+                        }
+                    })
+                )
+        })
+    );
+
+
+    //// Sessions
+
+    @Effect()
+    createSession = this.actions$.pipe(
+        ofType(CoursesActions.CREATE_SESSION_START),
+        switchMap((sessionData: CoursesActions.CreateSessionStart) => {
+            return this.http.post<{ updatedCourse: Course }>(environment.API_BASE_URL + 'courses/edit-session',
+                {
+                    section: {
+                        id: sessionData.payload.section.id,
+                        course: {
+                            id: sessionData.payload.section.course.id
+                        }
+                    },
+                    title_EN: sessionData.payload.title_EN,
+                    order: sessionData.payload.order,
+                    duration: sessionData.payload.duration,
+                    createdBy: this.userName,
+                    updatedBy: this.userName
+                },
+                {
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    params: new HttpParams().set('action', sessionData.payload.action)
+                })
+                .pipe(
+                    map(resData => {
+                        return new CoursesActions.CreateSectionSuccess(resData.updatedCourse);
+                    }),
+                    catchError(errorRes => {
+                        switch (errorRes.status) {
+                            case 403:
+                            case 401:
+                                return of(new CoursesActions.CreateSectionFail(['Access Denied']));
+                            case 404:
+                                return of(new CoursesActions.CreateSectionFail(['Error 404. Not Found']));
+                            case 400:
+                                return of(new CoursesActions.CreateSectionFail(errorRes.error.errors));
+                            default:
+                                return of(new CoursesActions.CreateSectionFail(['Oops! An error occured']));
+                        }
+                    })
+                )
+        })
+    );
+
+    @Effect()
+    updateSession = this.actions$.pipe(
+        ofType(CoursesActions.UPDATE_SESSION_START),
+        switchMap((sessionData: CoursesActions.UpdateSessionStart) => {
+            return this.http.post<{ updatedCourse: Course }>(environment.API_BASE_URL + 'courses/edit-session',
+                {
+                    id: sessionData.payload.id,
+                    section: {
+                        id: sessionData.payload.section.id,
+                        course: {
+                            id: sessionData.payload.section.course.id
+                        }
+                    },
+                    title_EN: sessionData.payload.title_EN,
+                    order: sessionData.payload.order,
+                    duration: sessionData.payload.duration,
+                    updatedBy: this.userName
+                },
+                {
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    params: new HttpParams().set('action', sessionData.payload.action)
+                })
+                .pipe(
+                    map(resData => {
+                        return new CoursesActions.UpdateSectionSuccess(resData.updatedCourse);
+                    }),
+                    catchError(errorRes => {
+                        switch (errorRes.status) {
+                            case 403:
+                            case 401:
+                                return of(new CoursesActions.UpdateSectionFail(['Access Denied']));
+                            case 404:
+                                return of(new CoursesActions.UpdateSectionFail(['Error 404. Not Found']));
+                            case 400:
+                                return of(new CoursesActions.UpdateSectionFail(errorRes.error.errors));
+                            default:
+                                return of(new CoursesActions.UpdateSectionFail(['Oops! An error occured']));
+                        }
+                    })
+                )
+        })
+    );
+
+    @Effect()
+    deleteSession = this.actions$.pipe(
+        ofType(CoursesActions.DELETE_SESSION_START),
+        switchMap((sessionData: CoursesActions.DeleteSessionStart) => {
+            return this.http.delete<{ updatedCourse: Course }>(environment.API_BASE_URL + 'courses/delete-session',
+                {
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    params: new HttpParams().set('id', sessionData.payload.toString())
+                })
+                .pipe(
+                    map(resData => {
+                        return new CoursesActions.DeleteSectionSuccess(resData.updatedCourse);
+                    }),
+                    catchError(errorRes => {
+                        switch (errorRes.status) {
+                            case 403:
+                            case 401:
+                                return of(new CoursesActions.DeleteSectionFail(['Access Denied']));
+                            case 404:
+                                return of(new CoursesActions.DeleteSectionFail(['Error 404. Not Found']));
+                            case 400:
+                                return of(new CoursesActions.DeleteSectionFail(errorRes.error.errors));
+                            default:
+                                return of(new CoursesActions.DeleteSectionFail(['Oops! An error occured']));
                         }
                     })
                 )

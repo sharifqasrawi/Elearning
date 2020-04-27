@@ -12,6 +12,9 @@ export interface State {
     updating: boolean,
     updated: boolean,
     deleting: boolean,
+    deleted: boolean,
+    publishing: boolean,
+    published: boolean,
     errors: string[],
 };
 
@@ -25,6 +28,9 @@ const initialState: State = {
     updating: false,
     updated: false,
     deleting: false,
+    deleted: false,
+    publishing: false,
+    published: false,
     errors: null,
 };
 
@@ -190,8 +196,8 @@ export function coursesReducer(state: State = initialState, action: CoursesActio
         case CoursesActions.PUBLISH_UNPUBLISH_START:
             return {
                 ...state,
-                loading: true,
-                loaded: false,
+                publishing: true,
+                published: false,
                 errors: null
             };
         case CoursesActions.PUBLISH_UNPUBLISH_SUCCESS:
@@ -209,14 +215,14 @@ export function coursesReducer(state: State = initialState, action: CoursesActio
 
             return {
                 ...state,
-                loading: false,
-                loaded: true,
+                publishing: false,
+                published: true,
                 courses: coursesAfterPublish
             };
         case CoursesActions.PUBLISH_UNPUBLISH_FAIL:
             return {
                 ...state,
-                loading: false,
+                publishing: false,
                 errors: [...action.payload]
             };
 
@@ -262,9 +268,37 @@ export function coursesReducer(state: State = initialState, action: CoursesActio
         case CoursesActions.CREATE_SECTION_START:
             return {
                 ...state,
-                updating: true,
-                updated: false,
+                creating: true,
+                created: false,
                 errors: null
+            };
+        case CoursesActions.CREATE_SECTION_SUCCESS:
+            const courseToCreateSectionsIndex = state.courses.findIndex(c => c.id === action.payload.id);
+            const courseToCreateSections = state.courses.find(c => c.id === action.payload.id);
+            const coursesAfterCreateSections = [...state.courses];
+
+            const courseAfterCreateSections = {
+                ...courseToCreateSections,
+                sections: [
+                    ...action.payload.sections
+                ]
+            };
+
+            coursesAfterCreateSections[courseToCreateSectionsIndex] = courseAfterCreateSections;
+
+
+            return {
+                ...state,
+                creating: false,
+                created: true,
+                courses: coursesAfterCreateSections
+            };
+
+        case CoursesActions.CREATE_SECTION_FAIL:
+            return {
+                ...state,
+                creating: false,
+                errors: [...action.payload]
             };
 
         case CoursesActions.UPDATE_SECTION_START:
@@ -275,37 +309,185 @@ export function coursesReducer(state: State = initialState, action: CoursesActio
                 errors: null
             };
 
+        case CoursesActions.UPDATE_SECTION_SUCCESS:
+            const courseToUpdateSectionsIndex = state.courses.findIndex(c => c.id === action.payload.id);
+            const courseToUpdateSections = state.courses.find(c => c.id === action.payload.id);
+            const coursesAfterUpdateSections = [...state.courses];
+
+            const courseAfterUpdateSections = {
+                ...courseToUpdateSections,
+                sections: [
+                    ...action.payload.sections
+                ]
+            };
+
+            coursesAfterUpdateSections[courseToUpdateSectionsIndex] = courseAfterUpdateSections;
+
+
+            return {
+                ...state,
+                updating: false,
+                updated: true,
+                courses: coursesAfterUpdateSections
+            };
+
+        case CoursesActions.UPDATE_SECTION_FAIL:
+            return {
+                ...state,
+                updating: false,
+                errors: [...action.payload]
+            };
+
         case CoursesActions.DELETE_SECTION_START:
+            return {
+                ...state,
+                deleting: true,
+                deleted: false,
+                errors: null
+            };
+
+        case CoursesActions.DELETE_SECTION_SUCCESS:
+            const courseToDeleteSectionsIndex = state.courses.findIndex(c => c.id === action.payload.id);
+            const courseToDeleteSections = state.courses.find(c => c.id === action.payload.id);
+            const coursesAfterDeleteSections = [...state.courses];
+
+            const courseAfterDeleteSections = {
+                ...courseToDeleteSections,
+                sections: [
+                    ...action.payload.sections
+                ]
+            };
+
+            coursesAfterDeleteSections[courseToDeleteSectionsIndex] = courseAfterDeleteSections;
+
+
+            return {
+                ...state,
+                deleting: false,
+                deleted: true,
+                courses: coursesAfterDeleteSections
+            };
+
+        case CoursesActions.DELETE_SECTION_FAIL:
+            return {
+                ...state,
+                deleting: false,
+                errors: [...action.payload]
+            };
+
+
+
+
+        /////////////////////
+
+
+        case CoursesActions.CREATE_SESSION_START:
+            return {
+                ...state,
+                creating: true,
+                created: false,
+                errors: null
+            };
+        case CoursesActions.CREATE_SESSION_SUCCESS:
+            const courseToCreateSessionIndex = state.courses.findIndex(c => c.id === action.payload.id);
+            const courseToCreateSession = state.courses.find(c => c.id === action.payload.id);
+            const coursesAfterCreateSession = [...state.courses];
+
+            const courseAfterCreateSession = {
+                ...courseToCreateSession,
+                sections: [
+                    ...action.payload.sections
+                ]
+            };
+
+            coursesAfterCreateSession[courseToCreateSessionIndex] = courseAfterCreateSession;
+
+
+            return {
+                ...state,
+                creating: false,
+                created: true,
+                courses: coursesAfterCreateSession
+            };
+
+        case CoursesActions.CREATE_SESSION_FAIL:
+            return {
+                ...state,
+                creating: false,
+                errors: [...action.payload]
+            };
+
+        case CoursesActions.UPDATE_SESSION_START:
             return {
                 ...state,
                 updating: true,
                 updated: false,
                 errors: null
             };
-        case CoursesActions.MANAGE_SECTION_SUCCESS:
-            const courseToChangeSectionsIndex = state.courses.findIndex(c => c.id === action.payload.id);
-            const courseToChangeSections = state.courses.find(c => c.id === action.payload.id);
-            const coursesAfterChangeSections = [...state.courses];
 
-            const courseAfterChangeSections = {
-                ...courseToChangeSections,
+        case CoursesActions.UPDATE_SESSION_SUCCESS:
+            const courseToUpdateSessionIndex = state.courses.findIndex(c => c.id === action.payload.id);
+            const courseToUpdateSession = state.courses.find(c => c.id === action.payload.id);
+            const coursesAfterUpdateSession = [...state.courses];
+
+            const courseAfterUpdateSession = {
+                ...courseToUpdateSession,
                 sections: [
                     ...action.payload.sections
                 ]
             };
 
-            coursesAfterChangeSections[courseToChangeSectionsIndex] = courseAfterChangeSections;
+            coursesAfterUpdateSession[courseToUpdateSessionIndex] = courseAfterUpdateSession;
+
 
             return {
                 ...state,
                 updating: false,
                 updated: true,
-                courses: coursesAfterChangeSections
+                courses: coursesAfterUpdateSession
             };
-        case CoursesActions.MANAGE_SECTION_FAIL:
+
+        case CoursesActions.UPDATE_SESSION_FAIL:
             return {
                 ...state,
                 updating: false,
+                errors: [...action.payload]
+            };
+
+        case CoursesActions.DELETE_SESSION_START:
+            return {
+                ...state,
+                deleting: true,
+                deleted: false,
+                errors: null
+            };
+
+        case CoursesActions.DELETE_SESSION_SUCCESS:
+            const courseToDeleteSessionIndex = state.courses.findIndex(c => c.id === action.payload.id);
+            const courseToDeleteSession = state.courses.find(c => c.id === action.payload.id);
+            const coursesAfterDeleteSession = [...state.courses];
+
+            const courseAfterDeleteSession = {
+                ...courseToDeleteSession,
+                sections: [
+                    ...action.payload.sections
+                ]
+            };
+
+            coursesAfterDeleteSession[courseToDeleteSessionIndex] = courseAfterDeleteSession;
+
+
+            return {
+                ...state,
+                deleting: false,
+                deleted: true,
+                courses: coursesAfterDeleteSession
+            };
+
+        case CoursesActions.DELETE_SESSION_FAIL:
+            return {
+                ...state,
+                deleting: false,
                 errors: [...action.payload]
             };
 
@@ -313,7 +495,6 @@ export function coursesReducer(state: State = initialState, action: CoursesActio
         /////////////////////
 
 
-    
         case CoursesActions.CLEAR_ERRORS:
             return {
                 ...state,
@@ -329,6 +510,9 @@ export function coursesReducer(state: State = initialState, action: CoursesActio
                 updating: false,
                 updated: false,
                 deleting: false,
+                deleted: false,
+                publishing: false,
+                published: false,
             };
         default:
             return state;

@@ -7,6 +7,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { CountUpModule } from 'ngx-countup';
 import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
 import 'froala-editor/js/plugins.pkgd.min.js';
+import { ToastrModule } from 'ngx-toastr';
 
 import { NavigationComponent } from './navigation/navigation.component';
 import { MainComponent } from './main/main.component';
@@ -39,6 +40,8 @@ import { CourseInfoComponent } from './courses/course-details/course-info/course
 import { CourseTagsComponent } from './courses/course-details/course-tags/course-tags.component';
 import { CourseSectionsComponent } from './courses/course-details/course-sections/course-sections.component';
 import { NewSectionComponent } from './courses/course-details/course-sections/new-section/new-section.component';
+import { CourseSessionsComponent } from './courses/course-details/course-sessions/course-sessions.component';
+import { NewSessionComponent } from './courses/course-details/course-sessions/new-session/new-session.component';
 
 @NgModule({
     declarations: [
@@ -70,6 +73,9 @@ import { NewSectionComponent } from './courses/course-details/course-sections/ne
         CourseTagsComponent,
         CourseSectionsComponent,
         NewSectionComponent,
+        CourseSessionsComponent,
+        NewSessionComponent,
+        
     ],
     imports: [
         CommonModule,
@@ -81,6 +87,9 @@ import { NewSectionComponent } from './courses/course-details/course-sections/ne
         CountUpModule,
         FroalaEditorModule.forRoot(), 
         FroalaViewModule.forRoot(),
+        ToastrModule.forRoot({
+            // preventDuplicates: true
+        }),
         AdminRoutingModule,
         SharedModule,
     ],

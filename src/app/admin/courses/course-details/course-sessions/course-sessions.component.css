@@ -1,0 +1,42 @@
+.sessionDiv {
+    width: 100%;
+    padding: 14px;
+    background-color: rgb(70, 69, 69);
+    box-shadow: 3px 4px 5px rgb(59, 59, 59);
+    color: lightgrey;
+    margin-bottom: 20px;
+    border-radius: 10px;
+}
+
+.section {
+    background-color: rgb(211, 211, 211);
+}
+
+.btnAddSession {
+    color: green;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.btnAddSession:hover {
+    color: rgb(0, 175, 0);
+}
+
+.loading {
+    width: 100%;
+    height: 100%;
+    padding: 14px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 20;
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.loading .spinner {
+    margin: 0 auto;
+    width: 100%;
+    height: auto;
+    padding: 10px;
+    position: relative;
+}

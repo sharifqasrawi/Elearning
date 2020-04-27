@@ -14,6 +14,7 @@ import { NewSectionComponent } from './new-section/new-section.component';
 
 import * as fromApp from '../../../../store/app.reducer';
 import * as CoursesActions from '../../store/courses.actions';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-course-sections',
@@ -32,6 +33,8 @@ export class CourseSectionsComponent implements OnInit {
   errors: string[] = null;
   loading = false;
   updating = false;
+  creating = false;
+  deleting = false;
 
   count = 0;
 
@@ -45,6 +48,7 @@ export class CourseSectionsComponent implements OnInit {
     private dialog: MatDialog,
     private store: Store<fromApp.AppState>,
     private snackBar: MatSnackBar,
+    private toastr: ToastrService
   ) { }
 
   ngOnInit(): void {
@@ -52,8 +56,26 @@ export class CourseSectionsComponent implements OnInit {
     this.store.select('courses').subscribe(state => {
       this.sections = [...state.courses.find(c => c.id === this.courseId).sections];
       this.updating = state.updating;
+      this.creating = state.creating;
+      this.deleting = state.deleting;
       this.loading = state.loading;
       this.errors = state.errors;
+
+
+      // if (state.created) {
+      //   this.toastr.success('Saved', 'Section created successfully');
+      //   this.store.dispatch(new CoursesActions.ClearStatus());
+      // }
+
+      // if (state.updated) {
+      //   this.toastr.info('Saved', 'Section updated successfully');
+      //   this.store.dispatch(new CoursesActions.ClearStatus());
+      // }
+
+      // if (state.deleted) {
+      //   this.toastr.warning('Deleted', 'Section deleted successfully');
+      //   this.store.dispatch(new CoursesActions.ClearStatus());
+      // }
 
       this.setTable();
     });
@@ -81,7 +103,9 @@ export class CourseSectionsComponent implements OnInit {
 
   onCreate() {
 
-    const maxOrder = Math.max.apply(Math, this.sections.map(s => s.order));
+    let maxOrder = -1;
+    if (this.sections.length > 0)
+      maxOrder = Math.max.apply(Math, this.sections.map(s => s.order));
 
     const dialogRef = this.dialog.open(NewSectionComponent,
       {

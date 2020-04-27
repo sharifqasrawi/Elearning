@@ -1,0 +1,112 @@
+<div class="row full-width center">
+    <div class="col-lg-12">
+
+        <div class="row">
+            <div class="col-lg-10">
+                <h1>
+                    <mat-icon>library_books</mat-icon>
+                    Sessions
+                </h1>
+            </div>
+            <div class="col-lg-2">
+                <button mat-raised-button color="accent" class="btn-block">
+                    <fa-icon [icon]="faPlusCircle"></fa-icon>
+                    Refresh
+                </button>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div *ngIf="errors" class="mb-2">
+                    <div class="alert alert-danger" *ngFor="let error of errors">
+                        {{ error }}
+                    </div>
+                </div>
+
+                <mat-accordion>
+                    <div class="loading" *ngIf="updating">
+                        <mat-spinner class="spinner"  *ngIf="updating"></mat-spinner>
+                    </div>
+                    <mat-expansion-panel *ngFor="let section of sections" class="p-1 section mb-2">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                <strong>{{ section.order }} - {{ section.name_EN }}</strong>
+                            </mat-panel-title>
+                            <mat-panel-description>
+                                Sessions: {{ section.sessions.length }}
+                            </mat-panel-description>
+                        </mat-expansion-panel-header>
+
+                        <hr>
+                        <div class="text-center mb-3">
+                            <button mat-mini-fab color="primary" aria-label="Create session"
+                                (click)="onCreate(section.id, section.sessions)">
+                                <mat-icon>add</mat-icon>
+                            </button>
+                        </div>
+                        <div *ngIf="section.sessions.length > 0">
+                            <div *ngFor="let session of section.sessions" class="sessionDiv ">
+                                <div class="row">
+                                    <div class="col-lg-10">
+                                        <h3> <strong> {{ session.order}} - {{ session.title_EN }}</strong></h3>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <p><strong>Duration: </strong> {{ session.duration }}</p>
+                                    </div>
+                                </div>
+                                <hr style="border-color: lightgrey;">
+                                <div class="row">
+                                    <div class="col-lg-3">
+                                        <p><strong>Created By: </strong> {{ session.createdBy }} <br>
+                                            <span class="small text-muted">
+                                                {{ session.createdAt | date:'medium' }}
+                                            </span>
+                                        </p>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <p><strong>Updated By: </strong> {{ session.updatedBy }} <br>
+                                            <span class="small text-muted">
+                                                {{ session.updatedAt | date:'medium' }}
+                                            </span>
+                                        </p>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <button mat-raised-button color="primary" class="btn-block mb-1"
+                                            (click)="onEdit(section.id, session.id, session.title_EN, session.order, session.duration)">
+                                            <fa-icon [icon]="faEdit"></fa-icon>
+                                            Edit
+                                        </button>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <button mat-raised-button color="accent" class="btn-block mb-1">
+                                            <fa-icon [icon]="faFileAlt"></fa-icon>
+                                            Content
+                                        </button>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <button mat-raised-button color="warn" class="btn-block mb-1"
+                                            (click)="onDelete(session.id)">
+                                            <fa-icon [icon]="faTrashAlt"></fa-icon>
+                                            Delete
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div *ngIf="section.sessions.length === 0">
+                            <div class="sessionDiv text-center">
+                                <h3>No Sessions.</h3>
+                            </div>
+                        </div>
+
+                    </mat-expansion-panel>
+
+                </mat-accordion>
+            </div>
+        </div>
+    </div>
+</div>

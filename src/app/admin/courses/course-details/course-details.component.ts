@@ -7,6 +7,7 @@ import { Router, ActivatedRoute, Params } from '@angular/router';
 import * as fromApp from '../../../store/app.reducer';
 import * as CoursesActions from '../store/courses.actions';
 import { Course } from './../../../models/course.model';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-course-details',
@@ -26,7 +27,8 @@ export class CourseDetailsComponent implements OnInit {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private store: Store<fromApp.AppState>
+    private store: Store<fromApp.AppState>,
+    private toastr: ToastrService
   ) { }
 
   ngOnInit(): void {
@@ -40,14 +42,22 @@ export class CourseDetailsComponent implements OnInit {
 
     this.store.select('courses')
       .subscribe(state => {
-        
+
         if (!this.trashed) {
           this.course = state.courses.find(c => c.id === this.courseId);
         }
         else {
           this.course = state.trashedCourses.find(c => c.id === this.courseId);
         }
-        this.publishing = state.loading;
+        this.publishing = state.publishing;
+
+        if (state.published){
+          this.toastr.success('Changes saved successfully', 'Saved');
+        }
+
+      
+
+        
       });
   }
 

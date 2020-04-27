@@ -17,7 +17,7 @@
             </div>
             <div class="col-lg-2">
                 <button mat-raised-button color="primary" class="btn-block" (click)="onCreate()">
-                    Create
+                    {{ creating || updating || deleting ? 'Working...' : 'Create' }}
                 </button>
             </div>
         </div>
@@ -30,8 +30,8 @@
         </div>
 
         <div class="dataTable-container mat-elevation-z8">
-            <div class="dataTable-loading-shade" *ngIf="updating || loading">
-                <mat-spinner *ngIf="updating || loading"></mat-spinner>
+            <div class="dataTable-loading-shade" *ngIf="updating || loading || creating || deleting">
+                <mat-spinner *ngIf="updating || loading || creating || deleting"></mat-spinner>
             </div>
 
             <div class="dataTable-table-container">

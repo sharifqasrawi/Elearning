@@ -1,3 +1,4 @@
+import { Session } from './session.model';
 export class Section {
     constructor(
         public id: number,
@@ -7,8 +8,9 @@ export class Section {
         public createdAt?: Date,
         public createdBy?: string,
         public updatedAt?: Date,
-        public updateddBy?: string,
+        public updatedBy?: string,
         public deletedAt?: Date,
         public deletedBy?: string,
+        public sessions?: Session[]
     ){}
 }

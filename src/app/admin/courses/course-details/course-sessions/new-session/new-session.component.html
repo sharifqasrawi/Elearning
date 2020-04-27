@@ -1,22 +1,30 @@
 <h2 mat-dialog-title>
     <fa-icon [icon]="faPlusCircle"></fa-icon>
-    {{ !editMode ? ' Create new section' : 'Edit section' }}
+   {{ !editMode ? ' Create new session' : 'Edit session' }}
 </h2>
 <hr>
 
 <form [formGroup]="form" (ngSubmit)="onSubmit()" (change)="formChanged()">
     <div mat-dialog-content>
         <mat-form-field class="full-width" appearance="legacy">
-            <mat-label>Name (en) </mat-label>
-            <input type="text" matInput formControlName="name_EN" placeholder="Enter section name">
-            <mat-error *ngIf="!form.controls.name_EN.valid && form.controls.name_EN.touched">
+            <mat-label>Title (en) </mat-label>
+            <input type="text" matInput formControlName="title_EN" placeholder="Enter session title">
+            <mat-error *ngIf="!form.controls.title_EN.valid && form.controls.title_EN.touched">
+                This field is required.
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="full-width mt-2" appearance="legacy">
+            <mat-label>Duration </mat-label>
+            <input type="number" matInput formControlName="duration" placeholder="Enter session duration">
+            <mat-error *ngIf="!form.controls.duration.valid && form.controls.duration.touched">
                 This field is required.
             </mat-error>
         </mat-form-field>
 
         <mat-form-field class="full-width mt-2" appearance="legacy">
             <mat-label>Order </mat-label>
-            <input type="number" matInput formControlName="order" placeholder="Enter section order">
+            <input type="number" matInput formControlName="order" placeholder="Enter session order">
             <mat-error *ngIf="!form.controls.order.valid && form.controls.order.touched">
                 This field is required.
             </mat-error>

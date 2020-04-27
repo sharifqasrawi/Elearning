@@ -33,10 +33,31 @@ export const ADD_REMOVE_TAG_SUCCESS = '[Courses] Remove Tag Success';
 export const ADD_REMOVE_TAG_FAIL = '[Courses] Remove Tag Restore Fail';
 
 export const CREATE_SECTION_START = '[Courses] Create Section Start';
+export const CREATE_SECTION_SUCCESS = '[Courses] Create Section Success';
+export const CREATE_SECTION_FAIL = '[Courses] Create Section Fail';
+
 export const UPDATE_SECTION_START = '[Courses] Update Section Start';
+export const UPDATE_SECTION_SUCCESS = '[Courses] Update Section Success';
+export const UPDATE_SECTION_FAIL = '[Courses] Update Section Fail';
+
 export const DELETE_SECTION_START = '[Courses] Delete Section Start';
-export const MANAGE_SECTION_SUCCESS = '[Courses] Manage Section Success';
-export const MANAGE_SECTION_FAIL = '[Courses] Manage Section Fail';
+export const DELETE_SECTION_SUCCESS = '[Courses] Delete Section Success';
+export const DELETE_SECTION_FAIL = '[Courses] Delete Section Fail';
+
+
+export const CREATE_SESSION_START = '[Courses] Create Session Start';
+export const CREATE_SESSION_SUCCESS = '[Courses] Create Session Success';
+export const CREATE_SESSION_FAIL = '[Courses] Create Session Fail';
+
+export const UPDATE_SESSION_START = '[Courses] Update Session Start';
+export const UPDATE_SESSION_SUCCESS = '[Courses] Update Session Success';
+export const UPDATE_SESSION_FAIL = '[Courses] Update Session Fail';
+
+export const DELETE_SESSION_START = '[Courses] Delete Session Start';
+export const DELETE_SESSION_SUCCESS = '[Courses] Delete Session Success';
+export const DELETE_SESSION_FAIL = '[Courses] Delete Session Fail';
+
+
 
 
 export const CLEAR_ERRORS = '[Courses] Clear Errors';
@@ -231,6 +252,18 @@ export class CreateSectionStart implements Action {
     }) { }
 }
 
+export class CreateSectionSuccess implements Action {
+    readonly type = CREATE_SECTION_SUCCESS;
+
+    constructor(public payload: Course) { }
+}
+
+export class CreateSectionFail implements Action {
+    readonly type = CREATE_SECTION_FAIL;
+
+    constructor(public payload: string[]) { }
+}
+
 
 export class UpdateSectionStart implements Action {
     readonly type = UPDATE_SECTION_START;
@@ -244,6 +277,19 @@ export class UpdateSectionStart implements Action {
     }) { }
 }
 
+export class UpdateSectionSuccess implements Action {
+    readonly type = UPDATE_SECTION_SUCCESS;
+
+    constructor(public payload: Course) { }
+}
+
+export class UpdateSectionFail implements Action {
+    readonly type = UPDATE_SECTION_FAIL;
+
+    constructor(public payload: string[]) { }
+}
+
+
 export class DeleteSectionStart implements Action {
     readonly type = DELETE_SECTION_START;
 
@@ -255,14 +301,87 @@ export class DeleteSectionStart implements Action {
 }
 
 
-export class ManageSectionSuccess implements Action {
-    readonly type = MANAGE_SECTION_SUCCESS;
+export class DeleteSectionSuccess implements Action {
+    readonly type = DELETE_SECTION_SUCCESS;
 
     constructor(public payload: Course) { }
 }
 
-export class ManageSectionFail implements Action {
-    readonly type = MANAGE_SECTION_FAIL;
+export class DeleteSectionFail implements Action {
+    readonly type = DELETE_SECTION_FAIL;
+
+    constructor(public payload: string[]) { }
+}
+
+//////////////
+
+
+export class CreateSessionStart implements Action {
+    readonly type = CREATE_SESSION_START;
+
+    constructor(public payload: {
+        section: { id: number, course: { id: number } },
+        title_EN: string,
+        duration: number,
+        order: number,
+        action: string
+    }) { }
+}
+
+export class CreateSessionSuccess implements Action {
+    readonly type = CREATE_SESSION_SUCCESS;
+
+    constructor(public payload: Course) { }
+}
+
+export class CreateSessionFail implements Action {
+    readonly type = CREATE_SESSION_FAIL;
+
+    constructor(public payload: string[]) { }
+}
+
+
+
+export class UpdateSessionStart implements Action {
+    readonly type = UPDATE_SESSION_START;
+
+    constructor(public payload: {
+        id: number,
+        section: { id: number, course: { id: number } },
+        title_EN: string,
+        duration: number,
+        order: number,
+        action: string
+    }) { }
+}
+
+export class UpdateSessionSuccess implements Action {
+    readonly type = UPDATE_SESSION_SUCCESS;
+
+    constructor(public payload: Course) { }
+}
+
+export class UpdateSessionFail implements Action {
+    readonly type = UPDATE_SESSION_FAIL;
+
+    constructor(public payload: string[]) { }
+}
+
+
+export class DeleteSessionStart implements Action {
+    readonly type = DELETE_SESSION_START;
+
+    constructor(public payload: number) { }
+}
+
+export class DeleteSessionSuccess implements Action {
+    readonly type = DELETE_SESSION_SUCCESS;
+
+    constructor(public payload: Course) { }
+}
+
+export class DeleteSessionFail implements Action {
+    readonly type = DELETE_SESSION_FAIL;
 
     constructor(public payload: string[]) { }
 }
@@ -302,10 +421,23 @@ export type CoursesActions =
     | TrashSuccess
     | TrashRestoreFail
     | CreateSectionStart
+    | CreateSectionSuccess
+    | CreateSectionFail
     | UpdateSectionStart
+    | UpdateSectionSuccess
+    | UpdateSectionFail
     | DeleteSectionStart
-    | ManageSectionSuccess
-    | ManageSectionFail
+    | DeleteSectionSuccess
+    | DeleteSectionFail
+    | CreateSessionStart
+    | CreateSessionSuccess
+    | CreateSessionFail
+    | UpdateSessionStart
+    | UpdateSessionSuccess
+    | UpdateSessionFail
+    | DeleteSessionStart
+    | DeleteSessionSuccess
+    | DeleteSessionFail
     | ClearErrors
     | ClearStatus
     ;
