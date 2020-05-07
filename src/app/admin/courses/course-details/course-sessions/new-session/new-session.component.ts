@@ -6,7 +6,7 @@ import { Store } from '@ngrx/store';
 
 import * as fromApp from '../../../../../store/app.reducer';
 import { DiscardChangesComponent } from './../../../../../shared/discard-changes/discard-changes.component';
-import * as CoursesActions from './../../../store/courses.actions';
+import * as SessionsActions from '../store/sessions.actions';
 
 interface DialogData {
   editMode: boolean;
@@ -42,7 +42,7 @@ export class NewSessionComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) public data: DialogData) { }
 
   ngOnDestroy(): void {
-    this.store.dispatch(new CoursesActions.ClearStatus());
+    this.store.dispatch(new SessionsActions.ClearStatus());
   }
 
 
@@ -54,6 +54,10 @@ export class NewSessionComponent implements OnInit, OnDestroy {
       this.updating = state.updating;
       this.updated = state.updated;
       this.errors = state.errors;
+
+      if(state.updated){
+        this.store.dispatch(new SessionsActions.ClearStatus())
+      }
     });
 
     if (!this.editMode) {
@@ -79,7 +83,7 @@ export class NewSessionComponent implements OnInit, OnDestroy {
       return;
 
     if (this.editMode) {
-      this.store.dispatch(new CoursesActions.UpdateSessionStart({
+      this.store.dispatch(new SessionsActions.UpdateStart({
         id: this.data.sessionId,
         section: {
           id: this.data.sectionId,
@@ -90,10 +94,9 @@ export class NewSessionComponent implements OnInit, OnDestroy {
         title_EN: this.form.value.title_EN,
         duration: this.form.value.duration,
         order: this.form.value.order,
-        action: 'edit'
       }));
     } else {
-      this.store.dispatch(new CoursesActions.CreateSessionStart({
+      this.store.dispatch(new SessionsActions.CreateStart({
         section: {
           id: this.data.sectionId,
           course: {
@@ -103,7 +106,6 @@ export class NewSessionComponent implements OnInit, OnDestroy {
         title_EN: this.form.value.title_EN,
         duration: this.form.value.duration,
         order: this.form.value.order,
-        action: 'add'
       }));
     }
 

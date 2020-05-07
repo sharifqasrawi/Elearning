@@ -1,4 +1,4 @@
-import { ConfirmDialogComponent } from './../../../shared/confirm-dialog/confirm-dialog.component';
+import { DomSanitizer } from '@angular/platform-browser';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { MatTableDataSource } from '@angular/material/table';
@@ -9,6 +9,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { faSearch, faCogs, faChessKing } from '@fortawesome/free-solid-svg-icons';
 
 
+import { ConfirmDialogComponent } from './../../../shared/confirm-dialog/confirm-dialog.component';
 import * as fromApp from '../../../store/app.reducer';
 import * as CategoriesActions from '../store/categories.actions';
 import { Category } from './../../../models/category.model';
@@ -35,7 +36,7 @@ export class ListCategoriesComponent implements OnInit {
 
   count = 0;
 
-  displayedColumns: string[] = ['id', 'title_EN', 'slug' ,'createdAt', 'createdBy', 'updatedAt', 'updatedBy', 'actions'];
+  displayedColumns: string[] = ['id', 'imagePath', 'title_EN', 'slug', 'createdAt', 'createdBy', 'updatedAt', 'updatedBy', 'actions'];
   dataSource: MatTableDataSource<Category>;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -45,6 +46,7 @@ export class ListCategoriesComponent implements OnInit {
     private store: Store<fromApp.AppState>,
     private snackBar: MatSnackBar,
     private dialog: MatDialog,
+    private sanitizer: DomSanitizer,
   ) { }
 
   ngOnInit(): void {
@@ -122,4 +124,6 @@ export class ListCategoriesComponent implements OnInit {
     }
   }
 
+
+  getSanitizedImage = (imagePath: string) => this.sanitizer.bypassSecurityTrustResourceUrl(imagePath);
 }

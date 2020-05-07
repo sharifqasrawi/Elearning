@@ -1,3 +1,4 @@
+import { DomSanitizer } from '@angular/platform-browser';
 import { ConfirmDialogComponent } from './../../../shared/confirm-dialog/confirm-dialog.component';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
@@ -33,7 +34,7 @@ export class TrashedCategoriesComponent implements OnInit {
 
   count = 0;
 
-  displayedColumns: string[] = ['id', 'title_EN', 'createdAt', 'createdBy', 'updatedAt', 'updatedBy', 'deletedAt', 'deletedBy', 'actions'];
+  displayedColumns: string[] = ['id', 'imagePath', 'title_EN', 'createdAt', 'createdBy', 'updatedAt', 'updatedBy', 'deletedAt', 'deletedBy', 'actions'];
   dataSource: MatTableDataSource<Category>;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -43,6 +44,7 @@ export class TrashedCategoriesComponent implements OnInit {
     private store: Store<fromApp.AppState>,
     private snackBar: MatSnackBar,
     private dialog: MatDialog,
+    private sanitizer:DomSanitizer
   ) { }
 
   ngOnInit(): void {
@@ -122,5 +124,7 @@ export class TrashedCategoriesComponent implements OnInit {
       this.dataSource.paginator.firstPage();
     }
   }
+
+  getSanitizedImage = (imagePath: string) => this.sanitizer.bypassSecurityTrustResourceUrl(imagePath);
 
 }

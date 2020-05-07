@@ -1,0 +1,65 @@
+.course-card {
+    width: 330px;
+    max-height: 500px;
+}
+
+.course-card img {
+    width: 330px;
+    height: 200px;
+}
+
+.course-div {
+    float: left;
+    margin: 0 15px 25px 0;
+
+    animation: loaderCourseDivAnim 1s ease-in-out infinite;
+}
+
+.course-header-image {
+    background-image: url('../../../assets/images/course.png');
+    background-size: cover;
+}
+
+.course-card .actions {
+    position: absolute;
+    bottom: 10px;
+    width: 100px;
+    background-color: rgb(230, 228, 228);
+}
+
+.course-card .title {
+    width: 200px;
+    background-color: rgb(230, 228, 228);
+}
+
+.course-card .subtitle {
+    width: 150px;
+    background-color: rgb(230, 228, 228);
+}
+
+
+.course-card .langDiv, 
+.course-card .levelDiv {
+    float: left;
+    margin: 0 5px 5px 0;
+    padding: 8px;
+    border-radius: 10px;
+    font-size: 12px;
+    width: 70px;
+}
+
+
+@keyframes loaderCourseDivAnim {
+    0% {
+        opacity: 0.3;
+    }
+    50% {
+        opacity: 0.5;
+    }
+    75% {
+        opacity: 0.6;
+    }
+    100% {
+        opacity: 0.3;
+    }
+}

@@ -1,0 +1,94 @@
+<h2 mat-dialog-title>
+    <fa-icon [icon]="faPlusCircle"></fa-icon>
+    {{ !editMode ? 'Add content' : 'Edit content' }}
+</h2>
+<hr>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()" (change)="formChanged()">
+    <div mat-dialog-content>
+
+        <div class="row">
+            <div class="col-lg-6">
+                <mat-form-field class="full-width mt-2" appearance="legacy">
+                    <mat-label>Order </mat-label>
+                    <input type="number" matInput formControlName="order" placeholder="Enter session order">
+                    <mat-error *ngIf="!form.controls.order.valid && form.controls.order.touched">
+                        This field is required.
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-lg-6">
+                <mat-form-field appearance="legacy" class="mt-1">
+                    <mat-label>Content Type</mat-label>
+                    <mat-select formControlName="type">
+                        <mat-option [value]="type" *ngFor="let type of contentTypes" (click)="onChangeType(type)">
+                            {{type}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="!form.controls.type.valid && form.controls.type.touched">
+                        This field is required.
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div *ngIf="textType">
+                    <label>Content *</label>
+                    <textarea [froalaEditor]="froalaOptions" formControlName="content" required></textarea>
+                    <span class="small text-danger"
+                        *ngIf="!form.controls.content.valid && form.controls.content.touched">
+                        This field is required.
+                    </span>
+                </div>
+
+                <div *ngIf="imageType">
+
+                    <mat-form-field class="mt-2" appearance="legacy">
+                        <mat-label>Image Path </mat-label>
+                        <input readonly type="text" matInput formControlName="content" placeholder="Enter image path">
+                        <mat-error *ngIf="!form.controls.content.valid && form.controls.content.touched">
+                            This field is required.
+                        </mat-error>
+                    </mat-form-field>
+
+                    <button type="button" mat-flat-button color="primary" class="mt-2" (click)="selectImage()">
+                        Choose Image
+                    </button>
+
+                </div>
+
+                <div *ngIf="resourceType">
+
+                    <mat-form-field class="mt-2" appearance="legacy">
+                        <mat-label>Resource Name </mat-label>
+                        <input type="text" matInput formControlName="note" placeholder="Enter session order">
+
+                    </mat-form-field>
+
+                    <mat-form-field class="mt-2" appearance="legacy">
+                        <mat-label>Resource Path </mat-label>
+                        <input readonly type="text" matInput formControlName="content" placeholder="Enter file path">
+                        <mat-error *ngIf="!form.controls.content.valid && form.controls.content.touched">
+                            This field is required.
+                        </mat-error>
+                    </mat-form-field>
+
+                    <button type="button" mat-flat-button color="primary" class="mt-2" (click)="selectFile()">
+                        Choose File
+                    </button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div mat-dialog-actions class="float-right mt-2">
+        <button type="button" mat-raised-button color="warn" cdkFocusInitial (click)="openDialog()">Cancel</button>
+        <button type="submit" mat-raised-button color="accent" [disabled]="!form.valid">
+            {{ editMode ? 'Save' : 'Create' }}
+        </button>
+    </div>
+</form>

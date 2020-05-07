@@ -1,7 +1,14 @@
-import { CoursesResolverService } from './courses/courses-resolver.service';
-import { ListTagsComponent } from './tags/list-tags/list-tags.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+
+import { CourseLikesComponent } from './courses/course-details/course-likes/course-likes.component';
+import { SessionContentComponent } from './courses/course-details/course-sessions/session-content/session-content.component';
+import { CourseSessionsComponent } from './courses/course-details/course-sessions/course-sessions.component';
+import { CourseTagsComponent } from './courses/course-details/course-tags/course-tags.component';
+import { CourseSectionsComponent } from './courses/course-details/course-sections/course-sections.component';
+import { CourseInfoComponent } from './courses/course-details/course-info/course-info.component';
+import { CoursesResolverService } from './courses/courses-resolver.service';
+import { ListTagsComponent } from './tags/list-tags/list-tags.component';
 
 
 import { NewCourseComponent } from './courses/new-course/new-course.component';
@@ -62,11 +69,53 @@ const routes: Routes = [
             canDeactivate: [CanDeactivateGuard]
           },
           {
-            path: ':id/:slug',
+            path: ':courseId/:slug',
             component: CourseDetailsComponent,
             resolve: [CoursesResolverService],
+            children: [
+              {
+                path: 'tags/:courseId',
+                component: CourseTagsComponent
+              },
+              {
+                path: 'likes/:courseId',
+                component: CourseLikesComponent
+              },
+              {
+                path: 'sections/:courseId', children: [
+                  {
+                    path: 'sessions/:sectionId',
+                    children: [
+                      {
+                        path: 'content/:id/:slug',
+                        component: SessionContentComponent
+                      },
+                      {
+                        path: '',
+                        component: CourseSessionsComponent,
+                        pathMatch: 'full'
+                      }
+                    ]
+                  },
+                  {
+                    path: '',
+                    component: CourseSectionsComponent,
+                    pathMatch: 'full'
+                  }
+                ]
+              },
+              {
+                path: '',
+                component: CourseInfoComponent,
+                pathMatch: 'full'
+              },
+            ]
           },
-          { path: '', component: ListCoursesComponent, pathMatch: 'full' }
+          {
+            path: '',
+            component: ListCoursesComponent,
+            pathMatch: 'full'
+          }
         ]
       },
       {

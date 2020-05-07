@@ -1,0 +1,72 @@
+<div class="courseSession">
+
+    <div *ngIf="errors">
+        <div class="alert alert-danger" *ngFor="let error of errors">
+            {{ error }}
+        </div>
+    </div>
+
+    <div class="loaderCourseContent" *ngIf="loading">
+        <h1> &nbsp; </h1>
+        <div style="display: flex; justify-content: space-between;">
+            <p class="small text-muted"> &nbsp;</p>
+            <p class="small text-muted"> &nbsp; </p>
+        </div>
+        <p class="small text-muted"> &nbsp; </p>
+        <hr>
+        <div class="loaderContentDiv">
+            <div> &nbsp; </div>
+            <div> &nbsp;</div>
+            <div>&nbsp;</div>
+        </div>
+    </div>
+
+    <div *ngIf="!loading">
+        <h1>
+            {{ session.order }}- {{ session.title_EN }}
+        </h1>
+        <div style="display: flex; justify-content: space-between;">
+            <p class="small text-muted">
+                Created: {{ session.createdBy }} - {{ session.createdAt | date:'short' }}
+            </p>
+            <p class="small text-muted">
+                Last updated: {{ session.updatedBy }} - {{ session.updatedAt | date:'short' }}
+            </p>
+        </div>
+        <p class="small text-muted">
+            Duration: {{ session.duration }} mins.
+        </p>
+        <hr>
+
+        <div *ngFor="let content of session.contents">
+            <br>
+            <div *ngIf="content.type === 'text'" [innerHtml]="getSanitizedHtml(content.content)"></div>
+
+            <div *ngIf="content.type === 'image'" class="text-center ">
+                <img [src]="content.content" alt="no preview" class="img-responsive">
+            </div>
+        </div>
+
+        <hr>
+        <div class="resourcesDiv">
+            <p class="text-success">
+                <fa-icon [icon]="faFileArchive"></fa-icon> Resources:
+            </p>
+
+            <ul *ngFor="let content of session.contents">
+                <li *ngIf="content.type === 'resource'" class="text-success">
+                    <a [href]="content.content" *ngIf="content.type === 'resource'" target="_blank">
+                        <fa-icon [icon]="faDownload"></fa-icon> {{ content.note }}
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div *ngIf="session.contents.length === 0" class="alert alert-info text-center">
+            <h3>No content yet.</h3>
+        </div>
+
+    </div>
+
+
+</div>

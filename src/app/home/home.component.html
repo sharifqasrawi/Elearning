@@ -8,13 +8,89 @@
     </div>
 </div>
 
-<div class="container content">
-    <h1>Hello</h1>
-    <h1>Hello</h1>
-    <h1>Hello</h1>
-    <h1>Hello</h1>
-    <h1>Hello</h1>
-    <h1>Hello</h1>
-    <h1>Hello</h1>
-    <h1>Hello</h1>
+<div class="container-fluid content">
+
+    <!-- <div *ngFor="let course of courses" class="course-div mat-elevation-z8">
+            <mat-card class="course-card">
+                <img mat-card-image [src]="getSanitizedImage(course.imagePath)"
+                    [alt]="course.title_EN">
+                <mat-card-header>
+                    <mat-card-title>{{ course.title_EN }}</mat-card-title>
+                    <mat-card-subtitle>Dog Breed</mat-card-subtitle>
+                </mat-card-header>
+                <mat-card-content>
+                    <p>
+                        The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.
+                        A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was originally
+                        bred for hunting.
+                    </p>
+                </mat-card-content>
+                <mat-card-actions>
+                    <button mat-button>LIKE</button>
+                    <button mat-button>SHARE</button>
+                </mat-card-actions>
+            </mat-card>
+        </div> -->
+
+
+
+    <div class="row">
+        <div class="col-lg-8">
+            <h1>
+                Categories
+            </h1>
+        </div>
+        <div class="col-lg-4">
+            <form [formGroup]="searchForm">
+                <mat-form-field class="full-width" appearance="legacy">
+                    <mat-label>
+                        <fa-icon [icon]="faSearch"></fa-icon> Search
+                    </mat-label>
+                    <input type="text" #searchKey matInput formControlName="title_EN"
+                        placeholder="Search by category title" (input)="onSearch()">
+                    <button mat-button *ngIf="searchKey.value" matSuffix mat-icon-button aria-label="Clear"
+                        (click)="onClearSearch()">
+                        <mat-icon>close</mat-icon>
+                    </button>
+                </mat-form-field>
+            </form>
+        </div>
+    </div>
+    <hr>
+    <div *ngIf="!loading">
+        <div class="row mt-2">
+            <div class="col-lg-12">
+                <div *ngFor="let category of categories" class="category-div mat-elevation-z8">
+                    <mat-card class="category-card">
+                        <img mat-card-image [src]="getSanitizedImage(category.imagePath)" [alt]="category.title_EN">
+                        <mat-card-header>
+                            <mat-card-title class="title">{{ category.title_EN }}</mat-card-title>
+                        </mat-card-header>
+                        <mat-card-actions class="actions">
+                            <a mat-button [routerLink]="['/categories', category.id, category.slug]">
+                                GO TO COURSES
+                            </a>
+                        </mat-card-actions>
+                    </mat-card>
+                </div>
+
+                <div class="alert alert-info text-center notFoundMsg" *ngIf="categories.length === 0">
+                    <h2>
+                        No categories found.
+                    </h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="errors">
+        <div class="alert alert-danger" *ngFor="let error of errors">
+            {{ error }}
+        </div>
+    </div>
+
+    <div *ngIf="loading">
+        <app-loader-home-category></app-loader-home-category>
+    </div>
+    <div class="clearfix"></div>
 </div>

@@ -1,3 +1,4 @@
+import { Like } from './like.model';
 import { Section } from './section.model';
 import { Tag } from './tag.model';
 import { Category } from './category.model';
@@ -27,6 +28,7 @@ export class Course {
         //public author?: User,
         public category?: Category,
         public tags?: Tag[],
-        public sections?: Section[]
+        public sections?: Section[],
+        public likes?: Like[]
     ) { }
 }

@@ -1,15 +1,20 @@
-import { ConfirmDialogComponent } from './../../../../shared/confirm-dialog/confirm-dialog.component';
+import { map, max } from 'rxjs/operators';
+import { Location } from '@angular/common';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
-import { Component, OnInit, Input } from '@angular/core';
-import { faEdit, faTrashAlt, faFileAlt, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
-
-import { Section } from './../../../../models/section.model';
-import { Session } from './../../../../models/session.model';
-import * as fromApp from '../../../../store/app.reducer';
-import * as CoursesActions from './../../store/courses.actions';
-import { NewSessionComponent } from './new-session/new-session.component';
 import { ToastrService } from 'ngx-toastr';
+import { ActivatedRoute, Params } from '@angular/router';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { faEdit, faTrashAlt, faFileAlt, faPlusCircle, faSearch } from '@fortawesome/free-solid-svg-icons';
+
+import { Session } from './../../../../models/session.model';
+import { ConfirmDialogComponent } from './../../../../shared/confirm-dialog/confirm-dialog.component';
+import { NewSessionComponent } from './new-session/new-session.component';
+import * as fromApp from '../../../../store/app.reducer';
+import * as SessionsActions from './store/sessions.actions';
 
 
 @Component({
@@ -23,54 +28,80 @@ export class CourseSessionsComponent implements OnInit {
   faTrashAlt = faTrashAlt;
   faFileAlt = faFileAlt;
   faPlusCircle = faPlusCircle;
+  faSearch = faSearch;
 
-  sections: Section[];
-  @Input() courseId: number;
+  sessions: Session[];
+  courseId: number;
+  sectionId: number;
+  sectionName: string;
 
+  loading = false;
   updated = false;
   updating = false;
   creating = false;
   deleting = false;
   errors: string[] = null;
 
+  displayedColumns: string[] = ['id', 'order', 'title_EN', 'duration', 'createdAt', 'createdBy', 'updatedAt', 'updatedBy', 'actions'];
+  dataSource: MatTableDataSource<Session>;
+
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
+
   constructor(
     private store: Store<fromApp.AppState>,
     private dialog: MatDialog,
     private toastr: ToastrService,
+    private route: ActivatedRoute,
+    private location: Location
   ) {
   }
 
   ngOnInit() {
-    this.store.select('courses').subscribe(state => {
-      this.sections = [...state.courses.find(c => c.id === this.courseId).sections];
-      this.updating = state.updating;
-      this.updated = state.updated;
-      this.creating = state.creating;
-      this.deleting = state.deleting;
-      this.errors = state.errors;
 
-      // if (state.created) {
-      //   this.toastr.success('Saved', 'Session created successfully');
-      //   this.store.dispatch(new CoursesActions.ClearStatus());
-      // }
-
-      // if(state.updated){
-      //   this.toastr.info('Saved', 'Session updated successfully');
-      //   this.store.dispatch(new CoursesActions.ClearStatus());
-      // }
-
-      // if(state.deleted){
-      //   this.toastr.warning('Deleted', 'Session deleted successfully');
-      //   this.store.dispatch(new CoursesActions.ClearStatus());
-      // }
+    this.route.params.subscribe((params: Params) => {
+      this.sectionId = +params.sectionId;
+      this.courseId = +params.courseId;
     });
+
+    this.route.queryParams.subscribe((params: Params) => {
+      this.sectionName = params.section;
+    });
+
+
+    this.store.dispatch(new SessionsActions.FetchStart(this.sectionId));
+    this.store.select('sessions').subscribe(state => {
+      this.sessions = state.sessions;
+      this.loading = state.loading;
+      this.deleting = state.deleting;
+      this.updating = state.updating;
+      this.errors= state.errors;
+
+      if (state.created) {
+        this.toastr.success('Session created successfully', 'Create');
+        this.store.dispatch(new SessionsActions.ClearStatus());
+      }
+
+      if (state.updated) {
+        this.toastr.info('Session updated successfully', 'Update');
+        this.store.dispatch(new SessionsActions.ClearStatus());
+      }
+
+      if (state.deleted) {
+        this.toastr.warning('Session deleted successfully', 'Delete');
+        this.store.dispatch(new SessionsActions.ClearStatus());
+      }
+
+      this.setTable();
+    });
+
+
   }
 
-  onCreate(sectionId: number, sessions: Session[]) {
-
+  onCreate() {
     let maxOrder = -1;
-    if (sessions.length > 0)
-      maxOrder = Math.max.apply(Math, [...sessions].map(s => s.order));
+    if (this.sessions.length > 0)
+      maxOrder = Math.max.apply(Math, [...this.sessions].map(s => s.order));
 
     const dialogRef = this.dialog.open(NewSessionComponent,
       {
@@ -78,7 +109,7 @@ export class CourseSessionsComponent implements OnInit {
         disableClose: true,
         data: {
           editMode: false,
-          sectionId: sectionId,
+          sectionId: this.sectionId,
           courseId: this.courseId,
           order: maxOrder + 1
         }
@@ -89,8 +120,7 @@ export class CourseSessionsComponent implements OnInit {
     });
   }
 
-  onEdit(sectionId: number, sessionId: number, title_EN: string, order: number, duration: number) {
-
+  onEdit(sessionId: number, title_EN: string, order: number, duration: number) {
     const dialogRef = this.dialog.open(NewSessionComponent,
       {
         width: '650px',
@@ -98,7 +128,7 @@ export class CourseSessionsComponent implements OnInit {
         data: {
           editMode: true,
           sessionId: sessionId,
-          sectionId: sectionId,
+          sectionId: this.sectionId,
           courseId: this.courseId,
           order: order,
           title_EN: title_EN,
@@ -120,8 +150,34 @@ export class CourseSessionsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result)
-        this.store.dispatch(new CoursesActions.DeleteSessionStart(id));
+        this.store.dispatch(new SessionsActions.DeleteStart(id));
     });
   }
 
+
+  onRefresh() {
+    this.store.dispatch(new SessionsActions.FetchStart(this.sectionId));
+    this.setTable();
+  }
+
+  onGoBack() {
+    this.location.back();
+  }
+
+
+  private setTable() {
+
+    this.dataSource = new MatTableDataSource(this.sessions);
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.sort = this.sort;
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
 }

@@ -1,0 +1,11 @@
+<ul class="breadcrumb" *ngIf="links">
+    <li *ngFor="let link of links">
+        <a [routerLink]="[link.url]" *ngIf="link.url">
+            <fa-icon [icon]="faHome" *ngIf="link.label === 'Home'"></fa-icon> <span
+                style="text-transform: capitalize;"> {{ link.label }}</span>
+        </a>
+        <span *ngIf="!link.url" style="text-transform: capitalize;">
+            {{ link.label }}
+        </span>
+    </li>
+</ul>

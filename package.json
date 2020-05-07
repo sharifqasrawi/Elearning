@@ -34,6 +34,7 @@
     "bootstrap": "^4.4.1",
     "jwt-decode": "^2.2.0",
     "mdbootstrap": "^4.16.0",
+    "ng-recaptcha": "^5.0.0",
     "ng2-pdf-viewer": "^6.2.0",
     "ngx-countup": "^7.3.0",
     "ngx-image-viewer": "^1.0.13",

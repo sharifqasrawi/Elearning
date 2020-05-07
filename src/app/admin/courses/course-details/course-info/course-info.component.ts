@@ -28,7 +28,7 @@ export class CourseInfoComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params.subscribe((params: Params) => {
-      this.courseId = +params.id;
+      this.courseId = +params.courseId;
     });
 
     this.store.select('courses')

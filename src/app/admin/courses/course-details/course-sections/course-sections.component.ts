@@ -1,3 +1,4 @@
+import { ActivatedRoute, Params } from '@angular/router';
 import { ConfirmDialogComponent } from './../../../../shared/confirm-dialog/confirm-dialog.component';
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
@@ -7,14 +8,14 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Store } from '@ngrx/store';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ToastrService } from 'ngx-toastr';
 
 
 import { Section } from './../../../../models/section.model';
 import { NewSectionComponent } from './new-section/new-section.component';
 
 import * as fromApp from '../../../../store/app.reducer';
-import * as CoursesActions from '../../store/courses.actions';
-import { ToastrService } from 'ngx-toastr';
+import * as SectionsActions from './store/sections.actions';
 
 @Component({
   selector: 'app-course-sections',
@@ -27,8 +28,8 @@ export class CourseSectionsComponent implements OnInit {
   faCheck = faCheck;
   faTimes = faTimes;
 
-  @Input() courseId: number;
-  @Input() sections: Section[] = null;
+  courseId: number;
+  sections: Section[] = null;
 
   errors: string[] = null;
   loading = false;
@@ -48,34 +49,41 @@ export class CourseSectionsComponent implements OnInit {
     private dialog: MatDialog,
     private store: Store<fromApp.AppState>,
     private snackBar: MatSnackBar,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private route: ActivatedRoute,
   ) { }
 
   ngOnInit(): void {
 
-    this.store.select('courses').subscribe(state => {
-      this.sections = [...state.courses.find(c => c.id === this.courseId).sections];
+    this.route.params.subscribe((params: Params) => {
+      this.courseId = +params.courseId;
+    });
+
+    this.store.dispatch(new SectionsActions.FetchStart(this.courseId));
+
+    this.store.select('sections').subscribe(state => {
+      this.sections = state.sections;
+      this.loading = state.loading;
       this.updating = state.updating;
       this.creating = state.creating;
       this.deleting = state.deleting;
-      this.loading = state.loading;
       this.errors = state.errors;
 
 
-      // if (state.created) {
-      //   this.toastr.success('Saved', 'Section created successfully');
-      //   this.store.dispatch(new CoursesActions.ClearStatus());
-      // }
+      if (state.created) {
+        this.toastr.success('Saved', 'Section created successfully');
+        this.store.dispatch(new SectionsActions.ClearStatus());
+      }
 
-      // if (state.updated) {
-      //   this.toastr.info('Saved', 'Section updated successfully');
-      //   this.store.dispatch(new CoursesActions.ClearStatus());
-      // }
+      if (state.updated) {
+        this.toastr.info('Saved', 'Section updated successfully');
+        this.store.dispatch(new SectionsActions.ClearStatus());
+      }
 
-      // if (state.deleted) {
-      //   this.toastr.warning('Deleted', 'Section deleted successfully');
-      //   this.store.dispatch(new CoursesActions.ClearStatus());
-      // }
+      if (state.deleted) {
+        this.toastr.warning('Deleted', 'Section deleted successfully');
+        this.store.dispatch(new SectionsActions.ClearStatus());
+      }
 
       this.setTable();
     });
@@ -91,13 +99,7 @@ export class CourseSectionsComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result)
-        this.store.dispatch(new CoursesActions.DeleteSectionStart({
-          course: {
-            id: this.courseId
-          },
-          id: id,
-          action: 'remove'
-        }))
+        this.store.dispatch(new SectionsActions.DeleteStart(id));
     });
   }
 
@@ -140,7 +142,7 @@ export class CourseSectionsComponent implements OnInit {
   }
 
   onRefresh() {
-    // this.store.dispatch(new CoursesActions.FetchStart());
+    this.store.dispatch(new SectionsActions.FetchStart(this.courseId));
     this.setTable();
     this.snackBar.open('Refreshing...', 'OK', {
       duration: 2000

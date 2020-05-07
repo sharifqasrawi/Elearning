@@ -19,6 +19,10 @@ export const FETCH_START = '[Tags] Fetch Start';
 export const FETCH_SUCCESS = '[Tags] Fetch Success';
 export const FETCH_FAIL = '[Tags] Fetch Fail';
 
+export const ADD_REMOVE_TAG_START = '[Tags] Add Remove Tag Start';
+export const ADD_REMOVE_TAG_SUCCESS = '[Tags] Remove Tag Success';
+export const ADD_REMOVE_TAG_FAIL = '[Tags] Remove Tag Restore Fail';
+
 export const CLEAR_ERRORS = '[Tags] Clear Errors';
 export const CLEAR_STATUS = '[Tags] Clear Status';
 
@@ -111,6 +115,30 @@ export class ClearStatus implements Action {
     readonly type = CLEAR_STATUS;
 }
 
+/////////////////
+
+
+export class AddRemoveTagStart implements Action {
+    readonly type = ADD_REMOVE_TAG_START;
+
+    constructor(public payload: {
+        courseId: number,
+        tagId: number,
+        action: string
+    }) { }
+}
+
+export class AddRemoveTagSuccess implements Action {
+    readonly type = ADD_REMOVE_TAG_SUCCESS;
+
+    constructor(public payload: Tag) { }
+}
+
+export class AddRemoveTagFail implements Action {
+    readonly type = ADD_REMOVE_TAG_FAIL;
+
+    constructor(public payload: string[]) { }
+}
 
 /////////////////
 
@@ -127,6 +155,9 @@ export type TagsActions =
     | FetchStart
     | FetchSuccess
     | FetchFail
+    | AddRemoveTagStart
+    | AddRemoveTagSuccess
+    | AddRemoveTagFail
     | ClearErrors
     | ClearStatus
     ;

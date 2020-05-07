@@ -84,6 +84,7 @@ export class CategoriesEffects {
             return this.http.post<{ category: Category }>(environment.API_BASE_URL + 'categories/new',
                 {
                     title_EN: catData.payload.title_En,
+                    imagePath: catData.payload.imagePath,
                     createdBy: this.userName
                 },
                 {
@@ -114,10 +115,11 @@ export class CategoriesEffects {
     updateCategory = this.actions$.pipe(
         ofType(CategoriesActions.UPDATE_START),
         switchMap((catData: CategoriesActions.UpdateStart) => {
-            return this.http.put<{ category: Category }>(environment.API_BASE_URL + 'categories/update',
+            return this.http.put<{ updatedCategory: Category }>(environment.API_BASE_URL + 'categories/update',
                 {
                     id: catData.payload.id,
                     title_EN: catData.payload.title_En,
+                    imagePath: catData.payload.imagePath,
                     updatedBy: this.userName
                 },
                 {
@@ -125,7 +127,7 @@ export class CategoriesEffects {
                 })
                 .pipe(
                     map(resData => {
-                        return new CategoriesActions.UpdateSuccess(resData.category);
+                        return new CategoriesActions.UpdateSuccess(resData.updatedCategory);
                     }),
                     catchError(errorRes => {
                         switch (errorRes.status) {

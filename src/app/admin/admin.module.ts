@@ -42,6 +42,9 @@ import { CourseSectionsComponent } from './courses/course-details/course-section
 import { NewSectionComponent } from './courses/course-details/course-sections/new-section/new-section.component';
 import { CourseSessionsComponent } from './courses/course-details/course-sessions/course-sessions.component';
 import { NewSessionComponent } from './courses/course-details/course-sessions/new-session/new-session.component';
+import { SessionContentComponent } from './courses/course-details/course-sessions/session-content/session-content.component';
+import { NewContentComponent } from './courses/course-details/course-sessions/session-content/new-content/new-content.component';
+import { CourseLikesComponent } from './courses/course-details/course-likes/course-likes.component';
 
 @NgModule({
     declarations: [
@@ -75,6 +78,9 @@ import { NewSessionComponent } from './courses/course-details/course-sessions/ne
         NewSectionComponent,
         CourseSessionsComponent,
         NewSessionComponent,
+        SessionContentComponent,
+        NewContentComponent,
+        CourseLikesComponent,
         
     ],
     imports: [

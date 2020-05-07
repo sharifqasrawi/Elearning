@@ -13,11 +13,8 @@
             </p>
         </div>
         <div class="col-lg-2">
-            <mat-slide-toggle [color]="colorAccent" [checked]="course.isPublished" 
-                                id="isPublished" name="isPublished"
-                                class="mt-1"
-                                [disabled]="publishing || course.deletedAt"
-                                (change)="onPublish(course.isPublished)">
+            <mat-slide-toggle [color]="colorAccent" [checked]="course.isPublished" id="isPublished" name="isPublished"
+                class="mt-1" [disabled]="publishing || course.deletedAt" (change)="onPublish(course.isPublished)">
                 {{ !publishing ? 'Published' : 'Publishing...' }}
             </mat-slide-toggle>
             <p class="mt-3 badge badge-success" *ngIf="course.isPublished">
@@ -29,42 +26,31 @@
 </div>
 
 <div class="adminPageBottom mb-5">
-    <mat-tab-group mat-stretch-tabs class="tabs mat-elevation-z4" backgroundColor="primary">
-        <mat-tab>
-            <ng-template mat-tab-label>
-                <mat-icon class="tab-icon">info</mat-icon>
-                Course Info
-            </ng-template>
-            <div class="spacer"></div>
-            <app-course-info [trashed]="trashed"></app-course-info>
-        </mat-tab>
-
-        <mat-tab>
-            <ng-template mat-tab-label>
-                <mat-icon class="tab-icon">tab</mat-icon>
+    <div class="detailsDiv mat-elevation-z8">
+       
+        <div class="detailsNav">
+            <a [routerLink]="['./']"
+                routerLinkActive="active">
+                <fa-icon [icon]="faInfoCircle"></fa-icon>
+                Info
+            </a>
+            <a [routerLink]="['sections', course.id]"
+                routerLinkActive="active">
+                <fa-icon [icon]="faPallet"></fa-icon>
                 Sections
-            </ng-template>
-            <div class="spacer"></div>
-            <app-course-sections [courseId]="course.id" [sections]="course.sections"></app-course-sections>
-        </mat-tab>
-        
-        <mat-tab>
-            <ng-template mat-tab-label>
-                <mat-icon class="tab-icon">library_books</mat-icon>
-                Sessions
-            </ng-template>
-            <div class="spacer"></div>
-           <app-course-sessions [courseId]="course.id"></app-course-sessions>
-        </mat-tab>
-
-        <mat-tab>
-            <ng-template mat-tab-label>
-                <mat-icon class="tab-icon">loyalty</mat-icon>
+            </a>
+            <a [routerLink]="['tags', course.id]"
+                routerLinkActive="active">
+                <fa-icon [icon]="faTags"></fa-icon>
                 Tags
-            </ng-template>
-            <div class="spacer"></div>
-            <app-course-tags [tags]="course.tags" [courseId]="course.id"></app-course-tags>
-        </mat-tab>
+            </a>
+            <a [routerLink]="['likes', course.id]"
+                routerLinkActive="active">
+                <fa-icon [icon]="faThumbsUp"></fa-icon>
+                Likes
+            </a>
+        </div>
 
-    </mat-tab-group>
+        <router-outlet></router-outlet>
+    </div>
 </div>

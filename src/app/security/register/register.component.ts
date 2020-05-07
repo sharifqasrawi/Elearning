@@ -58,6 +58,9 @@ export class RegisterComponent implements OnInit, OnDestroy {
           password: new FormControl(null, [Validators.required, Validators.minLength(8)]),
           cpassword: new FormControl(null, [Validators.required, Validators.minLength(8)]),
         }, { validators: this.checkPasswords }),
+        // this._formBuilder.group({
+        //   captcha: new FormControl(null, [Validators.required]),
+        // }),
       ])
     });
 

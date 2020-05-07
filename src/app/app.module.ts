@@ -1,4 +1,4 @@
-import { TagsEffects } from './admin/tags/store/tags.effects';
+import { HomeSessionEffects } from './courses/course-view/course-session/store/session.effects';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
@@ -32,7 +32,17 @@ import { CoursesEffects } from './admin/courses/store/courses.effects';
 import { LayoutComponent } from './layout/layout.component';
 import { DirectoriesEffects } from './admin/directories/store/directories.effects';
 import { FilesEffects } from './admin/files/store/files.effects';
-// import { AuthInterceptorService } from './security/auth-interceptor.service';
+import { SessionContentsEffects } from './admin/courses/course-details/course-sessions/session-content/store/session-contents.effects';
+import { CoursesComponent } from './courses/courses.component';
+import { HomeCategoriesEffects } from './home/store/categories.effects';
+import { SessionsEffects } from './admin/courses/course-details/course-sessions/store/sessions.effects';
+import { SectionsEffects } from './admin/courses/course-details/course-sections/store/sections.effects';
+import { TagsEffects } from './admin/tags/store/tags.effects';
+import { HomeCoursesEffects } from './courses/store/courses.effects';
+import { CourseViewComponent } from './courses/course-view/course-view.component';
+import { CourseInfoComponent } from './courses/course-view/course-info/course-info.component';
+import { CourseSessionComponent } from './courses/course-view/course-session/course-session.component';
+
 
 const customNotifierOptions: NotifierOptions = {
   position: {
@@ -84,6 +94,10 @@ const customNotifierOptions: NotifierOptions = {
     AboutmeComponent,
     ContactUsComponent,
     LayoutComponent,
+    CoursesComponent,
+    CourseViewComponent,
+    CourseInfoComponent,
+    CourseSessionComponent,
   ],
   imports: [
     BrowserModule,
@@ -94,8 +108,14 @@ const customNotifierOptions: NotifierOptions = {
       RegisterEffects, 
       UsersEffects, 
       MessagesEffects, 
-      CategoriesEffects, 
+      CategoriesEffects,
+      HomeCategoriesEffects,
       CoursesEffects,
+      HomeCoursesEffects,
+      HomeSessionEffects,
+      SectionsEffects,
+      SessionsEffects,
+      SessionContentsEffects,
       DirectoriesEffects,
       FilesEffects,
       TagsEffects

@@ -1,0 +1,60 @@
+<div class="container-fluid content0">
+    <app-breadcrumb [links]="breadcrumbLinks"></app-breadcrumb>
+
+    <div class="row">
+        <div class="col-lg-8">
+            <!-- <button mat-flat-button color="primary" (click)="onNextPage()">
+                Next Page
+            </button> -->
+            <router-outlet></router-outlet>
+        </div>
+        <div class="col-lg-4">
+            <div class="contentBox" *ngIf="!loading">
+                <div class="contentBox-header text-center">
+                    <button mat-flat-button color="" (click)="allExpandState = !allExpandState"
+                        class="btn-block">
+                        Content ({{ allExpandState ? 'Collapse All' : 'Expand All' }})
+                    </button>
+                </div>
+                <div class="contentBox-body">
+                    <div *ngIf="!loading">
+
+                        <mat-expansion-panel class="exp-panel" [expanded]="allExpandState" *ngFor="let section of course.sections">
+                            <mat-expansion-panel-header>
+                                <mat-panel-title>
+                                   <strong> {{ section.order }}- {{ section.name_EN }}</strong>
+                                </mat-panel-title>
+                                <mat-panel-description>
+                                    <span class="small">{{ section.sessions.length }} sessions</span>
+                                </mat-panel-description>
+                            </mat-expansion-panel-header>
+
+                            <ul class="list-group">
+                                <li routerLinkActive="active" class="list-group-item full-width" *ngFor="let session of section.sessions">
+                                    <a [routerLink]="['session', session.id, session.slug_EN]"
+                                        >
+                                        {{ session.order }}- {{ session.title_EN }}
+                                    </a>
+                                </li>
+                            </ul>
+                        </mat-expansion-panel>
+
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="card loaderContentList" *ngIf="loading">
+                <div class="card-header text-center">
+                    <h3>
+                        &nbsp;
+                    </h3>
+                </div>
+                <div class="card-body" style="height: 500px;">
+                    &nbsp;
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

@@ -1,44 +1,41 @@
 <div class="regBox">
 
-	<h2>
-		<fa-icon [icon]="faRegister"></fa-icon>
-		Register a new user
-	</h2>
-	<hr>
+    <h2>
+        <fa-icon [icon]="faRegister"></fa-icon>
+        Register a new user
+    </h2>
+    <hr>
 
-	<div class="alert alert-success text-center" *ngIf="registerd">
+    <div class="alert alert-success text-center" *ngIf="registerd">
         <div class="registerMsg">
-		    <h1>Thank you for registering</h1>
+            <h1>Thank you for registering</h1>
             <h3>A confirmation email was sent to your email. Please confirm your email in order to sign in</h3>
         </div>
     </div>
-    
-    <div class="mb-3" *ngIf="errors">
-		<div class="alert alert-danger error" *ngFor="let error of errors">
-			{{ error }}
-		</div>
-	</div>
 
-	<form class="form-horizontal" [formGroup]="regForm" (ngSubmit)="onSubmit()" *ngIf="!registerd">
-    
-        <mat-vertical-stepper #linearVerticalStepper="matVerticalStepper" 
-                formArrayName="formArray" 
-                [linear]="true" 
-                class="p-2"
-                style="background: rgb(255, 251, 251);">
+    <div class="mb-3" *ngIf="errors">
+        <div class="alert alert-danger error" *ngFor="let error of errors">
+            {{ error }}
+        </div>
+    </div>
+
+    <form class="form-horizontal" [formGroup]="regForm" (ngSubmit)="onSubmit()" *ngIf="!registerd">
+
+        <mat-vertical-stepper #linearVerticalStepper="matVerticalStepper" formArrayName="formArray" [linear]="true"
+            class="p-2" style="background: rgb(255, 251, 251);">
             <mat-step formGroupName="0" [stepControl]="formArray?.get([0])">
                 <ng-template matStepLabel>Fill out your name</ng-template>
-               
+
                 <div class="row">
                     <div class="col-lg-6">
-                        <mat-form-field  class="full-width">
+                        <mat-form-field class="full-width" appearance="legacy">
                             <mat-label>First name</mat-label>
                             <input matInput formControlName="firstName" required>
                             <mat-error>This field is required</mat-error>
                         </mat-form-field>
                     </div>
                     <div class="col-lg-6">
-                        <mat-form-field  class="full-width">
+                        <mat-form-field class="full-width" appearance="legacy">
                             <mat-label>Last name</mat-label>
                             <input matInput formControlName="lastName" required>
                             <mat-error>This field is required</mat-error>
@@ -50,12 +47,12 @@
                 </div>
             </mat-step>
 
-        
+
             <mat-step formGroupName="1" [stepControl]="formArray?.get([1])">
                 <ng-template matStepLabel>
                     <div>Fill out your email address</div>
                 </ng-template>
-                <mat-form-field class="full-width">
+                <mat-form-field class="full-width" appearance="legacy">
                     <mat-label>Email address</mat-label>
                     <input matInput placeholder="Ex. laurnace@example.com" formControlName="email">
                     <mat-error>Please enter a valid email address.</mat-error>
@@ -70,12 +67,12 @@
                 <ng-template matStepLabel>
                     <div>Fill out your country</div>
                 </ng-template>
-                <mat-form-field class="full-width">
+                <mat-form-field class="full-width" appearance="legacy">
                     <mat-label>Country</mat-label>
                     <mat-select formControlName="country" name="country" id="country" required>
                         <mat-option>--</mat-option>
                         <mat-option *ngFor="let c of listCountries" [value]="c.name">
-                          {{c.name}}
+                            {{c.name}}
                         </mat-option>
                     </mat-select>
 
@@ -86,18 +83,18 @@
                     <button mat-button matStepperNext>Next</button>
                 </div>
             </mat-step>
-        
+
             <mat-step formGroupName="3" [stepControl]="formArray?.get([3])">
                 <ng-template matStepLabel>
                     <div>Fill out your gender</div>
                 </ng-template>
                 <!-- <mat-form-field class="full-width"> -->
-                    <mat-radio-group formControlName="gender" >
-                        <mat-radio-button class="ml-2" value="male">Male</mat-radio-button>
-                        <mat-radio-button class="ml-2" value="female">Female</mat-radio-button>
-                        <mat-radio-button class="ml-2" value="custom" >Custom</mat-radio-button>
-                    </mat-radio-group>
-                    <!-- <mat-error>This field is required.</mat-error> -->
+                <mat-radio-group formControlName="gender">
+                    <mat-radio-button class="ml-2" value="male">Male</mat-radio-button>
+                    <mat-radio-button class="ml-2" value="female">Female</mat-radio-button>
+                    <mat-radio-button class="ml-2" value="custom">Custom</mat-radio-button>
+                </mat-radio-group>
+                <!-- <mat-error>This field is required.</mat-error> -->
                 <!-- </mat-form-field> -->
                 <div>
                     <button mat-button matStepperPrevious>Back</button>
@@ -105,36 +102,44 @@
                 </div>
             </mat-step>
 
-            
+
             <mat-step formGroupName="4" [stepControl]="formArray?.get([4])">
                 <ng-template matStepLabel>Choose a password</ng-template>
                 <div class="row">
                     <div class="col-lg-6">
-                        <mat-form-field class="full-width">
+                        <mat-form-field class="full-width" appearance="legacy">
                             <mat-label>Enter a password</mat-label>
                             <input matInput formControlName="password" required [type]="hidePwd ? 'password' : 'text'">
-                            <button  type="button" mat-icon-button matSuffix (click)="hidePwd = !hidePwd" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePwd">
+                            <button type="button" mat-icon-button matSuffix (click)="hidePwd = !hidePwd"
+                                [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePwd">
                                 <mat-icon>{{hidePwd ? 'visibility_off' : 'visibility'}}</mat-icon>
                             </button>
                             <mat-error>Password length must be at least 8 charcters</mat-error>
                         </mat-form-field>
                     </div>
                     <div class="col-lg-6">
-                        <mat-form-field  class="full-width">
+                        <mat-form-field class="full-width" appearance="legacy">
                             <mat-label>Confirm your password</mat-label>
-                            <input matInput formControlName="cpassword" required [type]="hideCpwd ? 'password' : 'text'">
-                            <button  type="button" mat-icon-button matSuffix (click)="hideCpwd = !hideCpwd" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hideCpwd">
+                            <input matInput formControlName="cpassword" required
+                                [type]="hideCpwd ? 'password' : 'text'">
+                            <button type="button" mat-icon-button matSuffix (click)="hideCpwd = !hideCpwd"
+                                [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hideCpwd">
                                 <mat-icon>{{hideCpwd ? 'visibility_off' : 'visibility'}}</mat-icon>
                             </button>
                         </mat-form-field>
                     </div>
-                    <mat-error class="small ml-3 mt-2" *ngIf="!formArray?.get([4]).valid && formArray?.get([4]).touched">Passwords do not match</mat-error>
+                    <mat-error class="small ml-3 mt-2"
+                        *ngIf="!formArray?.get([4]).valid && formArray?.get([4]).touched">Passwords do not match
+                    </mat-error>
 
                 </div>
                 <div>
+                    <!-- <re-captcha formControlName="captcha" required
+                        siteKey="ghtBHreVgsfZRgsQSD578dh5HTUtyjTYJUIuyotuiytOyt864uRNryjtUOYTUO">
+                    </re-captcha> -->
+
                     <button mat-button matStepperPrevious>Back</button>
-                    <button mat-raised-button color="accent" matStepperNext
-                            [disabled]="!regForm.valid || loading">
+                    <button mat-raised-button color="accent" matStepperNext [disabled]="!regForm.valid || loading">
                         {{ !loading ? 'Register' : 'Registering' }}
                     </button>
                 </div>

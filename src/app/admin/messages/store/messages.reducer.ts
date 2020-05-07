@@ -1,4 +1,4 @@
-import { EmailMessage } from './../../../models/emailMessage';
+import { EmailMessage } from './../../../models/emailMessage.model';
 import { Message } from './../../../models/message.model';
 
 import * as MessagesActions from './messages.actions';

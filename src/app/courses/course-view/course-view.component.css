@@ -1,0 +1,91 @@
+@media(min-width: 993px) {
+    .container-fluid {
+        padding-left: 50px;
+        padding-right: 50px;
+    }
+}
+
+.tag {
+    float: left;
+    margin: 0 8px 8px 0;
+    padding: 4px 8px;
+    background-color: lightslategrey;
+    color:white;
+    opacity: 0.8;
+    font-size: 10px;
+    border-radius: 10px;
+}
+
+.loaderContentList{
+    opacity: 0.7;
+    animation: loaderContentListAnim 1s ease-in-out infinite;
+}
+
+@keyframes loaderContentListAnim{
+    0% {
+        opacity: 0.3;
+    }
+    50% {
+        opacity: 0.5;
+    }
+    75% {
+        opacity: 0.6;
+    }
+    100% {
+        opacity: 0.3;
+    }
+}
+
+.list-group-item{
+    background-color: #e2d6e2;
+}
+
+.list-group-item a{
+    color: rgb(29, 29, 29)
+}
+
+.list-group-item a:hover{
+   text-decoration: none;
+}
+
+.list-group-item.active {
+    background-color: rgb(226, 245, 245);
+    border-color: rgb(226, 245, 245);
+    
+}
+
+.list-group-item:hover{
+    background-color: rgb(226, 245, 245);
+}
+
+.exp-panel{
+    background-color: #e2d6e2;
+    color: lightgrey
+}
+
+.contentBox{
+    background-color: #e2d6e2;
+    padding:1px;
+}
+
+
+.contentBox {
+    animation: contentBoxAnim .4s ease-in-out forwards;
+}
+
+@keyframes contentBoxAnim {
+    0% {
+        opacity: 0;
+        transform: translateY(10%);
+    }
+    50% {
+        opacity: 0.3;
+    }
+    75% {
+        opacity: 0.7;
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

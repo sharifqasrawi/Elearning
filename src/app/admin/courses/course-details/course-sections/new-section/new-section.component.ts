@@ -7,7 +7,7 @@ import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dial
 import { DiscardChangesComponent } from './../../../../../shared/discard-changes/discard-changes.component';
 
 import * as fromApp from '../../../../../store/app.reducer';
-import * as CoursesActions from '../../../store/courses.actions';
+import * as SectionsActions from '../store/sections.actions';
 
 export interface DialogData {
   courseId: number,
@@ -41,7 +41,7 @@ export class NewSectionComponent implements OnInit, OnDestroy {
 
 
   ngOnDestroy(): void {
-    this.store.dispatch(new CoursesActions.ClearStatus());
+    this.store.dispatch(new SectionsActions.ClearStatus());
   }
 
 
@@ -70,24 +70,19 @@ export class NewSectionComponent implements OnInit, OnDestroy {
       return;
 
     if (this.editMode) {
-      this.store.dispatch(new CoursesActions.UpdateSectionStart({
-        course: {
-          id: this.data.courseId
-        },
+      this.store.dispatch(new SectionsActions.UpdateStart({
         id: this.data.sectionId,
         name_EN: this.form.value.name_EN,
         order: this.form.value.order,
-        action: 'edit'
       }));
 
     } else {
-      this.store.dispatch(new CoursesActions.CreateSectionStart({
+      this.store.dispatch(new SectionsActions.CreateStart({
         course: {
           id: this.data.courseId
         },
         name_EN: this.form.value.name_EN,
         order: this.form.value.order,
-        action: 'add'
       }));
     }
 

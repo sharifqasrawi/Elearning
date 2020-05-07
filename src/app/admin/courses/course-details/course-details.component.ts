@@ -1,13 +1,13 @@
-import { map } from 'rxjs/operators';
+import { Component, OnInit } from '@angular/core';
 import { ThemePalette } from '@angular/material/core';
 import { Store } from '@ngrx/store';
-import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { faInfoCircle, faTags, faPallet, faPlay, faThumbsUp } from '@fortawesome/free-solid-svg-icons';
 
 import * as fromApp from '../../../store/app.reducer';
 import * as CoursesActions from '../store/courses.actions';
 import { Course } from './../../../models/course.model';
-import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-course-details',
@@ -15,6 +15,12 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./course-details.component.css']
 })
 export class CourseDetailsComponent implements OnInit {
+
+  faInfoCircle = faInfoCircle;
+  faTags = faTags;
+  faPallet = faPallet;
+  faPlay = faPlay;
+  faThumbsUp = faThumbsUp;
 
   courseId: number = null;
   course: Course = null;
@@ -33,7 +39,7 @@ export class CourseDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params.subscribe((params: Params) => {
-      this.courseId = +params.id;
+      this.courseId = +params.courseId;
     });
 
     this.route.queryParams.subscribe((params: Params) => {
@@ -51,13 +57,10 @@ export class CourseDetailsComponent implements OnInit {
         }
         this.publishing = state.publishing;
 
-        if (state.published){
-          this.toastr.success('Changes saved successfully', 'Saved');
-        }
+        // if (state.published) {
+        //   this.toastr.success('Changes saved successfully', 'Saved');
+        // }
 
-      
-
-        
       });
   }
 

@@ -1,7 +1,7 @@
 import { Action } from '@ngrx/store';
 
 import { Message } from './../../../models/message.model';
-import { EmailMessage } from './../../../models/emailMessage';
+import { EmailMessage } from './../../../models/emailMessage.model';
 
 
 export const SEND_START = '[Messages] Send Start';

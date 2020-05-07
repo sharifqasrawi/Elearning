@@ -64,12 +64,14 @@ export function categoriesReducer(state: State = initialState, action: Categorie
                 errors: null
             };
         case CategoriesActions.UPDATE_SUCCESS:
-            const categoryToUpdate = state.categories.find(c => c.id === action.payload.id);    
+            const categoryToUpdate = state.categories.find(c => c.id === action.payload.id);
             const categoryToUpdateIndex = state.categories.findIndex(c => c.id === action.payload.id);
-            
+
             const updatedCategory = {
                 ...categoryToUpdate,
                 title_EN: action.payload.title_EN,
+                slug: action.payload.slug,
+                imagePath: action.payload.imagePath,
                 updatedAt: action.payload.updatedAt,
                 updatedBy: action.payload.updatedBy
             };
@@ -100,7 +102,7 @@ export function categoriesReducer(state: State = initialState, action: Categorie
                 errors: null
             };
         case CategoriesActions.TRASH_SUCCESS:
-            
+
             const categoryToTrashIndex = state.categories.findIndex(c => c.id === action.payload.id);
             const categoriesAfterTrash = [...state.categories];
             categoriesAfterTrash.splice(categoryToTrashIndex, 1);
@@ -130,7 +132,7 @@ export function categoriesReducer(state: State = initialState, action: Categorie
             };
         case CategoriesActions.RESTORE_SUCCESS:
             const categoryToRestoreIndex = state.trashedCategories.findIndex(c => c.id === action.payload.id);
-           
+
             // Removing from categories array
             const trashedCategoriesAfterRestore = [...state.trashedCategories];
             trashedCategoriesAfterRestore.splice(categoryToRestoreIndex, 1);

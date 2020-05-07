@@ -10,6 +10,11 @@ body {
     padding-top: 100px;
 }
 
+
+.content {
+  margin-top: 30px;
+}
+
 .chipLink{
     color: white;
 }
@@ -145,4 +150,12 @@ table {
 
 .center {
   margin: 0 auto;
+}
+
+
+blockquote{
+  border-left: 3px solid #5e35b1;
+  padding: 7px 12px 1px 12px;
+  background-color: #eee;
+  display: inline-block;
 }

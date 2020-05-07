@@ -4,6 +4,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 
+import { ImagePickerComponent } from './../../../shared/image-picker/image-picker.component';
 import { DiscardChangesComponent } from './../../../shared/discard-changes/discard-changes.component';
 import * as fromApp from '../../../store/app.reducer';
 import * as CategoriesActions from '../store/categories.actions';
@@ -47,12 +48,14 @@ export class NewCategoryComponent implements OnInit, OnDestroy {
 
     if (this.editMode) {
       this.form = new FormGroup({
-        title_EN: new FormControl(this.category.title_EN, [Validators.required])
+        title_EN: new FormControl(this.category.title_EN, [Validators.required]),
+        imagePath: new FormControl(this.category.imagePath, [Validators.required]),
       });
     }
     else {
       this.form = new FormGroup({
-        title_EN: new FormControl(null, [Validators.required])
+        title_EN: new FormControl(null, [Validators.required]),
+        imagePath: new FormControl(null, [Validators.required]),
       });
     }
   }
@@ -66,12 +69,14 @@ export class NewCategoryComponent implements OnInit, OnDestroy {
     if (this.editMode) {
       this.store.dispatch(new CategoriesActions.UpdateStart({
         id: this.category.id,
-        title_En: this.form.value.title_EN
+        title_En: this.form.value.title_EN,
+        imagePath: this.form.value.imagePath
       }));
 
     } else {
       this.store.dispatch(new CategoriesActions.CreateStart({
-        title_En: this.form.value.title_EN
+        title_En: this.form.value.title_EN,
+        imagePath: this.form.value.imagePath
       }));
     }
 
@@ -93,6 +98,26 @@ export class NewCategoryComponent implements OnInit, OnDestroy {
       this.dialog.closeAll();
     }
   }
+
+
+  selectImage() {
+    var dialogRef = this.dialog.open(ImagePickerComponent,
+      {
+        width: '650px',
+        height: '500px',
+        disableClose: true
+      });
+
+    dialogRef.afterClosed().subscribe((data: { imagePath: string }) => {
+      if (data) {
+        this.form.patchValue({
+          imagePath: data.imagePath
+        });
+      }
+    });
+
+  }
+
 
 
   private markAsDirty(group: FormGroup): void {

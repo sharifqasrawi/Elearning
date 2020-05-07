@@ -10,7 +10,7 @@ import { MatDialog } from '@angular/material/dialog';
 
 import * as fromApp from '../../../store/app.reducer';
 import * as MessagesActions from './../store/messages.actions';
-import { EmailMessage } from './../../../models/emailMessage';
+import { EmailMessage } from './../../../models/emailMessage.model';
 
 @Component({
   selector: 'app-list-emails',

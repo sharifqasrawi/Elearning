@@ -7,6 +7,7 @@ import { Tag } from './../../../../models/tag.model';
 import * as fromApp from '../../../../store/app.reducer';
 import * as TagsActions from '../../../tags/store/tags.actions';
 import * as CoursesActions from '../../../courses/store/courses.actions';
+import { ActivatedRoute, Params } from '@angular/router';
 
 @Component({
   selector: 'app-course-tags',
@@ -21,8 +22,8 @@ export class CourseTagsComponent implements OnInit {
   faPlus = faPlus;
   faTrash = faTrash;
 
-  @Input() tags: Tag[];
-  @Input() courseId: number;
+  tags: Tag[];
+  courseId: number;
 
   allTags: Tag[] = null;
   courseTags: Tag[] = [];
@@ -31,23 +32,31 @@ export class CourseTagsComponent implements OnInit {
   updating = false;
 
   constructor(
-    private store: Store<fromApp.AppState>
+    private store: Store<fromApp.AppState>,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
     this.store.dispatch(new TagsActions.FetchStart());
+    // this.store.dispatch(new CoursesActions.FetchStart());
 
+    this.route.params.subscribe((params: Params) => {
+      this.courseId = +params.courseId;
+    });
+
+    this.store.select('courses').subscribe(state => {
+      this.updating = state.updating;
+
+      this.tags = state.courses.find(c => c.id === this.courseId).tags;
+
+      if (state.updated)
+        this.otherTags = this.allTags.filter(this.comparer(this.tags));
+    });
 
     this.store.select('tags').subscribe(state => {
       this.allTags = state.tags;
 
       this.otherTags = this.allTags.filter(this.comparer(this.tags));
-    });
-
-    this.store.select('courses').subscribe(state => {
-      this.updating = state.updating;
-      if (state.updated)
-        this.otherTags = this.allTags.filter(this.comparer(this.tags));
     });
 
   }

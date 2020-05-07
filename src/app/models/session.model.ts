@@ -1,3 +1,4 @@
+import { SessionContent } from './sessionContent.model';
 export class Session {
     constructor(
         public id: number,
@@ -10,6 +11,7 @@ export class Session {
         public updatedAt?: Date,
         public updatedBy?: string,
         public sectionId?: number,
-        public courseId?: number
+        public courseId?: number,
+        public contents?: SessionContent[]
     ){}
 }

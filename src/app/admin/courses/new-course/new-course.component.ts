@@ -201,16 +201,6 @@ export class NewCourseComponent implements OnInit, OnDestroy, CanComponentDeacti
 
   onCancel() {
     this.router.navigate(['/admin', 'courses']);
-    // const dialogRef = this.dialog.open(ConfirmDialogComponent,
-    //   {
-    //     width: '300px',
-    //     data: { header: 'Confirmation', message: 'Discard all changes and exit ?' }
-    //   });
-
-    // dialogRef.afterClosed().subscribe(result => {
-    //   if (result)
-    //     this.router.navigate(['/admin', 'courses']);
-    // });
   }
 
 

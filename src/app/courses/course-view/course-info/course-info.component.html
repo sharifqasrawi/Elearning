@@ -1,0 +1,86 @@
+<div *ngIf="!loadingCourse" class="courseInfo">
+    <!-- <img [src]="course.imagePath" [alt]="course.title_EN" width="400px"> -->
+
+    <div class="row">
+        <div class="col-lg-10">
+            <h1>
+                {{ course.title_EN }}
+            </h1>
+        </div>
+
+        <div class="col-lg-2">
+            <button type="button" *ngIf="isAuthenticated" (click)="onLike()" [disabled]="loadingLike"
+                [class.loadingLike]="loadingLike" [class.liked]="isUserLiked" [class.unliked]="!isUserLiked">
+                <span *ngIf="!isUserLiked" class="text-muted">
+                    <fa-icon [icon]="faThumbsUp"></fa-icon> Like
+                </span>
+
+                <span *ngIf="isUserLiked" class="text-muted">
+                    <fa-icon [icon]="faThumbsDown"></fa-icon> Unlike
+                </span>
+
+                <!-- <span> | </span> -->
+                <span class="text-muted"> {{ course.likes.length }}</span>
+            </button>
+
+            <a [routerLink]="['/security', 'auth']" [queryParams]="{'returnUrl': currentUrl}"
+                class="btn btn-success btn-sm btn-block" *ngIf="!isAuthenticated">
+                Login to like this course.
+            </a>
+        </div>
+    </div>
+
+    <div style="display: flex; justify-content: space-between;">
+        <p class="small text-muted">
+            Published: {{ course.createdBy }} - {{ course.publishedAt | date:'short' }}
+        </p>
+        <p class="small text-muted">
+            Last updated: {{ course.updatedBy }} - {{ course.updatedAt | date:'short' }}
+        </p>
+    </div>
+    <hr>
+
+    <div>
+        <div class="tag mat-elevation-z4" *ngFor="let tag of course.tags">
+            <fa-icon [icon]="faTag"></fa-icon> {{ tag.name }}
+        </div>
+    </div>
+    <div class="clearfix"></div>
+
+
+    <div class="row mt-2">
+        <div class="col-lg-6">
+            <h3>
+                <strong>Level: </strong> {{ course.level }}
+            </h3>
+        </div>
+        <div class="col-lg-6">
+            <h3>
+                <strong>Duration: </strong> {{ course.duration }} mins.
+            </h3>
+        </div>
+    </div>
+
+    <div>
+        <h3 class="alert alert-info"><strong>Languages:</strong></h3>
+        <ul>
+            <li *ngFor="let lang of course.languages.split('-')">
+                {{ lang }}
+            </li>
+        </ul>
+    </div>
+
+    <div>
+        <h3 class="alert alert-info"><strong>Prerequisites:</strong></h3>
+        <div [innerHtml]="getSanitizedHtml(course.prerequisites_EN)" style="padding-left: 23px;"></div>
+    </div>
+
+    <div>
+        <h3 class="alert alert-info"><strong>Description:</strong></h3>
+        <div [innerHtml]="getSanitizedHtml(course.description_EN)" style="padding-left: 23px;"></div>
+    </div>
+</div>
+
+<div *ngIf="loadingCourse">
+    <app-loader-course-info></app-loader-course-info>
+</div>

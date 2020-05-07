@@ -1,18 +1,24 @@
+@media(min-width: 993px) {
+    .container-fluid {
+        padding-left: 50px;
+        padding-right: 50px;
+    }
+}
+
 .home {
     background: url(../../assets/images/bg3.jpg);
     background-position: center;
     background-size: cover;
     height: 100vh;
-
     animation: homeAnim 0.4s forwards ease-in-out;
 }
 
 @keyframes homeAnim {
-    0%{
+    0% {
         transform: translateY(10%);
         opacity: 0.7;
     }
-    100%{
+    100% {
         transform: translateY(0);
         opacity: 1;
     }
@@ -24,15 +30,14 @@
     background-color: rgba(12, 1, 27, 0.8);
     z-index: 50;
     color: lightgrey;
-    padding-top:100px;
+    padding-top: 100px;
     box-sizing: border-box;
 }
 
 .homeContent {
     padding-top: 200px;
     box-sizing: border-box;
-   text-align: center;
-
+    text-align: center;
 }
 
 .homeContent h1 {
@@ -40,6 +45,79 @@
     margin: 0 auto;
 }
 
-.content {
-    margin-top: 30px;
+.course-card {
+    max-width: 350px;
+    height: 600px;
+    overflow-y: auto;
+}
+
+.course-card img {
+    max-width: 350px;
+    height: 300px;
+}
+
+.course-div {
+    float: left;
+    margin: 0 15px 25px 0;
+}
+
+.category-card {
+    width: 250px;
+    height: 300px;
+    overflow-y: auto;
+}
+
+.category-card img {
+    width: 250px;
+    height: 200px;
+}
+
+.category-card .actions {
+    position: absolute;
+    bottom: 10px;
+    color: grey;
+}
+
+.category-card .actions a {
+    font-size: 12px;
+}
+
+.category-card .actions a:hover {
+    text-decoration: none;
+    color: grey;
+    background-color: rgb(236, 236, 236);
+}
+
+.category-card .title {
+    font-size: 14px;
+    text-align: center;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.category-div {
+    float: left;
+    margin: 0 20px 25px 0;
+    animation: categoryDivAnim .4s ease-in-out forwards;
+}
+
+.notFoundMsg {
+    animation: categoryDivAnim .4s ease-in-out forwards;
+}
+
+@keyframes categoryDivAnim {
+    0% {
+        opacity: 0;
+        transform: translateY(10%);
+    }
+    50% {
+        opacity: 0.3;
+    }
+    75% {
+        opacity: 0.7;
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }

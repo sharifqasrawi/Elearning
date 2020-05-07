@@ -1,0 +1,49 @@
+
+.loader-category-card {
+    width: 250px;
+    height: 300px;
+    overflow-y: auto;
+}
+
+.loader-category-card img {
+    width: 250px;
+    height: 200px;
+}
+
+.loader-category-card .actions {
+    position: absolute;
+    bottom: 10px;
+    background-color: rgb(230, 228, 228);
+    width: 100px;
+}
+
+
+.loader-category-card .title{
+    font-size: 14px;
+    text-align: center;
+    margin: 0 auto;
+    width: 185px;
+    background-color: rgb(230, 228, 228);
+}
+
+.loader-category-div {
+    float: left;
+    margin: 0 20px 25px 0;
+
+    animation: loaderCategoryDivAnim 1s ease-in-out infinite;
+}
+
+@keyframes loaderCategoryDivAnim {
+    0% {
+        opacity: 0.3;
+    }
+    50% {
+        opacity: 0.5;
+    }
+    75% {
+        opacity: 0.6;
+    }
+    100% {
+        opacity: 0.3;
+    }
+}

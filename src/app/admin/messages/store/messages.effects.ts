@@ -6,7 +6,7 @@ import { switchMap, map, catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 
 import { Message } from './../../../models/message.model';
-import { EmailMessage } from './../../../models/emailMessage';
+import { EmailMessage } from './../../../models/emailMessage.model';
 import * as MessagesActions from './messages.actions';
 import * as fromApp from '../../../store/app.reducer';
 

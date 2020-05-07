@@ -1,0 +1,74 @@
+<div class="row full-width center" #container>
+    <div class="col-lg-12">
+        <div class="row adminPageBottom">
+            <div class="col-lg-7">
+                <h2>
+                    <fa-icon [icon]="faEdit"></fa-icon>
+                    {{ loadingSession ? 'loading...' :  editedSession.title_EN }}
+                </h2>
+            </div>
+            <div class="col-lg-1">
+                <button mat-raised-button color="warn" class="btn-block" (click)="onGoBack()">
+                    Back
+                </button>
+            </div>
+            <div class="col-lg-2">
+                <button mat-raised-button color="accent" class="btn-block" (click)="onRefresh()">
+                    Refresh
+                </button>
+            </div>
+            <div class="col-lg-2">
+                <button mat-raised-button color="primary" class="btn-block" (click)="onAdd()">
+                    Add Content
+                </button>
+            </div>
+        </div>
+
+        <hr>
+        <div class="row adminPageBottom">
+            <div class="col-lg-12">
+                <div *ngIf="errors">
+                    <div class="alert alert-danger" *ngIf="let error of errors">
+                        {{ error }}
+                    </div>
+                </div>
+
+                <div *ngIf="loadingContents" class="full-width">
+                    <mat-spinner class="center"></mat-spinner>
+                </div>
+
+                <div *ngIf="!loadingContents">
+                    <div *ngFor="let content of contents" class="contentItem">
+                        <div class="order">
+                            <mat-icon [matBadge]="content.order" matBadgeColor="primary"></mat-icon>
+                        </div>
+
+                        <div class="editButton">
+                            <button class="btn btn-warning btn-sm"
+                                (click)="onEditContent(content.id, content.order, content.type, content.content, content.note)">
+                                <fa-icon [icon]="faEdit" style="color: white; font-size: 10px;"></fa-icon>
+                            </button>
+                        </div>
+
+                        <div class="deleteButton">
+                            <button class="btn btn-danger btn-sm" (click)="onDeleteContent(content.id)">
+                                <fa-icon [icon]="faTrash" style="color: white; font-size: 10px;"></fa-icon>
+                            </button>
+                        </div>
+
+                        <div [innerHTML]="getSanitizedHtml( content.content )" *ngIf="content.type === 'text'"></div>
+
+                        <div [innerHTML]="content.content" *ngIf="content.type === 'code'"></div>
+
+                        <img [src]="content.content" width="300" *ngIf="content.type === 'image'">
+
+                        <a style="cursor: pointer; color:purple" [href]="content.content" *ngIf="content.type === 'resource'"
+                            target="_blank">
+                            {{ content.note }}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
