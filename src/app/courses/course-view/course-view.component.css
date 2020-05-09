@@ -2,7 +2,44 @@
     .container-fluid {
         padding-left: 50px;
         padding-right: 50px;
+        display: flex;
+        flex-direction: row;
     }
+    .container-fluid .left {
+        flex: 2;
+    }
+    .container-fluid .right {
+        flex: 1;
+        margin-left: 30px;
+    }
+
+    .container-fluid .left .btnSessions {
+        display: none;
+    }
+}
+
+@media(max-width: 993px) {
+    .container-fluid {
+        display: flex;
+        flex-direction: column-reverse;
+    }
+
+    .container-fluid .right {
+        display: none;
+        margin-bottom: 30px;
+    }
+
+    .container-fluid .left .btnSessions {
+        display: block;
+    }
+}
+
+.courseHeader {
+    background-color: whitesmoke;
+    box-shadow: 2px 3px 4px #ccc;
+    padding: 7px;
+    margin-bottom: 20px;
+    border-radius: 5px;
 }
 
 .tag {
@@ -10,18 +47,18 @@
     margin: 0 8px 8px 0;
     padding: 4px 8px;
     background-color: lightslategrey;
-    color:white;
+    color: white;
     opacity: 0.8;
     font-size: 10px;
     border-radius: 10px;
 }
 
-.loaderContentList{
+.loaderContentList {
     opacity: 0.7;
     animation: loaderContentListAnim 1s ease-in-out infinite;
 }
 
-@keyframes loaderContentListAnim{
+@keyframes loaderContentListAnim {
     0% {
         opacity: 0.3;
     }
@@ -36,38 +73,36 @@
     }
 }
 
-.list-group-item{
+.list-group-item {
     background-color: #e2d6e2;
 }
 
-.list-group-item a{
+.list-group-item a {
     color: rgb(29, 29, 29)
 }
 
-.list-group-item a:hover{
-   text-decoration: none;
+.list-group-item a:hover {
+    text-decoration: none;
 }
 
 .list-group-item.active {
     background-color: rgb(226, 245, 245);
     border-color: rgb(226, 245, 245);
-    
 }
 
-.list-group-item:hover{
+.list-group-item:hover {
     background-color: rgb(226, 245, 245);
 }
 
-.exp-panel{
+.exp-panel {
     background-color: #e2d6e2;
     color: lightgrey
 }
 
-.contentBox{
+.contentBox {
     background-color: #e2d6e2;
-    padding:1px;
+    padding: 1px;
 }
-
 
 .contentBox {
     animation: contentBoxAnim .4s ease-in-out forwards;
@@ -87,5 +122,87 @@
     100% {
         opacity: 1;
         transform: translateY(0);
+    }
+}
+
+button.btnLike {
+    display: flex;
+    justify-content: space-between;
+    background-color: transparent;
+    border: 1px solid rgb(168, 168, 168);
+    border-radius: 10px;
+    padding: 5px 12px;
+    width: 100%;
+}
+
+button.btnLike span {
+    color: rgb(83, 83, 83) !important;
+}
+
+button.btnLike:hover {
+    background-color: rgb(224, 224, 224);
+}
+
+button.btnLike.loadingLike {
+    background-color: rgb(224, 224, 224);
+    cursor: none;
+}
+
+button.btnLike.liked {
+    background-color: rgb(255, 230, 198);
+}
+
+button.btnLike.unliked {
+    background-color: rgb(226, 210, 210);
+}
+
+
+
+/* Loader Course Header */
+
+.loaderCourseHeader .createInfo p {
+    width: 200px;
+    background-color: rgb(230, 228, 228);
+    border-radius: 5px;
+}
+
+.loaderCourseHeader .brcmp{
+    width: 100%;
+    height: 40px;
+    background-color: rgb(230, 228, 228);
+    border-radius: 5px;
+}
+
+.loaderCourseHeader h1 {
+    width: 50%;
+    margin-top: 15px;
+    background-color: rgb(230, 228, 228);
+    border-radius: 5px;
+}
+
+.loaderCourseHeader .bt {
+    width: 100%;
+    height: 30px;
+    margin-top: 15px;
+    background-color: rgb(230, 228, 228);
+    border-radius: 5px;
+}
+
+.loaderCourseHeader {
+    animation: loaderCourseHeaderAnim 1s ease-in-out infinite;
+}
+
+@keyframes loaderCourseHeaderAnim {
+    0% {
+        opacity: 0.3;
+    }
+    50% {
+        opacity: 0.5;
+    }
+    75% {
+        opacity: 0.6;
+    }
+    100% {
+        opacity: 0.3;
     }
 }

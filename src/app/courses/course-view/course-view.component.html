@@ -1,60 +1,132 @@
 <div class="container-fluid content0">
-    <app-breadcrumb [links]="breadcrumbLinks"></app-breadcrumb>
+    <div class="left">
+        <div class="courseHeader" *ngIf="!loading">
+            <div class="row">
+                <div class="col-lg-12">
+                    <app-breadcrumb [links]="breadcrumbLinks"></app-breadcrumb>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-10">
+                    <h1>
+                        {{ course.title_EN }}
+                    </h1>
+                </div>
 
-    <div class="row">
-        <div class="col-lg-8">
-            <!-- <button mat-flat-button color="primary" (click)="onNextPage()">
-                Next Page
-            </button> -->
-            <router-outlet></router-outlet>
-        </div>
-        <div class="col-lg-4">
-            <div class="contentBox" *ngIf="!loading">
-                <div class="contentBox-header text-center">
-                    <button mat-flat-button color="" (click)="allExpandState = !allExpandState"
-                        class="btn-block">
-                        Content ({{ allExpandState ? 'Collapse All' : 'Expand All' }})
+                <div class="col-lg-2">
+                    <button type="button" class="btnLike" *ngIf="isAuthenticated" (click)="onLike()"
+                        [disabled]="loadingLike" [class.loadingLike]="loadingLike" [class.liked]="isUserLiked"
+                        [class.unliked]="!isUserLiked">
+                        <span *ngIf="!isUserLiked" class="text-muted">
+                            <fa-icon [icon]="faThumbsUp"></fa-icon> Like
+                        </span>
+
+                        <span *ngIf="isUserLiked" class="text-muted">
+                            <fa-icon [icon]="faThumbsDown"></fa-icon> Unlike
+                        </span>
+
+                        <span class="text-muted"> {{ course.likes.length }}</span>
                     </button>
-                </div>
-                <div class="contentBox-body">
-                    <div *ngIf="!loading">
 
-                        <mat-expansion-panel class="exp-panel" [expanded]="allExpandState" *ngFor="let section of course.sections">
-                            <mat-expansion-panel-header>
-                                <mat-panel-title>
-                                   <strong> {{ section.order }}- {{ section.name_EN }}</strong>
-                                </mat-panel-title>
-                                <mat-panel-description>
-                                    <span class="small">{{ section.sessions.length }} sessions</span>
-                                </mat-panel-description>
-                            </mat-expansion-panel-header>
-
-                            <ul class="list-group">
-                                <li routerLinkActive="active" class="list-group-item full-width" *ngFor="let session of section.sessions">
-                                    <a [routerLink]="['session', session.id, session.slug_EN]"
-                                        >
-                                        {{ session.order }}- {{ session.title_EN }}
-                                    </a>
-                                </li>
-                            </ul>
-                        </mat-expansion-panel>
-
-                    </div>
+                    <a [routerLink]="['/security', 'auth']" [queryParams]="{'returnUrl': currentUrl}"
+                        class="btn btn-success btn-sm btn-block" *ngIf="!isAuthenticated">
+                        Login to like.
+                    </a>
                 </div>
             </div>
 
 
-            <div class="card loaderContentList" *ngIf="loading">
-                <div class="card-header text-center">
-                    <h3>
-                        &nbsp;
-                    </h3>
-                </div>
-                <div class="card-body" style="height: 500px;">
-                    &nbsp;
-                </div>
+
+            <div style="display: flex; justify-content: space-between;">
+                <p class="small text-muted">
+                    <strong>Published: </strong> {{ course.createdBy }} - {{ course.publishedAt | date:'short' }}
+                </p>
+                <p class="small text-muted">
+                    <strong> Last updated: </strong> {{ course.updatedBy }} - {{ course.updatedAt | date:'short' }}
+                </p>
+            </div>
+
+            <div class="btnSessions">
+                <button type="button" mat-flat-button color="primary" class="btn-block">
+                    Sessions
+                </button>
             </div>
 
         </div>
+
+        <!-- Loader -->
+        <div class="loaderCourseHeader courseHeader" *ngIf="loading">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="brcmp">&nbsp;</div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-10">
+                    <h1>&nbsp;</h1>
+                </div>
+                <div class="col-lg-2">
+                    <div class="bt">&nbsp;</div>
+                </div>
+            </div>
+            <div class="createInfo" style="display: flex; justify-content: space-between;">
+                <p class="small text-muted">&nbsp;</p>
+                <p class="small text-muted"> &nbsp; </p>
+            </div>
+            <div class="btnSessions">&nbsp; </div>
+        </div>
+
+        <router-outlet></router-outlet>
+    </div>
+
+
+
+    <div class="right">
+        <div class="contentBox" *ngIf="!loading">
+            <div class="contentBox-header text-center">
+                <button mat-flat-button color="" (click)="allExpandState = !allExpandState" class="btn-block">
+                    Content ({{ allExpandState ? 'Collapse All' : 'Expand All' }})
+                </button>
+            </div>
+            <div class="contentBox-body">
+                <div *ngIf="!loading">
+
+                    <mat-expansion-panel class="exp-panel" [expanded]="allExpandState"
+                        *ngFor="let section of course.sections">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                <strong> {{ section.order }}- {{ section.name_EN }}</strong>
+                            </mat-panel-title>
+                            <mat-panel-description>
+                                <span class="small">{{ section.sessions.length }} sessions</span>
+                            </mat-panel-description>
+                        </mat-expansion-panel-header>
+
+                        <ul class="list-group">
+                            <li routerLinkActive="active" class="list-group-item full-width"
+                                *ngFor="let session of section.sessions">
+                                <a [routerLink]="['session', session.id, session.slug_EN]">
+                                    {{ session.order }}- {{ session.title_EN }}
+                                </a>
+                            </li>
+                        </ul>
+                    </mat-expansion-panel>
+
+                </div>
+            </div>
+        </div>
+
+
+        <div class="card loaderContentList" *ngIf="loading">
+            <div class="card-header text-center">
+                <h3>
+                    &nbsp;
+                </h3>
+            </div>
+            <div class="card-body" style="height: 500px;">
+                &nbsp;
+            </div>
+        </div>
+
     </div>
 </div>

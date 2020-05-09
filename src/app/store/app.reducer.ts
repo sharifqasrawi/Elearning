@@ -16,6 +16,7 @@ import * as fromSessionContents from '../admin/courses/course-details/course-ses
 import * as fromHomeCategories from '../home/store/categories.reducer';
 import * as fromHomeCourses from '../courses/store/courses.reducer';
 import * as fromHomeSession from '../courses/course-view/course-session/store/session.reducer';
+import * as fromHomeComments from '../courses/course-view/course-comments/store/comments.reducer';
 
 export interface AppState {
     login: fromLogin.State
@@ -33,6 +34,7 @@ export interface AppState {
     directories: fromDirectories.State,
     files: fromFiles.State,
     tags: fromTags.State,
+    homeComments: fromHomeComments.State,
 }
 
 export const appReducer: ActionReducerMap<AppState> = {
@@ -51,4 +53,5 @@ export const appReducer: ActionReducerMap<AppState> = {
     directories: fromDirectories.directoriesReducer,
     files: fromFiles.filesReducer,
     tags: fromTags.tagsReducer,
+    homeComments: fromHomeComments.commentsReducer,
 };

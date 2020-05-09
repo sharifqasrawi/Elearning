@@ -19,15 +19,6 @@
     }
 }
 
-.loaderCourseInfo h1 {
-    width: 100%;
-    background-color: rgb(175, 175, 175);
-}
-
-.loaderCourseInfo p, .loaderCourseInfo h3 {
-    width: 200px;
-    background-color: rgb(175, 175, 175);
-}
 
 
 .loaderCourseInfo .tag {
@@ -55,4 +46,17 @@
     height: 100px;
     background-color: rgb(175, 175, 175);
     margin-bottom: 25px;
+}
+
+.courseInfoNav {
+    padding: 12px;
+    margin-bottom: 10px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    background-color: rgb(218, 218, 218);
+    color: white;
+    border-radius: 25px;
+    box-shadow: 1px 2px 3px rgb(143, 143, 143);
 }

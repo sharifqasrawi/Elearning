@@ -58,7 +58,8 @@ export class CourseInfoComponent implements OnInit {
     this.store.select('login')
       .subscribe(state => {
         this.isAuthenticated = state.isAuthenticated;
-        this.userId = state.user.id
+        if (state.user)
+          this.userId = state.user.id;
       });
 
     this.store.select('homeCourses').subscribe(state => {

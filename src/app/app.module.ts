@@ -1,4 +1,3 @@
-import { HomeSessionEffects } from './courses/course-view/course-session/store/session.effects';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
@@ -9,15 +8,15 @@ import { EffectsModule } from '@ngrx/effects';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
-import { NotifierModule, NotifierOptions } from 'angular-notifier';
+import { TimeagoModule } from 'ngx-timeago';
 
+import * as fromApp from './store/app.reducer';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './home/home.component';
 import { FooterComponent } from './footer/footer.component';
 import { AboutmeComponent } from './aboutme/aboutme.component';
-import * as fromApp from './store/app.reducer';
 import { LoginEffects } from './security/login/store/login.effects';
 import { RegisterEffects } from './security/register/store/register.effects';
 import { AdminModule } from './admin/admin.module';
@@ -42,48 +41,11 @@ import { HomeCoursesEffects } from './courses/store/courses.effects';
 import { CourseViewComponent } from './courses/course-view/course-view.component';
 import { CourseInfoComponent } from './courses/course-view/course-info/course-info.component';
 import { CourseSessionComponent } from './courses/course-view/course-session/course-session.component';
+import { CourseCommentsComponent } from './courses/course-view/course-comments/course-comments.component';
+import { HomeCommentsEffects } from './courses/course-view/course-comments/store/comments.effects';
+import { HomeSessionEffects } from './courses/course-view/course-session/store/session.effects';
+import { CountUpModule } from 'ngx-countup';
 
-
-const customNotifierOptions: NotifierOptions = {
-  position: {
-		horizontal: {
-			position: 'right',
-			distance: 12
-		},
-		vertical: {
-			position: 'top',
-			distance: 12,
-			gap: 10
-		}
-	},
-  theme: 'material',
-  behaviour: {
-    autoHide: 5000,
-    onClick: 'hide',
-    onMouseover: 'pauseAutoHide',
-    showDismissButton: true,
-    stacking: 4
-  },
-  animations: {
-    enabled: true,
-    show: {
-      preset: 'slide',
-      speed: 300,
-      easing: 'ease'
-    },
-    hide: {
-      preset: 'fade',
-      speed: 300,
-      easing: 'ease',
-      offset: 50
-    },
-    shift: {
-      speed: 300,
-      easing: 'ease'
-    },
-    overlap: 150
-  }
-};
 
 @NgModule({
   declarations: [
@@ -98,9 +60,11 @@ const customNotifierOptions: NotifierOptions = {
     CourseViewComponent,
     CourseInfoComponent,
     CourseSessionComponent,
+    CourseCommentsComponent,
   ],
   imports: [
     BrowserModule,
+    TimeagoModule.forRoot(),
     HttpClientModule,
     StoreModule.forRoot(fromApp.appReducer),
     EffectsModule.forRoot([
@@ -118,7 +82,8 @@ const customNotifierOptions: NotifierOptions = {
       SessionContentsEffects,
       DirectoriesEffects,
       FilesEffects,
-      TagsEffects
+      TagsEffects,
+      HomeCommentsEffects
     ]),
     MaterialModule,
     MatNativeDateModule,
@@ -126,8 +91,7 @@ const customNotifierOptions: NotifierOptions = {
     ReactiveFormsModule,
     BrowserAnimationsModule,
     FontAwesomeModule,
-    
-    NotifierModule.withConfig(customNotifierOptions),
+    CountUpModule,
     SharedModule,
     SecurityModule,
     AdminModule,

@@ -159,3 +159,7 @@ blockquote{
   background-color: #eee;
   display: inline-block;
 }
+
+.op06{
+  opacity: 0.6;
+}

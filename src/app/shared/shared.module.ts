@@ -22,6 +22,7 @@ import { LoaderHomeCategoryComponent } from './loader-home-category/loader-home-
 import { LoaderHomeCourseComponent } from './loader-home-course/loader-home-course.component';
 import { LoaderCourseInfoComponent } from './loader-course-info/loader-course-info.component';
 import { FilePickerComponent } from './file-picker/file-picker.component';
+import { LoaderCourseCommentsComponent } from './loader-course-comments/loader-course-comments.component';
 
 @NgModule({
     declarations: [
@@ -37,6 +38,7 @@ import { FilePickerComponent } from './file-picker/file-picker.component';
         LoaderHomeCourseComponent,
         LoaderCourseInfoComponent,
         FilePickerComponent,
+        LoaderCourseCommentsComponent,
     ],
     imports: [
         BrowserModule,
@@ -55,7 +57,8 @@ import { FilePickerComponent } from './file-picker/file-picker.component';
         BreadcrumbComponent,
         LoaderHomeCategoryComponent,
         LoaderHomeCourseComponent,
-        LoaderCourseInfoComponent
+        LoaderCourseInfoComponent,
+        LoaderCourseCommentsComponent
     ],
     providers: [
         { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: true } }

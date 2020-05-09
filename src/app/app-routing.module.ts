@@ -1,3 +1,4 @@
+import { CourseCommentsComponent } from './courses/course-view/course-comments/course-comments.component';
 import { CoursesResolverService } from './courses/courses-resolver.service';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule, ExtraOptions } from '@angular/router';
@@ -32,6 +33,7 @@ const routes: Routes = [
                 path: 'session/:sessionId/:sessionSlug',
                 component: CourseSessionComponent,
               },
+              { path: 'comments', component: CourseCommentsComponent },
               { path: '', component: CourseInfoComponent, pathMatch: 'full' }
             ]
           },

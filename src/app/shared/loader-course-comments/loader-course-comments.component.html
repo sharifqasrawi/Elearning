@@ -1,0 +1,50 @@
+<div class="courseInfoNav loaderCourseComments">
+    &nbsp;
+</div>
+
+<div class="loaderCourseComments">
+    <h2>
+        Comments:
+    </h2>
+    <hr>
+</div>
+
+<div class="comments-container loaderCourseComments">
+    <ul id="comments-list" class="comments-list">
+        <li *ngFor="let i of [].constructor(5)">
+            <div class="comment-main-level">
+
+                <div class="comment-avatar"><img src="../../../../assets/images/male.jpg" alt="no avatar"></div>
+
+                <div class="comment-box">
+                    <div class="comment-head">
+                        <h6 class="comment-name">
+                            &nbsp;
+                        </h6>
+                        <span>&nbsp;</span>
+                        <i>
+                            <fa-icon [icon]="faReply"></fa-icon>
+                        </i>
+                        <i>
+                            <fa-icon [icon]="faHeart"></fa-icon>
+                        </i>
+                        <i>
+                            <fa-icon [icon]="faTrash"></fa-icon>
+                        </i>
+                        <i>
+                            <fa-icon [icon]="faEdit"></fa-icon>
+                        </i>
+                    </div>
+                    <div class="comment-content">
+                        <pre>&nbsp;</pre>
+                    </div>
+                    <div class="comment-footer">
+                        <a>
+                            &nbsp;
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
