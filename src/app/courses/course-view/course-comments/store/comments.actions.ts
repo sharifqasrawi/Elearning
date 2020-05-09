@@ -19,6 +19,10 @@ export const DELETE_START = '[Comments] Delete Start';
 export const DELETE_SUCCESS = '[Comments] Delete Success';
 export const DELETE_FAIL = '[Comments] Delete Fail';
 
+export const LIKE_START = '[Comments] Like Start';
+export const LIKE_SUCCESS = '[Comments] Like Success';
+export const LIKE_FAIL = '[Comments] Like Fail';
+
 export const CLEAR_ERRORS = '[Comments] Clear Errors';
 export const CLEAR_STATUS = '[Comments] Clear Status';
 
@@ -101,6 +105,28 @@ export class DeleteFail implements Action {
     constructor(public payload: string[]) { }
 }
 
+/////////////////////
+
+
+export class LikeStart implements Action {
+    readonly type = LIKE_START;
+
+    constructor(public payload: { commentId: number, action: string }) { }
+}
+
+export class LikeSuccess implements Action {
+    readonly type = LIKE_SUCCESS;
+
+    constructor(public payload: Comment) { }
+}
+
+export class LikeFail implements Action {
+    readonly type = LIKE_FAIL;
+
+    constructor(public payload: string[]) { }
+}
+
+
 /////////////////
 
 export class ClearErrors implements Action {
@@ -125,6 +151,9 @@ export type HomeCommentsActions =
     | DeleteStart
     | DeleteSuccess
     | DeleteFail
+    | LikeStart
+    | LikeSuccess
+    | LikeFail
     | ClearErrors
     | ClearStatus
     ;

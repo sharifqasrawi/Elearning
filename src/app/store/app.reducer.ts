@@ -17,12 +17,14 @@ import * as fromHomeCategories from '../home/store/categories.reducer';
 import * as fromHomeCourses from '../courses/store/courses.reducer';
 import * as fromHomeSession from '../courses/course-view/course-session/store/session.reducer';
 import * as fromHomeComments from '../courses/course-view/course-comments/store/comments.reducer';
+import * as fromNotifications from '../admin/notifications/store/notifications.reducer';
 
 export interface AppState {
     login: fromLogin.State
     register: fromRegister.State,
     users: fromUsers.State,
     messages: fromMessages.State,
+    notifications: fromNotifications.State,
     categories: fromCategories.State,
     homeCategories: fromHomeCategories.State,
     homeCourses: fromHomeCourses.State,
@@ -42,6 +44,7 @@ export const appReducer: ActionReducerMap<AppState> = {
     register: fromRegister.registerReducer,
     users: fromUsers.usersReducer,
     messages: fromMessages.messagesReducer,
+    notifications: fromNotifications.notificationsReducer,
     categories: fromCategories.categoriesReducer,
     homeCategories: fromHomeCategories.categoriesReducer,
     courses: fromCourses.coursesReducer,

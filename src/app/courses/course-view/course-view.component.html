@@ -37,7 +37,7 @@
 
 
 
-            <div style="display: flex; justify-content: space-between;">
+            <div class="mt-2" style="display: flex; justify-content: space-between;">
                 <p class="small text-muted">
                     <strong>Published: </strong> {{ course.createdBy }} - {{ course.publishedAt | date:'short' }}
                 </p>
@@ -47,7 +47,7 @@
             </div>
 
             <div class="btnSessions">
-                <button type="button" mat-flat-button color="primary" class="btn-block">
+                <button type="button" mat-flat-button color="primary" class="btn-block" (click)="sidenav.toggle()">
                     Sessions
                 </button>
             </div>
@@ -130,3 +130,58 @@
 
     </div>
 </div>
+
+
+<mat-sidenav-container class="admin-sidenav-container ">
+    <mat-sidenav #sidenav class="admin-sidenav" mode="side" [opened]="!navOpened" (mouseenter)="mouseenter()"
+        (mouseleave)="mouseleave()" mode="over" [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
+        <!-- <mat-nav-list>
+            <a mat-list-item [routerLink]="['/admin', 'dashboard']">
+                <mat-icon mat-list-icon>dashboard</mat-icon>
+                Dashboard
+            </a>
+        </mat-nav-list> -->
+        <!-- <mat-nav-list></mat-nav-list> -->
+
+        <div>
+            <button class="btn btn-info btn-block" (click)="sidenav.toggle()">
+                Close
+            </button>
+        </div>
+
+        <div class="contentBox" *ngIf="!loading">
+            <div class="contentBox-header text-center">
+                <button mat-flat-button color="" (click)="allExpandState = !allExpandState" class="btn-block">
+                    Content ({{ allExpandState ? 'Collapse All' : 'Expand All' }})
+                </button>
+            </div>
+            <div class="contentBox-body">
+                <div *ngIf="!loading">
+
+                    <mat-expansion-panel class="exp-panel" [expanded]="allExpandState"
+                        *ngFor="let section of course.sections">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                <strong> {{ section.order }}- {{ section.name_EN }}</strong>
+                            </mat-panel-title>
+                            <mat-panel-description>
+                                <span class="small">{{ section.sessions.length }} sessions</span>
+                            </mat-panel-description>
+                        </mat-expansion-panel-header>
+
+                        <ul class="list-group">
+                            <li routerLinkActive="active" class="list-group-item full-width"
+                                *ngFor="let session of section.sessions">
+                                <a [routerLink]="['session', session.id, session.slug_EN]" (click)="sidenav.toggle()">
+                                    {{ session.order }}- {{ session.title_EN }}
+                                </a>
+                            </li>
+                        </ul>
+                    </mat-expansion-panel>
+
+                </div>
+            </div>
+        </div>
+    </mat-sidenav>
+
+</mat-sidenav-container>

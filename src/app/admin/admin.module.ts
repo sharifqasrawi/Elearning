@@ -45,6 +45,7 @@ import { NewSessionComponent } from './courses/course-details/course-sessions/ne
 import { SessionContentComponent } from './courses/course-details/course-sessions/session-content/session-content.component';
 import { NewContentComponent } from './courses/course-details/course-sessions/session-content/new-content/new-content.component';
 import { CourseLikesComponent } from './courses/course-details/course-likes/course-likes.component';
+import { NotificationsComponent } from './notifications/notifications.component';
 
 @NgModule({
     declarations: [
@@ -81,6 +82,7 @@ import { CourseLikesComponent } from './courses/course-details/course-likes/cour
         SessionContentComponent,
         NewContentComponent,
         CourseLikesComponent,
+        NotificationsComponent,
         
     ],
     imports: [

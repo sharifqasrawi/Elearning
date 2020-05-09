@@ -21,6 +21,7 @@ nav a {
     width: 100%;
     background-color: rgba(24, 0, 88, .8);
     padding: 15px;
+    z-index: 99999;
 
 }
 

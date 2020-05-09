@@ -29,7 +29,6 @@ export class DirectoriesEffects {
                         return new DirectoriesActions.FetchSuccess(resData.directories);
                     }),
                     catchError(errorRes => {
-                        console.log(errorRes);
                         switch (errorRes.status) {
                             case 403:
                             case 401:

@@ -206,3 +206,13 @@ button.btnLike.unliked {
         opacity: 0.3;
     }
 }
+
+
+/* Side nav */
+
+.admin-sidenav {
+    user-select: none;
+    padding-top: 25px;
+    width: 100%;
+    background-color: rgba(5, 64, 112, 0.8);
+  }

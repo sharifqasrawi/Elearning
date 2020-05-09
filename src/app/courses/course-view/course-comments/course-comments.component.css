@@ -304,12 +304,19 @@ ul {
     -webkit-border-radius: 0 0 4px 4px;
     -moz-border-radius: 0 0 4px 4px;
     border-radius: 0 0 4px 4px;
-    text-align: right;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 .comment-box .comment-footer a{
     font-size: 12px;
     cursor: pointer;
+}
+
+.comment-box .comment-footer span{
+    font-size: 12px;
+    padding-left: 15px;
 }
 
 /** =====================
@@ -387,4 +394,3 @@ ul {
     font-size: 14px;
     padding:10px
 }
-

@@ -54,6 +54,7 @@ export class CourseCommentsComponent implements OnInit {
 
   isAuthenticated = false;
   userId: string = null;
+  isUserLikeComment: { [key: number]: boolean } = {};
 
   currentUrl: string = null;
 
@@ -95,10 +96,12 @@ export class CourseCommentsComponent implements OnInit {
       this.creating = state.creating;
       this.updating = state.updating;
       this.deleting = state.deleting;
-
       this.errors = state.errors;
 
-      if (state.created) this.form.reset();
+
+      if (state.created) {
+        this.form.reset();
+      }
 
       if (state.updated) {
         this.editForm.reset();
@@ -246,7 +249,32 @@ export class CourseCommentsComponent implements OnInit {
     });
   }
 
+  onLike(commentId: number, action: string) {
+    this.store.dispatch(new HomeCommentsActions.LikeStart({
+      commentId: commentId,
+      action: action
+    }));
+  }
 
+  checkUserLikeComment(commentId: number, index: number) {
+    const comment = this.comments.find(c => c.id === commentId);
+    for (let like of comment.likes) {
+      if (like.userId === this.userId) {
+        this.isUserLikeComment[index] = true;
+        return true;
+      }
+    }
+  }
+
+  
+  // checkUserLikeReply(commentId: number, replyId: number) {
+  //   const comment = this.comments.find(c => c.id === commentId);
+  //   for (let like of comment.likes) {
+  //     if (like.userId === this.userId) {
+  //       return true;
+  //     }
+  //   }
+  // }
 
   loadMore() {
     if (this.comments.length > this.displayedCommentsCount) {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -8,6 +8,8 @@ import * as fromApp from '../../store/app.reducer';
 import * as HomeCoursesActions from '../store/courses.actions';
 import { Course } from './../../models/course.model';
 import { Like } from './../../models/like.model';
+import { MatSidenav } from '@angular/material/sidenav';
+import { MediaMatcher } from '@angular/cdk/layout';
 
 @Component({
   selector: 'app-course-view',
@@ -42,12 +44,27 @@ export class CourseViewComponent implements OnInit {
   breadcrumbLinks: { url?: string, label: string }[];
   currentUrl: string = null;
 
+  isExpanded = true;
+  isShowing = false;
+  mobileQuery: MediaQueryList;
+  navOpened = true;
+  @ViewChild('sidenav') sidenav: MatSidenav;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private store: Store<fromApp.AppState>,
-    private sanitizer: DomSanitizer
-  ) { }
+    private sanitizer: DomSanitizer,
+    changeDetectorRef: ChangeDetectorRef,
+    media: MediaMatcher
+  ) {
+    
+    this.mobileQuery = media.matchMedia('(max-width: 993px)');
+    this._mobileQueryListener = () => changeDetectorRef.detectChanges();
+    this.mobileQuery.addListener(this._mobileQueryListener);
+   }
+
+  private _mobileQueryListener: () => void;
 
   ngOnInit(): void {
     this.route.params.subscribe((params: Params) => {
@@ -103,6 +120,18 @@ export class CourseViewComponent implements OnInit {
     }));
   }
 
+
+  mouseenter() {
+    if (!this.isExpanded) {
+      this.isShowing = true;
+    }
+  }
+
+  mouseleave() {
+    if (!this.isExpanded) {
+      this.isShowing = false;
+    }
+  }
 
   // onNextPage() {
 

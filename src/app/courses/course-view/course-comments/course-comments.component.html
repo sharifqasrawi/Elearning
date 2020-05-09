@@ -8,7 +8,7 @@
     </a>
 </div>
 
-<div *ngIf="!loading" >
+<div *ngIf="!loading">
     <h2>
         Comments:
         [ <span [countUp]="count" class="count-numbers">0</span> ]
@@ -47,8 +47,13 @@
                             <i (click)="onReply(i)" *ngIf="isAuthenticated && !showReplyForm[i] && !showEditForm[i]">
                                 <fa-icon [icon]="faReply"></fa-icon>
                             </i>
-                            <i *ngIf="isAuthenticated">
+                            <i (click)="onLike(comment.id, 'like')"
+                                *ngIf="isAuthenticated && !checkUserLikeComment(comment.id, i)">
                                 <fa-icon [icon]="faHeart"></fa-icon>
+                            </i>
+                            <i (click)="onLike(comment.id, 'unlike')"
+                                *ngIf="isAuthenticated && checkUserLikeComment(comment.id, i)">
+                                <fa-icon [icon]="faHeart" style="color:purple"></fa-icon>
                             </i>
                             <i (click)="onDelete(comment.id)" *ngIf="isAuthenticated && userId === comment.userId">
                                 <fa-icon [icon]="faTrash"></fa-icon>
@@ -82,12 +87,15 @@
                             </form>
                         </div>
                         <div class="comment-footer">
+                            <span class="text-muted">likes ({{ comment.likes.length }})</span>
+
                             <a (click)="onShowReplies(i)" *ngIf="!showReplies[i]">
                                 Replies ({{ comment.replies.length }})
                             </a>
                             <a (click)="onHideReplies(i)" *ngIf="showReplies[i]">
                                 Hide Replies ({{ comment.replies.length }})
                             </a>
+
                         </div>
                     </div>
                 </div>

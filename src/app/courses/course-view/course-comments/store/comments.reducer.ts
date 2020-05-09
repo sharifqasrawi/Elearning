@@ -5,6 +5,7 @@ import * as HomeCommentsActions from './comments.actions';
 export interface State {
     comments: Comment[],
     loading: boolean,
+    loadingLike: boolean,
     creating: boolean,
     created: boolean,
     updating: boolean,
@@ -16,6 +17,7 @@ export interface State {
 const initialState: State = {
     comments: [],
     loading: false,
+    loadingLike: false,
     creating: false,
     created: false,
     updating: false,
@@ -215,6 +217,37 @@ export function commentsReducer(state: State = initialState, action: HomeComment
                 errors: [...action.payload],
             };
 
+        /////////////////////
+
+        case HomeCommentsActions.LIKE_START:
+            return {
+                ...state,
+                loadingLike: true,
+                errors: null
+            };
+        case HomeCommentsActions.LIKE_SUCCESS:
+            const commentToLikeIndex = state.comments.findIndex(c => c.id === action.payload.id);
+            const commentToLike = state.comments.find(c => c.id === action.payload.id);
+            const commentsAfterLike = [...state.comments];
+
+            const commentAfterLike = {
+                ...commentToLike,
+                likes: [...action.payload.likes]
+            };
+
+            commentsAfterLike[commentToLikeIndex] = commentAfterLike;
+
+            return {
+                ...state,
+                loadingLike: false,
+                comments: commentsAfterLike
+            };
+        case HomeCommentsActions.LIKE_FAIL:
+            return {
+                ...state,
+                loadingLike: false,
+                errors: [...action.payload]
+            };
 
         /////////////////////
 

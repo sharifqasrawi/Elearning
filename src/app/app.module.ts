@@ -8,6 +8,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
+import { CountUpModule } from 'ngx-countup';
 import { TimeagoModule } from 'ngx-timeago';
 
 import * as fromApp from './store/app.reducer';
@@ -44,7 +45,7 @@ import { CourseSessionComponent } from './courses/course-view/course-session/cou
 import { CourseCommentsComponent } from './courses/course-view/course-comments/course-comments.component';
 import { HomeCommentsEffects } from './courses/course-view/course-comments/store/comments.effects';
 import { HomeSessionEffects } from './courses/course-view/course-session/store/session.effects';
-import { CountUpModule } from 'ngx-countup';
+import { NotificationsEffects } from './admin/notifications/store/notifications.effects';
 
 
 @NgModule({
@@ -72,6 +73,7 @@ import { CountUpModule } from 'ngx-countup';
       RegisterEffects, 
       UsersEffects, 
       MessagesEffects, 
+      NotificationsEffects,
       CategoriesEffects,
       HomeCategoriesEffects,
       CoursesEffects,

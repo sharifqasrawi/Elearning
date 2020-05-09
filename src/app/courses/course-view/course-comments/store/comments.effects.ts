@@ -151,6 +151,39 @@ export class HomeCommentsEffects {
         })
     );
 
+    @Effect()
+    likeComment = this.actions$.pipe(
+        ofType(HomeCommentsActions.LIKE_START),
+        switchMap((likeData: HomeCommentsActions.LikeStart) => {
+            return this.http.post<{ comment: Comment }>(environment.API_BASE_URL + 'likes/like-comment',
+                {
+                    commentId: likeData.payload.commentId,
+                    userId: this.userId
+                },
+                {
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    params: new HttpParams().set('action', likeData.payload.action)
+                })
+                .pipe(
+                    map(resData => {
+                        return new HomeCommentsActions.LikeSuccess(resData.comment);
+                    }),
+                    catchError(errorRes => {
+                        switch (errorRes.status) {
+                            case 403:
+                            case 401:
+                                return of(new HomeCommentsActions.LikeFail(['Access Denied']));
+                            case 404:
+                                return of(new HomeCommentsActions.LikeFail(['Error 404. Not Found']));
+                            case 400:
+                                return of(new HomeCommentsActions.LikeFail(errorRes.error.errors));
+                            default:
+                                return of(new HomeCommentsActions.LikeFail(['Oops! An error occured']));
+                        }
+                    })
+                )
+        })
+    );
 
     constructor(
         private actions$: Actions,
