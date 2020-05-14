@@ -23,6 +23,10 @@ export const LIKE_START = '[Comments] Like Start';
 export const LIKE_SUCCESS = '[Comments] Like Success';
 export const LIKE_FAIL = '[Comments] Like Fail';
 
+export const SIGNALR_START = '[Comments] SignalR Start';
+export const SIGNALR_DONE = '[Comments] SignalR Done';
+
+
 export const CLEAR_ERRORS = '[Comments] Clear Errors';
 export const CLEAR_STATUS = '[Comments] Clear Status';
 
@@ -127,6 +131,17 @@ export class LikeFail implements Action {
 }
 
 
+
+export class SignalRStart implements Action {
+    readonly type = SIGNALR_START;
+}
+
+export class SignalRDone implements Action {
+    readonly type = SIGNALR_DONE;
+
+    constructor(public payload: Comment) { }
+}
+
 /////////////////
 
 export class ClearErrors implements Action {
@@ -156,4 +171,6 @@ export type HomeCommentsActions =
     | LikeFail
     | ClearErrors
     | ClearStatus
+    | SignalRStart
+    | SignalRDone
     ;

@@ -1,3 +1,4 @@
+import { MatDialog } from '@angular/material/dialog';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { ActivatedRoute, Params } from '@angular/router';
@@ -8,6 +9,7 @@ import { faSearch, faThumbsUp } from '@fortawesome/free-solid-svg-icons';
 import * as HomeCoursesActions from './store/courses.actions';
 import * as fromApp from '../store/app.reducer';
 import { Course } from './../models/course.model';
+import { ErrorDialogComponent } from '../shared/error-dialog/error-dialog.component';
 
 @Component({
   selector: 'app-courses',
@@ -41,6 +43,7 @@ export class CoursesComponent implements OnInit {
     private store: Store<fromApp.AppState>,
     private route: ActivatedRoute,
     private sanitizer: DomSanitizer,
+    private dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
@@ -66,6 +69,13 @@ export class CoursesComponent implements OnInit {
       this.courses = this.storeCourses;
       this.loading = state.loading;
       this.errors = state.errors;
+
+      if (state.errors) {
+        this.dialog.open(ErrorDialogComponent, {
+          width: '400px',
+          data: { errors: [...state.errors] }
+        });
+      }
 
       if (this.courses.length > 0)
         this.categoryEmpty = false;

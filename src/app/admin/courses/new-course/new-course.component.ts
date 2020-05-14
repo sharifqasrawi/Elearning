@@ -2,14 +2,15 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs/internal/Observable';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { ThemePalette } from '@angular/material/core';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
+import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
-import { ConfirmDialogComponent } from './../../../shared/confirm-dialog/confirm-dialog.component';
 import { ImagePickerComponent } from './../../../shared/image-picker/image-picker.component';
 import { Category } from './../../../models/category.model';
 import { Course } from './../../../models/course.model';
@@ -17,7 +18,6 @@ import * as fromApp from '../../../store/app.reducer';
 import * as CategoriesActions from '../../categories/store/categories.actions';
 import * as CoursesActions from '../store/courses.actions';
 import { CanComponentDeactivate } from './can-deactivate-guard.service';
-import { Observable } from 'rxjs/internal/Observable';
 
 @Component({
   selector: 'app-new-course',
@@ -26,31 +26,12 @@ import { Observable } from 'rxjs/internal/Observable';
 })
 export class NewCourseComponent implements OnInit, OnDestroy, CanComponentDeactivate {
 
-  foralaButtonOptions = {
-    'moreText': {
-      'buttons': ['bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript', 'fontFamily', 'fontSize', 'textColor', 'backgroundColor', 'inlineClass', 'inlineStyle', 'clearFormatting']
-    },
-    'moreParagraph': {
-      'buttons': ['alignLeft', 'alignCenter', 'formatOLSimple', 'alignRight', 'alignJustify', 'formatOL', 'formatUL', 'paragraphFormat', 'paragraphStyle', 'lineHeight', 'outdent', 'indent', 'quote']
-    },
-    'moreRich': {
-      'buttons': ['insertLink', 'insertImage', 'insertVideo', 'insertTable', 'emoticons', 'fontAwesome', 'specialCharacters', 'embedly', 'insertFile', 'insertHR']
-    },
-    'moreMisc': {
-      'buttons': ['undo', 'redo', 'fullscreen', 'print', 'getPDF', 'selectAll', 'html', 'help']
-    },
-  };
+  public Editor = ClassicEditor;
 
-  froalaOptions = {
-    heightMin: 150,
-    placeholderText: 'Enter course description',
-    toolbarButtons: { ...this.foralaButtonOptions }
-  };
-  froalaOptions2 = {
-    heightMin: 150,
-    placeholderText: 'Enter course prerequisites',
-    toolbarButtons: { ...this.foralaButtonOptions }
-  };
+  // public EditorConfig = {
+  //   toollbar: ['heading', '|', 'bold', 'italic', 'highlight'],
+
+  // };
 
   colorPrimary: ThemePalette = 'primary';
   colorAccent: ThemePalette = 'accent';

@@ -1,0 +1,14 @@
+<h2 mat-dialog-title>
+    Welcome Back !!
+</h2>
+<hr>
+<div mat-dialog-content>
+    <p class="text-capitalize">Your last visited session is: [ {{ data.currentSessionTitle }} ]</p>
+    <p>Pick up where you left off ? </p>
+</div>
+<div mat-dialog-actions style="display: flex; justify-content: space-between;">
+    <button mat-raised-button (click)="onNoClick()">NO</button>
+    <a mat-raised-button color="primary" [mat-dialog-close]="true" cdkFocusInitial [routerLink]="[data.sessionUrl]">
+        YES
+    </a>
+</div>

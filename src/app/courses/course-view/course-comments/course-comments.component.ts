@@ -1,3 +1,4 @@
+import { SignalRServiceService } from './services/signal-rservice.service';
 import { map } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
@@ -58,11 +59,14 @@ export class CourseCommentsComponent implements OnInit {
 
   currentUrl: string = null;
 
+  test: Comment[];
+
   constructor(
     private store: Store<fromApp.AppState>,
     private route: ActivatedRoute,
     private router: Router,
     private dialog: MatDialog,
+    private signalRService: SignalRServiceService
   ) { }
 
   ngOnInit(): void {
@@ -141,7 +145,11 @@ export class CourseCommentsComponent implements OnInit {
 
     });
 
-
+    // this.store.dispatch(new HomeCommentsActions.SignalRStart());
+    this.signalRService.signalReceived.subscribe((signal: Comment) => {
+    //  console.log(signal);
+     this.loadedComments = [...this.loadedComments, signal];
+    });
 
     this.currentUrl = this.router.url.replace('?courseId=' + this.courseId, '');
   }
@@ -257,7 +265,7 @@ export class CourseCommentsComponent implements OnInit {
   }
 
   checkUserLikeComment(commentId: number, index: number) {
-    const comment = this.comments.find(c => c.id === commentId);
+    const comment = this.loadedComments.find(c => c.id === commentId);
     for (let like of comment.likes) {
       if (like.userId === this.userId) {
         this.isUserLikeComment[index] = true;
@@ -266,7 +274,7 @@ export class CourseCommentsComponent implements OnInit {
     }
   }
 
-  
+
   // checkUserLikeReply(commentId: number, replyId: number) {
   //   const comment = this.comments.find(c => c.id === commentId);
   //   for (let like of comment.likes) {

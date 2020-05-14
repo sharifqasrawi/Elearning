@@ -8,7 +8,7 @@ export class Comment {
         public userFullName: string,
         public userGender: string,
         public text: string,
-        public likeDateTime: Date,
+        public CommentDateTime: Date,
         public commentId?: number,
         public replies?: Comment[],
         public likes?: Like[]

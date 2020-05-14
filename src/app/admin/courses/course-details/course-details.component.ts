@@ -3,7 +3,7 @@ import { ThemePalette } from '@angular/material/core';
 import { Store } from '@ngrx/store';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { faInfoCircle, faTags, faPallet, faPlay, faThumbsUp } from '@fortawesome/free-solid-svg-icons';
+import { faInfoCircle, faTags, faPallet, faPlay, faThumbsUp, faPeopleCarry } from '@fortawesome/free-solid-svg-icons';
 
 import * as fromApp from '../../../store/app.reducer';
 import * as CoursesActions from '../store/courses.actions';
@@ -21,6 +21,7 @@ export class CourseDetailsComponent implements OnInit {
   faPallet = faPallet;
   faPlay = faPlay;
   faThumbsUp = faThumbsUp;
+  faPeopleCarry = faPeopleCarry;
 
   courseId: number = null;
   course: Course = null;

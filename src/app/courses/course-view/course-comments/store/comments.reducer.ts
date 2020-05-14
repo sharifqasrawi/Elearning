@@ -12,6 +12,7 @@ export interface State {
     updated: boolean,
     deleting: boolean,
     errors: string[],
+    signaled: boolean
 }
 
 const initialState: State = {
@@ -23,7 +24,8 @@ const initialState: State = {
     updating: false,
     updated: false,
     deleting: false,
-    errors: null
+    errors: null,
+    signaled: false,
 };
 
 export function commentsReducer(state: State = initialState, action: HomeCommentsActions.HomeCommentsActions) {
@@ -63,25 +65,26 @@ export function commentsReducer(state: State = initialState, action: HomeComment
 
             let commentsAfterAdd = [...state.comments];
 
-            if (action.payload.commentId) {
-                const commentToAdd: Comment = {
-                    ...action.payload
-                };
+            if (!state.signaled) {
+                if (action.payload.commentId) {
+                    const commentToAdd: Comment = {
+                        ...action.payload
+                    };
 
-                const originalComment = state.comments.find(c => c.id === commentToAdd.commentId);
-                const originalCommentIndex = state.comments.findIndex(c => c.id === commentToAdd.commentId);
+                    const originalComment = state.comments.find(c => c.id === commentToAdd.commentId);
+                    const originalCommentIndex = state.comments.findIndex(c => c.id === commentToAdd.commentId);
 
-                const updatedComment: Comment = {
-                    ...originalComment,
-                    replies: [...originalComment.replies, action.payload]
-                };
+                    const updatedComment: Comment = {
+                        ...originalComment,
+                        replies: [...originalComment.replies, action.payload]
+                    };
 
-                commentsAfterAdd[originalCommentIndex] = updatedComment;
+                    commentsAfterAdd[originalCommentIndex] = updatedComment;
 
-            } else {
-                commentsAfterAdd = [action.payload, ...state.comments];
+                } else {
+                    commentsAfterAdd = [action.payload, ...state.comments];
+                }
             }
-
             return {
                 ...state,
                 creating: false,
@@ -247,6 +250,29 @@ export function commentsReducer(state: State = initialState, action: HomeComment
                 ...state,
                 loadingLike: false,
                 errors: [...action.payload]
+            };
+
+        /////////////////////
+
+        case HomeCommentsActions.SIGNALR_START:
+
+            return {
+                ...state,
+                signaled: false,
+            };
+
+        case HomeCommentsActions.SIGNALR_DONE:
+
+            let comments = [...state.comments];
+
+            if (!state.created) {
+                comments = [action.payload, ...state.comments];
+            }
+
+            return {
+                ...state,
+                signaled: true,
+                comments: comments,
             };
 
         /////////////////////

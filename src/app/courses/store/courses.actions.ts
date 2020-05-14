@@ -10,6 +10,10 @@ export const LIKE_START = '[Home Courses] Like Start';
 export const LIKE_SUCCESS = '[Home Courses] Like Success';
 export const LIKE_FAIL = '[Home Courses] Like Fail';
 
+export const ENROLL_START = '[Home Courses] Enroll Start';
+export const ENROLL_SUCCESS = '[Home Courses] Enroll Success';
+export const ENROLL_FAIL = '[Home Courses] Enroll Fail';
+
 export const CLEAR_ERRORS = '[Home Courses] Clear Errors';
 export const CLEAR_STATUS = '[Home Courses] Clear Status';
 
@@ -54,6 +58,27 @@ export class LikeFail implements Action {
     constructor(public payload: string[]) { }
 }
 
+/////////////////////
+
+
+export class EnrollStart implements Action {
+    readonly type = ENROLL_START;
+
+    constructor(public payload: { classId: string, action: string }) { }
+}
+
+export class EnrollSuccess implements Action {
+    readonly type = ENROLL_SUCCESS;
+
+    constructor(public payload: Course) { }
+}
+
+export class EnrollFail implements Action {
+    readonly type = ENROLL_FAIL;
+
+    constructor(public payload: string[]) { }
+}
+
 
 /////////////////////
 export class ClearErrors implements Action {
@@ -72,6 +97,9 @@ export type HomeCoursesActions =
     | LikeStart
     | LikeSuccess
     | LikeFail
+    | EnrollStart
+    | EnrollSuccess
+    | EnrollFail
     | ClearErrors
     | ClearStatus
     ;

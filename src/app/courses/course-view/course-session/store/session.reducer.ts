@@ -49,6 +49,31 @@ export function sessionReducer(state: State = initialState, action: HomeSessionA
 
         /////////////////////
 
+        case HomeSessionActions.SET_CURRENT_SESSION_START:
+            return {
+                ...state,
+                loading: true,
+                loaded: false,
+                errors: null
+            };
+        case HomeSessionActions.SET_CURRENT_SESSION_SUCCESS:
+
+            return {
+                ...state,
+                loading: false,
+                loaded: true,
+            };
+        case HomeSessionActions.SET_CURRENT_SESSION_FAIL:
+            return {
+                ...state,
+                loading: false,
+                errors: [...action.payload]
+            };
+
+
+
+        /////////////////////
+
 
         case HomeSessionActions.CLEAR_ERRORS:
             return {

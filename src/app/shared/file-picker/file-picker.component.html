@@ -29,6 +29,8 @@
             <img *ngIf="isZip(file.fileType)" src="../../../assets/images/zip.png" alt="no preview"
                 style="cursor: pointer;" (click)="onSelectImage(file.downloadPath)"
                 [class.selected]="selectedFile === file.downloadPath">
+
+            <p class="small text-muted text-center">{{file.originalFileName}}</p>
         </div>
     </div>
 </div>

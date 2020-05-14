@@ -5,14 +5,13 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { map } from 'rxjs/operators';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import { faUserPlus, faUserEdit } from '@fortawesome/free-solid-svg-icons';
+import { MatDialog } from '@angular/material/dialog';
 import { ThemePalette } from '@angular/material/core';
+import { faUserPlus, faUserEdit } from '@fortawesome/free-solid-svg-icons';
 
+import { ConfirmDialogComponent } from './../../../shared/confirm-dialog/confirm-dialog.component';
 import * as fromApp from '../../../store/app.reducer';
 import * as UsersActions from '../store/users.actions';
-import { MatDialog } from '@angular/material/dialog';
-import { ConfirmDialogComponent } from 'src/app/shared/confirm-dialog/confirm-dialog.component';
-import { NotifierService } from 'angular-notifier';
 
 @Component({
   selector: 'app-new-user',
@@ -50,7 +49,6 @@ export class NewUserComponent implements OnInit, OnDestroy {
     private router: Router,
     private snackBar: MatSnackBar,
     private dialog: MatDialog,
-    private notifier: NotifierService
   ) { }
 
   ngOnInit(): void {

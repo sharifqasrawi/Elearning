@@ -19,6 +19,7 @@ import { ViewMessageComponent } from './messages/view-message/view-message.compo
 import { AdminGuard } from './../security/admin.guard';
 
 
+import { CourseClassComponent } from './courses/course-details/course-class/course-class.component';
 import { MainComponent } from './main/main.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ListUsersComponent } from './users/list-users/list-users.component';
@@ -73,6 +74,10 @@ const routes: Routes = [
             component: CourseDetailsComponent,
             resolve: [CoursesResolverService],
             children: [
+              {
+                path: 'class/:courseId',
+                component: CourseClassComponent
+              },
               {
                 path: 'tags/:courseId',
                 component: CourseTagsComponent

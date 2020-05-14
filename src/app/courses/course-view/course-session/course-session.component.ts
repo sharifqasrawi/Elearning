@@ -1,3 +1,4 @@
+import { map } from 'rxjs/operators';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
@@ -15,6 +16,13 @@ import { Session } from './../../../models/session.model';
 })
 export class CourseSessionComponent implements OnInit {
 
+  codeViewerOptions = {
+    theme: 'vs-dark',
+    language: 'javascript',
+    readOnly: true,
+    scrollBeyondLastLine: false
+  };
+
   faFileArchive = faFileArchive;
   faDownload = faDownload;
 
@@ -23,6 +31,7 @@ export class CourseSessionComponent implements OnInit {
   loading = false;
   errors: string[] = null;
 
+  doneChecked = false;
 
   constructor(
     private store: Store<fromApp.AppState>,
@@ -38,14 +47,20 @@ export class CourseSessionComponent implements OnInit {
     });
 
 
+
     this.store.select('homeSession').subscribe(state => {
       this.session = state.session;
       this.loading = state.loading;
       this.errors = state.errors;
     });
+
+
   }
 
+  onMarkDone() {
+    this.doneChecked = !this.doneChecked;
 
+  }
 
   getSanitizedImage = (imagePath: string) => this.sanitizer.bypassSecurityTrustResourceUrl(imagePath);
   getSanitizedHtml = (html: string) => this.sanitizer.bypassSecurityTrustHtml(html);

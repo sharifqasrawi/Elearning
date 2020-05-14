@@ -2,10 +2,10 @@ import { Injectable } from "@angular/core";
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { Store } from '@ngrx/store';
-import { map, switchMap, catchError } from 'rxjs/operators';
+import { map, switchMap, catchError, tap, mergeMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 
-import { environment } from './../../../../../environments/environment.prod';
+import { environment } from './../../../../../environments/environment';
 
 import { Comment } from './../../../../models/comment.model';
 
@@ -19,7 +19,6 @@ export class HomeCommentsEffects {
     token = '';
     userName = '';
     userId = '';
-
 
     @Effect()
     fetchComments = this.actions$.pipe(
@@ -185,10 +184,11 @@ export class HomeCommentsEffects {
         })
     );
 
+
     constructor(
         private actions$: Actions,
         private http: HttpClient,
-        private store: Store<fromApp.AppState>
+        private store: Store<fromApp.AppState>,
     ) {
 
         this.store.select('login')
@@ -202,5 +202,6 @@ export class HomeCommentsEffects {
                     this.userId = user.id;
                 }
             });
+
     }
 }

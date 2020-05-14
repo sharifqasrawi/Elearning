@@ -32,6 +32,10 @@ export const ADD_REMOVE_TAG_START = '[Courses] Add Remove Tag Start';
 export const ADD_REMOVE_TAG_SUCCESS = '[Courses] Remove Tag Success';
 export const ADD_REMOVE_TAG_FAIL = '[Courses] Remove Tag Restore Fail';
 
+export const CREATE_CLASS_START = '[Courses] Create Class Start';
+export const CREATE_CLASS_SUCCESS = '[Courses] Create Class Success';
+export const CREATE_CLASS_FAIL = '[Courses] Create Class Fail';
+
 
 export const CLEAR_ERRORS = '[Courses] Clear Errors';
 export const CLEAR_STATUS = '[Courses] Clear Status';
@@ -102,6 +106,30 @@ export class CreateSuccess implements Action {
 
 export class CreateFail implements Action {
     readonly type = CREATE_FAIL;
+
+    constructor(public payload: string[]) { }
+}
+
+
+//////////
+
+export class CreateClassStart implements Action {
+    readonly type = CREATE_CLASS_START;
+
+    constructor(public payload: {
+        name_EN: string,
+        courseId: number
+    }) { }
+}
+
+export class CreateClassSuccess implements Action {
+    readonly type = CREATE_CLASS_SUCCESS;
+
+    constructor(public payload: Course) { }
+}
+
+export class CreateClassFail implements Action {
+    readonly type = CREATE_CLASS_FAIL;
 
     constructor(public payload: string[]) { }
 }
@@ -234,6 +262,9 @@ export type CoursesActions =
     | CreateStart
     | CreateSuccess
     | CreateFail
+    | CreateClassStart
+    | CreateClassSuccess
+    | CreateClassFail
     | PublishUnpublishStart
     | PublishUnpublishSuccess
     | PublishUnpublishFail

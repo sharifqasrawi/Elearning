@@ -33,17 +33,25 @@
                 Last updated: {{ session.updatedBy }} - {{ session.updatedAt | date:'short' }}
             </p>
         </div>
-        <p class="small text-muted">
-            Duration: {{ session.duration }} mins.
-        </p>
+        <div style="display: flex; justify-content: space-between;" class="small text-muted">
+            <p class="mt-1">
+                Duration: {{ session.duration }} mins.
+            </p>
+            <mat-slide-toggle (change)="onMarkDone()" [checked]="doneChecked">Done</mat-slide-toggle>
+        </div>
         <hr>
 
         <div *ngFor="let content of session.contents">
             <br>
             <div *ngIf="content.type === 'text'" [innerHtml]="getSanitizedHtml(content.content)"></div>
 
+            <div *ngIf="content.type === 'code'">
+                <ngx-monaco-editor [options]="{theme: 'vs-dark',language: content.note, readOnly: true,scrollBeyondLastLine: false}" [ngModel]="content.content"></ngx-monaco-editor>
+            </div>
+
             <div *ngIf="content.type === 'image'" class="text-center ">
                 <img [src]="content.content" alt="no preview" class="img-responsive">
+                <p class="text-muted small mt-2"> [ {{ content.note }} ] </p>
             </div>
         </div>
 
@@ -61,12 +69,10 @@
                 </li>
             </ul>
         </div>
+      
 
         <div *ngIf="session.contents.length === 0" class="alert alert-info text-center">
             <h3>No content yet.</h3>
         </div>
-
     </div>
-
-
 </div>

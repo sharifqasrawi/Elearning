@@ -1,0 +1,10 @@
+<h2 mat-dialog-title class="text-danger">An error occured.</h2>
+<hr>
+<div mat-dialog-content >
+    <ul *ngIf="data.errors" class="text-danger">
+        <li *ngFor="let error of data.errors"> {{ error }} </li>
+    </ul>
+</div>
+<div mat-dialog-actions>
+    <button mat-button cdkFocusInitial (click)="onNoClick()">Close</button>
+</div>

@@ -39,6 +39,11 @@
                 <fa-icon [icon]="faPallet"></fa-icon>
                 Sections
             </a>
+            <a [routerLink]="['class', course.id]"
+                routerLinkActive="active">
+                <fa-icon [icon]="faPeopleCarry"></fa-icon>
+                Class
+            </a>
             <a [routerLink]="['tags', course.id]"
                 routerLinkActive="active">
                 <fa-icon [icon]="faTags"></fa-icon>

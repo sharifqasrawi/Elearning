@@ -54,9 +54,7 @@ export class SessionContentsEffects {
         switchMap((sessionData: SessionContentsActions.CreateStart) => {
             return this.http.post<{ createdContent: SessionContent }>(environment.API_BASE_URL + 'sessions/create-content',
                 {
-                    session: {
-                        id: sessionData.payload.session.id,
-                    },
+                    sessionId: sessionData.payload.sessionId,
                     order: sessionData.payload.order,
                     type: sessionData.payload.type,
                     content: sessionData.payload.content,
@@ -93,9 +91,7 @@ export class SessionContentsEffects {
             return this.http.put<{ updatedSessionContent: SessionContent, updatedOldSessionContent: SessionContent }>(environment.API_BASE_URL + 'sessions/update-content',
                 {
                     id: sessionData.payload.id,
-                    session: {
-                        id: sessionData.payload.session.id,
-                    },
+                    sessionId: sessionData.payload.sessionId,
                     order: sessionData.payload.order,
                     type: sessionData.payload.type,
                     content: sessionData.payload.content,

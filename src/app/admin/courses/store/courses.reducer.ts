@@ -106,11 +106,48 @@ export function coursesReducer(state: State = initialState, action: CoursesActio
 
         /////////////
 
+        case CoursesActions.CREATE_CLASS_START:
+            return {
+                ...state,
+                updating: true,
+                updated: false,
+                errors: null
+            };
+        case CoursesActions.CREATE_CLASS_SUCCESS:
+            const courseToCreateClassIndex = state.courses.findIndex(c => c.id === action.payload.id);
+            const courseToCreateClass = state.courses.find(c => c.id === action.payload.id);
+            const coursesAfterCreateClass = [...state.courses];
+
+            const courseAfterCreateClass = {
+                ...courseToCreateClass,
+                cls: {
+                    ...action.payload.cls,
+                    members: [...action.payload.cls.members]
+                }
+            };
+
+            coursesAfterCreateClass[courseToCreateClassIndex] = courseAfterCreateClass;
+
+            return {
+                ...state,
+                updating: false,
+                updated: true,
+                courses: coursesAfterCreateClass
+            };
+        case CoursesActions.CREATE_CLASS_FAIL:
+            return {
+                ...state,
+                updating: false,
+                errors: [...action.payload]
+            };
+
+        /////////////
+
         case CoursesActions.UPDATE_START:
             return {
                 ...state,
-                creating: true,
-                created: false,
+                updating: true,
+                updated: false,
                 errors: null
             };
         case CoursesActions.UPDATE_SUCCESS:
@@ -142,14 +179,14 @@ export function coursesReducer(state: State = initialState, action: CoursesActio
 
             return {
                 ...state,
-                creating: false,
-                created: true,
+                updating: false,
+                updated: true,
                 courses: coursesAfterUpdate
             };
         case CoursesActions.UPDATE_FAIL:
             return {
                 ...state,
-                creating: false,
+                updating: false,
                 errors: [...action.payload]
             };
 

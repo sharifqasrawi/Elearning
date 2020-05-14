@@ -136,7 +136,7 @@
         <div class="row mt-3">
             <div class="col-lg-6">
                 <label>Description *</label>
-                <textarea [froalaEditor]="froalaOptions" formControlName="description_EN" required></textarea>
+                <ckeditor tagName="textarea" [editor]="Editor" formControlName="description_EN" required ></ckeditor>
                 <span class="small text-danger"
                     *ngIf="!form.controls.description_EN.valid && form.controls.description_EN.touched">
                     This field is required.
@@ -145,7 +145,7 @@
 
             <div class="col-lg-6">
                 <label>Prerequisites *</label>
-                <textarea [froalaEditor]="froalaOptions2" formControlName="prerequisites_EN" required></textarea>
+                <ckeditor tagName="textarea" [editor]="Editor" formControlName="prerequisites_EN" required ></ckeditor>
                 <span class="small text-danger"
                     *ngIf="!form.controls.prerequisites_EN.valid && form.controls.prerequisites_EN.touched">
                     This field is required.

@@ -37,6 +37,7 @@ export class CoursesEffects {
                         return new CoursesActions.FetchSuccess(resData.courses);
                     }),
                     catchError(errorRes => {
+                        
                         switch (errorRes.status) {
                             case 403:
                             case 401:
@@ -130,6 +131,42 @@ export class CoursesEffects {
                 )
         })
     );
+
+
+    @Effect()
+    createClass = this.actions$.pipe(
+        ofType(CoursesActions.CREATE_CLASS_START),
+        switchMap((classData: CoursesActions.CreateClassStart) => {
+            return this.http.post<{ course: Course }>(environment.API_BASE_URL + 'classes',
+                {
+                    courseId: classData.payload.courseId,
+                    name_EN: classData.payload.name_EN,
+                },
+                {
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                })
+                .pipe(
+                    map(resData => {
+                        return new CoursesActions.CreateClassSuccess(resData.course);
+                    }),
+                    catchError(errorRes => {
+                        switch (errorRes.status) {
+                            case 403:
+                            case 401:
+                                return of(new CoursesActions.CreateClassFail(['Access Denied']));
+                            case 404:
+                                return of(new CoursesActions.CreateClassFail(['Error 404. Not Found']));
+                            case 400:
+                                return of(new CoursesActions.CreateClassFail(errorRes.error.errors));
+                            default:
+                                return of(new CoursesActions.CreateClassFail(['Oops! An error occured']));
+                        }
+                    })
+                )
+        })
+    );
+
+
 
     @Effect()
     updateCourse = this.actions$.pipe(

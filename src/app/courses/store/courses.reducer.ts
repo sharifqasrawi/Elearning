@@ -7,6 +7,7 @@ export interface State {
     loading: boolean,
     loaded: boolean,
     loadingLike: boolean,
+    loadingEnroll: boolean,
     errors: string[],
 };
 
@@ -15,6 +16,7 @@ const initialState: State = {
     loading: false,
     loaded: false,
     loadingLike: false,
+    loadingEnroll:false,
     errors: null,
 };
 
@@ -72,6 +74,43 @@ export function coursesReducer(state: State = initialState, action: HomeCoursesA
             return {
                 ...state,
                 loadingLike: false,
+                errors: [...action.payload]
+            };
+
+        /////////////////////
+
+        case HomeCoursesActions.ENROLL_START:
+            return {
+                ...state,
+                loadingEnroll: true,
+                errors: null
+            };
+        case HomeCoursesActions.ENROLL_SUCCESS:
+            const courseToEnrollIndex = state.courses.findIndex(c => c.id === action.payload.id);
+            const courseToEnroll = state.courses.find(c => c.id === action.payload.id);
+            const coursesAfterEnroll = [...state.courses];
+
+            const courseAfterEnroll = {
+                ...courseToEnroll,
+                cls: {
+                    ...action.payload.cls,
+                    members: [
+                        ...action.payload.cls.members
+                    ]
+                }
+            };
+
+            coursesAfterEnroll[courseToEnrollIndex] = courseAfterEnroll;
+
+            return {
+                ...state,
+                loadingEnroll: false,
+                courses: coursesAfterEnroll
+            };
+        case HomeCoursesActions.ENROLL_FAIL:
+            return {
+                ...state,
+                loadingEnroll: false,
                 errors: [...action.payload]
             };
 

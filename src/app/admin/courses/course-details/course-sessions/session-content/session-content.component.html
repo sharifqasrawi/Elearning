@@ -38,35 +38,69 @@
                 </div>
 
                 <div *ngIf="!loadingContents">
-                    <div *ngFor="let content of contents" class="contentItem">
-                        <div class="order">
-                            <mat-icon [matBadge]="content.order" matBadgeColor="primary"></mat-icon>
+                    <div *ngFor="let content of contents">
+                        <div class="contentItem" *ngIf="content.type !== 'resource'">
+                            <div class="order">
+                                <mat-icon [matBadge]="content.order" matBadgeColor="primary"></mat-icon>
+                            </div>
+
+                            <div class="editButton">
+                                <button class="btn btn-warning btn-sm"
+                                    (click)="onEditContent(content.id, content.order, content.type, content.content, content.note)">
+                                    <fa-icon [icon]="faEdit" style="color: white; font-size: 10px;"></fa-icon>
+                                </button>
+                            </div>
+
+                            <div class="deleteButton">
+                                <button class="btn btn-danger btn-sm" (click)="onDeleteContent(content.id)">
+                                    <fa-icon [icon]="faTrash" style="color: white; font-size: 10px;"></fa-icon>
+                                </button>
+                            </div>
+
+                            <div [innerHTML]="getSanitizedHtml( content.content )" *ngIf="content.type === 'text'">
+                            </div>
+
+                            <div *ngIf="content.type === 'code'">
+                                <ngx-monaco-editor
+                                    [options]="{theme: 'vs-dark',language: content.note, readOnly: true,scrollBeyondLastLine: false}"
+                                    [ngModel]="content.content"></ngx-monaco-editor>
+                            </div>
+
+                            <div *ngIf="content.type === 'image'" class="text-center">
+                                <img [src]="content.content" width="350">
+                                <p class="text-muted small mt-2"> {{ content.note }} </p>
+                            </div>
                         </div>
-
-                        <div class="editButton">
-                            <button class="btn btn-warning btn-sm"
-                                (click)="onEditContent(content.id, content.order, content.type, content.content, content.note)">
-                                <fa-icon [icon]="faEdit" style="color: white; font-size: 10px;"></fa-icon>
-                            </button>
-                        </div>
-
-                        <div class="deleteButton">
-                            <button class="btn btn-danger btn-sm" (click)="onDeleteContent(content.id)">
-                                <fa-icon [icon]="faTrash" style="color: white; font-size: 10px;"></fa-icon>
-                            </button>
-                        </div>
-
-                        <div [innerHTML]="getSanitizedHtml( content.content )" *ngIf="content.type === 'text'"></div>
-
-                        <div [innerHTML]="content.content" *ngIf="content.type === 'code'"></div>
-
-                        <img [src]="content.content" width="300" *ngIf="content.type === 'image'">
-
-                        <a style="cursor: pointer; color:purple" [href]="content.content" *ngIf="content.type === 'resource'"
-                            target="_blank">
-                            {{ content.note }}
-                        </a>
                     </div>
+
+
+                    <hr>
+                    <h3><strong>Resources:</strong></h3>
+                    <div *ngFor="let content of contents">
+                        <div class="contentItem" *ngIf="content.type === 'resource'">
+                            <div class="order">
+                                <mat-icon [matBadge]="content.order" matBadgeColor="primary"></mat-icon>
+                            </div>
+
+                            <div class="editButton">
+                                <button class="btn btn-warning btn-sm"
+                                    (click)="onEditContent(content.id, content.order, content.type, content.content, content.note)">
+                                    <fa-icon [icon]="faEdit" style="color: white; font-size: 10px;"></fa-icon>
+                                </button>
+                            </div>
+
+                            <div class="deleteButton">
+                                <button class="btn btn-danger btn-sm" (click)="onDeleteContent(content.id)">
+                                    <fa-icon [icon]="faTrash" style="color: white; font-size: 10px;"></fa-icon>
+                                </button>
+                            </div>
+                            <a style="cursor: pointer; color:purple" [href]="content.content"
+                                *ngIf="content.type === 'resource'" target="_blank">
+                                {{ content.note }}
+                            </a>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>

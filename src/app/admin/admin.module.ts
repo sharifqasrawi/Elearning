@@ -5,9 +5,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { CountUpModule } from 'ngx-countup';
-import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
-import 'froala-editor/js/plugins.pkgd.min.js';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { ToastrModule } from 'ngx-toastr';
+import { MonacoEditorModule } from 'ngx-monaco-editor';
 
 import { NavigationComponent } from './navigation/navigation.component';
 import { MainComponent } from './main/main.component';
@@ -46,6 +46,7 @@ import { SessionContentComponent } from './courses/course-details/course-session
 import { NewContentComponent } from './courses/course-details/course-sessions/session-content/new-content/new-content.component';
 import { CourseLikesComponent } from './courses/course-details/course-likes/course-likes.component';
 import { NotificationsComponent } from './notifications/notifications.component';
+import { CourseClassComponent } from './courses/course-details/course-class/course-class.component';
 
 @NgModule({
     declarations: [
@@ -83,6 +84,7 @@ import { NotificationsComponent } from './notifications/notifications.component'
         NewContentComponent,
         CourseLikesComponent,
         NotificationsComponent,
+        CourseClassComponent,
         
     ],
     imports: [
@@ -93,11 +95,11 @@ import { NotificationsComponent } from './notifications/notifications.component'
         ReactiveFormsModule,
         FontAwesomeModule,
         CountUpModule,
-        FroalaEditorModule.forRoot(), 
-        FroalaViewModule.forRoot(),
+        CKEditorModule,
         ToastrModule.forRoot({
             // preventDuplicates: true
         }),
+        MonacoEditorModule.forRoot(),
         AdminRoutingModule,
         SharedModule,
     ],

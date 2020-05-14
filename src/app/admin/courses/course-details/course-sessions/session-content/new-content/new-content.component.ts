@@ -1,11 +1,12 @@
-import { FilePickerComponent } from './../../../../../../shared/file-picker/file-picker.component';
-import { ImagePickerComponent } from './../../../../../../shared/image-picker/image-picker.component';
 import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 
+import { ImagePickerComponent } from './../../../../../../shared/image-picker/image-picker.component';
+import { FilePickerComponent } from './../../../../../../shared/file-picker/file-picker.component';
 import { DiscardChangesComponent } from './../../../../../../shared/discard-changes/discard-changes.component';
 import * as fromApp from '../../../../../../store/app.reducer';
 import * as SessionContentsActions from '../store/session-contents.actions';
@@ -27,29 +28,20 @@ export interface DialogData {
 })
 export class NewContentComponent implements OnInit, OnDestroy {
 
-  foralaButtonOptions = {
-    'moreText': {
-      'buttons': ['bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript', 'fontFamily', 'fontSize', 'textColor', 'backgroundColor', 'inlineClass', 'inlineStyle', 'clearFormatting']
-    },
-    'moreParagraph': {
-      'buttons': ['alignLeft', 'alignCenter', 'formatOLSimple', 'alignRight', 'alignJustify', 'formatOL', 'formatUL', 'paragraphFormat', 'paragraphStyle', 'lineHeight', 'outdent', 'indent', 'quote']
-    },
-    'moreRich': {
-      'buttons': ['insertLink', 'insertImage', 'insertVideo', 'insertTable', 'emoticons', 'fontAwesome', 'specialCharacters', 'embedly', 'insertFile', 'insertHR']
-    },
-    'moreMisc': {
-      'buttons': ['undo', 'redo', 'fullscreen', 'selectAll', 'html']
-    },
-  };
-
-  froalaOptions = {
-    heightMin: 160,
-    heightMax: 160,
-    placeholderText: 'Enter session content',
-    toolbarButtons: { ...this.foralaButtonOptions }
-  };
 
   faPlusCircle = faPlusCircle;
+
+  languages = [
+    'bat', 'c', 'coffeescript', 'cpp', 'csharp', 'css', 'dockerfile', 'fsharp', 'go', 'graphql', 'html', 'ini', 'java', 'javascript', 'json',
+    'kotlin', 'less', 'markdown', 'mysql', 'objective-c', 'pascal', 'perl', 'pgsql', 'php', 'plaintext', 'powershell', 'python', 'r',
+    'razor', 'redis', 'scss', 'shell', 'sql', 'swift', 'twig', 'typescript', 'xml', 'yaml'
+  ];
+
+  public Editor = ClassicEditor;
+  codeEditorOptions = {
+    theme: 'vs-dark',
+    language: this.languages[0]
+  };
 
   updated = false;
   updating = false;
@@ -63,6 +55,7 @@ export class NewContentComponent implements OnInit, OnDestroy {
   contentTypes = ['Text', 'Code', 'Image', 'Resource'];
   imageType = false;
   textType = false;
+  codeType = false;
   resourceType = false;
 
   constructor(
@@ -104,9 +97,7 @@ export class NewContentComponent implements OnInit, OnDestroy {
     if (this.editMode) {
       this.store.dispatch(new SessionContentsActions.UpdateStart({
         id: this.data.id,
-        session: {
-          id: this.data.editedSessionId
-        },
+        sessionId: this.data.editedSessionId,
         type: this.form.value.type,
         content: this.form.value.content,
         order: this.form.value.order,
@@ -114,9 +105,7 @@ export class NewContentComponent implements OnInit, OnDestroy {
       }));
     } else {
       this.store.dispatch(new SessionContentsActions.CreateStart({
-        session: {
-          id: this.data.editedSessionId
-        },
+        sessionId: this.data.editedSessionId,
         type: this.form.value.type.toLowerCase(),
         content: this.form.value.content,
         order: this.form.value.order,
@@ -132,19 +121,27 @@ export class NewContentComponent implements OnInit, OnDestroy {
   onChangeType(type: string) {
     switch (type.toLowerCase()) {
       case 'text':
-      case 'code':
         this.imageType = false;
+        this.codeType = false;
         this.resourceType = false;
         this.textType = true;
+        break;
+      case 'code':
+        this.imageType = false;
+        this.codeType = true;
+        this.resourceType = false;
+        this.textType = false;
         break;
       case 'image':
         this.imageType = true;
         this.textType = false;
+        this.codeType = false;
         this.resourceType = false;
         break;
       case 'resource':
         this.imageType = false;
         this.textType = false;
+        this.codeType = false;
         this.resourceType = true;
         break;
 
@@ -152,9 +149,16 @@ export class NewContentComponent implements OnInit, OnDestroy {
         this.imageType = false;
         this.resourceType = false;
         this.textType = true;
+        this.codeType = false;
     }
   }
 
+  onSelectLanguage(){
+    this.codeEditorOptions = {
+      ...this.codeEditorOptions,
+      language: this.form.value.note
+    };
+  }
 
   selectImage() {
     var dialogRef = this.dialog.open(ImagePickerComponent,

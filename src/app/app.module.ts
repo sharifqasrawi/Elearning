@@ -10,6 +10,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { CountUpModule } from 'ngx-countup';
 import { TimeagoModule } from 'ngx-timeago';
+import { MonacoEditorModule } from 'ngx-monaco-editor';
 
 import * as fromApp from './store/app.reducer';
 import { AppRoutingModule } from './app-routing.module';
@@ -46,6 +47,7 @@ import { CourseCommentsComponent } from './courses/course-view/course-comments/c
 import { HomeCommentsEffects } from './courses/course-view/course-comments/store/comments.effects';
 import { HomeSessionEffects } from './courses/course-view/course-session/store/session.effects';
 import { NotificationsEffects } from './admin/notifications/store/notifications.effects';
+import { CoursePickupDialogComponent } from './courses/course-view/course-pickup-dialog/course-pickup-dialog.component';
 
 
 @NgModule({
@@ -62,6 +64,7 @@ import { NotificationsEffects } from './admin/notifications/store/notifications.
     CourseInfoComponent,
     CourseSessionComponent,
     CourseCommentsComponent,
+    CoursePickupDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -94,6 +97,7 @@ import { NotificationsEffects } from './admin/notifications/store/notifications.
     BrowserAnimationsModule,
     FontAwesomeModule,
     CountUpModule,
+    MonacoEditorModule.forRoot(),
     SharedModule,
     SecurityModule,
     AdminModule,

@@ -38,11 +38,12 @@ export class CourseTagsComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.dispatch(new TagsActions.FetchStart());
-    // this.store.dispatch(new CoursesActions.FetchStart());
 
     this.route.params.subscribe((params: Params) => {
       this.courseId = +params.courseId;
     });
+
+
 
     this.store.select('courses').subscribe(state => {
       this.updating = state.updating;
@@ -51,12 +52,14 @@ export class CourseTagsComponent implements OnInit {
 
       if (state.updated)
         this.otherTags = this.allTags.filter(this.comparer(this.tags));
+
     });
 
     this.store.select('tags').subscribe(state => {
       this.allTags = state.tags;
 
-      this.otherTags = this.allTags.filter(this.comparer(this.tags));
+      if (this.allTags)
+        this.otherTags = this.allTags.filter(this.comparer(this.tags));
     });
 
   }

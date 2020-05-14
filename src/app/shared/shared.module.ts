@@ -23,6 +23,7 @@ import { LoaderHomeCourseComponent } from './loader-home-course/loader-home-cour
 import { LoaderCourseInfoComponent } from './loader-course-info/loader-course-info.component';
 import { FilePickerComponent } from './file-picker/file-picker.component';
 import { LoaderCourseCommentsComponent } from './loader-course-comments/loader-course-comments.component';
+import { ErrorDialogComponent } from './error-dialog/error-dialog.component';
 
 @NgModule({
     declarations: [
@@ -39,6 +40,7 @@ import { LoaderCourseCommentsComponent } from './loader-course-comments/loader-c
         LoaderCourseInfoComponent,
         FilePickerComponent,
         LoaderCourseCommentsComponent,
+        ErrorDialogComponent,
     ],
     imports: [
         BrowserModule,

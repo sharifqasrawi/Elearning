@@ -46,7 +46,7 @@ export class CreateStart implements Action {
     readonly type = CREATE_START;
 
     constructor(public payload: {
-        session: { id: number },
+        sessionId: number,
         type: string,
         content: string,
         order: number,
@@ -73,7 +73,7 @@ export class UpdateStart implements Action {
 
     constructor(public payload: {
         id: number,
-        session: { id: number },
+        sessionId: number,
         type: string,
         content: string,
         order: number,

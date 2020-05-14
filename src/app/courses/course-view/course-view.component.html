@@ -14,24 +14,27 @@
                 </div>
 
                 <div class="col-lg-2">
-                    <button type="button" class="btnLike" *ngIf="isAuthenticated" (click)="onLike()"
-                        [disabled]="loadingLike" [class.loadingLike]="loadingLike" [class.liked]="isUserLiked"
-                        [class.unliked]="!isUserLiked">
-                        <span *ngIf="!isUserLiked" class="text-muted">
-                            <fa-icon [icon]="faThumbsUp"></fa-icon> Like
+                    <button type="button" class="btnEnroll" *ngIf="isAuthenticated && classId && !loadingEnroll"
+                        (click)="onEnroll()" [disabled]="loadingEnroll" [class.loadingEnroll]="loadingEnroll"
+                        [class.Enrolled]="isUserEnrolled" [class.NotEnroll]="!isUserEnrolled">
+                        <span *ngIf="!isUserEnrolled" class="text-muted">
+                            <fa-icon [icon]="faCheck"></fa-icon> Enroll
                         </span>
 
-                        <span *ngIf="isUserLiked" class="text-muted">
-                            <fa-icon [icon]="faThumbsDown"></fa-icon> Unlike
+                        <span *ngIf="isUserEnrolled" class="text-muted">
+                            <fa-icon [icon]="faCheckDouble"></fa-icon> Enrolled
                         </span>
 
-                        <span class="text-muted"> {{ course.likes.length }}</span>
                     </button>
 
                     <a [routerLink]="['/security', 'auth']" [queryParams]="{'returnUrl': currentUrl}"
                         class="btn btn-success btn-sm btn-block" *ngIf="!isAuthenticated">
-                        Login to like.
+                        Login to enroll.
                     </a>
+
+                    <span *ngIf="loadingEnroll">
+                        <mat-spinner [diameter]="30" color="accent"></mat-spinner>
+                    </span>
                 </div>
             </div>
 
@@ -46,11 +49,43 @@
                 </p>
             </div>
 
-            <div class="btnSessions">
+            <div class="badge badge-secondary float-right">
+                <span class="text-light">Likes: {{ course.likes.length }}</span>
+            </div>
+            <div class="clearfix"></div>
+            <div class="btnSessions mt-2">
                 <button type="button" mat-flat-button color="primary" class="btn-block" (click)="sidenav.toggle()">
                     Sessions
                 </button>
             </div>
+
+        </div>
+
+        <div class="courseInfoNav bg-light" *ngIf="!loading">
+            <a [routerLink]="['/categories', categoryId, categorySlug, 'course', courseId, courseSlug]">
+                <fa-icon [icon]="faInfoCircle"></fa-icon>
+                Info
+            </a>
+            <a [routerLink]="['/categories', categoryId, categorySlug, 'course', courseId, courseSlug, 'comments']"
+                [queryParams]="{'courseId': courseId}" routerLinkActive="active">
+                <fa-icon [icon]="faComment"></fa-icon>
+                Comments
+            </a>
+
+            <a *ngIf="isAuthenticated && !loadingLike" (click)="onLike()" [class.loadingLike]="loadingLike"
+                class="btnLike" [class.liked]="isUserLiked" [class.unliked]="!isUserLiked">
+                <span *ngIf="!isUserLiked">
+                    <fa-icon [icon]="faThumbsUp"></fa-icon> Like
+                </span>
+
+                <span *ngIf="isUserLiked">
+                    <fa-icon [icon]="faThumbsDown"></fa-icon> Unlike
+                </span>
+            </a>
+
+            <span *ngIf="loadingLike">
+                <mat-spinner [diameter]="20"></mat-spinner>
+            </span>
 
         </div>
 
@@ -105,7 +140,8 @@
                         <ul class="list-group">
                             <li routerLinkActive="active" class="list-group-item full-width"
                                 *ngFor="let session of section.sessions">
-                                <a [routerLink]="['session', session.id, session.slug_EN]">
+                                <a [routerLink]="['session', session.id, session.slug_EN]"
+                                    (click)="onSelectSession(session.id)">
                                     {{ session.order }}- {{ session.title_EN }}
                                 </a>
                             </li>

@@ -86,6 +86,40 @@ export class HomeCoursesEffects {
         })
     );
 
+    @Effect()
+    enrollInCourse = this.actions$.pipe(
+        ofType(HomeCoursesActions.ENROLL_START),
+        switchMap((enrollData: HomeCoursesActions.EnrollStart) => {
+            return this.http.post<{ course: Course }>(environment.API_BASE_URL + 'classes/enroll',
+                {
+                    classId: enrollData.payload.classId,
+                    userId: this.userId
+                },
+                {
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    params: new HttpParams().set('action', enrollData.payload.action)
+                })
+                .pipe(
+                    map(resData => {
+                        return new HomeCoursesActions.EnrollSuccess(resData.course);
+                    }),
+                    catchError(errorRes => {
+                        switch (errorRes.status) {
+                            case 403:
+                            case 401:
+                                return of(new HomeCoursesActions.EnrollFail(['Access Denied']));
+                            case 404:
+                                return of(new HomeCoursesActions.EnrollFail(['Error 404. Not Found']));
+                            case 400:
+                                return of(new HomeCoursesActions.EnrollFail(errorRes.error.errors));
+                            default:
+                                return of(new HomeCoursesActions.EnrollFail(['Oops! An error occured']));
+                        }
+                    })
+                )
+        })
+    );
+
     constructor(
         private actions$: Actions,
         private http: HttpClient,

@@ -24,26 +24,9 @@ import { Session } from './../../../../../models/session.model';
 })
 export class SessionContentComponent implements OnInit, OnDestroy {
 
-  foralaButtonOptions = {
-    'moreText': {
-      'buttons': ['bold', 'italic', 'underline', 'strikeThrough', 'subscript', 'superscript', 'fontFamily', 'fontSize', 'textColor', 'backgroundColor', 'inlineClass', 'inlineStyle', 'clearFormatting']
-    },
-    'moreParagraph': {
-      'buttons': ['alignLeft', 'alignCenter', 'formatOLSimple', 'alignRight', 'alignJustify', 'formatOL', 'formatUL', 'paragraphFormat', 'paragraphStyle', 'lineHeight', 'outdent', 'indent', 'quote']
-    },
-    'moreRich': {
-      'buttons': ['insertLink', 'insertImage', 'insertVideo', 'insertTable', 'emoticons', 'fontAwesome', 'specialCharacters', 'embedly', 'insertFile', 'insertHR']
-    },
-    'moreMisc': {
-      'buttons': ['undo', 'redo', 'fullscreen', 'selectAll', 'html']
-    },
-  };
-
-  froalaOptions = {
-    heightMin: 200,
-    heightMax: 200,
-    placeholderText: 'Enter session content',
-    toolbarButtons: { ...this.foralaButtonOptions }
+  lang: string = '';
+  codeViewerOptions = {
+    theme: 'vs-dark',language: this.lang,readOnly: true,scrollBeyondLastLine: false
   };
 
 
@@ -102,7 +85,7 @@ export class SessionContentComponent implements OnInit, OnDestroy {
   onAdd() {
     let maxOrder = -1;
     if (this.contents.length > 0)
-      maxOrder = Math.max.apply(Math, [...this.contents].map(s => s.order));
+      maxOrder = Math.max.apply(Math, [...this.contents.filter(c => c.type !== 'resource')].map(s => s.order));
 
     this.dialog.open(NewContentComponent, {
       width: '750px',
