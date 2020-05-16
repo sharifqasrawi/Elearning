@@ -254,3 +254,20 @@ button.btnEnroll.NotEnrolled {
 .courseInfoNav a.btnLike.unliked {
     color: rgb(100, 100, 100);
 }
+
+.courseInfoNav a.btnFavorite{
+    cursor: pointer;
+    
+}
+
+.courseInfoNav a.btnFavorite span:hover{
+    color: rgb(32, 153, 2);
+}
+
+.courseInfoNav a.btnFavorite.favorite {
+    color: rgb(32, 153, 2);
+}
+
+.courseInfoNav a.btnFavorite.notFavorite {
+    color: rgb(100, 100, 100);
+}

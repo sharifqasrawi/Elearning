@@ -1,3 +1,4 @@
+import { Favorite } from './../../models/favorite.model';
 import { CoursePickupDialogComponent } from './course-pickup-dialog/course-pickup-dialog.component';
 import { ErrorDialogComponent } from './../../shared/error-dialog/error-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -5,13 +6,15 @@ import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { faTag, faThumbsUp, faThumbsDown, faInfoCircle, faComment, faCheck, faCheckDouble } from '@fortawesome/free-solid-svg-icons';
+import { faTag, faThumbsUp, faThumbsDown, faInfoCircle, faComment, faCheck, faCheckDouble, faHeart } from '@fortawesome/free-solid-svg-icons';
 import { MatSidenav } from '@angular/material/sidenav';
 import { MediaMatcher } from '@angular/cdk/layout';
 
 import * as fromApp from '../../store/app.reducer';
 import * as HomeCoursesActions from '../store/courses.actions';
 import * as HomeSessionActions from './course-session/store/session.actions';
+import * as MemberActions from '../../member/store/member.actions';
+
 import { Course } from './../../models/course.model';
 import { Like } from './../../models/like.model';
 
@@ -29,6 +32,7 @@ export class CourseViewComponent implements OnInit {
   faComment = faComment;
   faCheck = faCheck;
   faCheckDouble = faCheckDouble;
+  faHeart = faHeart;
 
   categoryId: number = null;
   categorySlug: string = null;
@@ -52,6 +56,12 @@ export class CourseViewComponent implements OnInit {
 
   loadingEnroll = false;
   isUserEnrolled = false;
+
+  favorites: Favorite[] = null;
+  favorite: Favorite = null;
+  loadedFavorites = false;
+  addingToFavorite = false;
+  isAddedToFavorites = false;
 
   allExpandState = true;
 
@@ -107,6 +117,7 @@ export class CourseViewComponent implements OnInit {
 
     this.store.dispatch(new HomeCoursesActions.FetchStart({ categoryId: this.categoryId, courseId: this.courseId }));
 
+
     this.store.select('login')
       .subscribe(state => {
         this.isAuthenticated = state.isAuthenticated;
@@ -161,13 +172,33 @@ export class CourseViewComponent implements OnInit {
         width: '400px',
         disableClose: true,
         data: {
-          currentSessionTitle: this.currentSessionSlug.split('-').join(' '),
+          currentSessionTitle: this.currentSessionSlug ? this.currentSessionSlug.split('-').join(' ') : null,
           sessionUrl: `categories/${this.categoryId}/${this.categorySlug}/course/${this.courseId}/${this.courseSlug}/session/${this.currentSessionId}/${this.currentSessionSlug}`
         }
       });
     }
 
+    if (this.isAuthenticated) {
+      this.store.dispatch(new MemberActions.FetchFavoritesStart());
+      this.store.select('member').subscribe(state => {
+        this.favorites = state.favorites;
+        this.loadedFavorites = state.loadedFavorites;
+        this.addingToFavorite = state.addingToFavorite;
 
+        if (state.errors) {
+          this.dialog.open(ErrorDialogComponent, {
+            width: '450px',
+            data: { errors: state.errors }
+          })
+        }
+
+        if (state.loadedFavorites) {
+          const fav = state.favorites.find(f => f.courseId === this.courseId);
+          this.isAddedToFavorites = fav ? true : false;
+          this.favorite = fav;
+        }
+      });
+    }
   }
 
 
@@ -177,6 +208,17 @@ export class CourseViewComponent implements OnInit {
         courseId: this.courseId,
         action: this.isUserLiked ? 'unlike' : 'like'
       }));
+    }
+  }
+
+  onAddToFavorites() {
+    if (!this.addingToFavorite) {
+      if (!this.isAddedToFavorites) {
+        this.store.dispatch(new MemberActions.AddCourseToFavoritesStart(this.courseId));
+      }
+      else if (this.isAddedToFavorites && this.favorite) {
+        this.store.dispatch(new MemberActions.RemoveCourseFromFavoritesStart(this.favorite.id));
+      }
     }
   }
 

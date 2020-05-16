@@ -1,5 +1,5 @@
 import { DomSanitizer } from '@angular/platform-browser';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { ThemePalette } from '@angular/material/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -12,13 +12,15 @@ import * as fromApp from '../../../../store/app.reducer';
   templateUrl: './course-info.component.html',
   styleUrls: ['./course-info.component.css']
 })
-export class CourseInfoComponent implements OnInit {
+export class CourseInfoComponent implements OnInit, OnDestroy {
 
   courseId: number = null;
   course: Course = null;
   @Input() trashed: boolean;
 
   colorPrimary: ThemePalette = 'primary';
+
+
 
   constructor(
     private route: ActivatedRoute,
@@ -33,7 +35,7 @@ export class CourseInfoComponent implements OnInit {
 
     this.store.select('courses')
       .subscribe(state => {
-        
+
         if (!this.trashed) {
           this.course = state.courses.find(c => c.id === this.courseId);
         }
@@ -50,5 +52,8 @@ export class CourseInfoComponent implements OnInit {
 
   getSanitizedHtml(html: string) {
     return this.sanitizer.bypassSecurityTrustHtml(html);
+  }
+
+  ngOnDestroy(): void {
   }
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { map } from 'rxjs/operators';
@@ -6,6 +6,7 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+
 
 import { Like } from './../../../../models/like.model';
 import * as fromApp from '../../../../store/app.reducer';
@@ -15,7 +16,7 @@ import * as fromApp from '../../../../store/app.reducer';
   templateUrl: './course-likes.component.html',
   styleUrls: ['./course-likes.component.css']
 })
-export class CourseLikesComponent implements OnInit {
+export class CourseLikesComponent implements OnInit, OnDestroy {
 
   faSearch = faSearch;
 
@@ -28,6 +29,7 @@ export class CourseLikesComponent implements OnInit {
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
+
 
   constructor(
     private route: ActivatedRoute,
@@ -67,4 +69,6 @@ export class CourseLikesComponent implements OnInit {
     }
   }
 
+  ngOnDestroy(): void {
+  }
 }

@@ -71,7 +71,7 @@ export class CourseCommentsComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.route.queryParams.subscribe((params: Params) => {
+    this.route.params.subscribe((params: Params) => {
       this.courseId = +params.courseId;
     });
 
@@ -101,7 +101,6 @@ export class CourseCommentsComponent implements OnInit {
       this.updating = state.updating;
       this.deleting = state.deleting;
       this.errors = state.errors;
-
 
       if (state.created) {
         this.form.reset();
@@ -142,14 +141,8 @@ export class CourseCommentsComponent implements OnInit {
 
       const course = state.courses.find(c => c.id === this.courseId);
       if (course) this.courseAuthor = course.createdBy;
-
     });
 
-    // this.store.dispatch(new HomeCommentsActions.SignalRStart());
-    this.signalRService.signalReceived.subscribe((signal: Comment) => {
-    //  console.log(signal);
-     this.loadedComments = [...this.loadedComments, signal];
-    });
 
     this.currentUrl = this.router.url.replace('?courseId=' + this.courseId, '');
   }
@@ -264,12 +257,23 @@ export class CourseCommentsComponent implements OnInit {
     }));
   }
 
-  checkUserLikeComment(commentId: number, index: number) {
+  checkUserLikeComment(commentId: number, index: number, replyId?: number) {
     const comment = this.loadedComments.find(c => c.id === commentId);
-    for (let like of comment.likes) {
-      if (like.userId === this.userId) {
-        this.isUserLikeComment[index] = true;
-        return true;
+    if (replyId) {
+      const reply = comment.replies.find(r => r.id === replyId);
+      for (let like of reply.likes) {
+        if (like.userId === this.userId) {
+       
+          return true;
+        }
+      }
+    }
+    else {
+      for (let like of comment.likes) {
+        if (like.userId === this.userId) {
+          this.isUserLikeComment[index] = true;
+          return true;
+        }
       }
     }
   }

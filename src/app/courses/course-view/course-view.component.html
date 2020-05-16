@@ -66,13 +66,13 @@
                 <fa-icon [icon]="faInfoCircle"></fa-icon>
                 Info
             </a>
-            <a [routerLink]="['/categories', categoryId, categorySlug, 'course', courseId, courseSlug, 'comments']"
-                [queryParams]="{'courseId': courseId}" routerLinkActive="active">
+            <a [routerLink]="['/categories', categoryId, categorySlug, 'course', courseId, courseSlug, 'comments',courseId]"
+                routerLinkActive="active">
                 <fa-icon [icon]="faComment"></fa-icon>
                 Comments
             </a>
 
-            <a *ngIf="isAuthenticated && !loadingLike" (click)="onLike()" [class.loadingLike]="loadingLike"
+            <a *ngIf="isAuthenticated && !loadingLike" (click)="onLike()" 
                 class="btnLike" [class.liked]="isUserLiked" [class.unliked]="!isUserLiked">
                 <span *ngIf="!isUserLiked">
                     <fa-icon [icon]="faThumbsUp"></fa-icon> Like
@@ -86,6 +86,23 @@
             <span *ngIf="loadingLike">
                 <mat-spinner [diameter]="20"></mat-spinner>
             </span>
+
+
+            <a *ngIf="isAuthenticated && !addingToFavorite" (click)="onAddToFavorites()" 
+                class="btnFavorite" [class.favorite]="isAddedToFavorites" [class.notFavorite]="!isAddedToFavorites">
+                <span *ngIf="!isAddedToFavorites">
+                    <fa-icon [icon]="faHeart"></fa-icon> Favorite
+                </span>
+
+                <span *ngIf="isAddedToFavorites">
+                    <fa-icon [icon]="faHeart"></fa-icon> Favorite
+                </span>
+            </a>
+
+            <span *ngIf="addingToFavorite">
+                <mat-spinner [diameter]="20" color="accent"></mat-spinner>
+            </span>
+
 
         </div>
 

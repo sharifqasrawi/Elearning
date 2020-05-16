@@ -1,0 +1,29 @@
+<div class="container-fluid content0">
+    <h1>
+        <mat-icon>dashboard</mat-icon>
+        My Dashboard
+    </h1>
+    <hr>
+
+    <div class="dashNav">
+        <div class="mat-elevation-z4">
+            <a [routerLink]="['courses']" [queryParams]="{'fetch': 'enrolled'}">
+                Enrolled Courses
+            </a>
+        </div>
+        <div class="mat-elevation-z4">
+            <a [routerLink]="['courses']" [queryParams]="{'fetch': 'favorites'}">
+                Favorite Courses
+            </a>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <hr>
+
+    <div>
+        <!-- <app-member-courses></app-member-courses> -->
+        <router-outlet></router-outlet>
+    </div>
+</div>
+
+<div class="clearfix"></div>

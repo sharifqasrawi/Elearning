@@ -34,6 +34,7 @@ export class HomeCommentsEffects {
                         return new HomeCommentsActions.FetchSuccess(resData.comments);
                     }),
                     catchError(errorRes => {
+                        // console.log(errorRes);
                         switch (errorRes.status) {
                             case 403:
                             case 401:

@@ -33,7 +33,7 @@ const routes: Routes = [
                 path: 'session/:sessionId/:sessionSlug',
                 component: CourseSessionComponent,
               },
-              { path: 'comments', component: CourseCommentsComponent },
+              { path: 'comments/:courseId', component: CourseCommentsComponent },
               { path: '', component: CourseInfoComponent, pathMatch: 'full' }
             ]
           },

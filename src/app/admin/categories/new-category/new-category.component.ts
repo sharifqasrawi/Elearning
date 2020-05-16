@@ -27,6 +27,7 @@ export class NewCategoryComponent implements OnInit, OnDestroy {
 
   category: Category = null;
 
+
   constructor(
     private store: Store<fromApp.AppState>,
     public dialogRef: MatDialogRef<NewCategoryComponent>,
@@ -132,6 +133,8 @@ export class NewCategoryComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.store.dispatch(new CategoriesActions.ClearErrors());
     this.store.dispatch(new CategoriesActions.ClearStatus());
+
+
   }
 
 }

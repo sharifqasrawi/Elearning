@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
@@ -17,7 +17,7 @@ import { Course } from './../../../../models/course.model';
   templateUrl: './course-class.component.html',
   styleUrls: ['./course-class.component.css']
 })
-export class CourseClassComponent implements OnInit {
+export class CourseClassComponent implements OnInit, OnDestroy {
 
   faSearch = faSearch;
   faInfoCircle = faInfoCircle;
@@ -40,6 +40,8 @@ export class CourseClassComponent implements OnInit {
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
+
+
 
 
   constructor(
@@ -99,5 +101,9 @@ export class CourseClassComponent implements OnInit {
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
     }
+  }
+
+
+  ngOnDestroy(): void {
   }
 }

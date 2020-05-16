@@ -311,6 +311,7 @@ ul {
 
 .comment-box .comment-footer a{
     font-size: 12px;
+    padding-left: 15px;
     cursor: pointer;
 }
 

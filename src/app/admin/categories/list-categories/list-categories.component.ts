@@ -1,5 +1,5 @@
 import { DomSanitizer } from '@angular/platform-browser';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
@@ -20,7 +20,7 @@ import { NewCategoryComponent } from './../new-category/new-category.component';
   templateUrl: './list-categories.component.html',
   styleUrls: ['./list-categories.component.css']
 })
-export class ListCategoriesComponent implements OnInit {
+export class ListCategoriesComponent implements OnInit, OnDestroy {
 
   faSearch = faSearch;
   faCogs = faCogs;
@@ -42,6 +42,8 @@ export class ListCategoriesComponent implements OnInit {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
+
+
   constructor(
     private store: Store<fromApp.AppState>,
     private snackBar: MatSnackBar,
@@ -52,7 +54,7 @@ export class ListCategoriesComponent implements OnInit {
   ngOnInit(): void {
     this.store.dispatch(new CategoriesActions.FetchStart());
 
-    this.store.select('categories').subscribe(catState => {
+     this.store.select('categories').subscribe(catState => {
       this.categories = catState.categories;
       this.errors = catState.errors;
       this.loading = catState.loading;
@@ -97,7 +99,7 @@ export class ListCategoriesComponent implements OnInit {
       data: { header: 'Confirm Action', message: 'Move this category to trash ?' }
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.store.dispatch(new CategoriesActions.TrashStart(id));
         this.snackBar.open('Moving to trash...', 'OK', {
@@ -126,4 +128,7 @@ export class ListCategoriesComponent implements OnInit {
 
 
   getSanitizedImage = (imagePath: string) => this.sanitizer.bypassSecurityTrustResourceUrl(imagePath);
+
+  ngOnDestroy(): void {
+  }
 }

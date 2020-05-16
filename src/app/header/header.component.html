@@ -15,6 +15,12 @@
                         Home
                     </a>
                 </li>
+                <li class="nav-item" *ngIf="isAuthenticated">
+                    <a class="nav-link" [routerLink]="[ '/member', 'dashboard' ]" routerlinkactive="active">
+                        <fa-icon [icon]="faWrench"></fa-icon>
+                        Dashboard
+                    </a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link" [routerLink]="[ '/about-me' ]" routerlinkactive="active">
                         <fa-icon [icon]="faAbout"></fa-icon>

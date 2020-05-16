@@ -1,6 +1,6 @@
 import { DomSanitizer } from '@angular/platform-browser';
 import { ConfirmDialogComponent } from './../../../shared/confirm-dialog/confirm-dialog.component';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
@@ -20,7 +20,7 @@ import { NewCategoryComponent } from '../new-category/new-category.component';
   templateUrl: './trashed-categories.component.html',
   styleUrls: ['./trashed-categories.component.css']
 })
-export class TrashedCategoriesComponent implements OnInit {
+export class TrashedCategoriesComponent implements OnInit, OnDestroy {
 
   faSearch = faSearch;
   faTrashAlt = faTrashAlt;
@@ -40,17 +40,18 @@ export class TrashedCategoriesComponent implements OnInit {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
+  
   constructor(
     private store: Store<fromApp.AppState>,
     private snackBar: MatSnackBar,
     private dialog: MatDialog,
-    private sanitizer:DomSanitizer
+    private sanitizer: DomSanitizer
   ) { }
 
   ngOnInit(): void {
     this.store.dispatch(new CategoriesActions.FetchDeletedStart());
 
-    this.store.select('categories').subscribe(catState => {
+     this.store.select('categories').subscribe(catState => {
       this.trashedCategories = catState.trashedCategories;
       this.errors = catState.errors;
       this.loading = catState.loading;
@@ -81,7 +82,7 @@ export class TrashedCategoriesComponent implements OnInit {
       data: { header: 'Confirm Delete', message: 'Delete this category ?' }
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.store.dispatch(new CategoriesActions.DeleteStart(id));
         this.snackBar.open('Deleting...', 'OK', {
@@ -98,7 +99,7 @@ export class TrashedCategoriesComponent implements OnInit {
       data: { header: 'Confirm Restore', message: 'Restore this category from trash ?' }
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.store.dispatch(new CategoriesActions.RestoreStart(id));
         this.snackBar.open('Restoring from trash...', 'OK', {
@@ -127,4 +128,9 @@ export class TrashedCategoriesComponent implements OnInit {
 
   getSanitizedImage = (imagePath: string) => this.sanitizer.bypassSecurityTrustResourceUrl(imagePath);
 
+
+
+  ngOnDestroy(): void {
+   
+  }
 }

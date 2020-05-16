@@ -46,16 +46,23 @@ export class SignalRServiceService {
   public getHubConnection = () => this.hubConnection;
 
   private registerSignalEvents() {
-    // console.log('start emitting');
-    // this.store.dispatch(new HomeCommentsActions.SignalRStart());
     this.hubConnection.on('SignalCommentReceived', (data: Comment) => {
-      this.signalReceived.emit(data);
-      // this.store.dispatch(new HomeCommentsActions.SignalRDone(data));
+      // this.signalReceived.emit(data);
+      this.store.dispatch(new HomeCommentsActions.SignalRDone(data));
+    });
+
+    this.hubConnection.on('SignalCommentUpdatedReceived', (data: Comment) => {
+      // this.signalReceived.emit(data);
+      this.store.dispatch(new HomeCommentsActions.UpdateSuccess(data));
+    });
+
+    this.hubConnection.on('SignalCommentDeletedReceived', (data: Comment) => {
+      // this.signalReceived.emit(data);
+      this.store.dispatch(new HomeCommentsActions.DeleteSuccess(data));
     });
 
     this.hubConnection.on('SignalCommentLikeReceived', (data: Comment) => {
       // this.signalReceived.emit(data);
-      console.log('like');
       this.store.dispatch(new HomeCommentsActions.LikeSuccess(data));
     });
   };

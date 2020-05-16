@@ -1,0 +1,67 @@
+<div>
+    <h2>
+        My Courses
+    </h2>
+    <hr>
+
+    <div *ngIf="!errors && loading">
+        <app-loader-home-course [count]='3'></app-loader-home-course>
+    </div>
+
+    <div *ngIf="courses.length === 0 && !loading">
+        <div class="alert alert-info text-center notFoundMsg">
+            <h2>No courses found.</h2>
+        </div>
+    </div>
+
+
+    <div *ngIf="!errors && !loading">
+        <div *ngFor="let course of courses" class="course-div mat-elevation-z8">
+            <mat-card class="course-card">
+                <img mat-card-image [src]="getSanitizedImage(course.imagePath)" [alt]="course.title_EN">
+                <mat-card-header>
+                    <div mat-card-avatar class="course-header-image"></div>
+                    <mat-card-title>{{ course.title_EN }}</mat-card-title>
+                    <mat-card-subtitle>
+                        {{ course.createdBy }} - {{ course.publishedAt | date:'short' }}
+                    </mat-card-subtitle>
+                </mat-card-header>
+                <mat-card-content>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <p> <strong>Level: </strong></p>
+                            <div class="levelDiv bg-warning mat-elevation-z4">
+                                {{ course.level }}
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <p> <strong>Languages: </strong></p>
+                            <div class="langDiv bg-teal mat-elevation-z4"
+                                *ngFor="let lang of course.languages.split('-')">
+                                {{ lang }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="clearfix"></div>
+                    <br>
+                </mat-card-content>
+                <mat-card-actions class="actions">
+                    <div>
+                        <a mat-button
+                            [routerLink]="[ '/categories', course.category.id, course.category.slug ,'course', course.id, course.slug_EN]">
+                            VIEW COURSE
+                        </a>
+
+                    </div>
+                    <div>
+                        <fa-icon [icon]="faThumbsUp"></fa-icon> {{ course.likes.length }}
+                    </div>
+                </mat-card-actions>
+
+            </mat-card>
+        </div>
+    </div>
+</div>
+
+<div class="clearfix"></div>

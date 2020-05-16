@@ -7,7 +7,8 @@ import {
   faChessKing,
   faSearch,
   faUserTimes,
-  faEnvelopeOpenText
+  faEnvelopeOpenText,
+  faWrench
 } from '@fortawesome/free-solid-svg-icons';
 
 import { Store } from '@ngrx/store';
@@ -33,6 +34,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   faChessKing = faChessKing;
   faSearch = faSearch;
   faEnvelopeOpenText = faEnvelopeOpenText;
+  faWrench = faWrench;
 
   mobileQuery: MediaQueryList;
 

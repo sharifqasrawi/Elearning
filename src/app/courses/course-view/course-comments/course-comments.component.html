@@ -43,7 +43,7 @@
                             <h6 class="comment-name" [class.by-author]="courseAuthor === comment.userFullName">
                                 {{ comment.userFullName }}
                             </h6>
-                            <span>{{ comment.commentDateTime | timeago:'live' }}</span>
+
                             <i (click)="onReply(i)" *ngIf="isAuthenticated && !showReplyForm[i] && !showEditForm[i]">
                                 <fa-icon [icon]="faReply"></fa-icon>
                             </i>
@@ -87,20 +87,23 @@
                             </form>
                         </div>
                         <div class="comment-footer">
-                            <span class="text-muted">likes ({{ comment.likes.length }})</span>
 
-                            <a (click)="onShowReplies(i)" *ngIf="!showReplies[i]">
-                                Replies ({{ comment.replies.length }})
-                            </a>
-                            <a (click)="onHideReplies(i)" *ngIf="showReplies[i]">
-                                Hide Replies ({{ comment.replies.length }})
-                            </a>
+                            <span class="text-muted">{{ comment.commentDateTime | timeago:'live' }}</span>
+                            <div>
+                                <span class="text-muted">likes ({{ comment.likes.length }})</span>
 
+                                <a (click)="onShowReplies(i)" *ngIf="!showReplies[i]">
+                                    Replies ({{ comment.replies.length }})
+                                </a>
+                                <a (click)="onHideReplies(i)" *ngIf="showReplies[i]">
+                                    Hide Replies ({{ comment.replies.length }})
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <ul class="comments-list reply-list" *ngIf="showReplies[i]">
-                    <li *ngFor="let reply of comment.replies" [class.op06]="deleting">
+                    <li *ngFor="let reply of comment.replies; let j = index" [class.op06]="deleting">
                         <div class="comment-avatar" *ngIf="reply.userGender.toLowerCase() === 'male'"><img
                                 src="../../../../assets/images/male.jpg" alt="no avatar"></div>
                         <div class="comment-avatar" *ngIf="reply.userGender.toLowerCase() === 'female'"><img
@@ -113,23 +116,27 @@
                                 <h6 class="comment-name" [class.by-author]="courseAuthor === reply.userFullName">
                                     {{ reply.userFullName }}
                                 </h6>
-                                <span>{{ reply.commentDateTime | timeago:'live' }}</span>
-                                <i>
+                                <i (click)="onLike(reply.id, 'like')"
+                                    *ngIf="isAuthenticated && !checkUserLikeComment(comment.id, j, reply.id)">
                                     <fa-icon [icon]="faHeart"></fa-icon>
+                                </i>
+                                <i (click)="onLike(reply.id, 'unlike')"
+                                    *ngIf="isAuthenticated && checkUserLikeComment(comment.id, j, reply.id)">
+                                    <fa-icon [icon]="faHeart" style="color:purple"></fa-icon>
                                 </i>
                                 <i (click)="onDelete(reply.id)" *ngIf="isAuthenticated && userId === reply.userId">
                                     <fa-icon [icon]="faTrash"></fa-icon>
                                 </i>
-                                <i (click)="onEditReply(i, reply.text)"
-                                    *ngIf="isAuthenticated && userId === reply.userId && !showEditForm[i] && !showReplyForm[i] ">
+                                <i (click)="onEditReply(j, reply.text)"
+                                    *ngIf="isAuthenticated && userId === reply.userId && !showEditForm[j] && !showReplyForm[j] ">
                                     <fa-icon [icon]="faEdit"></fa-icon>
                                 </i>
                             </div>
                             <div class="comment-content">
-                                <pre *ngIf="!showEditReplyForm[i]">{{ reply.text }}</pre>
+                                <pre *ngIf="!showEditReplyForm[j]">{{ reply.text }}</pre>
 
                                 <form [formGroup]="editForm" (ngSubmit)="onSubmitEdit(reply.id)"
-                                    *ngIf="showEditReplyForm[i]">
+                                    *ngIf="showEditReplyForm[j]">
                                     <mat-form-field class="full-width" appearance="legacy">
                                         <mat-label class="lblNewComment">Edit reply</mat-label>
                                         <textarea matInput formControlName="editedText"
@@ -142,12 +149,16 @@
                                     </button>
 
                                     <button type="button" mat-raised-button color="warn" class="float-right mr-2"
-                                        (click)="onCancelEditReply(i)">
+                                        (click)="onCancelEditReply(j)">
                                         Cancel
                                     </button>
 
                                     <div class="clearfix"></div>
                                 </form>
+                            </div>
+                            <div class="comment-footer">
+                                <span class="text-muted">{{ reply.commentDateTime | timeago:'live' }}</span>
+                                <span class="text-muted">likes ({{ reply.likes.length }})</span>
                             </div>
                         </div>
                     </li>

@@ -1,3 +1,4 @@
+
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
@@ -48,7 +49,8 @@ import { HomeCommentsEffects } from './courses/course-view/course-comments/store
 import { HomeSessionEffects } from './courses/course-view/course-session/store/session.effects';
 import { NotificationsEffects } from './admin/notifications/store/notifications.effects';
 import { CoursePickupDialogComponent } from './courses/course-view/course-pickup-dialog/course-pickup-dialog.component';
-
+import { MemberEffects } from './member/store/member.effects';
+import { MemberModule } from './member/member.module';
 
 @NgModule({
   declarations: [
@@ -88,7 +90,8 @@ import { CoursePickupDialogComponent } from './courses/course-view/course-pickup
       DirectoriesEffects,
       FilesEffects,
       TagsEffects,
-      HomeCommentsEffects
+      HomeCommentsEffects,
+      MemberEffects
     ]),
     MaterialModule,
     MatNativeDateModule,
@@ -101,6 +104,7 @@ import { CoursePickupDialogComponent } from './courses/course-view/course-pickup
     SharedModule,
     SecurityModule,
     AdminModule,
+    MemberModule,
     AppRoutingModule,
   ],
   providers: [

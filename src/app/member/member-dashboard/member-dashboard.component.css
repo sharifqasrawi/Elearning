@@ -1,0 +1,26 @@
+@media(min-width: 993px) {
+    .container-fluid {
+        padding-left: 50px;
+        padding-right: 50px;
+    }
+}
+
+.dashNav div{
+    padding: 12px;
+    width: 180px;
+    height: 45px;
+    background-color: rgb(255, 180, 217);
+    text-align: center;
+    border-radius: 5px;
+    margin: 0 20px 20px 0;
+    float: left;
+}
+
+.dashNav div a{
+    color: rgb(66, 66, 66);
+}
+
+.dashNav div a:hover{
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+}

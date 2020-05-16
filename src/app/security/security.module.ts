@@ -2,8 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { RecaptchaModule, RecaptchaFormsModule } from 'ng-recaptcha';
-import { RECAPTCHA_SETTINGS, RecaptchaSettings } from 'ng-recaptcha';
+// import { RecaptchaModule, RecaptchaFormsModule } from 'ng-recaptcha';
+// import { RECAPTCHA_SETTINGS, RecaptchaSettings } from 'ng-recaptcha';
 
 import { SecurityRoutingModule } from './security-routing.module';
 import { EmailConfirmationComponent } from './email-confirmation/email-confirmation.component';
@@ -28,18 +28,18 @@ import { MaterialModule } from '../material-module';
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
-        RecaptchaModule,
-        RecaptchaFormsModule,
+        // RecaptchaModule,
+        // RecaptchaFormsModule,
         MaterialModule,
         FontAwesomeModule,
         SecurityRoutingModule,
     ],
     exports: [],
     providers: [
-        {
-            provide: RECAPTCHA_SETTINGS,
-            useValue: { siteKey: '<ghtBHreVgsfZRgsQSD578dh5HTUtyjTYJUIuyotuiytOyt864uRNryjtUOYTUO>' } as RecaptchaSettings,
-        },
+        // {
+        //     provide: RECAPTCHA_SETTINGS,
+        //     useValue: { siteKey: '<ghtBHreVgsfZRgsQSD578dh5HTUtyjTYJUIuyotuiytOyt864uRNryjtUOYTUO>' } as RecaptchaSettings,
+        // },
     ],
 })
 export class SecurityModule { }

@@ -37,7 +37,10 @@
             <p class="mt-1">
                 Duration: {{ session.duration }} mins.
             </p>
-            <mat-slide-toggle (change)="onMarkDone()" [checked]="doneChecked">Done</mat-slide-toggle>
+            <mat-slide-toggle (change)="onSaveSession()" [checked]="saveChecked" [disabled]="savingSession || loadingSavedSessions"
+                *ngIf="isAuthenticated">
+                Save
+            </mat-slide-toggle>
         </div>
         <hr>
 
@@ -46,7 +49,9 @@
             <div *ngIf="content.type === 'text'" [innerHtml]="getSanitizedHtml(content.content)"></div>
 
             <div *ngIf="content.type === 'code'">
-                <ngx-monaco-editor [options]="{theme: 'vs-dark',language: content.note, readOnly: true,scrollBeyondLastLine: false}" [ngModel]="content.content"></ngx-monaco-editor>
+                <ngx-monaco-editor
+                    [options]="{theme: 'vs-dark',language: content.note, readOnly: true,scrollBeyondLastLine: false}"
+                    [ngModel]="content.content"></ngx-monaco-editor>
             </div>
 
             <div *ngIf="content.type === 'image'" class="text-center ">
@@ -69,7 +74,7 @@
                 </li>
             </ul>
         </div>
-      
+
 
         <div *ngIf="session.contents.length === 0" class="alert alert-info text-center">
             <h3>No content yet.</h3>

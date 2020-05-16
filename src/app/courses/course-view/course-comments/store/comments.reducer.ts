@@ -58,6 +58,7 @@ export function commentsReducer(state: State = initialState, action: HomeComment
                 ...state,
                 creating: true,
                 created: false,
+                signaled: false,
                 errors: null,
             };
 
@@ -229,22 +230,55 @@ export function commentsReducer(state: State = initialState, action: HomeComment
                 errors: null
             };
         case HomeCommentsActions.LIKE_SUCCESS:
-            const commentToLikeIndex = state.comments.findIndex(c => c.id === action.payload.id);
-            const commentToLike = state.comments.find(c => c.id === action.payload.id);
             const commentsAfterLike = [...state.comments];
 
-            const commentAfterLike = {
-                ...commentToLike,
-                likes: [...action.payload.likes]
-            };
+            if (action.payload.commentId) {
+                
+                const originalCommentIndex = state.comments.findIndex(c => c.id === action.payload.commentId);
+                const originalComment = state.comments.find(c => c.id === action.payload.commentId);
+                const originalCommentReplies = [...originalComment.replies];
 
-            commentsAfterLike[commentToLikeIndex] = commentAfterLike;
+                const replyToLikeIndex = originalComment.replies.findIndex(c => c.id === action.payload.id);
+                const replyToLike = originalComment.replies.find(c => c.id === action.payload.id);
 
-            return {
-                ...state,
-                loadingLike: false,
-                comments: commentsAfterLike
-            };
+                const updatedReply: Comment = {
+                    ...replyToLike,
+                    text: action.payload.text
+                };
+
+                originalCommentReplies[replyToLikeIndex] = updatedReply;
+
+                const updatedComment: Comment = {
+                    ...originalComment,
+                    replies: originalCommentReplies
+                };
+
+
+                commentsAfterLike[originalCommentIndex] = updatedComment;
+
+
+                return {
+                    ...state,
+                    loadingLike: false,
+                    comments: commentsAfterLike
+                };
+            }
+            else {
+                const commentToLikeIndex = state.comments.findIndex(c => c.id === action.payload.id);
+                const commentToLike = state.comments.find(c => c.id === action.payload.id);
+
+                const commentAfterLike = {
+                    ...commentToLike,
+                    likes: [...action.payload.likes]
+                };
+
+                commentsAfterLike[commentToLikeIndex] = commentAfterLike;
+                return {
+                    ...state,
+                    loadingLike: false,
+                    comments: commentsAfterLike
+                };
+            }
         case HomeCommentsActions.LIKE_FAIL:
             return {
                 ...state,
@@ -263,16 +297,30 @@ export function commentsReducer(state: State = initialState, action: HomeComment
 
         case HomeCommentsActions.SIGNALR_DONE:
 
-            let comments = [...state.comments];
+            let commentsAfterAddS = [...state.comments];
+            if (action.payload.commentId) {
+                const commentToAdd: Comment = {
+                    ...action.payload
+                };
 
-            if (!state.created) {
-                comments = [action.payload, ...state.comments];
+                const originalComment = state.comments.find(c => c.id === commentToAdd.commentId);
+                const originalCommentIndex = state.comments.findIndex(c => c.id === commentToAdd.commentId);
+
+                const updatedComment: Comment = {
+                    ...originalComment,
+                    replies: [...originalComment.replies, action.payload]
+                };
+
+                commentsAfterAddS[originalCommentIndex] = updatedComment;
+
+            } else {
+                commentsAfterAddS = [action.payload, ...state.comments];
             }
 
             return {
                 ...state,
                 signaled: true,
-                comments: comments,
+                comments: commentsAfterAddS,
             };
 
         /////////////////////

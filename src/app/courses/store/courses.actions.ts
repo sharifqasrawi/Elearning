@@ -14,6 +14,7 @@ export const ENROLL_START = '[Home Courses] Enroll Start';
 export const ENROLL_SUCCESS = '[Home Courses] Enroll Success';
 export const ENROLL_FAIL = '[Home Courses] Enroll Fail';
 
+
 export const CLEAR_ERRORS = '[Home Courses] Clear Errors';
 export const CLEAR_STATUS = '[Home Courses] Clear Status';
 
@@ -78,6 +79,9 @@ export class EnrollFail implements Action {
 
     constructor(public payload: string[]) { }
 }
+
+
+
 
 
 /////////////////////
