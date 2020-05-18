@@ -13,6 +13,7 @@ import { RegisterComponent } from './register/register.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 import { AuthComponent } from './auth/auth.component';
 import { MaterialModule } from '../material-module';
+import { AccessDeniedComponent } from './access-denied/access-denied.component';
 
 
 @NgModule({
@@ -23,6 +24,7 @@ import { MaterialModule } from '../material-module';
         EmailConfirmationComponent,
         ForgotPasswordComponent,
         ResetPasswordComponent,
+        AccessDeniedComponent,
     ],
     imports: [
         CommonModule,

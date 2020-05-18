@@ -1,5 +1,3 @@
-import { SignalRServiceService } from './services/signal-rservice.service';
-import { map } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
@@ -11,6 +9,7 @@ import { Comment } from './../../../models/comment.model';
 import * as fromApp from '../../../store/app.reducer';
 import * as HomeCommentsActions from './store/comments.actions';
 import { ConfirmDialogComponent } from './../../../shared/confirm-dialog/confirm-dialog.component';
+import {  SignalRCommentsService } from './services/signalr-comments-service.service';
 
 @Component({
   selector: 'app-course-comments',
@@ -26,6 +25,7 @@ export class CourseCommentsComponent implements OnInit {
 
   courseId: number = null;
   courseAuthor: string = null;
+
 
   comments: Comment[] = null;
   loadedComments: Comment[] = null;
@@ -66,7 +66,7 @@ export class CourseCommentsComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private dialog: MatDialog,
-    private signalRService: SignalRServiceService
+    private signalRService: SignalRCommentsService
   ) { }
 
   ngOnInit(): void {
@@ -141,6 +141,7 @@ export class CourseCommentsComponent implements OnInit {
 
       const course = state.courses.find(c => c.id === this.courseId);
       if (course) this.courseAuthor = course.createdBy;
+
     });
 
 
@@ -263,7 +264,7 @@ export class CourseCommentsComponent implements OnInit {
       const reply = comment.replies.find(r => r.id === replyId);
       for (let like of reply.likes) {
         if (like.userId === this.userId) {
-       
+
           return true;
         }
       }

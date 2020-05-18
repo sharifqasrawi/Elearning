@@ -23,6 +23,7 @@ export class MemberCoursesComponent implements OnInit {
   courses: Course[] = null;
   loading = false;
   errors: string[] = null;
+  isFavoritesList = false;
 
   constructor(
     private store: Store<fromApp.AppState>,
@@ -34,8 +35,10 @@ export class MemberCoursesComponent implements OnInit {
 
     this.route.queryParams.subscribe((params: Params) => {
       if (params.fetch === 'favorites') {
+        this.isFavoritesList = true;
         this.store.dispatch(new MemberActions.FetchFavoriteCoursesStart());
       } else {
+        this.isFavoritesList = false;
         this.store.dispatch(new MemberActions.FetchCoursesStart());
       }
 

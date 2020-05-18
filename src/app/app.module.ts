@@ -1,4 +1,3 @@
-
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
@@ -12,6 +11,7 @@ import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { CountUpModule } from 'ngx-countup';
 import { TimeagoModule } from 'ngx-timeago';
 import { MonacoEditorModule } from 'ngx-monaco-editor';
+import { RatingModule } from 'ng-starrating';
 
 import * as fromApp from './store/app.reducer';
 import { AppRoutingModule } from './app-routing.module';
@@ -51,6 +51,8 @@ import { NotificationsEffects } from './admin/notifications/store/notifications.
 import { CoursePickupDialogComponent } from './courses/course-view/course-pickup-dialog/course-pickup-dialog.component';
 import { MemberEffects } from './member/store/member.effects';
 import { MemberModule } from './member/member.module';
+import { CommonModule } from '@angular/common';
+import { AppSettingsEffects } from './AppSettings/store/app-settings.effects';
 
 @NgModule({
   declarations: [
@@ -70,6 +72,7 @@ import { MemberModule } from './member/member.module';
   ],
   imports: [
     BrowserModule,
+    CommonModule,
     TimeagoModule.forRoot(),
     HttpClientModule,
     StoreModule.forRoot(fromApp.appReducer),
@@ -91,7 +94,8 @@ import { MemberModule } from './member/member.module';
       FilesEffects,
       TagsEffects,
       HomeCommentsEffects,
-      MemberEffects
+      MemberEffects,
+      AppSettingsEffects
     ]),
     MaterialModule,
     MatNativeDateModule,
@@ -101,6 +105,7 @@ import { MemberModule } from './member/member.module';
     FontAwesomeModule,
     CountUpModule,
     MonacoEditorModule.forRoot(),
+    RatingModule ,
     SharedModule,
     SecurityModule,
     AdminModule,

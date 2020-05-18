@@ -210,6 +210,37 @@ export class MemberEffects {
     );
 
     @Effect()
+    fetchUserSavedSessions = this.actions$.pipe(
+        ofType(MemberActions.FETCH_USER_SAVED_SESSIONS_START),
+        switchMap(() => {
+
+            return this.http.get<{ sessions: SavedSession[] }>(environment.API_BASE_URL + 'SavedSessions/sessions',
+                {
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    params: new HttpParams().set('userId', this.userId)
+                })
+                .pipe(
+                    map(resData => {
+                        return new MemberActions.FetchSavedSessionsSuccess(resData.sessions);
+                    }),
+                    catchError(errorRes => {
+                        switch (errorRes.status) {
+                            case 403:
+                            case 401:
+                                return of(new MemberActions.FetchSavedSessionsFail(['Access Denied']));
+                            case 404:
+                                return of(new MemberActions.FetchSavedSessionsFail(['Error 404. Not Found']));
+                            case 400:
+                                return of(new MemberActions.FetchSavedSessionsFail(errorRes.error.errors));
+                            default:
+                                return of(new MemberActions.FetchSavedSessionsFail(['Oops! An error occured']));
+                        }
+                    })
+                )
+        })
+    );
+
+    @Effect()
     saveSession = this.actions$.pipe(
         ofType(MemberActions.SAVE_SESSION_START),
         switchMap((sessionData: MemberActions.SaveSessionStart) => {
@@ -217,7 +248,8 @@ export class MemberEffects {
             return this.http.post<{ createdSavedSession: SavedSession }>(environment.API_BASE_URL + 'SavedSessions',
                 {
                     userId: this.userId,
-                    sessionId: sessionData.payload
+                    sessionId: sessionData.payload.sessionId,
+                    sessionUrl:sessionData.payload.sessionUrl
                 },
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),

@@ -1,3 +1,4 @@
+import { Course } from './../../../../models/course.model';
 import { Action } from '@ngrx/store';
 
 import { Comment } from './../../../../models/comment.model';
@@ -22,6 +23,7 @@ export const DELETE_FAIL = '[Comments] Delete Fail';
 export const LIKE_START = '[Comments] Like Start';
 export const LIKE_SUCCESS = '[Comments] Like Success';
 export const LIKE_FAIL = '[Comments] Like Fail';
+
 
 export const SIGNALR_START = '[Comments] SignalR Start';
 export const SIGNALR_DONE = '[Comments] SignalR Done';
@@ -130,6 +132,10 @@ export class LikeFail implements Action {
     constructor(public payload: string[]) { }
 }
 
+
+
+
+/////////////////////
 
 
 export class SignalRStart implements Action {

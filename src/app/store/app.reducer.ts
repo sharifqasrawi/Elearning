@@ -19,6 +19,7 @@ import * as fromHomeSession from '../courses/course-view/course-session/store/se
 import * as fromHomeComments from '../courses/course-view/course-comments/store/comments.reducer';
 import * as fromNotifications from '../admin/notifications/store/notifications.reducer';
 import * as fromMember from '../member/store/member.reducer';
+import * as fromAppSettings from '../AppSettings/store/app-settings.reducer';
 
 export interface AppState {
     login: fromLogin.State
@@ -39,6 +40,7 @@ export interface AppState {
     tags: fromTags.State,
     homeComments: fromHomeComments.State,
     member: fromMember.State,
+    appSettings: fromAppSettings.State,
 }
 
 export const appReducer: ActionReducerMap<AppState> = {
@@ -59,5 +61,6 @@ export const appReducer: ActionReducerMap<AppState> = {
     files: fromFiles.filesReducer,
     tags: fromTags.tagsReducer,
     homeComments: fromHomeComments.commentsReducer,
-    member: fromMember.memberReducer
+    member: fromMember.memberReducer,
+    appSettings: fromAppSettings.appSettingsReducer,
 };

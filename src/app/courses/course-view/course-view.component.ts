@@ -44,6 +44,7 @@ export class CourseViewComponent implements OnInit {
   classId: string = null;
   currentSessionId: number = null;
   currentSessionSlug: string = null;
+  checkCurrnetSession = true;
 
   loading = false;
 
@@ -115,6 +116,10 @@ export class CourseViewComponent implements OnInit {
       ];
     });
 
+    this.route.queryParams.subscribe((params: Params) => {
+      this.checkCurrnetSession = params.check === 'no' ? false : true;
+    });
+
     this.store.dispatch(new HomeCoursesActions.FetchStart({ categoryId: this.categoryId, courseId: this.courseId }));
 
 
@@ -131,7 +136,6 @@ export class CourseViewComponent implements OnInit {
       this.loading = state.loading;
       this.loadingLike = state.loadingLike;
       this.loadingEnroll = state.loadingEnroll;
-
 
 
       if (this.course) {
@@ -167,7 +171,7 @@ export class CourseViewComponent implements OnInit {
       }
     });
 
-    if (this.currentSessionId) {
+    if (this.currentSessionId && this.checkCurrnetSession) {
       this.dialog.open(CoursePickupDialogComponent, {
         width: '400px',
         disableClose: true,

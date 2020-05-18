@@ -2,15 +2,15 @@ import { Store } from '@ngrx/store';
 import { Injectable, EventEmitter } from '@angular/core';
 import * as signalR from '@aspnet/signalr';
 
-import { environment } from './../../../../../environments/environment';
+import { environment } from '../../../../../environments/environment';
 import * as fromApp from '../../../../store/app.reducer';
 import * as HomeCommentsActions from '../store/comments.actions';
-import { Comment } from './../../../../models/comment.model';
+import { Comment } from '../../../../models/comment.model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class SignalRServiceService {
+export class SignalRCommentsService {
 
   private hubConnection: signalR.HubConnection;
   signalReceived = new EventEmitter<Comment>();
@@ -65,5 +65,6 @@ export class SignalRServiceService {
       // this.signalReceived.emit(data);
       this.store.dispatch(new HomeCommentsActions.LikeSuccess(data));
     });
+
   };
 }

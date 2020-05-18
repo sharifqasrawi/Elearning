@@ -1,3 +1,6 @@
+import { ErrorDialogComponent } from './../../../shared/error-dialog/error-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+import { StarRatingComponent } from 'ng-starrating';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { faTag, faThumbsUp, faThumbsDown } from '@fortawesome/free-solid-svg-icons';
@@ -8,6 +11,7 @@ import { Like } from './../../../models/like.model';
 import { Course } from './../../../models/course.model';
 import * as fromApp from '../../../store/app.reducer';
 import * as HomeCoursesActions from '../../store/courses.actions';
+import { SignalRCoursesService } from './services/signalr-courses-service.service';
 
 @Component({
   selector: 'app-course-info',
@@ -27,6 +31,10 @@ export class CourseInfoComponent implements OnInit {
   courseId: number = null;
   courseSlug: string = null;
   courseTitle: string = null;
+  courseTotalRating: string = null;
+  courseTotalRatingN: number = null;
+  courseRatingsCount = 0;
+  courseRateUserValue = 0;
 
   userId: string = null;
   like: Like = null;
@@ -34,6 +42,7 @@ export class CourseInfoComponent implements OnInit {
 
   loadingCourse = false;
   loadingLike = false;
+  loadingRate = false;
 
   isAuthenticated = false;
   currentUrl: string = null;
@@ -42,7 +51,9 @@ export class CourseInfoComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private store: Store<fromApp.AppState>,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private dialog: MatDialog,
+    private signalRCoursesService: SignalRCoursesService
   ) { }
 
   ngOnInit(): void {
@@ -66,10 +77,28 @@ export class CourseInfoComponent implements OnInit {
       this.course = state.courses.find(c => c.id === this.courseId);
       this.loadingCourse = state.loading;
       this.loadingLike = state.loadingLike;
+      this.loadingRate = state.loadingRate;
+
+      if (state.errors) {
+        this.dialog.open(ErrorDialogComponent, {
+          width: '450px',
+          data: { errors: state.errors }
+        });
+      }
 
       if (this.course) {
         this.like = this.course.likes.find(l => l.courseId === this.courseId && l.userId === this.userId);
         this.isUserLiked = this.like ? true : false;
+
+        this.courseTotalRating = this.course.ratings.totalRating.toFixed(1);
+        this.courseTotalRatingN = this.course.ratings.totalRating;
+        this.courseRatingsCount = this.course.ratings.ratings.length;
+
+        if (this.isAuthenticated) {
+          this.courseRateUserValue = this.course.ratings.ratings
+            .find(r => r.userId === this.userId && r.courseId === this.courseId)
+            .value;
+        }
       }
     });
 
@@ -84,6 +113,20 @@ export class CourseInfoComponent implements OnInit {
       courseId: this.courseId,
       action: this.isUserLiked ? 'unlike' : 'like'
     }));
+  }
+
+  onRate($event: { oldValue: number, newValue: number, starRating: StarRatingComponent }) {
+    const newValue = $event.newValue;
+
+    if (this.isAuthenticated) {
+      this.store.dispatch(new HomeCoursesActions.RateStart({
+        courseId: this.courseId,
+        value: newValue
+      }));
+    }
+    else {
+
+    }
   }
 
   getSanitizedImage = (imagePath: string) => this.sanitizer.bypassSecurityTrustResourceUrl(imagePath);

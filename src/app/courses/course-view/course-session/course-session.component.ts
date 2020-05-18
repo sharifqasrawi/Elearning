@@ -48,6 +48,7 @@ export class CourseSessionComponent implements OnInit {
   constructor(
     private store: Store<fromApp.AppState>,
     private route: ActivatedRoute,
+    private router: Router,
     private sanitizer: DomSanitizer,
     private dialog: MatDialog
   ) { }
@@ -96,7 +97,8 @@ export class CourseSessionComponent implements OnInit {
 
   onSaveSession() {
     if (!this.saveChecked) {
-      this.store.dispatch(new MemberActions.SaveSessionStart(this.sessionId));
+      const url = this.router.url;
+      this.store.dispatch(new MemberActions.SaveSessionStart({ sessionId: this.sessionId, sessionUrl: url }));
     } else {
       this.store.dispatch(new MemberActions.RemoveSessionStart(this.savedSession.id))
     }

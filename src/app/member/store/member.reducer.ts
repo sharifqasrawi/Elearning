@@ -144,6 +144,7 @@ export function memberReducer(state: State = initialState, action: MemberActions
         /////////////////////
 
         case MemberActions.FETCH_SAVED_SESSIONS_START:
+        case MemberActions.FETCH_USER_SAVED_SESSIONS_START:
             return {
                 ...state,
                 loadingSavedSessions: true,

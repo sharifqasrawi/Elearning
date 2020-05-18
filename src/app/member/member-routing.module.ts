@@ -6,6 +6,7 @@ import { AuthGuard } from './../security/auth.guard';
 import { LayoutComponent } from './../layout/layout.component';
 import { MemberDashboardComponent } from './member-dashboard/member-dashboard.component';
 import { MemberCoursesComponent } from './member-courses/member-courses.component';
+import { MemberSavedSessionsComponent } from './member-saved-sessions/member-saved-sessions.component';
 
 const routes: Routes = [
     {
@@ -17,7 +18,8 @@ const routes: Routes = [
                 path: 'dashboard',
                 component: MemberDashboardComponent,
                 children: [
-                    { path: 'courses', component: MemberCoursesComponent, pathMatch: 'full' },
+                    { path: 'courses', component: MemberCoursesComponent },
+                    { path: 'saved-sessions', component: MemberSavedSessionsComponent },
                 ]
             },
             { path: '', redirectTo: '/member/dashboard', pathMatch: 'full' }

@@ -1,9 +1,56 @@
 footer {
     width: 100%;
-    height: 150px;
+    height: 250px;
     background-color: rgb(78, 78, 78);
+    box-shadow: 0 50vh 0 50vh rgb(78, 78, 78);
     position: absolute;
     bottom: 0;
     color: lightgrey;
     padding: 16px;
+}
+
+.rating div.total {
+    text-align: center;
+    padding: 15px;
+    color: green;
+    background-color: rgb(169, 228, 228);
+    border-radius: 100%;
+    width: 110px;
+    height: 110px;
+    line-height: 80px;
+}
+
+.rating div.total span:nth-child(1) {
+    font-size: 50px;
+}
+
+.rating .loadingRate {
+    pointer-events: none;
+    animation: loadingRateAnim .8s ease-in-out infinite;
+}
+
+@keyframes loadingRateAnim {
+    0% {
+        opacity: 1;
+    }
+    25% {
+        opacity: 0.5;
+    }
+    50% {
+        opacity: 0.3;
+    }
+    80% {
+        opacity: 0.5;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+hr {
+    border-color: lightgrey;
+}
+
+a{
+    color: darkgray;
 }

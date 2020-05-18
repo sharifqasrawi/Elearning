@@ -1,0 +1,32 @@
+.acdp {
+    background-color: crimson;
+    box-shadow: 0 50vh 0 50vh crimson;
+}
+
+.acdp .alertMsg{
+    animation: alertMsgAnim .4s ease-in-out forwards;
+}
+
+@keyframes alertMsgAnim {
+    0% {
+        opacity: 0.5;
+        transform: translateY(-100%);
+    }
+    100%{
+        opacity: 1;
+        transform: translateY(0);
+    }  
+}
+
+.acdp .alertImg{
+    animation: alertImgAnim .8s ease-in-out infinite;
+}
+
+@keyframes alertImgAnim {
+    0% {
+        opacity: 0.5;
+    }
+    100%{
+        opacity: 1;
+    }  
+}

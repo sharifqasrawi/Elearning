@@ -15,6 +15,11 @@ export const ENROLL_SUCCESS = '[Home Courses] Enroll Success';
 export const ENROLL_FAIL = '[Home Courses] Enroll Fail';
 
 
+export const RATE_START = '[Home Courses] Rate Start';
+export const RATE_SUCCESS = '[Home Courses] Rate Success';
+export const RATE_FAIL = '[Home Courses] Rate Fail';
+
+
 export const CLEAR_ERRORS = '[Home Courses] Clear Errors';
 export const CLEAR_STATUS = '[Home Courses] Clear Status';
 
@@ -80,7 +85,26 @@ export class EnrollFail implements Action {
     constructor(public payload: string[]) { }
 }
 
+/////////////////////
 
+
+export class RateStart implements Action {
+    readonly type = RATE_START;
+
+    constructor(public payload: { courseId: number, value: number }) { }
+}
+
+export class RateSuccess implements Action {
+    readonly type = RATE_SUCCESS;
+
+    constructor(public payload: Course) { }
+}
+
+export class RateFail implements Action {
+    readonly type = RATE_FAIL;
+
+    constructor(public payload: string[]) { }
+}
 
 
 
@@ -101,6 +125,9 @@ export type HomeCoursesActions =
     | LikeStart
     | LikeSuccess
     | LikeFail
+    | RateStart
+    | RateSuccess
+    | RateFail
     | EnrollStart
     | EnrollSuccess
     | EnrollFail

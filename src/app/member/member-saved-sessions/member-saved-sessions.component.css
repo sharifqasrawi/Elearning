@@ -1,0 +1,72 @@
+.session {
+    float: left;
+    margin: 0 20px 20px 0;
+    width: 300px;
+    height: 320px;
+    background-color: rgb(236, 236, 236);
+}
+
+.session .header {
+    height: 150px;
+}
+
+.session .session-header-image {
+    background-image: url('../../../assets/images/course.png');
+    background-size: cover;
+}
+
+.session .actions {
+    position: absolute;
+    bottom: 0;
+    margin-bottom: 10px;
+}
+
+.session .actions a {
+    text-decoration: none;
+}
+
+.loader.session {
+    opacity: 0.7;
+    animation: loaderAnim 1s ease-in-out infinite;
+}
+
+@keyframes loaderAnim {
+    0% {
+        opacity: 0.3;
+    }
+    50% {
+        opacity: 0.5;
+    }
+    75% {
+        opacity: 0.6;
+    }
+    100% {
+        opacity: 0.3;
+    }
+}
+
+.loader.session .header .title {
+    width: 200px;
+    height: 30px;
+    background-color: rgb(175, 175, 175);
+}
+
+.loader.session .header .subtitle {
+    width: 160px;
+    height: 40px;
+    background-color: rgb(175, 175, 175);
+}
+
+.loader.session .cardContent p:nth-child(1) {
+    width: 150px;
+    background-color: rgb(175, 175, 175);
+}
+
+.loader.session .cardContent p:nth-child(2) {
+    width: 220px;
+    background-color: rgb(175, 175, 175);
+}
+
+.loader.session .actions a {
+    width: 130px;
+}

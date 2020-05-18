@@ -22,6 +22,7 @@
     </div>
 
     <div *ngIf="!loading">
+        
         <h1>
             {{ session.order }}- {{ session.title_EN }}
         </h1>
@@ -44,6 +45,9 @@
         </div>
         <hr>
 
+        <div *ngIf="session.contents.length === 0" class="alert alert-info text-center">
+            <h3>No content yet.</h3>
+        </div>
         <div *ngFor="let content of session.contents">
             <br>
             <div *ngIf="content.type === 'text'" [innerHtml]="getSanitizedHtml(content.content)"></div>
@@ -61,7 +65,8 @@
         </div>
 
         <hr>
-        <div class="resourcesDiv">
+        
+        <div class="resourcesDiv" *ngIf="session.contents.length > 0">
             <p class="text-success">
                 <fa-icon [icon]="faFileArchive"></fa-icon> Resources:
             </p>
@@ -76,8 +81,5 @@
         </div>
 
 
-        <div *ngIf="session.contents.length === 0" class="alert alert-info text-center">
-            <h3>No content yet.</h3>
-        </div>
     </div>
 </div>

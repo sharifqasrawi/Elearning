@@ -1,0 +1,20 @@
+<div class="acdp">
+    <div class="container content0 text-center">
+        <div class="alert alert-danger text-center alertMsg">
+            <h1>Access Denied !!</h1>
+            <p>You do not have the required permissions to access to this resource.</p>
+            <p>
+                Please
+                <a [routerLink]="['/security', 'auth']" [queryParams]="{ 'returnUrl' : returnUrl }">
+                    LOGIN
+                </a>
+                with the required permissions.
+            </p>
+            <p>
+                Or retrun
+                <a [routerLink]="['/home']">HOME.</a>
+            </p>
+        </div>
+        <img src="../../../assets/images/acd.png" alt="Access Denied" width="300" class="mt-2 alertImg">
+    </div>
+</div>

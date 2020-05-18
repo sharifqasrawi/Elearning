@@ -1,6 +1,12 @@
 <div class="container-fluid content0">
+    <div class="full-width" *ngIf="!course && !loading">
+        <h1 class="alert alert-danger text-center">
+            Resource not found.
+        </h1>
+    </div>
+    
     <div class="left">
-        <div class="courseHeader" *ngIf="!loading">
+        <div class="courseHeader" *ngIf="!loading && course">
             <div class="row">
                 <div class="col-lg-12">
                     <app-breadcrumb [links]="breadcrumbLinks"></app-breadcrumb>
@@ -61,7 +67,7 @@
 
         </div>
 
-        <div class="courseInfoNav bg-light" *ngIf="!loading">
+        <div class="courseInfoNav bg-light" *ngIf="!loading && course">
             <a [routerLink]="['/categories', categoryId, categorySlug, 'course', courseId, courseSlug]">
                 <fa-icon [icon]="faInfoCircle"></fa-icon>
                 Info
@@ -128,13 +134,15 @@
             <div class="btnSessions">&nbsp; </div>
         </div>
 
-        <router-outlet></router-outlet>
+        <div *ngIf="!loading  && course">
+            <router-outlet></router-outlet>
+        </div>
     </div>
 
 
 
     <div class="right">
-        <div class="contentBox" *ngIf="!loading">
+        <div class="contentBox" *ngIf="!loading && course">
             <div class="contentBox-header text-center">
                 <button mat-flat-button color="" (click)="allExpandState = !allExpandState" class="btn-block">
                     Content ({{ allExpandState ? 'Collapse All' : 'Expand All' }})
@@ -209,7 +217,7 @@
                 </button>
             </div>
             <div class="contentBox-body">
-                <div *ngIf="!loading">
+                <div *ngIf="!loading && course">
 
                     <mat-expansion-panel class="exp-panel" [expanded]="allExpandState"
                         *ngFor="let section of course.sections">
@@ -238,3 +246,4 @@
     </mat-sidenav>
 
 </mat-sidenav-container>
+

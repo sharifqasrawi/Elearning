@@ -69,9 +69,7 @@ button.unliked {
     background-color: rgb(224, 195, 195);
 }
 
-
-
-.courseInfoNav{
+.courseInfoNav {
     padding: 12px;
     margin-bottom: 10px;
     width: 100%;
@@ -96,4 +94,47 @@ button.unliked {
 .courseInfoNav a.active {
     color: rgb(35, 21, 83);
     font-weight: bold;
+}
+
+.rating {
+    margin-bottom: 15px;
+}
+
+.rating div.total {
+    text-align: center;
+    padding: 15px;
+    color: green;
+    background-color: rgb(169, 228, 228);
+    border-radius: 100%;
+    width: 110px;
+    height: 110px;
+    line-height: 80px;
+}
+
+.rating div.total span:nth-child(1) {
+    font-size: 50px;
+}
+
+.rating .loadingRate {
+    pointer-events: none;
+
+    animation: loadingRateAnim .8s ease-in-out infinite;
+}
+
+@keyframes loadingRateAnim {
+    0% {
+        opacity: 1;
+    }
+    25% {
+        opacity: 0.5;
+    }
+    50% {
+        opacity: 0.3;
+    }
+    80%{
+        opacity: 0.5;
+    }
+    100% {
+        opacity: 1;
+    }
 }

@@ -120,6 +120,40 @@ export class HomeCoursesEffects {
         })
     );
 
+    @Effect()
+    rateCourse = this.actions$.pipe(
+        ofType(HomeCoursesActions.RATE_START),
+        switchMap((rateData: HomeCoursesActions.RateStart) => {
+            return this.http.post<{ course: Course }>(environment.API_BASE_URL + 'CourseRatings',
+                {
+                    courseId: rateData.payload.courseId,
+                    userId: this.userId,
+                    value: rateData.payload.value
+                },
+                {
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                })
+                .pipe(
+                    map(resData => {
+                        return new HomeCoursesActions.RateSuccess(resData.course);
+                    }),
+                    catchError(errorRes => {
+                        switch (errorRes.status) {
+                            case 403:
+                            case 401:
+                                return of(new HomeCoursesActions.RateFail(['Access Denied']));
+                            case 404:
+                                return of(new HomeCoursesActions.RateFail(['Error 404. Not Found']));
+                            case 400:
+                                return of(new HomeCoursesActions.RateFail(errorRes.error.errors));
+                            default:
+                                return of(new HomeCoursesActions.RateFail(['Oops! An error occured']));
+                        }
+                    })
+                )
+        })
+    );
+
     constructor(
         private actions$: Actions,
         private http: HttpClient,

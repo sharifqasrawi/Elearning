@@ -8,11 +8,14 @@ body {
 
 .content0 {
     padding-top: 100px;
+    padding-bottom: 100px;
 }
 
 
 .content {
   margin-top: 30px;
+  padding-bottom: 100px;
+
 }
 
 .chipLink{

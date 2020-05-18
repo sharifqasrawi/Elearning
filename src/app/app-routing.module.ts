@@ -52,7 +52,11 @@ const routes: Routes = [
       { path: '', redirectTo: '/home', pathMatch: 'full' },
     ],
   },
-  { path: '**', component: NotFoundComponent }
+  {
+    path: '**', component: LayoutComponent, children: [
+      { path: '', component: NotFoundComponent, pathMatch: 'full' }
+    ]
+  }
 ];
 
 const routerOptions: ExtraOptions = {

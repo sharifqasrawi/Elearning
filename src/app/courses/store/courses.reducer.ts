@@ -8,6 +8,7 @@ export interface State {
     loaded: boolean,
     loadingLike: boolean,
     loadingEnroll: boolean,
+    loadingRate: boolean,
     errors: string[],
 };
 
@@ -16,7 +17,8 @@ const initialState: State = {
     loading: false,
     loaded: false,
     loadingLike: false,
-    loadingEnroll:false,
+    loadingEnroll: false,
+    loadingRate: false,
     errors: null,
 };
 
@@ -74,6 +76,42 @@ export function coursesReducer(state: State = initialState, action: HomeCoursesA
             return {
                 ...state,
                 loadingLike: false,
+                errors: [...action.payload]
+            };
+
+        /////////////////////
+
+        case HomeCoursesActions.RATE_START:
+            return {
+                ...state,
+                loadingRate: true,
+                errors: null
+            };
+        case HomeCoursesActions.RATE_SUCCESS:
+            const courseToRateIndex = state.courses.findIndex(c => c.id === action.payload.id);
+            const courseToRate = state.courses.find(c => c.id === action.payload.id);
+            const coursesAfterRate = [...state.courses];
+
+            const courseAfterRate = {
+                ...courseToRate,
+                ratings: {
+                    ...action.payload.ratings,
+                    totalRating: action.payload.ratings.totalRating,
+                    ratings: [...action.payload.ratings.ratings]
+                }
+            };
+
+            coursesAfterRate[courseToRateIndex] = courseAfterRate;
+
+            return {
+                ...state,
+                loadingRate: false,
+                courses: coursesAfterRate
+            };
+        case HomeCoursesActions.RATE_FAIL:
+            return {
+                ...state,
+                loadingRate: false,
                 errors: [...action.payload]
             };
 

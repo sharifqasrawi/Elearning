@@ -1,3 +1,4 @@
+import { RatingModule } from 'ng-starrating';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -12,11 +13,13 @@ import { MemberDashboardComponent } from './member-dashboard/member-dashboard.co
 import { MemberRoutingModule } from './member-routing.module';
 import { SharedModule } from '../shared/shared.module';
 import { MemberCoursesComponent } from './member-courses/member-courses.component';
+import { MemberSavedSessionsComponent } from './member-saved-sessions/member-saved-sessions.component';
 
 @NgModule({
     declarations: [
         MemberDashboardComponent,
         MemberCoursesComponent,
+        MemberSavedSessionsComponent,
     ],
     imports: [
         BrowserModule,
@@ -27,6 +30,7 @@ import { MemberCoursesComponent } from './member-courses/member-courses.componen
         ReactiveFormsModule,
         FontAwesomeModule,
         CountUpModule,
+        RatingModule,
         MemberRoutingModule,
         SharedModule
     ],

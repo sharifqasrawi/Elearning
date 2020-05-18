@@ -1,0 +1,71 @@
+<div>
+    <h2>
+        My Saved Session
+    </h2>
+    <hr>
+
+
+    <div *ngIf="!loading">
+        <div *ngFor="let session of sessions">
+            <mat-card class="session">
+                <mat-card-header class="header">
+                    <div mat-card-avatar class="session-header-image"></div>
+                    <mat-card-title>
+                        {{ session.order}}- {{ session.title_EN }}
+                    </mat-card-title>
+                    <mat-card-subtitle>
+                        {{ session.courseTitle_EN }}
+                    </mat-card-subtitle>
+                </mat-card-header>
+                <hr>
+                <mat-card-content>
+                    <p>
+                        <strong>Duration: </strong> {{ session.duration }} mins.
+                    </p>
+                    <p>
+                        <strong>Save Date: </strong> {{ session.saveDateTime | date:'medium' }}
+                    </p>
+                </mat-card-content>
+                <mat-card-actions class="actions">
+                    <a mat-raised-button color="primary" [routerLink]="[session.sessionUrl]"
+                        [queryParams]="{'check': 'no'}">
+                        GO TO SESSION
+                    </a>
+                </mat-card-actions>
+            </mat-card>
+        </div>
+    </div>
+
+    <div *ngIf="loading">
+        <div *ngFor="let i of [].constructor(4)">
+            <mat-card class="loader session">
+                <mat-card-header class="header">
+                    <div mat-card-avatar class="session-header-image"></div>
+                    <mat-card-title>
+                        <div class="title"> &nbsp;</div>
+                    </mat-card-title>
+                    <mat-card-subtitle>
+                        <div class="subtitle"> &nbsp;</div>
+                    </mat-card-subtitle>
+                </mat-card-header>
+                <hr>
+                <mat-card-content class="cardContent">
+                    <p>
+                        &nbsp;
+                    </p>
+                    <p>
+                        &nbsp;
+                    </p>
+                </mat-card-content>
+                <mat-card-actions class="actions">
+                    <a mat-raised-button color="primary">
+                        &nbsp;
+                    </a>
+                </mat-card-actions>
+            </mat-card>
+        </div>
+    </div>
+
+</div>
+
+<div class="clearfix"></div>

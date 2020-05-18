@@ -1,11 +1,11 @@
 <div>
     <h2>
-        My Courses
+       {{ isFavoritesList ? 'My favorite courses list' : ' My Courses' }}
     </h2>
     <hr>
 
     <div *ngIf="!errors && loading">
-        <app-loader-home-course [count]='3'></app-loader-home-course>
+        <app-loader-home-course [count]='4'></app-loader-home-course>
     </div>
 
     <div *ngIf="courses.length === 0 && !loading">
@@ -19,6 +19,13 @@
         <div *ngFor="let course of courses" class="course-div mat-elevation-z8">
             <mat-card class="course-card">
                 <img mat-card-image [src]="getSanitizedImage(course.imagePath)" [alt]="course.title_EN">
+                <div class="rate mat-elevation-z8">
+                    <p class="text-center">
+                        <star-rating [value]="course.ratings.totalRating" [totalstars]="5" checkedcolor="gold"
+                            uncheckedcolor="pink" size="25px" readonly="true" style="pointer-events: none;">
+                        </star-rating>
+                    </p>
+                </div>
                 <mat-card-header>
                     <div mat-card-avatar class="course-header-image"></div>
                     <mat-card-title>{{ course.title_EN }}</mat-card-title>

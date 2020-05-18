@@ -58,7 +58,7 @@ export class MainComponent implements OnInit, OnDestroy {
 
     this.userSub = this.store
       .select('login')
-      .pipe(map(authState => authState.user))
+      .pipe(map(authState => authState.user ?? null))
       .subscribe(user => {
         this.isAuthenticated = !!user;
 

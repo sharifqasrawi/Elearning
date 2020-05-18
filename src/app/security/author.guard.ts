@@ -15,7 +15,7 @@ import { AuthService } from './auth.service';
 import * as fromApp from '../store/app.reducer';
 
 @Injectable({ providedIn: 'root' })
-export class AdminGuard implements CanActivate {
+export class AuthorGuard implements CanActivate {
     constructor(
         private router: Router,
         private store: Store<fromApp.AppState>
@@ -31,24 +31,23 @@ export class AdminGuard implements CanActivate {
             map(authState => {
                 // console.log(authState);
                 const isAuth = !!authState.user;
-                let isAdmin = false;
 
-                if (isAuth) {
-                    const decodedToken: {
-                        exp: number,
-                        iat: number,
-                        role: string,
-                        unique_name: string,
-                        given_name: string,
-                        family_name: string,
-                    } = jwt_decode(authState.user.token);
+                const decodedToken: {
+                    exp: number,
+                    iat: number,
+                    role: string,
+                    unique_name: string,
+                    given_name: string,
+                    family_name: string,
+                } = jwt_decode(authState.user.token);
 
-                    isAdmin = authState.isAdmin && decodedToken.role === 'Admin';
-                }
-                if (isAuth && isAdmin) {
+                const isAuthor = decodedToken.role === 'Author';
+                console.log('isAuthor', isAuthor);
+                
+                if (isAuth && isAuthor) {
                     return true;
                 }
-                this.router.navigate(['/security', 'access-denied'], { queryParams: { returnUrl: router.url } });
+                this.router.navigate(['/security', 'auth'], {queryParams: {returnUrl: router.url}});
                 return false;
             })
             // tap(isAuth => {

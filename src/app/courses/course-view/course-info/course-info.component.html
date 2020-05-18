@@ -8,7 +8,37 @@
     </a>
 </div> -->
 
-<div *ngIf="!loadingCourse" class="courseInfo">
+<div *ngIf="!loadingCourse && course" class="courseInfo">
+
+    <div class="rating">
+        <div class="row">
+            <div class="col-lg-8">
+                <h3><strong>Rate this course:</strong></h3>
+                <hr>
+                <p class="small text-muted" *ngIf="!isAuthenticated">Please login to rate this course.</p>
+                <p class="small text-muted" *ngIf="isAuthenticated">Choose 1 - 5 star(s):</p>
+                <p class="mt-4">
+                    <star-rating [value]="courseRateUserValue" [totalstars]="5" checkedcolor="gold"
+                        uncheckedcolor="pink" size="70px" [readonly]="!isAuthenticated" (rate)="onRate($event)"
+                        [class.loadingRate]="loadingRate">
+                    </star-rating>
+                </p>
+            </div>
+            <div class="col-lg-4 text-center">
+                <div class="total mat-elevation-z4 mt-3" style="margin: 0 auto;" [class.loadingRate]="loadingRate">
+                    <span [style.color]="courseTotalRatingN >= 2 ? 'green' : 'crimson'"> {{ courseTotalRating }}</span>
+                    <span>/5</span>
+                    <p class="small text-muted">({{courseRatingsCount}})</p>
+                </div>
+                <p class="mt-2">
+                    <star-rating [value]="courseTotalRating" [totalstars]="5"
+                        [checkedcolor]="courseTotalRatingN >= 2 ? 'green' : 'crimson'" uncheckedcolor="pink" size="30px"
+                        readonly="false" style="pointer-events: none;"></star-rating>
+                </p>
+
+            </div>
+        </div>
+    </div>
 
     <div>
         <div class="tag mat-elevation-z4" *ngFor="let tag of course.tags">

@@ -1,3 +1,4 @@
+import { CourseRating } from './courseRating.model';
 import { Class } from './class.model';
 import { Like } from './like.model';
 import { Section } from './section.model';
@@ -32,5 +33,6 @@ export class Course {
         public sections?: Section[],
         public likes?: Like[],
         public cls?: Class,
+        public ratings?: { totalRating: number, ratings: CourseRating[] }
     ) { }
 }

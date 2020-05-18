@@ -29,6 +29,9 @@ export const FETCH_SAVED_SESSIONS_START = '[Member] Fetch Saved Sessions Start';
 export const FETCH_SAVED_SESSIONS_SUCCESS = '[Member] Fetch Saved Sessions Success';
 export const FETCH_SAVED_SESSIONS_FAIL = '[Member] Fetch Saved Sessions Fail';
 
+export const FETCH_USER_SAVED_SESSIONS_START = '[Member] Fetch User Saved Sessions Start';
+
+
 export const SAVE_SESSION_START = '[Member] Save Session Start';
 export const SAVE_SESSION_SUCCESS = '[Member] Save Session Success';
 export const SAVE_SESSION_FAIL = '[Member] Save Session Fail';
@@ -137,7 +140,7 @@ export class RemoveCourseFromFavoritesFail implements Action {
 export class SaveSessionStart implements Action {
     readonly type = SAVE_SESSION_START;
 
-    constructor(public payload: number) { }
+    constructor(public payload: { sessionId: number, sessionUrl: string }) { }
 }
 
 export class SaveSessionSuccess implements Action {
@@ -193,6 +196,13 @@ export class FetchSavedSessionsFail implements Action {
     constructor(public payload: string[]) { }
 }
 
+/////////////////////
+
+export class FetchUserSavedSessionsStart implements Action {
+    readonly type = FETCH_USER_SAVED_SESSIONS_START;
+}
+
+
 
 //////////////
 
@@ -225,6 +235,7 @@ export type MemberActions =
     | FetchSavedSessionsStart
     | FetchSavedSessionsSuccess
     | FetchSavedSessionsFail
+    | FetchUserSavedSessionsStart
     | SaveSessionStart
     | SaveSessionSuccess
     | SaveSessionFail
