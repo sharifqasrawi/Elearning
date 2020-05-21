@@ -5,6 +5,7 @@ import * as signalR from '@aspnet/signalr';
 import { environment } from '../../../../../environments/environment';
 import * as fromApp from '../../../../store/app.reducer';
 import * as HomeCommentsActions from '../store/comments.actions';
+import * as CoursesActions from '../../../../admin/courses/store/courses.actions';
 import { Comment } from '../../../../models/comment.model';
 
 @Injectable({
@@ -24,7 +25,7 @@ export class SignalRCommentsService {
   public buildConnection = () => {
     this.hubConnection = new signalR.HubConnectionBuilder()
       .withUrl(environment.API_BASE_URL + 'signalHub')
-      .configureLogging(signalR.LogLevel.Information)
+      .configureLogging(signalR.LogLevel.None)
       .build();
   };
 
@@ -45,6 +46,7 @@ export class SignalRCommentsService {
 
   public getHubConnection = () => this.hubConnection;
 
+
   private registerSignalEvents() {
     this.hubConnection.on('SignalCommentReceived', (data: Comment) => {
       // this.signalReceived.emit(data);
@@ -59,6 +61,7 @@ export class SignalRCommentsService {
     this.hubConnection.on('SignalCommentDeletedReceived', (data: Comment) => {
       // this.signalReceived.emit(data);
       this.store.dispatch(new HomeCommentsActions.DeleteSuccess(data));
+      // this.store.dispatch(new CoursesActions.DeleteCommentSuccess(data));
     });
 
     this.hubConnection.on('SignalCommentLikeReceived', (data: Comment) => {

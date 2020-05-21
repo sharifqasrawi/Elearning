@@ -1,3 +1,5 @@
+import { Like } from './../../models/like.model';
+import { Class } from './../../models/class.model';
 import { Action } from '@ngrx/store';
 
 import { Course } from './../../models/course.model';
@@ -55,7 +57,7 @@ export class LikeStart implements Action {
 export class LikeSuccess implements Action {
     readonly type = LIKE_SUCCESS;
 
-    constructor(public payload: Course) { }
+    constructor(public payload: { like: Like, action: string }) { }
 }
 
 export class LikeFail implements Action {
@@ -76,7 +78,7 @@ export class EnrollStart implements Action {
 export class EnrollSuccess implements Action {
     readonly type = ENROLL_SUCCESS;
 
-    constructor(public payload: Course) { }
+    constructor(public payload: Class) { }
 }
 
 export class EnrollFail implements Action {

@@ -11,6 +11,7 @@
             <hr>
             <div class="row ">
                 <div class="col-lg-12">
+
                     <div class="row">
                         <div class="col-lg-10">
                             <mat-form-field appearance="legacy">
@@ -21,15 +22,15 @@
                                 <input matInput (keyup)="applyFilter($event)" placeholder="By: Id, Name, etc...">
                             </mat-form-field>
                         </div>
-                        <div class="col-lg-2">
-                            <!-- <button mat-raised-button color="accent" class="btn-block" (click)="onRefresh()">
-                            Refresh
-                        </button> -->
+                        <div class="col-lg-2 text-center">
+                            <button mat-raised-button color="accent" (click)="onAddMember()">
+                                Add Member
+                            </button>
                         </div>
                     </div>
 
                     <hr>
-                   
+
 
                     <div class="dataTable-container mat-elevation-z8">
                         <div class="dataTable-loading-shade" *ngIf="loading ">
@@ -97,19 +98,10 @@
                                             <mat-icon>settings</mat-icon>
                                         </a>
                                         <mat-menu #menu="matMenu" [overlapTrigger]="false">
-                                            <!-- <a class="dropdown-item" style="cursor: pointer;"
-                                            [routerLink]="['sessions', row.id]"
-                                            [queryParams]="{'section': row.name_EN}">
-                                            Edit Sessions
-                                        </a>
-                                        <button class="dropdown-item" style="cursor: pointer;"
-                                            (click)="onEdit(row.id, row.name_EN, row.order);">
-                                            Edit
-                                        </button>
-                                        <button class="dropdown-item" style="cursor: pointer;"
-                                            (click)="onDelete(row.id);">
-                                            Delete
-                                        </button> -->
+                                            <button class="dropdown-item" style="cursor: pointer;"
+                                                (click)="onEnroll(row.id);">
+                                                Disenroll
+                                            </button>
                                         </mat-menu>
 
                                     </td>
@@ -132,7 +124,7 @@
         <div *ngIf="!classCreated" class="alert alert-info text-center">
             <h1>
                 <fa-icon [icon]="faInfoCircle"></fa-icon>
-                Class not created yet. 
+                Class not created yet.
             </h1>
             <hr>
             <form [formGroup]="form" (ngSubmit)="onSubmit()">
@@ -143,12 +135,12 @@
                         This field is required.
                     </mat-error>
                 </mat-form-field>
-                
-                <button mat-raised-button color="accent"  [disabled]="!form.valid || updating">
+
+                <button mat-raised-button color="accent" [disabled]="!form.valid || updating">
                     Create now
                 </button>
             </form>
         </div>
-      
+
     </div>
 </div>

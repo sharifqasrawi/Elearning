@@ -1,0 +1,13 @@
+<div>
+    <h3>
+        <strong>
+            <fa-icon [icon]="faThumbsUp"></fa-icon>
+            Likes:
+        </strong>
+    </h3>
+    <hr>
+    <dl *ngFor="let like of data.likes">
+        <dt>{{like.userFullName}}</dt>
+        <dd class="text-muted small">{{ like.likeDateTime | date:'short' }}</dd>
+    </dl>
+</div>

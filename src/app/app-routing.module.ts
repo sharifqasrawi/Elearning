@@ -28,6 +28,7 @@ const routes: Routes = [
           {
             path: 'course/:courseId/:courseSlug',
             component: CourseViewComponent,
+            // resolve: [CoursesResolverService],
             children: [
               {
                 path: 'session/:sessionId/:sessionSlug',

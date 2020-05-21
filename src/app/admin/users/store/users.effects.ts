@@ -1,4 +1,4 @@
-import { User } from 'src/app/models/user.model';
+import { User } from './../../../models/user.model';
 import { switchMap, map, catchError, exhaustMap, withLatestFrom } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
+import { CourseCommentsComponent } from './courses/course-details/course-comments/course-comments.component';
 import { CourseLikesComponent } from './courses/course-details/course-likes/course-likes.component';
 import { SessionContentComponent } from './courses/course-details/course-sessions/session-content/session-content.component';
 import { CourseSessionsComponent } from './courses/course-details/course-sessions/course-sessions.component';
@@ -85,6 +86,10 @@ const routes: Routes = [
               {
                 path: 'likes/:courseId',
                 component: CourseLikesComponent
+              },
+              {
+                path: 'comments/:courseId',
+                component: CourseCommentsComponent
               },
               {
                 path: 'sections/:courseId', children: [

@@ -120,7 +120,6 @@ export class CourseViewComponent implements OnInit {
       this.checkCurrnetSession = params.check === 'no' ? false : true;
     });
 
-    this.store.dispatch(new HomeCoursesActions.FetchStart({ categoryId: this.categoryId, courseId: this.courseId }));
 
 
     this.store.select('login')
@@ -142,6 +141,7 @@ export class CourseViewComponent implements OnInit {
         this.like = this.course.likes.find(l => l.courseId === this.courseId && l.userId === this.userId);
         this.isUserLiked = this.like ? true : false;
 
+
         if (this.course.cls.id) {
           this.classId = this.course.cls.id;
           if (this.isAuthenticated) {
@@ -162,14 +162,19 @@ export class CourseViewComponent implements OnInit {
       else {
         // this.router.navigate(['/home']);
       }
-
-      if (state.errors) {
-        this.dialog.open(ErrorDialogComponent, {
-          width: '400px',
-          data: { errors: [...state.errors] }
-        });
-      }
+      // if (!this.isAuthenticated) {
+      //   if (state.errors) {
+      //     this.dialog.open(ErrorDialogComponent, {
+      //       width: '450px',
+      //       data: { errors: [...state.errors] }
+      //     });
+      //   }
+      // }
     });
+
+    if (!this.course)
+      this.store.dispatch(new HomeCoursesActions.FetchStart({ categoryId: this.categoryId, courseId: this.courseId }));
+
 
     if (this.currentSessionId && this.checkCurrnetSession) {
       this.dialog.open(CoursePickupDialogComponent, {

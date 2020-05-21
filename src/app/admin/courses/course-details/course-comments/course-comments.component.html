@@ -1,0 +1,114 @@
+<div class="row full-width center adminPageBottom">
+    <div class="col-lg-12">
+        <div *ngIf="!loading">
+            <h2>
+                Comments:
+                [ <span [countUp]="count" class="count-numbers">0</span> ]
+            </h2>
+            <hr>
+
+            <h3 *ngIf="loadedComments.length === 0" class="alert alert-info text-center">
+                NO COMMENTS YET.
+            </h3>
+
+            <div class="comments-container">
+                <div class="loadCommentsDiv">
+                    <a (click)="loadLess()" *ngIf="showLoadLessBtn && loadedComments.length > 0"> load less </a>
+                    <a (click)=" loadMore()" *ngIf="showLoadMoreBtn && loadedComments.length > 0"> load more </a>
+                </div>
+
+                <div class="clearfix"></div>
+
+                <ul id="comments-list" class="comments-list">
+                    <li *ngFor="let comment of loadedComments; let i = index">
+                        <div class="comment-main-level" [class.op06]="deleting">
+
+                            <div class="comment-avatar" *ngIf="comment.userGender.toLowerCase() === 'male'"><img
+                                    src="../../../../assets/images/male.jpg" alt="no avatar"></div>
+                            <div class="comment-avatar" *ngIf="comment.userGender.toLowerCase() === 'female'"><img
+                                    src="../../../../assets/images/Female.jpg" alt="no avatar"></div>
+                            <div class="comment-avatar" *ngIf="comment.userGender.toLowerCase() === 'custome'"><img
+                                    src="../../../../assets/images/Missing_avatar.svg.png" alt="no avatar"></div>
+
+                            <div class="comment-box">
+                                <div class="comment-head">
+                                    <h6 class="comment-name" [class.by-author]="courseAuthor === comment.userFullName">
+                                        {{ comment.userFullName }}
+                                    </h6>
+
+                                    <i (click)="onDelete(comment.id)">
+                                        <fa-icon [icon]="faTrash"></fa-icon>
+                                    </i>
+
+                                </div>
+                                <div class="comment-content">
+                                    <pre>{{ comment.text }}</pre>
+                                </div>
+                                <div class="comment-footer">
+
+                                    <span class="text-muted">{{ comment.commentDateTime | timeago:'live' }}</span>
+                                    <div>
+                                        <span class="text-muted">likes ({{ comment.likes.length }})</span>
+
+                                        <a (click)="onShowReplies(i)" *ngIf="!showReplies[i]">
+                                            Replies ({{ comment.replies.length }})
+                                        </a>
+                                        <a (click)="onHideReplies(i)" *ngIf="showReplies[i]">
+                                            Hide Replies ({{ comment.replies.length }})
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <ul class="comments-list reply-list" *ngIf="showReplies[i]">
+                            <li *ngFor="let reply of comment.replies; let j = index" [class.op06]="deleting">
+                                <div class="comment-avatar" *ngIf="reply.userGender.toLowerCase() === 'male'"><img
+                                        src="../../../../assets/images/male.jpg" alt="no avatar"></div>
+                                <div class="comment-avatar" *ngIf="reply.userGender.toLowerCase() === 'female'"><img
+                                        src="../../../../assets/images/Female.jpg" alt="no avatar"></div>
+                                <div class="comment-avatar" *ngIf="reply.userGender.toLowerCase() === 'custome'"><img
+                                        src="../../../../assets/images/Missing_avatar.svg.png" alt="no avatar"></div>
+
+                                <div class="comment-box">
+                                    <div class="comment-head">
+                                        <h6 class="comment-name"
+                                            [class.by-author]="courseAuthor === reply.userFullName">
+                                            {{ reply.userFullName }}
+                                        </h6>
+                                        <i (click)="onDelete(reply.id)">
+                                            <fa-icon [icon]="faTrash"></fa-icon>
+                                        </i>
+
+                                    </div>
+                                    <div class="comment-content">
+                                        <pre>{{ reply.text }}</pre>
+
+                                    </div>
+                                    <div class="comment-footer">
+                                        <span class="text-muted">{{ reply.commentDateTime | timeago:'live' }}</span>
+                                        <span class="text-muted">likes ({{ reply.likes.length }})</span>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+
+                    </li>
+                </ul>
+
+
+                <div class="clearfix"></div>
+                <ul class="text-danger" *ngIf="errors" style="list-style: disc;">
+                    <li *ngFor="let error of errors">{{error}}</li>
+                </ul>
+            </div>
+
+        </div>
+
+
+        <div *ngIf="loading">
+            <app-loader-course-comments></app-loader-course-comments>
+
+        </div>
+
+    </div>
+</div>

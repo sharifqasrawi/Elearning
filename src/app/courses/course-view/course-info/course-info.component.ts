@@ -53,7 +53,7 @@ export class CourseInfoComponent implements OnInit {
     private store: Store<fromApp.AppState>,
     private sanitizer: DomSanitizer,
     private dialog: MatDialog,
-    private signalRCoursesService: SignalRCoursesService
+    // private signalRCoursesService: SignalRCoursesService
   ) { }
 
   ngOnInit(): void {
@@ -94,10 +94,11 @@ export class CourseInfoComponent implements OnInit {
         this.courseTotalRatingN = this.course.ratings.totalRating;
         this.courseRatingsCount = this.course.ratings.ratings.length;
 
-        if (this.isAuthenticated) {
-          this.courseRateUserValue = this.course.ratings.ratings
-            .find(r => r.userId === this.userId && r.courseId === this.courseId)
-            .value;
+        if (this.isAuthenticated && this.course.ratings.ratings.length > 0) {
+          const userRating = this.course.ratings.ratings
+            .find(r => r.userId === this.userId && r.courseId === this.courseId);
+
+          this.courseRateUserValue = userRating ? userRating.value : 0;
         }
       }
     });

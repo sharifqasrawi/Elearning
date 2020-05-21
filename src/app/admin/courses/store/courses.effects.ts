@@ -1,3 +1,4 @@
+import { Class } from './../../../models/class.model';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Actions, Effect, ofType } from '@ngrx/effects';
@@ -10,6 +11,7 @@ import { environment } from './../../../../environments/environment';
 import * as fromApp from '../../../store/app.reducer';
 import * as CoursesActions from './courses.actions';
 import { Course } from './../../../models/course.model';
+import { Comment } from './../../../models/comment.model';
 
 @Injectable()
 export class CoursesEffects {
@@ -23,7 +25,7 @@ export class CoursesEffects {
         ofType(CoursesActions.FETCH_START),
         switchMap((coursesData: CoursesActions.FetchStart) => {
             let params = null;
-            if(coursesData.payload){
+            if (coursesData.payload) {
                 params = new HttpParams().set('categoryId', coursesData.payload.toString());
             }
 
@@ -37,7 +39,7 @@ export class CoursesEffects {
                         return new CoursesActions.FetchSuccess(resData.courses);
                     }),
                     catchError(errorRes => {
-                        
+
                         switch (errorRes.status) {
                             case 403:
                             case 401:
@@ -166,6 +168,36 @@ export class CoursesEffects {
         })
     );
 
+    @Effect()
+    fetchNonClassMembers = this.actions$.pipe(
+        ofType(CoursesActions.FETCH_NON_CLASS_MEMBERS_START),
+        switchMap((classData: CoursesActions.FetchNonClassMembersStart) => {
+            return this.http.get<{ nonMembers: { id: string, fullName: string }[] }>(environment.API_BASE_URL + 'classes/non-members',
+                {
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    params: new HttpParams().set('classId', classData.payload)
+                })
+                .pipe(
+                    map(resData => {
+                        return new CoursesActions.FetchNonClassMembersSuccess(resData.nonMembers);
+                    }),
+                    catchError(errorRes => {
+
+                        switch (errorRes.status) {
+                            case 403:
+                            case 401:
+                                return of(new CoursesActions.FetchNonClassMembersFail(['Access Denied']));
+                            case 404:
+                                return of(new CoursesActions.FetchNonClassMembersFail(['Error 404. Not Found']));
+                            case 400:
+                                return of(new CoursesActions.FetchNonClassMembersFail(errorRes.error.errors));
+                            default:
+                                return of(new CoursesActions.FetchNonClassMembersFail(['Oops! An error occured']));
+                        }
+                    })
+                )
+        })
+    );
 
 
     @Effect()
@@ -322,6 +354,72 @@ export class CoursesEffects {
         })
     );
 
+
+    @Effect()
+    deleteComment = this.actions$.pipe(
+        ofType(CoursesActions.DELETE_COMMENT_START),
+        switchMap((commentData: CoursesActions.DeleteCommentStart) => {
+
+            return this.http.delete<{ deletedComment: Comment }>(environment.API_BASE_URL + 'comments',
+                {
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    params: new HttpParams().set('id', commentData.payload.toString())
+                })
+                .pipe(
+                    map(resData => {
+                        return new CoursesActions.DeleteCommentSuccess(resData.deletedComment);
+                    }),
+                    catchError(errorRes => {
+                        switch (errorRes.status) {
+                            case 403:
+                            case 401:
+                                return of(new CoursesActions.DeleteCommentFail(['Access Denied']));
+                            case 404:
+                                return of(new CoursesActions.DeleteCommentFail(['Error 404. Not Found']));
+                            case 400:
+                                return of(new CoursesActions.DeleteCommentFail(errorRes.error.errors));
+                            default:
+                                return of(new CoursesActions.DeleteCommentFail(['Oops! An error occured']));
+                        }
+                    })
+                )
+        })
+    );
+
+    @Effect()
+    enrollUserInCourse = this.actions$.pipe(
+        ofType(CoursesActions.ENROLL_USER_START),
+        switchMap((enrollData: CoursesActions.EnrollUserStart) => {
+            return this.http.post<{ updatedClass: Class }>(environment.API_BASE_URL + 'classes/enroll',
+                {
+                    classId: enrollData.payload.classId,
+                    userId: enrollData.payload.userId
+                },
+                {
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    params: new HttpParams().append('action', enrollData.payload.action)
+                        .append('userId', this.userId)
+                })
+                .pipe(
+                    map(resData => {
+                        return new CoursesActions.EnrollUserSuccess(resData.updatedClass);
+                    }),
+                    catchError(errorRes => {
+                        switch (errorRes.status) {
+                            case 403:
+                            case 401:
+                                return of(new CoursesActions.EnrollUserFail(['Access Denied']));
+                            case 404:
+                                return of(new CoursesActions.EnrollUserFail(['Error 404. Not Found']));
+                            case 400:
+                                return of(new CoursesActions.EnrollUserFail(errorRes.error.errors));
+                            default:
+                                return of(new CoursesActions.EnrollUserFail(['Oops! An error occured']));
+                        }
+                    })
+                )
+        })
+    );
 
     constructor(
         private actions$: Actions,

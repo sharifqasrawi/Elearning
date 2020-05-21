@@ -1,3 +1,6 @@
+import { AddMemberComponent } from './add-member/add-member.component';
+import { ConfirmDialogComponent } from './../../../../shared/confirm-dialog/confirm-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
@@ -46,7 +49,8 @@ export class CourseClassComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
-    private store: Store<fromApp.AppState>
+    private store: Store<fromApp.AppState>,
+    private dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
@@ -85,6 +89,30 @@ export class CourseClassComponent implements OnInit, OnDestroy {
       courseId: this.courseId,
       name_EN: this.form.value.name_EN
     }));
+  }
+
+  onEnroll(userId: string) {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '350px',
+      data: { header: 'Confirm class disenroll', message: 'Disenroll this user from the class ?' }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result)
+        this.store.dispatch(new CoursesActions.EnrollUserStart({
+          userId: userId,
+          classId: this.cls.id,
+          action: 'disenroll'
+        }));
+    });
+  }
+
+  onAddMember() {
+    const dialogRef = this.dialog.open(AddMemberComponent, {
+      width: '500px',
+      disableClose: true,
+      data: { classId: this.cls.id }
+    });
   }
 
   private setTable() {

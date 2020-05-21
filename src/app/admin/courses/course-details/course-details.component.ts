@@ -3,7 +3,7 @@ import { ThemePalette } from '@angular/material/core';
 import { Store } from '@ngrx/store';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { faInfoCircle, faTags, faPallet, faPlay, faThumbsUp, faPeopleCarry } from '@fortawesome/free-solid-svg-icons';
+import { faInfoCircle, faTags, faPallet, faPlay, faThumbsUp, faPeopleCarry, faComment } from '@fortawesome/free-solid-svg-icons';
 
 import * as fromApp from '../../../store/app.reducer';
 import * as CoursesActions from '../store/courses.actions';
@@ -22,11 +22,13 @@ export class CourseDetailsComponent implements OnInit {
   faPlay = faPlay;
   faThumbsUp = faThumbsUp;
   faPeopleCarry = faPeopleCarry;
+  faComment = faComment;
 
   courseId: number = null;
   course: Course = null;
   publishing = false;
   trashed = false;
+  loading = false;
 
   colorPrimary: ThemePalette = 'primary';
   colorAccent: ThemePalette = 'accent';
@@ -49,12 +51,13 @@ export class CourseDetailsComponent implements OnInit {
 
     this.store.select('courses')
       .subscribe(state => {
-
+        this.loading = state.loading;
         if (!this.trashed) {
           this.course = state.courses.find(c => c.id === this.courseId);
         }
         else {
           this.course = state.trashedCourses.find(c => c.id === this.courseId);
+
         }
         this.publishing = state.publishing;
 
@@ -72,5 +75,9 @@ export class CourseDetailsComponent implements OnInit {
     else
       this.store.dispatch(new CoursesActions.PublishUnpublishStart({ id: this.courseId, action: 'publish' }));
 
+  }
+
+  onRefresh(){
+    this.store.dispatch(new CoursesActions.FetchStart());
   }
 }

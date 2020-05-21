@@ -8,12 +8,25 @@
                 <p>
                     <a href="https://sharifqasrawi.com">sharifqasrawi.com</a>
                 </p>
+                <p>
+                    <em>Version: 1.0 Beta.</em>
+                </p>
             </div>
             <div class="col-lg-3">
                 <p><strong>Contact:</strong></p>
                 <hr>
                 <p>
                     <a href="mailto:sharif@qasrawi.fr">sharif@qasrawi.fr</a>
+                </p>
+                <p>
+                    <a [routerLink]="['/contact-us']">
+                        Contact form.
+                    </a>
+                </p>
+                <p>
+                    <a style="cursor: pointer;" (click)="onReportBug()">
+                        Report a bug.
+                    </a>
                 </p>
             </div>
             <div class="col-lg-6">
@@ -34,14 +47,14 @@
                         <div class="col-lg-4 text-center">
                             <div class="total mat-elevation-z4 mt-3" style="margin: 0 auto;"
                                 [class.loadingRate]="loadingRate || rating">
-                                <span [style.color]="totalRatingN >= 2 ? 'green' : 'crimson'">
+                                <span [style.color]="totalRatingsN >= 2 ? 'green' : 'crimson'">
                                     {{totalRating}}</span>
                                 <span>/5</span>
                                 <p class="small">({{totalRatingsCount}})</p>
                             </div>
                             <p class="mt-2">
                                 <star-rating [value]="totalRating" [totalstars]="5"
-                                    [checkedcolor]="totalRatingN >= 2 ? 'green' : 'crimson'" uncheckedcolor="pink"
+                                    [checkedcolor]="totalRatingsN >= 2 ? 'green' : 'crimson'" uncheckedcolor="pink"
                                     size="30px" readonly="false" style="pointer-events: none;"></star-rating>
                             </p>
 

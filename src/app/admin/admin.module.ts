@@ -47,6 +47,11 @@ import { NewContentComponent } from './courses/course-details/course-sessions/se
 import { CourseLikesComponent } from './courses/course-details/course-likes/course-likes.component';
 import { NotificationsComponent } from './notifications/notifications.component';
 import { CourseClassComponent } from './courses/course-details/course-class/course-class.component';
+import { AppRatingsComponent } from './app-ratings/app-ratings.component';
+import { CourseCommentsComponent } from './courses/course-details/course-comments/course-comments.component';
+import { TimeagoModule } from 'ngx-timeago';
+import { AddMemberComponent } from './courses/course-details/course-class/add-member/add-member.component';
+import { BugReportsComponent } from './reports/bug-reports/bug-reports.component';
 
 @NgModule({
     declarations: [
@@ -85,6 +90,10 @@ import { CourseClassComponent } from './courses/course-details/course-class/cour
         CourseLikesComponent,
         NotificationsComponent,
         CourseClassComponent,
+        AppRatingsComponent,
+        CourseCommentsComponent,
+        AddMemberComponent,
+        BugReportsComponent,
         
     ],
     imports: [
@@ -100,6 +109,7 @@ import { CourseClassComponent } from './courses/course-details/course-class/cour
             // preventDuplicates: true
         }),
         MonacoEditorModule.forRoot(),
+        TimeagoModule.forRoot(),
         AdminRoutingModule,
         SharedModule,
     ],

@@ -10,7 +10,7 @@ import { Course } from './../models/course.model';
 import * as fromApp from '../store/app.reducer';
 import * as HomeCoursesActions from './store/courses.actions';
 
-@Injectable({providedIn: 'root'})
+@Injectable({ providedIn: 'root' })
 export class CoursesResolverService implements Resolve<Course[]> {
     constructor(
         private store: Store<fromApp.AppState>,
@@ -25,7 +25,11 @@ export class CoursesResolverService implements Resolve<Course[]> {
             }),
             switchMap(courses => {
                 if (courses.length === 0) {
-                    this.store.dispatch(new HomeCoursesActions.FetchStart());
+                    this.store.dispatch(new HomeCoursesActions.FetchStart({
+                        categoryId: route.params.categoryId,
+                        courseId: route.params.courseId
+                    }));
+                    
                     return this.actions$.pipe(
                         ofType(HomeCoursesActions.FETCH_SUCCESS),
                         take(1)

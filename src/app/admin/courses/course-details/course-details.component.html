@@ -11,6 +11,9 @@
                     {{ course.createdAt | date:'medium' }}
                 </span>
             </p>
+            <button mat-raised-button color="primary" (click)="onRefresh()" [disabled]="loading">
+                {{ loading ? 'Loading...' : 'Refresh' }}
+            </button>
         </div>
         <div class="col-lg-2">
             <mat-slide-toggle [color]="colorAccent" [checked]="course.isPublished" id="isPublished" name="isPublished"
@@ -26,36 +29,39 @@
 </div>
 
 <div class="adminPageBottom mb-5">
-    <div class="detailsDiv mat-elevation-z8">
-       
+    <div class="detailsDiv mat-elevation-z8" *ngIf="!loading">
+
         <div class="detailsNav">
-            <a [routerLink]="['./']"
-                routerLinkActive="active">
+            <a [routerLink]="['./']" routerLinkActive="active">
                 <fa-icon [icon]="faInfoCircle"></fa-icon>
                 Info
             </a>
-            <a [routerLink]="['sections', course.id]"
-                routerLinkActive="active">
+            <a [routerLink]="['sections', course.id]" routerLinkActive="active">
                 <fa-icon [icon]="faPallet"></fa-icon>
                 Sections
             </a>
-            <a [routerLink]="['class', course.id]"
-                routerLinkActive="active">
+            <a [routerLink]="['class', course.id]" routerLinkActive="active">
                 <fa-icon [icon]="faPeopleCarry"></fa-icon>
                 Class
             </a>
-            <a [routerLink]="['tags', course.id]"
-                routerLinkActive="active">
+            <a [routerLink]="['tags', course.id]" routerLinkActive="active">
                 <fa-icon [icon]="faTags"></fa-icon>
                 Tags
             </a>
-            <a [routerLink]="['likes', course.id]"
-                routerLinkActive="active">
+            <a [routerLink]="['comments', course.id]" routerLinkActive="active">
+                <fa-icon [icon]="faComment"></fa-icon>
+                Comments
+            </a>
+            <a [routerLink]="['likes', course.id]" routerLinkActive="active">
                 <fa-icon [icon]="faThumbsUp"></fa-icon>
                 Likes
             </a>
         </div>
 
         <router-outlet></router-outlet>
+    </div>
+
+    <div class="detailsDiv detailsDivLoading mat-elevation-z8" *ngIf="loading">
+        <div class="detailsNav"></div>
     </div>
 </div>

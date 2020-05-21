@@ -243,7 +243,7 @@ export function commentsReducer(state: State = initialState, action: HomeComment
 
                 const updatedReply: Comment = {
                     ...replyToLike,
-                    text: action.payload.text
+                    likes: [...action.payload.likes]
                 };
 
                 originalCommentReplies[replyToLikeIndex] = updatedReply;

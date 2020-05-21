@@ -1,13 +1,13 @@
-import { SignalRAppService } from './../AppSettings/services/signalr-app-service.service';
-import { ErrorDialogComponent } from './../shared/error-dialog/error-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { StarRatingComponent } from 'ng-starrating';
-import { map } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { Component, OnInit } from '@angular/core';
 
 import * as fromApp from '../store/app.reducer';
 import * as AppSettingActions from '../AppSettings/store/app-settings.actions';
+import { ReportBugComponent } from './../report-bug/report-bug.component';
+import { SignalRAppService } from './../AppSettings/services/signalr-app-service.service';
+import { ErrorDialogComponent } from './../shared/error-dialog/error-dialog.component';
 
 @Component({
   selector: 'app-footer',
@@ -35,7 +35,7 @@ export class FooterComponent implements OnInit {
   ngOnInit(): void {
     this.store.select('login').subscribe(state => {
       this.isAuthenticated = state.isAuthenticated;
-      this.userId = state.user.id;
+      this.userId = state.user ? state.user.id : null;
     });
 
     this.store.dispatch(new AppSettingActions.FetchRateStart());
@@ -47,12 +47,12 @@ export class FooterComponent implements OnInit {
       this.loadingRate = state.loading;
       this.rating = state.rating;
 
-      if (state.errors) {
-        this.dialog.open(ErrorDialogComponent, {
-          width: '450px',
-          data: { errors: state.errors }
-        });
-      }
+      // if (state.errors) {
+      //   this.dialog.open(ErrorDialogComponent, {
+      //     width: '450px',
+      //     data: { errors: state.errors }
+      //   });
+      // }
 
 
       if (this.isAuthenticated && state.ratings.length > 0) {
@@ -72,5 +72,12 @@ export class FooterComponent implements OnInit {
     else {
 
     }
+  }
+
+  onReportBug() {
+    const dialogRef = this.dialog.open(ReportBugComponent, {
+      width: '550px',
+      disableClose: true
+    });
   }
 }

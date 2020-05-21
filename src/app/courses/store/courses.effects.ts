@@ -1,3 +1,5 @@
+import { Like } from './../../models/like.model';
+import { Class } from './../../models/class.model';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Actions, Effect, ofType } from '@ngrx/effects';
@@ -56,7 +58,7 @@ export class HomeCoursesEffects {
     likeCourse = this.actions$.pipe(
         ofType(HomeCoursesActions.LIKE_START),
         switchMap((likeData: HomeCoursesActions.LikeStart) => {
-            return this.http.post<{ course: Course }>(environment.API_BASE_URL + 'likes/like-course',
+            return this.http.post<{ like: Like, action: string }>(environment.API_BASE_URL + 'likes/like-course',
                 {
                     courseId: likeData.payload.courseId,
                     userId: this.userId
@@ -67,7 +69,7 @@ export class HomeCoursesEffects {
                 })
                 .pipe(
                     map(resData => {
-                        return new HomeCoursesActions.LikeSuccess(resData.course);
+                        return new HomeCoursesActions.LikeSuccess(resData);
                     }),
                     catchError(errorRes => {
                         switch (errorRes.status) {
@@ -90,7 +92,7 @@ export class HomeCoursesEffects {
     enrollInCourse = this.actions$.pipe(
         ofType(HomeCoursesActions.ENROLL_START),
         switchMap((enrollData: HomeCoursesActions.EnrollStart) => {
-            return this.http.post<{ course: Course }>(environment.API_BASE_URL + 'classes/enroll',
+            return this.http.post<{ updatedClass: Class }>(environment.API_BASE_URL + 'classes/enroll',
                 {
                     classId: enrollData.payload.classId,
                     userId: this.userId
@@ -101,7 +103,7 @@ export class HomeCoursesEffects {
                 })
                 .pipe(
                     map(resData => {
-                        return new HomeCoursesActions.EnrollSuccess(resData.course);
+                        return new HomeCoursesActions.EnrollSuccess(resData.updatedClass);
                     }),
                     catchError(errorRes => {
                         switch (errorRes.status) {

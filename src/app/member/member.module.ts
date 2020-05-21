@@ -14,12 +14,14 @@ import { MemberRoutingModule } from './member-routing.module';
 import { SharedModule } from '../shared/shared.module';
 import { MemberCoursesComponent } from './member-courses/member-courses.component';
 import { MemberSavedSessionsComponent } from './member-saved-sessions/member-saved-sessions.component';
+import { EditProfileComponent } from './edit-profile/edit-profile.component';
 
 @NgModule({
     declarations: [
         MemberDashboardComponent,
         MemberCoursesComponent,
         MemberSavedSessionsComponent,
+        EditProfileComponent,
     ],
     imports: [
         BrowserModule,

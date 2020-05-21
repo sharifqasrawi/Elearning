@@ -1,3 +1,5 @@
+import { Class } from './../../../models/class.model';
+import { Comment } from './../../../models/comment.model';
 import { Action } from '@ngrx/store';
 
 import { Course } from './../../../models/course.model';
@@ -35,6 +37,20 @@ export const ADD_REMOVE_TAG_FAIL = '[Courses] Remove Tag Restore Fail';
 export const CREATE_CLASS_START = '[Courses] Create Class Start';
 export const CREATE_CLASS_SUCCESS = '[Courses] Create Class Success';
 export const CREATE_CLASS_FAIL = '[Courses] Create Class Fail';
+
+export const FETCH_NON_CLASS_MEMBERS_START = '[Courses] Fetch Non Class Members Start';
+export const FETCH_NON_CLASS_MEMBERS_SUCCESS = '[Courses] Fetch Non Class Members Success';
+export const FETCH_NON_CLASS_MEMBERS_FAIL = '[Courses] Fetch Non Class Members Fail';
+
+export const DELETE_COMMENT_START = '[Courses] Delete Start';
+export const DELETE_COMMENT_SUCCESS = '[Courses] Delete Success';
+export const DELETE_COMMENT_FAIL = '[Courses] Delete Fail';
+
+
+export const ENROLL_USER_START = '[Courses] Enroll User Start';
+export const ENROLL_USER_SUCCESS = '[Courses] Enroll User Success';
+export const ENROLL_USER_FAIL = '[Courses] Enroll User Fail';
+
 
 
 export const CLEAR_ERRORS = '[Courses] Clear Errors';
@@ -130,6 +146,26 @@ export class CreateClassSuccess implements Action {
 
 export class CreateClassFail implements Action {
     readonly type = CREATE_CLASS_FAIL;
+
+    constructor(public payload: string[]) { }
+}
+
+//////////
+
+export class FetchNonClassMembersStart implements Action {
+    readonly type = FETCH_NON_CLASS_MEMBERS_START;
+
+    constructor(public payload: string) { }
+}
+
+export class FetchNonClassMembersSuccess implements Action {
+    readonly type = FETCH_NON_CLASS_MEMBERS_SUCCESS;
+
+    constructor(public payload: { id: string, fullName: string }[]) { }
+}
+
+export class FetchNonClassMembersFail implements Action {
+    readonly type = FETCH_NON_CLASS_MEMBERS_FAIL;
 
     constructor(public payload: string[]) { }
 }
@@ -241,6 +277,47 @@ export class TrashRestoreFail implements Action {
     constructor(public payload: string[]) { }
 }
 
+/////////////////
+
+export class DeleteCommentStart implements Action {
+    readonly type = DELETE_COMMENT_START;
+
+    constructor(public payload: number) { }
+}
+
+export class DeleteCommentSuccess implements Action {
+    readonly type = DELETE_COMMENT_SUCCESS;
+
+    constructor(public payload: Comment) { }
+}
+
+export class DeleteCommentFail implements Action {
+    readonly type = DELETE_COMMENT_FAIL;
+
+    constructor(public payload: string[]) { }
+}
+
+
+/////////////////////
+
+
+export class EnrollUserStart implements Action {
+    readonly type = ENROLL_USER_START;
+
+    constructor(public payload: { classId: string, userId: string, action: string }) { }
+}
+
+export class EnrollUserSuccess implements Action {
+    readonly type = ENROLL_USER_SUCCESS;
+
+    constructor(public payload: Class) { }
+}
+
+export class EnrollUserFail implements Action {
+    readonly type = ENROLL_USER_FAIL;
+
+    constructor(public payload: string[]) { }
+}
 
 /////////////////////
 export class ClearErrors implements Action {
@@ -265,6 +342,9 @@ export type CoursesActions =
     | CreateClassStart
     | CreateClassSuccess
     | CreateClassFail
+    | FetchNonClassMembersStart
+    | FetchNonClassMembersSuccess
+    | FetchNonClassMembersFail
     | PublishUnpublishStart
     | PublishUnpublishSuccess
     | PublishUnpublishFail
@@ -278,6 +358,12 @@ export type CoursesActions =
     | RestoreSuccess
     | TrashSuccess
     | TrashRestoreFail
+    | DeleteCommentStart
+    | DeleteCommentSuccess
+    | DeleteCommentFail
+    | EnrollUserStart
+    | EnrollUserSuccess
+    | EnrollUserFail
     | ClearErrors
     | ClearStatus
     ;

@@ -56,7 +56,10 @@ export class AppSettingsEffects {
     fetchRateApp = this.actions$.pipe(
         ofType(AppSettionsActions.FETCH_RATE_START),
         switchMap(() => {
-            return this.http.get<{ ratings: { total: number, ratings: AppRating[] } }>(environment.API_BASE_URL + 'AppRatings')
+            return this.http.get<{ ratings: { total: number, ratings: AppRating[] } }>(environment.API_BASE_URL + 'AppRatings',
+                {
+                    params: this.userId ? new HttpParams().set('userId', this.userId) : null,
+                })
                 .pipe(
                     map(resData => {
                         return new AppSettionsActions.FetchRateSuccess(resData);

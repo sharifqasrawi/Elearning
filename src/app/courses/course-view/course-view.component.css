@@ -209,6 +209,7 @@ button.btnEnroll.NotEnrolled {
     padding-top: 25px;
     width: 100%;
     background-color: rgba(5, 64, 112, 0.8);
+    z-index: 20;
 }
 
 .courseInfoNav {

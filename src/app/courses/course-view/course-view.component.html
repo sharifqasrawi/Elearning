@@ -168,6 +168,7 @@
                                 <a [routerLink]="['session', session.id, session.slug_EN]"
                                     (click)="onSelectSession(session.id)">
                                     {{ session.order }}- {{ session.title_EN }}
+                                    <span class="small text-muted">({{session.duration}} mins.)</span>
                                 </a>
                             </li>
                         </ul>
@@ -235,6 +236,7 @@
                                 *ngFor="let session of section.sessions">
                                 <a [routerLink]="['session', session.id, session.slug_EN]" (click)="sidenav.toggle()">
                                     {{ session.order }}- {{ session.title_EN }}
+                                    <span class="small text-muted">({{session.duration}} mins.)</span>
                                 </a>
                             </li>
                         </ul>

@@ -1,15 +1,18 @@
+import { Like } from './../../../models/like.model';
+import { CommentLikesComponent } from './comment-likes/comment-likes.component';
 import { MatDialog } from '@angular/material/dialog';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Component, OnInit, Input } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { MatBottomSheet, MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { faReply, faHeart, faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
 
 import { Comment } from './../../../models/comment.model';
 import * as fromApp from '../../../store/app.reducer';
 import * as HomeCommentsActions from './store/comments.actions';
 import { ConfirmDialogComponent } from './../../../shared/confirm-dialog/confirm-dialog.component';
-import {  SignalRCommentsService } from './services/signalr-comments-service.service';
+import { SignalRCommentsService } from './services/signalr-comments-service.service';
 
 @Component({
   selector: 'app-course-comments',
@@ -54,18 +57,19 @@ export class CourseCommentsComponent implements OnInit {
   showEditForm: { [key: number]: boolean } = {};
 
   isAuthenticated = false;
+  isAdmin = false;
   userId: string = null;
   isUserLikeComment: { [key: number]: boolean } = {};
 
   currentUrl: string = null;
 
-  test: Comment[];
 
   constructor(
     private store: Store<fromApp.AppState>,
     private route: ActivatedRoute,
     private router: Router,
     private dialog: MatDialog,
+    private bottomSheet: MatBottomSheet,
     private signalRService: SignalRCommentsService
   ) { }
 
@@ -131,7 +135,10 @@ export class CourseCommentsComponent implements OnInit {
     this.store.select('login')
       .subscribe(state => {
         this.isAuthenticated = state.isAuthenticated;
-        if (state.user) this.userId = state.user.id;
+        if (state.user) {
+          this.userId = state.user.id
+          this.isAdmin = state.user.isAdmin;
+        };
       });
 
 
@@ -256,6 +263,23 @@ export class CourseCommentsComponent implements OnInit {
       commentId: commentId,
       action: action
     }));
+  }
+
+  onShowLikes(commentId: number, replyId?: number) {
+    const comment = this.comments.find(c => c.id === commentId);
+    var likes: Like[] = null;
+
+    if (!replyId) {
+      likes = comment.likes;
+    }
+    else {
+      const reply = comment.replies.find(r => r.id === replyId);
+      likes = reply.likes
+    }
+
+    this.bottomSheet.open(CommentLikesComponent, {
+      data: { likes: likes }
+    });
   }
 
   checkUserLikeComment(commentId: number, index: number, replyId?: number) {

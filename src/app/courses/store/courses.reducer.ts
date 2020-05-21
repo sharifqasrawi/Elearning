@@ -56,16 +56,31 @@ export function coursesReducer(state: State = initialState, action: HomeCoursesA
                 errors: null
             };
         case HomeCoursesActions.LIKE_SUCCESS:
-            const courseToLikeIndex = state.courses.findIndex(c => c.id === action.payload.id);
-            const courseToLike = state.courses.find(c => c.id === action.payload.id);
+            const courseToLikeIndex = state.courses.findIndex(c => c.id === action.payload.like.courseId);
+            const courseToLike = state.courses.find(c => c.id === action.payload.like.courseId);
             const coursesAfterLike = [...state.courses];
 
-            const courseAfterLike = {
-                ...courseToLike,
-                likes: [...action.payload.likes]
-            };
+            if (action.payload.action === 'like') {
+                const courseAfterLike = {
+                    ...courseToLike,
+                    likes: [...courseToLike.likes, action.payload.like]
+                };
 
-            coursesAfterLike[courseToLikeIndex] = courseAfterLike;
+                coursesAfterLike[courseToLikeIndex] = courseAfterLike;
+            }
+            else if (action.payload.action === 'unlike') {
+                const courseLikes = [...courseToLike.likes];
+                const likeToDeleteIndex = courseLikes.findIndex(l => l.id === action.payload.like.id);
+
+                courseLikes.splice(likeToDeleteIndex, 1);
+                const courseAfterLike = {
+                    ...courseToLike,
+                    likes: [...courseLikes]
+                };
+
+                coursesAfterLike[courseToLikeIndex] = courseAfterLike;
+
+            }
 
             return {
                 ...state,
@@ -124,19 +139,20 @@ export function coursesReducer(state: State = initialState, action: HomeCoursesA
                 errors: null
             };
         case HomeCoursesActions.ENROLL_SUCCESS:
-            const courseToEnrollIndex = state.courses.findIndex(c => c.id === action.payload.id);
-            const courseToEnroll = state.courses.find(c => c.id === action.payload.id);
+            const courseToEnrollIndex = state.courses.findIndex(c => c.id === action.payload.courseId);
+            const courseToEnroll = state.courses.find(c => c.id === action.payload.courseId);
             const coursesAfterEnroll = [...state.courses];
 
             const courseAfterEnroll = {
                 ...courseToEnroll,
                 cls: {
-                    ...action.payload.cls,
+                    ...action.payload,
                     members: [
-                        ...action.payload.cls.members
+                        ...action.payload.members
                     ]
                 }
             };
+
 
             coursesAfterEnroll[courseToEnrollIndex] = courseAfterEnroll;
 

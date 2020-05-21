@@ -55,7 +55,8 @@
                                 *ngIf="isAuthenticated && checkUserLikeComment(comment.id, i)">
                                 <fa-icon [icon]="faHeart" style="color:purple"></fa-icon>
                             </i>
-                            <i (click)="onDelete(comment.id)" *ngIf="isAuthenticated && userId === comment.userId">
+                            <i (click)="onDelete(comment.id)"
+                                *ngIf="(isAuthenticated && userId === comment.userId) || isAdmin">
                                 <fa-icon [icon]="faTrash"></fa-icon>
                             </i>
                             <i (click)="onEdit(i, comment.text)"
@@ -90,7 +91,9 @@
 
                             <span class="text-muted">{{ comment.commentDateTime | timeago:'live' }}</span>
                             <div>
-                                <span class="text-muted">likes ({{ comment.likes.length }})</span>
+                                <a class="text-muted" (click)="onShowLikes(comment.id)">likes
+                                    ({{ comment.likes.length }})
+                                </a>
 
                                 <a (click)="onShowReplies(i)" *ngIf="!showReplies[i]">
                                     Replies ({{ comment.replies.length }})
@@ -124,7 +127,8 @@
                                     *ngIf="isAuthenticated && checkUserLikeComment(comment.id, j, reply.id)">
                                     <fa-icon [icon]="faHeart" style="color:purple"></fa-icon>
                                 </i>
-                                <i (click)="onDelete(reply.id)" *ngIf="isAuthenticated && userId === reply.userId">
+                                <i (click)="onDelete(reply.id)"
+                                    *ngIf="(isAuthenticated && userId === reply.userId) || isAdmin">
                                     <fa-icon [icon]="faTrash"></fa-icon>
                                 </i>
                                 <i (click)="onEditReply(j, reply.text)"
@@ -158,7 +162,9 @@
                             </div>
                             <div class="comment-footer">
                                 <span class="text-muted">{{ reply.commentDateTime | timeago:'live' }}</span>
-                                <span class="text-muted">likes ({{ reply.likes.length }})</span>
+                                <a class="text-muted" (click)="onShowLikes(comment.id , reply.id)">likes
+                                    ({{ reply.likes.length }})
+                                </a>
                             </div>
                         </div>
                     </li>

@@ -1,12 +1,15 @@
 import { Course } from './../../../models/course.model';
+import { Comment } from './../../../models/comment.model';
 
 import * as CoursesActions from './courses.actions';
 
 export interface State {
     courses: Course[],
     trashedCourses: Course[],
+    nonClassMembers: { id: string, fullName: string }[],
     loading: boolean,
     loaded: boolean,
+    loadingMembers: boolean,
     creating: boolean,
     created: boolean,
     updating: boolean,
@@ -21,8 +24,10 @@ export interface State {
 const initialState: State = {
     courses: [],
     trashedCourses: [],
+    nonClassMembers: [],
     loading: false,
     loaded: false,
+    loadingMembers: false,
     creating: false,
     created: false,
     updating: false,
@@ -135,6 +140,88 @@ export function coursesReducer(state: State = initialState, action: CoursesActio
                 courses: coursesAfterCreateClass
             };
         case CoursesActions.CREATE_CLASS_FAIL:
+            return {
+                ...state,
+                updating: false,
+                errors: [...action.payload]
+            };
+
+        /////////////
+
+        case CoursesActions.FETCH_NON_CLASS_MEMBERS_START:
+            return {
+                ...state,
+                loadingMembers: true,
+                errors: null
+            };
+        case CoursesActions.FETCH_NON_CLASS_MEMBERS_SUCCESS:
+            return {
+                ...state,
+                loadingMembers: false,
+                nonClassMembers: [...action.payload]
+            };
+        case CoursesActions.FETCH_NON_CLASS_MEMBERS_FAIL:
+            return {
+                ...state,
+                loadingMembers: false,
+                errors: [...action.payload]
+            };
+
+        /////////////
+
+        case CoursesActions.DELETE_COMMENT_START:
+            return {
+                ...state,
+                updating: true,
+                updated: false,
+                errors: null
+            };
+        case CoursesActions.DELETE_COMMENT_SUCCESS:
+            const courseToDeleteCommentIndex = state.courses.findIndex(c => c.id === action.payload.courseId);
+            const courseToDeleteComment = state.courses.find(c => c.id === action.payload.courseId);
+            const coursesAfterDeleteComment = [...state.courses];
+
+            const commentsAfterDelete = [...courseToDeleteComment.comments];
+
+            if (action.payload.commentId) {
+                const originalCommentIndex = courseToDeleteComment.comments.findIndex(c => c.id === action.payload.commentId);
+                const originalComment = courseToDeleteComment.comments.find(c => c.id === action.payload.commentId);
+
+                const originalCommentReplies = [...originalComment.replies];
+                const commentToDeleteIndex = originalComment.replies.findIndex(c => c.id === action.payload.id);
+
+                originalCommentReplies.splice(commentToDeleteIndex, 1);
+
+                const updatedComment: Comment = {
+                    ...originalComment,
+                    replies: originalCommentReplies
+                };
+
+
+                commentsAfterDelete[originalCommentIndex] = updatedComment;
+
+            } else {
+                const originalCommentIndex = courseToDeleteComment.comments.findIndex(c => c.id === action.payload.id);
+                commentsAfterDelete.splice(originalCommentIndex, 1);
+            }
+
+
+            const courseAfterDeleteComment = {
+                ...courseToDeleteComment,
+                comments: [
+                    ...commentsAfterDelete
+                ]
+            };
+
+            coursesAfterDeleteComment[courseToDeleteCommentIndex] = courseAfterDeleteComment;
+
+            return {
+                ...state,
+                updating: false,
+                updated: true,
+                courses: coursesAfterDeleteComment
+            };
+        case CoursesActions.DELETE_COMMENT_FAIL:
             return {
                 ...state,
                 updating: false,
@@ -299,6 +386,42 @@ export function coursesReducer(state: State = initialState, action: CoursesActio
                 errors: [...action.payload]
             };
 
+        /////////////////////
+
+        case CoursesActions.ENROLL_USER_START:
+            return {
+                ...state,
+                updating: true,
+                errors: null
+            };
+        case CoursesActions.ENROLL_USER_SUCCESS:
+            const courseToEnrollIndex = state.courses.findIndex(c => c.id === action.payload.courseId);
+            const courseToEnroll = state.courses.find(c => c.id === action.payload.courseId);
+            const coursesAfterEnroll = [...state.courses];
+
+            const courseAfterEnroll = {
+                ...courseToEnroll,
+                cls: {
+                    ...action.payload,
+                    members: [
+                        ...action.payload.members
+                    ]
+                }
+            };
+
+            coursesAfterEnroll[courseToEnrollIndex] = courseAfterEnroll;
+
+            return {
+                ...state,
+                updating: false,
+                courses: coursesAfterEnroll
+            };
+        case CoursesActions.ENROLL_USER_FAIL:
+            return {
+                ...state,
+                updating: false,
+                errors: [...action.payload]
+            };
 
         /////////////////////
 

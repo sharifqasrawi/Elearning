@@ -162,6 +162,7 @@ blockquote{
   background-color: #eee;
   display: inline-block;
   font-style: italic;
+  opacity: 0.8;
 }
 
 .op06{
