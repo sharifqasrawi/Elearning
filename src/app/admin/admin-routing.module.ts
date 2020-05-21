@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { CourseCommentsComponent } from './courses/course-details/course-comments/course-comments.component';
+import { BugReportsComponent } from './reports/bug-reports/bug-reports.component';
 import { CourseLikesComponent } from './courses/course-details/course-likes/course-likes.component';
 import { SessionContentComponent } from './courses/course-details/course-sessions/session-content/session-content.component';
 import { CourseSessionsComponent } from './courses/course-details/course-sessions/course-sessions.component';
@@ -43,6 +44,7 @@ const routes: Routes = [
   {
     path: 'admin', component: MainComponent, children: [
       { path: 'dashboard', component: DashboardComponent },
+      { path: 'reports', component: BugReportsComponent },
       {
         path: 'users', children: [
           { path: 'new-user', component: NewUserComponent },

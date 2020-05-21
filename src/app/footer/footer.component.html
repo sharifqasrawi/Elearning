@@ -43,6 +43,7 @@
                                     [class.loadingRate]="loadingRate || rating" (rate)="onRate($event)">
                                 </star-rating>
                             </p>
+                            <em class="small" *ngIf="rated">Thank you for your feedback.</em>
                         </div>
                         <div class="col-lg-4 text-center">
                             <div class="total mat-elevation-z4 mt-3" style="margin: 0 auto;"

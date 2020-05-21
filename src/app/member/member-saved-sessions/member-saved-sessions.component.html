@@ -1,8 +1,15 @@
 <div>
     <h2>
-        My Saved Session
+        My Saved Sessions
     </h2>
     <hr>
+
+    
+    <div *ngIf="sessions.length === 0 && !loading">
+        <div class="alert alert-info text-center">
+            <h2>You have no saved sessions.</h2>
+        </div>
+    </div>
 
 
     <div *ngIf="!loading">

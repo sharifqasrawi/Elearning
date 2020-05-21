@@ -22,6 +22,8 @@ export class MemberCoursesComponent implements OnInit {
 
   courses: Course[] = null;
   loading = false;
+  loaded = false;
+  loadedFavorites = false;
   errors: string[] = null;
   isFavoritesList = false;
 
@@ -45,6 +47,8 @@ export class MemberCoursesComponent implements OnInit {
       this.store.select('member').subscribe(state => {
         this.courses = state.courses;
         this.loading = state.loading;
+        this.loaded = state.loaded;
+        this.loadedFavorites = state.loadedFavorites;
         this.errors = state.errors;
       });
     });

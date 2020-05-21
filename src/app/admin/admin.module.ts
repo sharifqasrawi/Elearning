@@ -52,6 +52,7 @@ import { CourseCommentsComponent } from './courses/course-details/course-comment
 import { TimeagoModule } from 'ngx-timeago';
 import { AddMemberComponent } from './courses/course-details/course-class/add-member/add-member.component';
 import { BugReportsComponent } from './reports/bug-reports/bug-reports.component';
+import { ViewReportComponent } from './reports/bug-reports/view-report/view-report.component';
 
 @NgModule({
     declarations: [
@@ -94,6 +95,7 @@ import { BugReportsComponent } from './reports/bug-reports/bug-reports.component
         CourseCommentsComponent,
         AddMemberComponent,
         BugReportsComponent,
+        ViewReportComponent,
         
     ],
     imports: [

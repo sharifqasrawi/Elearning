@@ -7,6 +7,7 @@ export interface State {
     total: number,
     loading: boolean,
     rating: boolean,
+    rated: boolean,
     errors: string[],
 }
 
@@ -15,6 +16,7 @@ const initialState: State = {
     total: 0,
     loading: false,
     rating: false,
+    rated: false,
     errors: null
 };
 
@@ -23,13 +25,15 @@ export function appSettingsReducer(state: State = initialState, action: AppSetti
         case AppSettingsAction.RATE_START:
             return {
                 ...state,
-                rating: true
+                rating: true,
+                rated: false,
             };
 
         case AppSettingsAction.RATE_SUCCESS:
             return {
                 ...state,
                 rating: false,
+                rated: true,
                 ratings: [...action.payload.ratings.ratings],
                 total: action.payload.ratings.total
             };

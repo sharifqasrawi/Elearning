@@ -1,22 +1,22 @@
-import { ViewReportComponent } from './view-report/view-report.component';
-import { MatDialog } from '@angular/material/dialog';
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
+import { faSearch, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { faSearch, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
-import * as fromApp from '../../../store/app.reducer';
-import * as ReportsActions from '../store/reports.action';
-import { Report } from './../../../models/report.model';
+import { Report } from '../../models/report.model';
+import * as fromApp from '../../store/app.reducer';
+import * as ReportsActions from '../../admin/reports/store/reports.action';
+import { ViewReportComponent } from './view-report/view-report.component';
 
 @Component({
-  selector: 'app-bug-reports',
-  templateUrl: './bug-reports.component.html',
-  styleUrls: ['./bug-reports.component.css']
+  selector: 'app-reports',
+  templateUrl: './reports.component.html',
+  styleUrls: ['./reports.component.css']
 })
-export class BugReportsComponent implements OnInit {
+export class ReportsComponent implements OnInit {
 
 
   faSearch = faSearch;
@@ -30,7 +30,7 @@ export class BugReportsComponent implements OnInit {
 
   count = 0;
 
-  displayedColumns: string[] = ['id', 'type', 'severity', 'userId', 'userFullName', 'userEmail', 'reportDateTime', 'replyDateTime', 'isSeen'];
+  displayedColumns: string[] = ['id', 'type', 'severity', 'reportDateTime', 'replyDateTime', 'isReplySeen', 'actions'];
   dataSource: MatTableDataSource<Report>;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -43,7 +43,7 @@ export class BugReportsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.store.dispatch(new ReportsActions.FetchStart());
+    this.store.dispatch(new ReportsActions.FetchByUserStart());
 
     this.store.select('reports').subscribe(state => {
       this.reports = state.reports;
@@ -57,27 +57,27 @@ export class BugReportsComponent implements OnInit {
 
 
   onRefresh() {
-    this.store.dispatch(new ReportsActions.FetchStart());
+    this.store.dispatch(new ReportsActions.FetchByUserStart());
     this.setTable();
   }
 
   onViewReport(id: number) {
     const report = this.reports.find(r => r.id === id);
-
-    if (!report.isSeen)
+    
+    if (!report.isReplySeen)
       this.onMarkReport(id, true);
 
     this.dialog.open(ViewReportComponent, {
       width: '600px',
-      disableClose: true,
+      // height: '500px',
       data: { report: report }
     });
   }
 
-  onMarkReport(id: number, isSeen: boolean) {
-    this.store.dispatch(new ReportsActions.MarkReportStart({
+  onMarkReport(id: number, isReplySeen: boolean) {
+    this.store.dispatch(new ReportsActions.MarkReplyStart({
       id: id,
-      isSeen: isSeen
+      isReplySeen: isReplySeen
     }));
   }
 
@@ -97,4 +97,6 @@ export class BugReportsComponent implements OnInit {
       this.dataSource.paginator.firstPage();
     }
   }
+
+
 }

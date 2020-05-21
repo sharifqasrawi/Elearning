@@ -81,6 +81,12 @@
   color: #FFF;
 }
 
+.card-counter.tomato {
+  background-color: tomato;
+  color: #FFF;
+}
+
+
 .card-counter i {
   font-size: 5em;
   opacity: 0.2;

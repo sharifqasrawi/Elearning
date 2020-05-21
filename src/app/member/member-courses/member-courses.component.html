@@ -1,6 +1,6 @@
 <div>
     <h2>
-       {{ isFavoritesList ? 'My favorite courses list' : ' My Courses' }}
+        {{ isFavoritesList ? 'My favorite courses list' : ' My Courses' }}
     </h2>
     <hr>
 
@@ -8,12 +8,11 @@
         <app-loader-home-course [count]='4'></app-loader-home-course>
     </div>
 
-    <div *ngIf="courses.length === 0 && !loading">
+    <div *ngIf="courses.length === 0 && (loaded || loadedFavorites)">
         <div class="alert alert-info text-center notFoundMsg">
             <h2>No courses found.</h2>
         </div>
     </div>
-
 
     <div *ngIf="!errors && !loading">
         <div *ngFor="let course of courses" class="course-div mat-elevation-z8">

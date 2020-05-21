@@ -21,6 +21,7 @@ export class FooterComponent implements OnInit {
 
   loadingRate = false;
   rating = false;
+  rated = false;
   totalRatingsN = 0.0;
   totalRating: string = null;
   userRating = 0.0;
@@ -36,29 +37,32 @@ export class FooterComponent implements OnInit {
     this.store.select('login').subscribe(state => {
       this.isAuthenticated = state.isAuthenticated;
       this.userId = state.user ? state.user.id : null;
-    });
-
-    this.store.dispatch(new AppSettingActions.FetchRateStart());
-
-    this.store.select('appSettings').subscribe(state => {
-      this.totalRatingsN = state.total;
-      this.totalRating = state.total.toFixed(1);
-      this.totalRatingsCount = state.ratings ? state.ratings.length : 0;
-      this.loadingRate = state.loading;
-      this.rating = state.rating;
-
-      // if (state.errors) {
-      //   this.dialog.open(ErrorDialogComponent, {
-      //     width: '450px',
-      //     data: { errors: state.errors }
-      //   });
-      // }
 
 
-      if (this.isAuthenticated && state.ratings.length > 0) {
-        const rating = state.ratings.find(r => r.userId === this.userId);
-        this.userRating = rating ? rating.value : 0.0
-      }
+      this.store.dispatch(new AppSettingActions.FetchRateStart());
+
+      this.store.select('appSettings').subscribe(state => {
+        this.totalRatingsN = state.total;
+        this.totalRating = state.total.toFixed(1);
+        this.totalRatingsCount = state.ratings ? state.ratings.length : 0;
+        this.loadingRate = state.loading;
+        this.rating = state.rating;
+        this.rated = state.rated;
+
+        // if (state.errors) {
+        //   this.dialog.open(ErrorDialogComponent, {
+        //     width: '450px',
+        //     data: { errors: state.errors }
+        //   });
+        // }
+
+
+        if (this.isAuthenticated && state.ratings.length > 0) {
+          const rating = state.ratings.find(r => r.userId === this.userId);
+          this.userRating = rating ? rating.value : 0.0
+          this.rated = rating ? true : false;
+        }
+      });
     });
   }
 

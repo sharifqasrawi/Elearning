@@ -1,0 +1,18 @@
+.dialog{
+    position: relative;
+    z-index: 50;
+}
+
+.dialog .severity {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 18px;
+}
+
+.dialog .desc {
+    height: 100px;
+    padding: 8px;
+    background-color: thistle;
+    overflow-y: auto;
+}

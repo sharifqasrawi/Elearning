@@ -15,6 +15,8 @@ import { SharedModule } from '../shared/shared.module';
 import { MemberCoursesComponent } from './member-courses/member-courses.component';
 import { MemberSavedSessionsComponent } from './member-saved-sessions/member-saved-sessions.component';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
+import { ReportsComponent } from './reports/reports.component';
+import { ViewReportComponent } from './reports/view-report/view-report.component';
 
 @NgModule({
     declarations: [
@@ -22,6 +24,8 @@ import { EditProfileComponent } from './edit-profile/edit-profile.component';
         MemberCoursesComponent,
         MemberSavedSessionsComponent,
         EditProfileComponent,
+        ReportsComponent,
+        ViewReportComponent,
     ],
     imports: [
         BrowserModule,
