@@ -19,9 +19,9 @@
 				</button>
 			</div>
 			<div class="col-lg-2">
-				<button type="submit" class="btn-block mt-1" mat-raised-button color="primary" [disabled]="!regForm.valid || loading">
-					<span *ngIf="!editMode">{{ !loading ? 'Create' : 'Creating...' }}</span>
-					<span *ngIf="editMode">{{ !loading ? 'Save' : 'Saving...' }}</span>
+				<button type="submit" class="btn-block mt-1" mat-raised-button color="primary" [disabled]="!regForm.valid || creating ||updating ">
+					<span *ngIf="!editMode">{{ !creating ? 'Create' : 'Creating...' }}</span>
+					<span *ngIf="editMode">{{ !updating ? 'Save' : 'Saving...' }}</span>
 				</button>
 			</div>
 		</div>

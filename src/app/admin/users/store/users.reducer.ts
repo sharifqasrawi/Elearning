@@ -3,22 +3,30 @@ import * as UsersActions from './users.actions';
 
 export interface State {
     users: User[],
+    user: User,
     loading: boolean,
     loaded: boolean,
+    creating: boolean,
     created: boolean,
-    errors: string[],
-    settingActiveDeactive: boolean,
+    updating: boolean,
+    updated: boolean,
     deleting: boolean
+    settingActiveDeactive: boolean,
+    errors: string[],
 }
 
 const initialState: State = {
     users: [],
+    user: null,
     loading: false,
     loaded: false,
+    creating: false,
     created: false,
-    errors: null,
-    settingActiveDeactive: false,
+    updating: false,
+    updated: false,
     deleting: false,
+    settingActiveDeactive: false,
+    errors: null,
 };
 
 export function usersReducer(
@@ -31,6 +39,7 @@ export function usersReducer(
                 ...state,
                 loading: true,
                 loaded: false,
+                errors: null,
             };
         case UsersActions.FETCH_SUCCESS:
             return {
@@ -49,11 +58,36 @@ export function usersReducer(
                 loaded: false,
             };
 
+        case UsersActions.FETCH_USER_START:
+            return {
+                ...state,
+                loading: true,
+                loaded: false,
+                errors: null,
+            };
+        case UsersActions.FETCH_USER_SUCCESS:
+            return {
+                ...state,
+                loading: false,
+                loaded: true,
+                user: { ...action.payload, token: '' }
+            };
+
+        case UsersActions.FETCH_USER_FAIL:
+
+            return {
+                ...state,
+                loading: false,
+                loaded: false,
+                errors: [...action.payload],
+            };
+
         case UsersActions.SEARCH_START:
             return {
                 ...state,
                 loading: true,
                 loaded: false,
+                errors: null,
             };
         case UsersActions.SEARCH_SUCCESS:
             return {
@@ -75,14 +109,14 @@ export function usersReducer(
         case UsersActions.CREATE_START:
             return {
                 ...state,
-                loading: true,
+                creating: true,
                 created: false,
                 errors: null
             };
         case UsersActions.CREATE_SUCCESS:
             return {
                 ...state,
-                loading: false,
+                creating: false,
                 created: true,
                 users: [...state.users, action.payload]
             };
@@ -90,16 +124,16 @@ export function usersReducer(
         case UsersActions.CREATE_FAIL:
             return {
                 ...state,
-                loading: false,
-                created: false,
+                creating: false,
                 errors: [...action.payload]
             };
 
         case UsersActions.UPDATE_START:
             return {
                 ...state,
-                loading: true,
-                created: false,
+                updating: true,
+                updated: false,
+                errors: null,
             };
 
         case UsersActions.UPDATE_SUCCESS:
@@ -125,15 +159,69 @@ export function usersReducer(
 
             return {
                 ...state,
-                loading: false,
-                created: true,
-                users: updatedUsers0
+                updating: false,
+                updated: true,
+                users: updatedUsers0,
             };
 
         case UsersActions.UPDATE_FAIL:
             return {
                 ...state,
-                loading: false,
+                updating: false,
+                errors: [...action.payload]
+            };
+
+
+        case UsersActions.UPDATE_PROFILE_START:
+            return {
+                ...state,
+                updating: true,
+                updated: false,
+                errors: null,
+            };
+
+
+        case UsersActions.UPDATE_PROFILE_SUCCESS:
+
+            const userAfterUpdate = {
+                ...action.payload,
+                token: ''
+            };
+
+            return {
+                ...state,
+                updating: false,
+                updated: true,
+                user: userAfterUpdate,
+            };
+
+        case UsersActions.UPDATE_PROFILE_FAIL:
+            return {
+                ...state,
+                updating: false,
+                errors: [...action.payload]
+            };
+
+        case UsersActions.CHANGE_PASSWORD_START:
+            return {
+                ...state,
+                updating: true,
+                updated: false,
+                errors: null,
+            };
+
+
+        case UsersActions.CHANGE_PASSWORD_SUCCESS:
+            return {
+                ...state,
+                updating: false,
+                updated: true,
+            };
+
+        case UsersActions.CHANGE_PASSWORD_FAIL:
+            return {
+                ...state,
+                updating: false,
                 errors: [...action.payload]
             };
 
@@ -142,6 +230,7 @@ export function usersReducer(
             return {
                 ...state,
                 deleting: true,
+                errors: null,
             };
 
         case UsersActions.DELETE_SUCCESS:
@@ -162,7 +251,8 @@ export function usersReducer(
         case UsersActions.SET_ACTIVE_DEACTIVE_START:
             return {
                 ...state,
-                settingActiveDeactive: true
+                settingActiveDeactive: true,
+                errors: null,
             };
 
         case UsersActions.SET_ACTIVE_DEACTIVE_SUCCESS:
@@ -200,7 +290,13 @@ export function usersReducer(
             return {
                 ...state,
                 loading: false,
-                created: false
+                loaded: false,
+                creating: false,
+                created: false,
+                updating: false,
+                updated: false,
+                deleting: false,
+                settingActiveDeactive: false
             };
         default:
             return state;

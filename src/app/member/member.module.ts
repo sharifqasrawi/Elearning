@@ -17,6 +17,7 @@ import { MemberSavedSessionsComponent } from './member-saved-sessions/member-sav
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { ReportsComponent } from './reports/reports.component';
 import { ViewReportComponent } from './reports/view-report/view-report.component';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 
 @NgModule({
     declarations: [
@@ -26,6 +27,7 @@ import { ViewReportComponent } from './reports/view-report/view-report.component
         EditProfileComponent,
         ReportsComponent,
         ViewReportComponent,
+        ChangePasswordComponent,
     ],
     imports: [
         BrowserModule,

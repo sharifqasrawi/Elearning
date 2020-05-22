@@ -18,6 +18,7 @@ export interface RegisterResponseData {
 @Injectable()
 export class UsersEffects {
     token = '';
+    userId: string = null;
 
     @Effect()
     fetchUsers = this.actions$.pipe(
@@ -45,6 +46,37 @@ export class UsersEffects {
 
                 default:
                     return of(new UsersActions.FetchFail(['Error Fetching Data']));
+            }
+        })
+    );
+
+    @Effect()
+    fetchUser = this.actions$.pipe(
+        ofType(UsersActions.FETCH_USER_START),
+        switchMap(() => {
+
+            return this.http.get<{ user: User }>(environment.API_BASE_URL + 'users/user',
+                {
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    params: new HttpParams().set('id', this.userId)
+                });
+        }),
+        map(usersRes => {
+            return new UsersActions.FetchUserSuccess(usersRes.user);
+        }),
+        catchError(errorRes => {
+
+            switch (errorRes.status) {
+                case 403:
+                case 401:
+                    return of(new UsersActions.FetchUserFail(['Access Denied']));
+                case 404:
+                    return of(new UsersActions.FetchUserFail(['Error 404. Not Found']));
+                case 400:
+                    return of(new UsersActions.FetchUserFail(errorRes.error.errors));
+
+                default:
+                    return of(new UsersActions.FetchUserFail(['Error Fetching Data']));
             }
         })
     );
@@ -197,6 +229,80 @@ export class UsersEffects {
     );
 
     @Effect()
+    updateProfile = this.actions$.pipe(
+        ofType(UsersActions.UPDATE_PROFILE_START),
+        switchMap((userData: UsersActions.UpdateProfileStart) => {
+            const user = {
+                id: userData.payload.userId,
+                firstName: userData.payload.firstName,
+                lastName: userData.payload.lastName,
+                email: userData.payload.email,
+                country: userData.payload.country,
+                gender: userData.payload.gender
+            };
+            return this.http.put<{ user: User }>(environment.API_BASE_URL + 'users/update-profile',
+                user,
+                {
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                })
+                .pipe(
+                    map(resData => {
+                        return new UsersActions.UpdateProfileSuccess(resData.user);
+                    }),
+                    catchError(errorRes => {
+                        switch (errorRes.status) {
+                            case 403:
+                            case 401:
+                                return of(new UsersActions.UpdateProfileFail(['Access Denied']));
+                            case 404:
+                                return of(new UsersActions.UpdateProfileFail(['Error 404. Not Found']));
+                            case 400:
+                                return of(new UsersActions.UpdateProfileFail(errorRes.error.errors));
+                            default:
+                                return of(new UsersActions.UpdateProfileFail(['Oops! An error occured']));
+                        }
+                    })
+                )
+        })
+    );
+
+    @Effect()
+    changePassword = this.actions$.pipe(
+        ofType(UsersActions.CHANGE_PASSWORD_START),
+        switchMap((passwordData: UsersActions.ChangePasswordStart) => {
+
+            return this.http.post<{ result: boolean }>(environment.API_BASE_URL + 'account/change-password',
+                {
+                    userId: this.userId,
+                    currentPassword: passwordData.payload.currentPassword,
+                    newPassword: passwordData.payload.newPassword,
+                    confirmPassword: passwordData.payload.confirmPassword,
+                },
+                {
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                })
+                .pipe(
+                    map(resData => {
+                        return new UsersActions.ChangePasswordSuccess(resData.result);
+                    }),
+                    catchError(errorRes => {
+                        switch (errorRes.status) {
+                            case 403:
+                            case 401:
+                                return of(new UsersActions.ChangePasswordFail(['Access Denied']));
+                            case 404:
+                                return of(new UsersActions.ChangePasswordFail(['Error 404. Not Found']));
+                            case 400:
+                                return of(new UsersActions.ChangePasswordFail(errorRes.error.errors));
+                            default:
+                                return of(new UsersActions.ChangePasswordFail(['Oops! An error occured']));
+                        }
+                    })
+                )
+        })
+    );
+
+    @Effect()
     deleteUser = this.actions$.pipe(
         ofType(UsersActions.DELETE_START),
         switchMap((userData: UsersActions.DeleteStart) => {
@@ -237,8 +343,10 @@ export class UsersEffects {
                 map(authState => authState.user)
             )
             .subscribe(user => {
-                if (user)
+                if (user) {
+                    this.userId = user.id;
                     this.token = user.token;
+                }
             });
     }
 }

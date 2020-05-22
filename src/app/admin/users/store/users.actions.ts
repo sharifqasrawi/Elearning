@@ -6,6 +6,11 @@ export const FETCH_START = '[Users] Fetch Start';
 export const FETCH_SUCCESS = '[Users] Fetch Success';
 export const FETCH_FAIL = '[Users] Fetch Fail';
 
+export const FETCH_USER_START = '[Users] Fetch User Start';
+export const FETCH_USER_SUCCESS = '[Users] Fetch User Success';
+export const FETCH_USER_FAIL = '[Users] Fetch User Fail';
+
+
 export const SEARCH_START = '[Users] Search Start';
 export const SEARCH_SUCCESS = '[Users] Search Success';
 export const SEARCH_FAIL = '[Users] Search Fail';
@@ -18,6 +23,13 @@ export const UPDATE_START = '[Users] Update Start';
 export const UPDATE_SUCCESS = '[Users] Update Success';
 export const UPDATE_FAIL = '[Users] Update Fail';
 
+export const UPDATE_PROFILE_START = '[Users] Update Profile Start';
+export const UPDATE_PROFILE_SUCCESS = '[Users] Update Profile Success';
+export const UPDATE_PROFILE_FAIL = '[Users] Update Profile Fail';
+
+export const CHANGE_PASSWORD_START = '[Users] Change Password Start';
+export const CHANGE_PASSWORD_SUCCESS = '[Users] Change Password Success';
+export const CHANGE_PASSWORD_FAIL = '[Users] Change Password Fail';
 
 export const DELETE_START = '[Users] Delete Start';
 export const DELETE_SUCCESS = '[Users] Delete Success';
@@ -43,6 +55,24 @@ export class FetchSuccess implements Action {
 
 export class FetchFail implements Action {
     readonly type = FETCH_FAIL;
+
+    constructor(public payload: string[]) { }
+}
+
+
+
+export class FetchUserStart implements Action {
+    readonly type = FETCH_USER_START;
+}
+
+export class FetchUserSuccess implements Action {
+    readonly type = FETCH_USER_SUCCESS;
+
+    constructor(public payload: User) { }
+}
+
+export class FetchUserFail implements Action {
+    readonly type = FETCH_USER_FAIL;
 
     constructor(public payload: string[]) { }
 }
@@ -105,6 +135,57 @@ export class UpdateSuccess implements Action {
 
 export class UpdateFail implements Action {
     readonly type = UPDATE_FAIL;
+
+    constructor(public payload: string[]) { }
+}
+
+
+export class UpdateProfileStart implements Action {
+    readonly type = UPDATE_PROFILE_START;
+
+    constructor(public payload: {
+        userId: string,
+        firstName: string,
+        lastName: string,
+        email: string,
+        country: string,
+        gender: string
+    }) { }
+}
+
+export class UpdateProfileSuccess implements Action {
+    readonly type = UPDATE_PROFILE_SUCCESS;
+
+    constructor(public payload: User) { }
+
+}
+
+export class UpdateProfileFail implements Action {
+    readonly type = UPDATE_PROFILE_FAIL;
+
+    constructor(public payload: string[]) { }
+}
+
+
+export class ChangePasswordStart implements Action {
+    readonly type = CHANGE_PASSWORD_START;
+
+    constructor(public payload: {
+        currentPassword: string,
+        newPassword: string,
+        confirmPassword: string
+    }) { }
+}
+
+export class ChangePasswordSuccess implements Action {
+    readonly type = CHANGE_PASSWORD_SUCCESS;
+
+    constructor(public payload: boolean) { }
+
+}
+
+export class ChangePasswordFail implements Action {
+    readonly type = CHANGE_PASSWORD_FAIL;
 
     constructor(public payload: string[]) { }
 }
@@ -178,12 +259,21 @@ export type UsersActions =
     | FetchStart
     | FetchSuccess
     | FetchFail
+    | FetchUserStart
+    | FetchUserSuccess
+    | FetchUserFail
     | CreateStart
     | CreateSuccess
     | CreateFail
     | UpdateStart
     | UpdateSuccess
     | UpdateFail
+    | UpdateProfileStart
+    | UpdateProfileSuccess
+    | UpdateProfileFail
+    | ChangePasswordStart
+    | ChangePasswordSuccess
+    | ChangePasswordFail
     | ClearErrors
     | ClearStatus
     | SearchStart

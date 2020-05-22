@@ -35,12 +35,13 @@ export class NewUserComponent implements OnInit, OnDestroy {
   regForm: FormGroup;
   errors: string[] = null;
   loading = false;
+  creating = false;
   created = false;
+  updating = false;
+  updated = false;
   userId: string = null;
   hidePwd = true;
   hideCpwd = true;
-
-  ;
 
   constructor(
     private http: HttpClient,
@@ -61,11 +62,14 @@ export class NewUserComponent implements OnInit, OnDestroy {
       .subscribe(usersState => {
         this.loading = usersState.loading;
         this.errors = usersState.errors;
+        this.creating = usersState.creating;
         this.created = usersState.created;
+        this.updating = usersState.updating;
+        this.updated = usersState.updated;
 
         if (this.created) {
           this.regForm.reset();
-        
+
           this.router.navigate(['/admin', 'users']);
           this.snackBar.open('User Saved successfully', 'Okay',
             {
@@ -170,9 +174,7 @@ export class NewUserComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.errors = null;
-    this.created = false;
-    this.loading = false;
+
     this.store.dispatch(new UsersActions.ClearErrors());
     this.store.dispatch(new UsersActions.ClearStatus());
   }

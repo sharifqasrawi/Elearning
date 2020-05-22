@@ -9,6 +9,7 @@ import { MemberCoursesComponent } from './member-courses/member-courses.componen
 import { MemberSavedSessionsComponent } from './member-saved-sessions/member-saved-sessions.component';
 import { ReportsComponent } from './reports/reports.component';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 
 const routes: Routes = [
     {
@@ -26,7 +27,7 @@ const routes: Routes = [
                 ]
             },
             { path: 'edit-profile', component: EditProfileComponent },
-            { path: 'change-password', component: EditProfileComponent },
+            { path: 'change-password', component: ChangePasswordComponent },
             { path: '', redirectTo: '/member/dashboard', pathMatch: 'full' }
         ]
     }

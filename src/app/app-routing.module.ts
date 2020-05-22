@@ -18,10 +18,10 @@ import { CourseSessionComponent } from './courses/course-view/course-session/cou
 const routes: Routes = [
   {
     path: '', component: LayoutComponent, children: [
-      {
-        path: 'home',
-        component: HomeComponent
-      },
+      // {
+      //   path: 'home',
+      //   component: HomeComponent
+      // },
       {
         path: 'categories/:categoryId/:categorySlug',
         children: [
@@ -50,7 +50,7 @@ const routes: Routes = [
         component: AboutmeComponent,
         canActivate: [AuthGuard]
       },
-      { path: '', redirectTo: '/home', pathMatch: 'full' },
+      { path: '', component: HomeComponent, pathMatch: 'full' },
     ],
   },
   {

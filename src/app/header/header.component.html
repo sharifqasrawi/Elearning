@@ -10,7 +10,7 @@
         <div class="collapse navbar-collapse " id="collapsibleNavbar">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link" [routerLink]="[ '/home' ]" routerlinkactive="active">
+                    <a class="nav-link" [routerLink]="[ '/' ]" routerlinkactive="active">
                         <fa-icon [icon]="faHome"></fa-icon>
                         Home
                     </a>
@@ -96,7 +96,7 @@
             [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
             <mat-nav-list>
                 <mat-list-item class="mt-3">
-                    <a class="full-width" [routerLink]="[ '/home' ]" routerlinkactive="active">
+                    <a class="full-width" [routerLink]="[ '/' ]" routerlinkactive="active">
                         <fa-icon [icon]="faHome"></fa-icon>
                         Home
                     </a>

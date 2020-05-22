@@ -74,7 +74,7 @@ export class LoginEffects {
         tap(() => {
             this.authService.clearLogoutTimer();
             localStorage.removeItem('userData');
-            this.router.navigate(['/', 'home']);
+            this.router.navigate(['/']);
         })
     );
 
