@@ -1,3 +1,4 @@
+import { DoneSession } from './../../models/doneSession.model';
 import { SavedSession } from './../../models/savedSession.model';
 import { Favorite } from './../../models/favorite.model';
 import { Course } from './../../models/course.model';
@@ -20,6 +21,18 @@ export interface State {
     loadingSavedSessions: boolean,
     loadedSavedSessions: boolean,
 
+
+    doneSessions: DoneSession[],
+    donePercentage: number,
+    markingSession: boolean,
+    markedSession: boolean,
+    loadingDoneSessions: boolean,
+    loadedDoneSessions: boolean,
+
+    memberCoursesProgress: { courseId: number, donePercentage: number }[],
+    loadingMemberCoursesProgress: false,
+    loadedMemberCoursesProgress: false,
+
     // loadingLike: boolean,
     // loadingEnroll: boolean,
     errors: string[],
@@ -40,6 +53,17 @@ const initialState: State = {
     savedSession: false,
     loadingSavedSessions: false,
     loadedSavedSessions: false,
+
+    doneSessions: [],
+    donePercentage: null,
+    markingSession: false,
+    markedSession: false,
+    loadingDoneSessions: false,
+    loadedDoneSessions: false,
+
+    memberCoursesProgress: [],
+    loadingMemberCoursesProgress: false,
+    loadedMemberCoursesProgress: false,
 
     // loadingLike: false,
     // loadingEnroll:false,
@@ -212,6 +236,105 @@ export function memberReducer(state: State = initialState, action: MemberActions
             return {
                 ...state,
                 savingSession: false,
+                errors: [...action.payload]
+            };
+
+        /////////////////////
+
+        case MemberActions.MARK_SESSION_START:
+            return {
+                ...state,
+                markingSession: true,
+                markedSession: false,
+                errors: null
+            };
+        case MemberActions.MARK_SESSION_SUCCESS:
+            return {
+                ...state,
+                markingSession: false,
+                markedSession: true,
+                doneSessions: [...state.doneSessions, action.payload.createdDoneSession],
+                donePercentage: action.payload.donePercentage
+            };
+        case MemberActions.MARK_SESSION_FAIL:
+            return {
+                ...state,
+                markingSession: false,
+                errors: [...action.payload]
+            };
+
+        /////////////////////
+
+        case MemberActions.UNMARK_SESSION_START:
+            return {
+                ...state,
+                markingSession: true,
+                markedSession: false,
+                errors: null
+            };
+        case MemberActions.UNMARK_SESSION_SUCCESS:
+            const doneSessionToUnmarkIndex = state.doneSessions.findIndex(d => d.id == action.payload.deletedDoneSessionId);
+            const doneSessionsAfterUnmark = [...state.doneSessions];
+            doneSessionsAfterUnmark.splice(doneSessionToUnmarkIndex, 1);
+
+            return {
+                ...state,
+                markingSession: false,
+                markedSession: true,
+                doneSessions: [...doneSessionsAfterUnmark],
+                donePercentage: action.payload.donePercentage,
+            };
+        case MemberActions.UNMARK_SESSION_FAIL:
+            return {
+                ...state,
+                markingSession: false,
+                errors: [...action.payload]
+            };
+
+        /////////////////////
+
+        case MemberActions.FETCH_DONE_SESSIONS_START:
+            return {
+                ...state,
+                loadingDoneSessions: true,
+                loadedDoneSessions: false,
+                errors: null
+            };
+        case MemberActions.FETCH_DONE_SESSIONS_SUCCESS:
+            return {
+                ...state,
+                loadingDoneSessions: false,
+                loadedDoneSessions: true,
+                doneSessions: [...action.payload.doneSessions],
+                donePercentage: action.payload.donePercentage
+            };
+        case MemberActions.FETCH_DONE_SESSIONS_FAIL:
+            return {
+                ...state,
+                loadingDoneSessions: false,
+                errors: [...action.payload]
+            };
+
+        /////////////////////
+
+        case MemberActions.FETCH_PROGRESS_COURSES_START:
+            return {
+                ...state,
+                loadingMemberCoursesProgress: true,
+                loadedMemberCoursesProgress: false,
+                errors: null
+            };
+        case MemberActions.FETCH_PROGRESS_COURSES_SUCCESS:
+            return {
+                ...state,
+                loadingMemberCoursesProgress: false,
+                loadedMemberCoursesProgress: true,
+                memberCoursesProgress: [...action.payload.memberCoursesProgress]
+            };
+        case MemberActions.FETCH_PROGRESS_COURSES_FAIL:
+            return {
+                ...state,
+                loadingMemberCoursesProgress: false,
                 errors: [...action.payload]
             };
 

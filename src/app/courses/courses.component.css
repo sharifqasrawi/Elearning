@@ -86,6 +86,16 @@
     background-color: rgba(255, 255, 255, 0.3);
 }
 
+.course-card div.enrolled {
+    position: absolute;
+    top: 140px;
+    right: 0;
+    padding: 5px 10px 5px 20px;
+    border-radius: 25px 0 0 25px ;
+    background-color: rgba(255, 255, 255, 0.6);
+    color: green;
+}
+
 @media (max-width: 993px) {
     .course-card {
         width: 330px;

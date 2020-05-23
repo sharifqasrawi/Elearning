@@ -1,3 +1,5 @@
+import { ConfirmDialogComponent } from './../../shared/confirm-dialog/confirm-dialog.component';
+import { DoneSession } from './../../models/doneSession.model';
 import { Favorite } from './../../models/favorite.model';
 import { CoursePickupDialogComponent } from './course-pickup-dialog/course-pickup-dialog.component';
 import { ErrorDialogComponent } from './../../shared/error-dialog/error-dialog.component';
@@ -34,6 +36,8 @@ export class CourseViewComponent implements OnInit {
   faCheckDouble = faCheckDouble;
   faHeart = faHeart;
 
+  errors: string[] = null;
+
   categoryId: number = null;
   categorySlug: string = null;
 
@@ -63,6 +67,9 @@ export class CourseViewComponent implements OnInit {
   loadedFavorites = false;
   addingToFavorite = false;
   isAddedToFavorites = false;
+
+  doneSessions: DoneSession[] = null;
+  donePercentage: string = null;
 
   allExpandState = true;
 
@@ -135,6 +142,7 @@ export class CourseViewComponent implements OnInit {
       this.loading = state.loading;
       this.loadingLike = state.loadingLike;
       this.loadingEnroll = state.loadingEnroll;
+      this.errors = state.errors;
 
 
       if (this.course) {
@@ -159,46 +167,43 @@ export class CourseViewComponent implements OnInit {
           this.classId = null;
         }
       }
-      else {
-        // this.router.navigate(['/home']);
-      }
-      // if (!this.isAuthenticated) {
-      //   if (state.errors) {
-      //     this.dialog.open(ErrorDialogComponent, {
-      //       width: '450px',
-      //       data: { errors: [...state.errors] }
-      //     });
-      //   }
-      // }
     });
 
     if (!this.course)
       this.store.dispatch(new HomeCoursesActions.FetchStart({ categoryId: this.categoryId, courseId: this.courseId }));
 
 
-    if (this.currentSessionId && this.checkCurrnetSession) {
-      this.dialog.open(CoursePickupDialogComponent, {
-        width: '400px',
-        disableClose: true,
-        data: {
-          currentSessionTitle: this.currentSessionSlug ? this.currentSessionSlug.split('-').join(' ') : null,
-          sessionUrl: `categories/${this.categoryId}/${this.categorySlug}/course/${this.courseId}/${this.courseSlug}/session/${this.currentSessionId}/${this.currentSessionSlug}`
-        }
-      });
-    }
 
     if (this.isAuthenticated) {
+
+      if (this.currentSessionId && this.checkCurrnetSession) {
+        this.dialog.open(CoursePickupDialogComponent, {
+          width: '400px',
+          disableClose: true,
+          data: {
+            currentSessionTitle: this.currentSessionSlug ? this.currentSessionSlug.split('-').join(' ') : null,
+            sessionUrl: `categories/${this.categoryId}/${this.categorySlug}/course/${this.courseId}/${this.courseSlug}/session/${this.currentSessionId}/${this.currentSessionSlug}`
+          }
+        });
+      }
+
       this.store.dispatch(new MemberActions.FetchFavoritesStart());
+
+      // if (this.isUserEnrolled)
+      this.store.dispatch(new MemberActions.FetchDoneSessionsStart(this.courseId));
+
       this.store.select('member').subscribe(state => {
         this.favorites = state.favorites;
         this.loadedFavorites = state.loadedFavorites;
         this.addingToFavorite = state.addingToFavorite;
+        this.doneSessions = state.doneSessions;
+        this.errors = state.errors;
 
-        if (state.errors) {
-          this.dialog.open(ErrorDialogComponent, {
-            width: '450px',
-            data: { errors: state.errors }
-          })
+        if(state.loadedDoneSessions){
+          this.donePercentage = `Progress: ${state.donePercentage.toFixed(0)} %`;
+          if(state.donePercentage == 100){
+            this.donePercentage += ' Congratulations !!';
+          }
         }
 
         if (state.loadedFavorites) {
@@ -233,10 +238,33 @@ export class CourseViewComponent implements OnInit {
 
   onEnroll() {
     if (!this.loadingEnroll) {
-      this.store.dispatch(new HomeCoursesActions.EnrollStart({
-        classId: this.classId,
-        action: this.isUserEnrolled ? 'disenroll' : 'enroll'
-      }));
+
+      if (this.isUserEnrolled) {
+        const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+          width: '450px',
+          data: {
+            header: 'Are you sure you wish to disenroll from this course ?',
+            message: 'Warning: you will lose all your progress.'
+          }
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+          if (result) {
+            this.store.dispatch(new HomeCoursesActions.EnrollStart({
+              classId: this.classId,
+              action: 'disenroll'
+            }));
+          }
+        });
+      }
+      else {
+        this.store.dispatch(new HomeCoursesActions.EnrollStart({
+          classId: this.classId,
+          action: 'enroll'
+        }));
+
+        this.store.dispatch(new MemberActions.FetchDoneSessionsStart(this.courseId));
+      }
     }
   }
 
@@ -246,6 +274,27 @@ export class CourseViewComponent implements OnInit {
         classId: this.classId,
         sessionId: sessionId
       }));
+
+      this.store.dispatch(new MemberActions.MarkSessionStart(sessionId));
+    }
+  }
+
+  onCheckIsDoneSession(sessionId: number) {
+    for (let ds of this.doneSessions) {
+      if (ds.sessionId === sessionId) return true;
+    }
+    return false;
+  }
+
+  onMarkDoneSession($event, sessionId: number) {
+    const checkedState = $event.checked;
+
+    if (this.isUserEnrolled) {
+      if (checkedState) {
+        this.store.dispatch(new MemberActions.MarkSessionStart(sessionId));
+      } else {
+        this.store.dispatch(new MemberActions.UnmarkSessionStart(sessionId));
+      }
     }
   }
 

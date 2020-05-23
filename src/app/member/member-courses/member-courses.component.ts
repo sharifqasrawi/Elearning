@@ -27,6 +27,11 @@ export class MemberCoursesComponent implements OnInit {
   errors: string[] = null;
   isFavoritesList = false;
 
+  memberCoursesProgress: { courseId: number, donePercentage: number }[] = null;
+  loadingMemberCoursesProgress = false;
+  loadedMemberCoursesProgress = false;
+
+
   constructor(
     private store: Store<fromApp.AppState>,
     private route: ActivatedRoute,
@@ -42,6 +47,7 @@ export class MemberCoursesComponent implements OnInit {
       } else {
         this.isFavoritesList = false;
         this.store.dispatch(new MemberActions.FetchCoursesStart());
+        this.store.dispatch(new MemberActions.FetchProgressCoursesStart());
       }
 
       this.store.select('member').subscribe(state => {
@@ -49,13 +55,24 @@ export class MemberCoursesComponent implements OnInit {
         this.loading = state.loading;
         this.loaded = state.loaded;
         this.loadedFavorites = state.loadedFavorites;
+        this.memberCoursesProgress = state.memberCoursesProgress;
+        this.loadingMemberCoursesProgress = state.loadingMemberCoursesProgress;
+        this.loadedMemberCoursesProgress = state.loadedMemberCoursesProgress;
+
         this.errors = state.errors;
+
       });
     });
 
-
   }
 
+  getCourseProgress(courseId: number): string {
+    if(this.loadedMemberCoursesProgress){
+      const progress = this.memberCoursesProgress.find(c => c.courseId === courseId).donePercentage.toFixed(0) + ' %';
+      return progress;
+    }
+    return ' %';
+  }
 
   getSanitizedImage = (imagePath: string) => this.sanitizer.bypassSecurityTrustResourceUrl(imagePath);
 

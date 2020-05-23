@@ -25,6 +25,9 @@
                         </star-rating>
                     </p>
                 </div>
+                <div class="progress mat-elevation-z8" *ngIf="!isFavoritesList">
+                    <em> Progress: {{ getCourseProgress(course.id) }}</em>
+                </div>
                 <mat-card-header>
                     <div mat-card-avatar class="course-header-image"></div>
                     <mat-card-title>{{ course.title_EN }}</mat-card-title>

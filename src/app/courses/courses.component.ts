@@ -1,3 +1,4 @@
+import { map } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
@@ -27,8 +28,12 @@ export class CoursesComponent implements OnInit {
   categoryId: number = null;
   categoryTitle: string = null;
   loading = false;
+  loaded = false;
 
   categoryEmpty = false;
+
+  isAuthenticated = false;
+  userId: string = null;
 
   searchForm: FormGroup;
   levels: string[] = ['All', 'Basic', 'Medium', 'Advanced'];
@@ -36,6 +41,9 @@ export class CoursesComponent implements OnInit {
 
   languages: string[] = ['All', 'Arabic', 'English', 'French'];
   language: string;
+
+  orderByOptions: string[] = ['Default', 'A-Z', 'Stars +', 'Stars -'];
+  orderBy: string;
 
   breadcrumbLinks: { url?: string, label: string }[];
 
@@ -57,17 +65,19 @@ export class CoursesComponent implements OnInit {
         { label: `${this.categoryTitle}` },
       ];
     });
-
-    // this.route.queryParams.subscribe((params: Params) => {
-    //   this.categoryTitle = params.category;
-    // });
-
     this.store.dispatch(new HomeCoursesActions.FetchStart({ categoryId: this.categoryId }));
+
+    this.store.select('login').subscribe(state => {
+      this.isAuthenticated = state.isAuthenticated;
+      this.userId = state.user ? state.user.id : null;
+    });
+
 
     this.store.select('homeCourses').subscribe(state => {
       this.storeCourses = state.courses;
       this.courses = this.storeCourses;
       this.loading = state.loading;
+      this.loaded = state.loaded;
       this.errors = state.errors;
 
       if (state.errors) {
@@ -96,6 +106,7 @@ export class CoursesComponent implements OnInit {
     this.searchForm.reset();
     this.language = null;
     this.level = null;
+    this.orderBy = null;
   }
 
 
@@ -128,6 +139,35 @@ export class CoursesComponent implements OnInit {
     } else {
       this.courses = this.storeCourses.filter(c => c.languages.toLowerCase().includes(this.language.toLowerCase()));
     }
+  }
+
+  onOrderBy() {
+    if (this.orderBy === 'Stars +') {
+      this.courses = this.courses.slice().sort((a, b) => (a.ratings.totalRating < b.ratings.totalRating) ? 1 : ((b.ratings.totalRating < a.ratings.totalRating) ? -1 : 0));
+    } else if (this.orderBy === 'Stars +') {
+      this.courses = this.courses.slice().sort((a, b) => (a.ratings.totalRating > b.ratings.totalRating) ? 1 : ((b.ratings.totalRating > a.ratings.totalRating) ? -1 : 0));
+    }
+    else if (this.orderBy === 'A-Z') {
+      this.courses = this.courses.slice().sort((a, b) => (a.title_EN > b.title_EN) ? 1 : ((b.title_EN > a.title_EN) ? -1 : 0));
+    }
+    else {
+      this.courses = this.storeCourses;
+    }
+  }
+
+  onCheckIfUserEnrolled(courseId: number): boolean {
+    let isUserEnrolled = false;
+    if (this.loaded && this.isAuthenticated) {
+      const course = this.courses.find(c => c.id === courseId);
+      if (course) {
+        if (course.cls.id) {
+          const classId = course.cls.id;
+          const member = course.cls.members.find(m => m.id === this.userId);
+          isUserEnrolled = member ? true : false;
+        }
+      }
+    }
+    return isUserEnrolled;
   }
 
   getSanitizedImage = (imagePath: string) => this.sanitizer.bypassSecurityTrustResourceUrl(imagePath);

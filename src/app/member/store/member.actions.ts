@@ -1,3 +1,4 @@
+import { DoneSession } from './../../models/doneSession.model';
 import { Action } from '@ngrx/store';
 
 import { Favorite } from './../../models/favorite.model';
@@ -39,6 +40,22 @@ export const SAVE_SESSION_FAIL = '[Member] Save Session Fail';
 export const REMOVE_SESSION_START = '[Member] Remove Session Start';
 export const REMOVE_SESSION_SUCCESS = '[Member] Remove Session Success';
 export const REMOVE_SESSION_FAIL = '[Member] Remove Session Fail';
+
+export const MARK_SESSION_START = '[Member] Mark Session Start';
+export const MARK_SESSION_SUCCESS = '[Member] Mark Session Success';
+export const MARK_SESSION_FAIL = '[Member] Mark Session Fail';
+
+export const UNMARK_SESSION_START = '[Member] Unmark Session Start';
+export const UNMARK_SESSION_SUCCESS = '[Member] Unmark Session Success';
+export const UNMARK_SESSION_FAIL = '[Member] Unmark Session Fail';
+
+export const FETCH_DONE_SESSIONS_START = '[Member] Fetch Done Sessions Start';
+export const FETCH_DONE_SESSIONS_SUCCESS = '[Member] Fetch Done Sessions Success';
+export const FETCH_DONE_SESSIONS_FAIL = '[Member] Fetch Done Sessions Fail';
+
+export const FETCH_PROGRESS_COURSES_START = '[Member] Fetch Progress Courses Start';
+export const FETCH_PROGRESS_COURSES_SUCCESS = '[Member] Fetch Progress Courses Success';
+export const FETCH_PROGRESS_COURSES_FAIL = '[Member] Fetch Progress Courses Fail';
 
 
 export const CLEAR_ERRORS = '[Member] Clear Errors';
@@ -176,6 +193,70 @@ export class RemoveSessionFail implements Action {
     constructor(public payload: string[]) { }
 }
 
+/////////////////////
+
+
+export class MarkSessionStart implements Action {
+    readonly type = MARK_SESSION_START;
+
+    constructor(public payload: number) { }
+}
+
+export class MarkSessionSuccess implements Action {
+    readonly type = MARK_SESSION_SUCCESS;
+
+    constructor(public payload: { createdDoneSession: DoneSession, donePercentage: number }) { }
+}
+
+export class MarkSessionFail implements Action {
+    readonly type = MARK_SESSION_FAIL;
+
+    constructor(public payload: string[]) { }
+}
+
+/////////////////////
+
+
+export class UnmarkSessionStart implements Action {
+    readonly type = UNMARK_SESSION_START;
+
+    constructor(public payload: number) { }
+}
+
+export class UnmarkSessionSuccess implements Action {
+    readonly type = UNMARK_SESSION_SUCCESS;
+
+    constructor(public payload: { deletedDoneSessionId: number, donePercentage: number }) { }
+}
+
+export class UnmarkSessionFail implements Action {
+    readonly type = UNMARK_SESSION_FAIL;
+
+    constructor(public payload: string[]) { }
+}
+
+/////////////////////
+
+
+export class FetchDoneSessionsStart implements Action {
+    readonly type = FETCH_DONE_SESSIONS_START;
+
+    constructor(public payload: number) { }
+}
+
+export class FetchDoneSessionsSuccess implements Action {
+    readonly type = FETCH_DONE_SESSIONS_SUCCESS;
+
+    constructor(public payload: { doneSessions: DoneSession[], donePercentage: number }) { }
+}
+
+export class FetchDoneSessionsFail implements Action {
+    readonly type = FETCH_DONE_SESSIONS_FAIL;
+
+    constructor(public payload: string[]) { }
+}
+
+
 
 /////////////////////
 
@@ -202,6 +283,24 @@ export class FetchUserSavedSessionsStart implements Action {
     readonly type = FETCH_USER_SAVED_SESSIONS_START;
 }
 
+/////////////////////
+
+export class FetchProgressCoursesStart implements Action {
+    readonly type = FETCH_PROGRESS_COURSES_START;
+}
+
+
+export class FetchProgressCoursesSuccess implements Action {
+    readonly type = FETCH_PROGRESS_COURSES_SUCCESS;
+
+    constructor(public payload: { memberCoursesProgress: { courseId: number, donePercentage: number }[] }) { }
+}
+
+export class FetchProgressCoursesFail implements Action {
+    readonly type = FETCH_PROGRESS_COURSES_FAIL;
+
+    constructor(public payload: string[]) { }
+}
 
 
 //////////////
@@ -242,6 +341,18 @@ export type MemberActions =
     | RemoveSessionStart
     | RemoveSessionSuccess
     | RemoveSessionFail
+    | MarkSessionStart
+    | MarkSessionSuccess
+    | MarkSessionFail
+    | UnmarkSessionStart
+    | UnmarkSessionSuccess
+    | UnmarkSessionFail
+    | FetchDoneSessionsStart
+    | FetchDoneSessionsSuccess
+    | FetchDoneSessionsFail
+    | FetchProgressCoursesStart
+    | FetchProgressCoursesSuccess
+    | FetchProgressCoursesFail
     | ClearErrors
     | ClearStatus
     ;

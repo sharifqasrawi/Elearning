@@ -4,7 +4,7 @@
             Resource not found.
         </h1>
     </div>
-    
+
     <div class="left">
         <div class="courseHeader" *ngIf="!loading && course">
             <div class="row">
@@ -67,6 +67,13 @@
 
         </div>
 
+        <div class="full-width" *ngIf="errors">
+            <div class="alert alert-danger text-center" *ngFor="let error of errors">
+                {{ error }}
+            </div>
+        </div>
+
+
         <div class="courseInfoNav bg-light" *ngIf="!loading && course">
             <a [routerLink]="['/categories', categoryId, categorySlug, 'course', courseId, courseSlug]">
                 <fa-icon [icon]="faInfoCircle"></fa-icon>
@@ -78,8 +85,8 @@
                 Comments
             </a>
 
-            <a *ngIf="isAuthenticated && !loadingLike" (click)="onLike()" 
-                class="btnLike" [class.liked]="isUserLiked" [class.unliked]="!isUserLiked">
+            <a *ngIf="isAuthenticated && !loadingLike" (click)="onLike()" class="btnLike" [class.liked]="isUserLiked"
+                [class.unliked]="!isUserLiked">
                 <span *ngIf="!isUserLiked">
                     <fa-icon [icon]="faThumbsUp"></fa-icon> Like
                 </span>
@@ -94,8 +101,8 @@
             </span>
 
 
-            <a *ngIf="isAuthenticated && !addingToFavorite" (click)="onAddToFavorites()" 
-                class="btnFavorite" [class.favorite]="isAddedToFavorites" [class.notFavorite]="!isAddedToFavorites">
+            <a *ngIf="isAuthenticated && !addingToFavorite" (click)="onAddToFavorites()" class="btnFavorite"
+                [class.favorite]="isAddedToFavorites" [class.notFavorite]="!isAddedToFavorites">
                 <span *ngIf="!isAddedToFavorites">
                     <fa-icon [icon]="faHeart"></fa-icon> Favorite
                 </span>
@@ -144,7 +151,10 @@
     <div class="right">
         <div class="contentBox" *ngIf="!loading && course">
             <div class="contentBox-header text-center">
-                <button mat-flat-button color="" (click)="allExpandState = !allExpandState" class="btn-block">
+                <div class="alert alert-success text-center mat-elevation-z4" *ngIf="isUserEnrolled">
+                    <strong><em>{{donePercentage}}</em></strong>
+                </div>
+                <button mat-flat-button (click)="allExpandState = !allExpandState" class="btn-block">
                     Content ({{ allExpandState ? 'Collapse All' : 'Expand All' }})
                 </button>
             </div>
@@ -165,6 +175,9 @@
                         <ul class="list-group">
                             <li routerLinkActive="active" class="list-group-item full-width"
                                 *ngFor="let session of section.sessions">
+                                <mat-checkbox class="mr-1" [checked]="onCheckIsDoneSession(session.id)" color="primary"
+                                    (change)="onMarkDoneSession($event, session.id)" *ngIf="isUserEnrolled">
+                                </mat-checkbox>
                                 <a [routerLink]="['session', session.id, session.slug_EN]"
                                     (click)="onSelectSession(session.id)">
                                     {{ session.order }}- {{ session.title_EN }}
@@ -197,13 +210,6 @@
 <mat-sidenav-container class="admin-sidenav-container ">
     <mat-sidenav #sidenav class="admin-sidenav" mode="side" [opened]="!navOpened" (mouseenter)="mouseenter()"
         (mouseleave)="mouseleave()" mode="over" [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
-        <!-- <mat-nav-list>
-            <a mat-list-item [routerLink]="['/admin', 'dashboard']">
-                <mat-icon mat-list-icon>dashboard</mat-icon>
-                Dashboard
-            </a>
-        </mat-nav-list> -->
-        <!-- <mat-nav-list></mat-nav-list> -->
 
         <div>
             <button class="btn btn-info btn-block" (click)="sidenav.toggle()">
@@ -213,6 +219,9 @@
 
         <div class="contentBox" *ngIf="!loading">
             <div class="contentBox-header text-center">
+                <div class="alert alert-success text-center mat-elevation-z4" *ngIf="isUserEnrolled">
+                    <strong><em>{{donePercentage}}</em></strong>
+                </div>
                 <button mat-flat-button color="" (click)="allExpandState = !allExpandState" class="btn-block">
                     Content ({{ allExpandState ? 'Collapse All' : 'Expand All' }})
                 </button>
@@ -248,4 +257,3 @@
     </mat-sidenav>
 
 </mat-sidenav-container>
-

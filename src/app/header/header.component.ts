@@ -96,7 +96,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.userSub.unsubscribe();
+    // this.userSub.unsubscribe();
     this.mobileQuery.removeListener(this._mobileQueryListener);
   }
 

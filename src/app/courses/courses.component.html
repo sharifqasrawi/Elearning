@@ -7,7 +7,7 @@
     <!-- <hr> -->
 
     <div class="row">
-        <div class="col-lg-7">
+        <div class="col-lg-5">
             <form [formGroup]="searchForm">
                 <mat-form-field class="full-width" appearance="legacy">
                     <mat-label>
@@ -38,6 +38,16 @@
                 <mat-select [(ngModel)]="language" (ngModelChange)="onFilterByLanguage()">
                     <mat-option *ngFor="let language of languages" [value]="language">
                         {{ language }}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="col-lg-2">
+            <mat-form-field class="full-width" appearance="legacy">
+                <mat-label>Order By</mat-label>
+                <mat-select [(ngModel)]="orderBy" (ngModelChange)="onOrderBy()">
+                    <mat-option *ngFor="let orderByOption of orderByOptions" [value]="orderByOption">
+                        {{ orderByOption }}
                     </mat-option>
                 </mat-select>
             </mat-form-field>
@@ -79,6 +89,9 @@
                                     uncheckedcolor="pink" size="25px" readonly="true" style="pointer-events: none;">
                                 </star-rating>
                             </p>
+                        </div>
+                        <div class="enrolled mat-elevation-z8" *ngIf="onCheckIfUserEnrolled(course.id)">
+                            <em> Enrolled !</em>
                         </div>
                         <mat-card-header>
                             <div mat-card-avatar class="course-header-image"></div>

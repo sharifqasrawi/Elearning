@@ -1,3 +1,4 @@
+import { DoneSession } from './../../models/doneSession.model';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Actions, Effect, ofType } from '@ngrx/effects';
@@ -249,7 +250,7 @@ export class MemberEffects {
                 {
                     userId: this.userId,
                     sessionId: sessionData.payload.sessionId,
-                    sessionUrl:sessionData.payload.sessionUrl
+                    sessionUrl: sessionData.payload.sessionUrl
                 },
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
@@ -300,6 +301,137 @@ export class MemberEffects {
                                 return of(new MemberActions.RemoveSessionFail(errorRes.error.errors));
                             default:
                                 return of(new MemberActions.RemoveSessionFail(['Oops! An error occured']));
+                        }
+                    })
+                )
+        })
+    );
+
+
+    @Effect()
+    markSession = this.actions$.pipe(
+        ofType(MemberActions.MARK_SESSION_START),
+        switchMap((sessionData: MemberActions.MarkSessionStart) => {
+
+            return this.http.post<{ createdDoneSession: DoneSession, donePercentage: number }>(environment.API_BASE_URL + 'sessions/mark-session',
+                {
+                    userId: this.userId,
+                    sessionId: sessionData.payload,
+                },
+                {
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                })
+                .pipe(
+                    map(resData => {
+                        return new MemberActions.MarkSessionSuccess(resData);
+                    }),
+                    catchError(errorRes => {
+                        switch (errorRes.status) {
+                            case 403:
+                            case 401:
+                                return of(new MemberActions.MarkSessionFail(['Access Denied']));
+                            case 404:
+                                return of(new MemberActions.MarkSessionFail(['Error 404. Not Found']));
+                            case 400:
+                                return of(new MemberActions.MarkSessionFail(errorRes.error.errors));
+                            default:
+                                return of(new MemberActions.MarkSessionFail(['Oops! An error occured']));
+                        }
+                    })
+                )
+        })
+    );
+
+    @Effect()
+    unmarkSession = this.actions$.pipe(
+        ofType(MemberActions.UNMARK_SESSION_START),
+        switchMap((sessionData: MemberActions.UnmarkSessionStart) => {
+
+            return this.http.delete<{ deletedDoneSessionId: number, donePercentage: number }>(environment.API_BASE_URL + 'sessions/unmark-session',
+                {
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    params: new HttpParams().set('sessionId', sessionData.payload.toString())
+                        .append('userId', this.userId)
+                })
+                .pipe(
+                    map(resData => {
+                        return new MemberActions.UnmarkSessionSuccess(resData);
+                    }),
+                    catchError(errorRes => {
+                        switch (errorRes.status) {
+                            case 403:
+                            case 401:
+                                return of(new MemberActions.UnmarkSessionFail(['Access Denied']));
+                            case 404:
+                                return of(new MemberActions.UnmarkSessionFail(['Error 404. Not Found']));
+                            case 400:
+                                return of(new MemberActions.UnmarkSessionFail(errorRes.error.errors));
+                            default:
+                                return of(new MemberActions.UnmarkSessionFail(['Oops! An error occured']));
+                        }
+                    })
+                )
+        })
+    );
+
+
+    @Effect()
+    fetchDoneSessions = this.actions$.pipe(
+        ofType(MemberActions.FETCH_DONE_SESSIONS_START),
+        switchMap((sessionData: MemberActions.FetchDoneSessionsStart) => {
+
+            return this.http.get<{ doneSessions: DoneSession[], donePercentage: number }>(environment.API_BASE_URL + 'sessions/done',
+                {
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    params: new HttpParams().set('userId', this.userId)
+                        .append('courseId', sessionData.payload.toString())
+                })
+                .pipe(
+                    map(resData => {
+                        return new MemberActions.FetchDoneSessionsSuccess(resData);
+                    }),
+                    catchError(errorRes => {
+                        switch (errorRes.status) {
+                            case 403:
+                            case 401:
+                                return of(new MemberActions.FetchDoneSessionsFail(['Access Denied']));
+                            case 404:
+                                return of(new MemberActions.FetchDoneSessionsFail(['Error 404. Not Found']));
+                            case 400:
+                                return of(new MemberActions.FetchDoneSessionsFail(errorRes.error.errors));
+                            default:
+                                return of(new MemberActions.FetchDoneSessionsFail(['Oops! An error occured']));
+                        }
+                    })
+                )
+        })
+    );
+
+    @Effect()
+    fetchProgressCourses = this.actions$.pipe(
+        ofType(MemberActions.FETCH_PROGRESS_COURSES_START),
+        switchMap(() => {
+
+            return this.http.get<{ memberCoursesProgress: { courseId: number, donePercentage: number }[] }>(environment.API_BASE_URL + 'sessions/courses-progress',
+                {
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    params: new HttpParams().set('userId', this.userId)
+                })
+                .pipe(
+                    map(resData => {
+                        return new MemberActions.FetchProgressCoursesSuccess(resData);
+                    }),
+                    catchError(errorRes => {
+                        switch (errorRes.status) {
+                            case 403:
+                            case 401:
+                                return of(new MemberActions.FetchProgressCoursesFail(['Access Denied']));
+                            case 404:
+                                return of(new MemberActions.FetchProgressCoursesFail(['Error 404. Not Found']));
+                            case 400:
+                                return of(new MemberActions.FetchProgressCoursesFail(errorRes.error.errors));
+                            default:
+                                return of(new MemberActions.FetchProgressCoursesFail(['Oops! An error occured']));
                         }
                     })
                 )

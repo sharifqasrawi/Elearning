@@ -81,12 +81,12 @@ export class CourseSessionComponent implements OnInit {
           this.loadingSavedSessions = state.loadingSavedSessions;
           this.loadedSavedSessions = state.loadedSavedSessions;
 
-          if (state.errors) {
-            this.dialog.open(ErrorDialogComponent, {
-              width: '450px',
-              data: { errors: state.errors }
-            });
-          }
+          // if (state.errors) {
+          //   this.dialog.open(ErrorDialogComponent, {
+          //     width: '450px',
+          //     data: { errors: state.errors }
+          //   });
+          // }
 
           this.saveChecked = this.savedSession ? true : false;
           // this.saveChecked = state.savedSession;
