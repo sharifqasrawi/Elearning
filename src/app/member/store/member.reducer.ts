@@ -30,8 +30,8 @@ export interface State {
     loadedDoneSessions: boolean,
 
     memberCoursesProgress: { courseId: number, donePercentage: number }[],
-    loadingMemberCoursesProgress: false,
-    loadedMemberCoursesProgress: false,
+    loadingMemberCoursesProgress: boolean,
+    loadedMemberCoursesProgress: boolean,
 
     // loadingLike: boolean,
     // loadingEnroll: boolean,

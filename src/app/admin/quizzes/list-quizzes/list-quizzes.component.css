@@ -1,0 +1,8 @@
+.dataTable-table-container a {
+    text-decoration: none;
+    color: purple;
+}
+
+.dataTable-table-container a:hover {
+    color: rgb(182, 23, 182);
+}

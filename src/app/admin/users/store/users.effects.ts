@@ -1,4 +1,3 @@
-import { User } from './../../../models/user.model';
 import { switchMap, map, catchError, exhaustMap, withLatestFrom } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
@@ -10,6 +9,7 @@ import { environment } from './../../../../environments/environment';
 
 import * as fromApp from '../../../store/app.reducer';
 import * as UsersActions from './users.actions';
+import { User } from './../../../models/user.model';
 
 export interface RegisterResponseData {
     user: User

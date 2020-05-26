@@ -1,8 +1,7 @@
-import { CourseCommentsComponent } from './courses/course-view/course-comments/course-comments.component';
-import { CoursesResolverService } from './courses/courses-resolver.service';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule, ExtraOptions } from '@angular/router';
 
+import { CoursesResolverService } from './courses/courses-resolver.service';
 import { AuthGuard } from './security/auth.guard';
 import { HomeComponent } from './home/home.component';
 import { AboutmeComponent } from './aboutme/aboutme.component';
@@ -13,6 +12,8 @@ import { LayoutComponent } from './layout/layout.component';
 import { CourseViewComponent } from './courses/course-view/course-view.component';
 import { CourseInfoComponent } from './courses/course-view/course-info/course-info.component';
 import { CourseSessionComponent } from './courses/course-view/course-session/course-session.component';
+import { QuizzesComponent } from './quizzes/quizzes.component';
+import { CourseCommentsComponent } from './courses/course-view/course-comments/course-comments.component';
 
 
 const routes: Routes = [
@@ -39,6 +40,12 @@ const routes: Routes = [
             ]
           },
           { path: '', component: CoursesComponent, pathMatch: 'full' }
+        ]
+      },
+      {
+        path: 'quizzes',
+        children: [
+          { path: '', component: QuizzesComponent, pathMatch: 'full' }
         ]
       },
       {

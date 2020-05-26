@@ -1,0 +1,69 @@
+<div class="question">
+    <h2>
+        <strong *ngIf="question.text_EN">
+            <span [innerHTML]="getSanitizedHtml(question.text_EN)"></span>
+        </strong>
+    </h2>
+    <div *ngIf="question.imagePath">
+        <img [src]="getSanitizedImage(question.imagePath)" alt="no preview" width="100%" height="200">
+    </div>
+    <div style="display: flex; justify-content: space-between;">
+        <p class="text-muted small">
+            <em>{{ question.createdBy }} - {{ question.createdAt | date:'medium' }}</em>
+        </p>
+        <p class="text-muted small">
+            <em>{{ question.updatedBy }} - {{ question.updatedAt | date:'medium' }}</em>
+        </p>
+    </div>
+    <div>
+        <button class="btn btn-link" (click)="onEdit()">
+            <fa-icon [icon]="faEdit"></fa-icon>
+            Edit
+        </button>
+        <button class="btn btn-link text-danger" (click)="onTrash()" *ngIf="!question.deletedAt">
+            <fa-icon [icon]="faTrash"></fa-icon>
+            Move to trash
+        </button>
+        <button class="btn btn-link text-success" (click)="onRestore()" *ngIf="question.deletedAt">
+            <fa-icon [icon]="faCheckCircle"></fa-icon>
+            Restore from trash
+        </button>
+        <button class="btn btn-link text-danger" (click)="onDelete()" *ngIf="question.deletedAt">
+            <fa-icon [icon]="faTrashAlt"></fa-icon>
+            Delete
+        </button>
+        <button class="btn btn-link text-warning" (click)="onAddAnswer(question.id)" >
+            <fa-icon [icon]="faPlusCircle"></fa-icon>
+            Add Answer
+        </button>
+    </div>
+    <hr>
+
+    <div>
+        <ul>
+            <li *ngFor="let answer of question.answers">
+                <dl>
+                    <dt [class.text-success]="answer.isCorrect"> 
+                        <div [innerHTML]="getSanitizedHtml(answer.text_EN)"></div>
+                    </dt>
+                    <dd class="text-muted small" >
+                        <div style="display: flex; justify-content: space-between;">
+                            <em>{{ answer.createdBy }} - {{ answer.createdAt | date:'medium' }}</em>
+                            <em>{{ answer.updatedBy }} - {{ answer.updatedAt | date:'medium' }}</em>
+                        </div>
+                        <div>
+                            <button class="btn btn-link" (click)="onEditAnswer(answer)">
+                                <fa-icon [icon]="faEdit"></fa-icon>
+                                Edit
+                            </button>
+                            <button class="btn btn-link text-danger" (click)="onDeleteAnswer(answer.id)">
+                                <fa-icon [icon]="faTrashAlt"></fa-icon>
+                                Delete
+                            </button>
+                        </div>
+                    </dd>
+                </dl>
+            </li>
+        </ul>
+    </div>
+</div>

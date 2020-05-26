@@ -21,6 +21,7 @@ import * as fromHomeSession from '../courses/course-view/course-session/store/se
 import * as fromHomeComments from '../courses/course-view/course-comments/store/comments.reducer';
 import * as fromMember from '../member/store/member.reducer';
 import * as fromAppSettings from '../AppSettings/store/app-settings.reducer';
+import * as fromQuizzes from '../admin/quizzes/store/quizzes.reducer';
 
 
 export interface AppState {
@@ -44,6 +45,7 @@ export interface AppState {
     member: fromMember.State,
     appSettings: fromAppSettings.State,
     reports: fromReports.State,
+    quizzes: fromQuizzes.State,
 }
 
 export const appReducer: ActionReducerMap<AppState> = {
@@ -67,4 +69,5 @@ export const appReducer: ActionReducerMap<AppState> = {
     member: fromMember.memberReducer,
     appSettings: fromAppSettings.appSettingsReducer,
     reports: fromReports.reportsReducer,
+    quizzes: fromQuizzes.quizzesReducer,
 };

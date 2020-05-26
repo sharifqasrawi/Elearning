@@ -70,6 +70,7 @@ export class CourseViewComponent implements OnInit {
 
   doneSessions: DoneSession[] = null;
   donePercentage: string = null;
+  donePercentageN: number = 0;
 
   allExpandState = true;
 
@@ -200,6 +201,7 @@ export class CourseViewComponent implements OnInit {
         this.errors = state.errors;
 
         if(state.loadedDoneSessions){
+          this.donePercentageN = state.donePercentage;
           this.donePercentage = `Progress: ${state.donePercentage.toFixed(0)} %`;
           if(state.donePercentage == 100){
             this.donePercentage += ' Congratulations !!';

@@ -53,6 +53,14 @@ import { TimeagoModule } from 'ngx-timeago';
 import { AddMemberComponent } from './courses/course-details/course-class/add-member/add-member.component';
 import { BugReportsComponent } from './reports/bug-reports/bug-reports.component';
 import { ViewReportComponent } from './reports/bug-reports/view-report/view-report.component';
+import { ListQuizzesComponent } from './quizzes/list-quizzes/list-quizzes.component';
+import { NewQuizComponent } from './quizzes/new-quiz/new-quiz.component';
+import { TrashedQuizzesComponent } from './quizzes/trashed-quizzes/trashed-quizzes.component';
+import { SetQuizComponent } from './quizzes/set-quiz/set-quiz.component';
+import { SetQuestionComponent } from './quizzes/set-quiz/set-question/set-question.component';
+import { NewQuestionComponent } from './quizzes/set-quiz/set-question/new-question/new-question.component';
+import { QuestionsLandingPageComponent } from './quizzes/set-quiz/set-question/questions-landing-page/questions-landing-page.component';
+import { NewAnswerComponent } from './quizzes/set-quiz/set-question/new-answer/new-answer.component';
 
 @NgModule({
     declarations: [
@@ -96,6 +104,14 @@ import { ViewReportComponent } from './reports/bug-reports/view-report/view-repo
         AddMemberComponent,
         BugReportsComponent,
         ViewReportComponent,
+        ListQuizzesComponent,
+        NewQuizComponent,
+        TrashedQuizzesComponent,
+        SetQuizComponent,
+        SetQuestionComponent,
+        NewQuestionComponent,
+        QuestionsLandingPageComponent,
+        NewAnswerComponent,
         
     ],
     imports: [

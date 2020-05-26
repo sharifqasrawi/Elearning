@@ -1,6 +1,12 @@
+import { QuestionsLandingPageComponent } from './quizzes/set-quiz/set-question/questions-landing-page/questions-landing-page.component';
+import { SetQuestionComponent } from './quizzes/set-quiz/set-question/set-question.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
+import { SetQuizComponent } from './quizzes/set-quiz/set-quiz.component';
+import { ListQuizzesComponent } from './quizzes/list-quizzes/list-quizzes.component';
+import { NewQuizComponent } from './quizzes/new-quiz/new-quiz.component';
+import { TrashedQuizzesComponent } from './quizzes/trashed-quizzes/trashed-quizzes.component';
 import { CourseCommentsComponent } from './courses/course-details/course-comments/course-comments.component';
 import { BugReportsComponent } from './reports/bug-reports/bug-reports.component';
 import { CourseLikesComponent } from './courses/course-details/course-likes/course-likes.component';
@@ -128,6 +134,23 @@ const routes: Routes = [
             component: ListCoursesComponent,
             pathMatch: 'full'
           }
+        ]
+      },
+      {
+        path: 'quizzes',
+        children: [
+          { path: 'new', component: NewQuizComponent },
+          { path: 'edit/:id/:slug', component: NewQuizComponent },
+          { path: 'trashed', component: TrashedQuizzesComponent },
+          {
+            path: ':quizId/:quizSlug',
+            component: SetQuizComponent,
+            children: [
+              { path: 'question/:questionId/:questionSlug', component: SetQuestionComponent },
+              { path: '', component: QuestionsLandingPageComponent, pathMatch: 'full' }
+            ]
+          },
+          { path: '', component: ListQuizzesComponent, pathMatch: 'full' }
         ]
       },
       {

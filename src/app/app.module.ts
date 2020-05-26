@@ -13,8 +13,9 @@ import { TimeagoModule } from 'ngx-timeago';
 import { MonacoEditorModule } from 'ngx-monaco-editor';
 import { RatingModule } from 'ng-starrating';
 
-import { ReportsEffects } from './admin/reports/store/reports.effects';
 import * as fromApp from './store/app.reducer';
+
+import { ReportsEffects } from './admin/reports/store/reports.effects';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
@@ -56,6 +57,8 @@ import { CommonModule } from '@angular/common';
 import { AppSettingsEffects } from './AppSettings/store/app-settings.effects';
 import { CommentLikesComponent } from './courses/course-view/course-comments/comment-likes/comment-likes.component';
 import { ReportBugComponent } from './report-bug/report-bug.component';
+import { QuizzesEffects } from './admin/quizzes/store/quizzes.effects';
+import { QuizzesComponent } from './quizzes/quizzes.component';
 
 @NgModule({
   declarations: [
@@ -74,6 +77,7 @@ import { ReportBugComponent } from './report-bug/report-bug.component';
     CoursePickupDialogComponent,
     CommentLikesComponent,
     ReportBugComponent,
+    QuizzesComponent,
   ],
   imports: [
     BrowserModule,
@@ -102,6 +106,7 @@ import { ReportBugComponent } from './report-bug/report-bug.component';
       MemberEffects,
       AppSettingsEffects,
       ReportsEffects,
+      QuizzesEffects
     ]),
     MaterialModule,
     MatNativeDateModule,

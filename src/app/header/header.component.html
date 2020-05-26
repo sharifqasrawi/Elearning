@@ -15,6 +15,12 @@
                         Home
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" [routerLink]="[ '/quizzes' ]" routerlinkactive="active">
+                        <fa-icon [icon]="faQuestionCircle"></fa-icon>
+                        Quizzes
+                    </a>
+                </li>
                 <li class="nav-item" *ngIf="isAuthenticated">
                     <a class="nav-link" [routerLink]="[ '/member', 'dashboard' ]" routerlinkactive="active">
                         <fa-icon [icon]="faWrench"></fa-icon>
@@ -96,44 +102,51 @@
             [mode]="mobileQuery.matches ? 'over' : 'side'" [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
             <mat-nav-list>
                 <mat-list-item class="mt-3">
-                    <a class="full-width" [routerLink]="[ '/' ]" routerlinkactive="active">
+                    <a class="full-width" [routerLink]="[ '/' ]" routerlinkactive="active" (click)="sidenav.toggle()">
                         <fa-icon [icon]="faHome"></fa-icon>
                         Home
                     </a>
                 </mat-list-item>
                 <mat-list-item class="mt-3">
-                    <a class="full-width" [routerLink]="[ '/member', 'dashboard' ]" routerlinkactive="active">
+                    <a class="full-width" [routerLink]="[ '/quizzes' ]" routerlinkactive="active" (click)="sidenav.toggle()">
+                        <fa-icon [icon]="faQuestionCircle"></fa-icon>
+                        Quizzes
+                    </a>
+                </mat-list-item>
+                <mat-list-item class="mt-3">
+                    <a class="full-width" [routerLink]="[ '/member', 'dashboard' ]" routerlinkactive="active" (click)="sidenav.toggle()">
                         <fa-icon [icon]="faWrench"></fa-icon>
                         Dashboard
                     </a>
                 </mat-list-item>
-                <mat-list-item class="mt-3" >
-                    <a class="full-width" [routerLink]="[ '/about-me' ]" routerlinkactive="active">
+                <mat-list-item class="mt-3">
+                    <a class="full-width" [routerLink]="[ '/about-me' ]" routerlinkactive="active" (click)="sidenav.toggle()">
                         <fa-icon [icon]="faAbout"></fa-icon>
                         About me
                     </a>
                 </mat-list-item>
                 <mat-list-item class="mt-3">
-                    <a class="full-width" [routerLink]="[ '/contact-us' ]" routerlinkactive="active">
+                    <a class="full-width" [routerLink]="[ '/contact-us' ]" routerlinkactive="active" (click)="sidenav.toggle()">
                         <fa-icon [icon]="faEnvelopeOpenText"></fa-icon>
                         Contact us
                     </a>
                 </mat-list-item>
-                <mat-list-item class="mt-3"  *ngIf="isAdmin">
-                    <a class="full-width" [routerLink]="[ '/admin' ]" routerlinkactive="active">
+                <mat-list-item class="mt-3" *ngIf="isAdmin">
+                    <a class="full-width" [routerLink]="[ '/admin' ]" routerlinkactive="active" (click)="sidenav.toggle()">
                         <fa-icon [icon]="faChessKing"></fa-icon>
                         Administration
                     </a>
                 </mat-list-item>
-                <mat-list-item class="mt-3"  *ngIf="!isAuthenticated">
-                    <a class="full-width" [routerLink]="['/security']" routerlinkactive="active">
+                <mat-list-item class="mt-3" *ngIf="!isAuthenticated">
+                    <a class="full-width" [routerLink]="['/security']" routerlinkactive="active" (click)="sidenav.toggle()">
                         <fa-icon [icon]="faLogin"></fa-icon>
                         Login
                     </a>
                 </mat-list-item>
-                
 
-                <mat-list-item  class="mt-3" (click)="showSubmenuUser = !showSubmenuUser" class="parent" *ngIf="isAuthenticated">
+
+                <mat-list-item class="mt-3" (click)="showSubmenuUser = !showSubmenuUser" class="parent"
+                    *ngIf="isAuthenticated">
                     <span class="full-width">
                         <fa-icon [icon]="faLogin"></fa-icon>
                         {{ firstName + ' ' + lastName }}
@@ -142,7 +155,7 @@
                         expand_more
                     </mat-icon>
                 </mat-list-item>
-                <div class="submenu" [ngClass]="{'expanded' : showSubmenuUser}"  *ngIf="isAuthenticated">
+                <div class="submenu" [ngClass]="{'expanded' : showSubmenuUser}" *ngIf="isAuthenticated">
                     <a mat-list-item (click)="onLogout()">
                         <fa-icon [icon]="faLogout"></fa-icon> Logout
                     </a>

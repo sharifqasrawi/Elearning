@@ -10,7 +10,8 @@ import {
   faEnvelopeOpenText,
   faWrench,
   faUserEdit,
-  faEye
+  faEye,
+  faQuestionCircle
 } from '@fortawesome/free-solid-svg-icons';
 
 import { Store } from '@ngrx/store';
@@ -39,6 +40,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   faWrench = faWrench;
   faUserEdit = faUserEdit;
   faEye = faEye;
+  faQuestionCircle = faQuestionCircle;
 
   mobileQuery: MediaQueryList;
 

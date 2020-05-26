@@ -1,0 +1,36 @@
+.desc {
+    height: 150px;
+    background-color: rgb(221, 219, 219);
+    padding:12px;
+    overflow-y: auto;
+}
+
+.info {
+    height: 150px;
+    background-color: rgb(253, 204, 204);
+    padding:12px;
+    overflow-y: auto;
+}
+
+
+.list-group-item {
+    background-color: #ece4ec;
+}
+
+.list-group-item a {
+    color: rgb(29, 29, 29)
+}
+
+.list-group-item a:hover {
+    text-decoration: none;
+}
+
+.list-group-item.active {
+    background-color: rgb(226, 245, 245);
+    border-color: rgb(226, 245, 245);
+}
+
+.list-group-item:hover {
+    background-color: rgb(226, 245, 245);
+}
+

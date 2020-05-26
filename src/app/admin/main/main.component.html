@@ -73,6 +73,25 @@
                     </a>
                 </div>
 
+                
+                <mat-list-item (click)="showSubmenuQuizzes = !showSubmenuQuizzes" class="parent">
+                    <span class="full-width">Quizzes</span>
+                    <mat-icon mat-list-icon class="adminNavColor">help</mat-icon>
+                    <mat-icon class="menu-button adminNavColor" [ngClass]="{'rotated' : showSubmenuQuizzes}">
+                        expand_more
+                    </mat-icon>
+                </mat-list-item>
+                <div class="submenu" [ngClass]="{'expanded' : showSubmenuQuizzes}">
+                    <a mat-list-item [routerLink]="['/admin', 'quizzes']">
+                        <mat-icon mat-list-icon>done_all</mat-icon>
+                        Published
+                    </a>
+                    <a mat-list-item [routerLink]="['/admin', 'quizzes', 'trashed']">
+                        <mat-icon mat-list-icon>delete</mat-icon>
+                        Trash
+                    </a>
+                </div>
+
                 <mat-list-item (click)="showSubmenuUsers = !showSubmenuUsers" class="parent">
                     <span class="full-width">Users</span>
                     <mat-icon mat-list-icon class="adminNavColor">supervisor_account</mat-icon>
@@ -137,7 +156,6 @@
                         Tags
                     </a>
                 </div>
-
 
                 <a mat-list-item [routerLink]="['/admin', 'reports']">
                     <mat-icon mat-list-icon>feedback</mat-icon>

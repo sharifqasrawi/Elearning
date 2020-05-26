@@ -1,0 +1,98 @@
+<div class="adminPageTop">
+    <div class="row">
+        <div class="col-lg-8">
+            <h1>
+                <fa-icon [icon]="faPlusCircle"></fa-icon>
+                {{ editMode ? 'Edit quiz' : 'Create new quiz.' }}
+            </h1>
+        </div>
+        <div class="col-lg-2">
+            <a mat-raised-button color="warn" class="btn-block mt-1" style="cursor: pointer; text-decoration:none;"
+                [routerLink]="['/admin', 'quizzes']">
+                Cancel
+            </a>
+        </div>
+        <div class="col-lg-2">
+            <button mat-raised-button color="primary" class="btn-block mt-1" (click)="f.onSubmit(undefined)"
+                [disabled]="loading || quizCreating || !form.valid">
+                <fa-icon [icon]="faSave"></fa-icon>
+                {{ loading ? 'Loading...' : ( quizCreating ? 'Saving...' : 'Save') }}
+            </button>
+        </div>
+    </div>
+    <hr>
+</div>
+
+<div class="adminPageBottom">
+
+    <form [formGroup]="form" #f="ngForm" (ngSubmit)="onSubmit()">
+        <mat-form-field class="full-width" appearance="legacy">
+            <mat-label>Quiz Title (en): </mat-label>
+            <input [readonly]="loading" type="text" matInput formControlName="title_EN"
+                placeholder="Enter quiz title in english">
+            <mat-error *ngIf="!form.controls.title_EN.valid && form.controls.title_EN.touched">
+                This field is required.
+            </mat-error>
+        </mat-form-field>
+
+        <div class="row">
+            <div class="col-lg-6">
+                <mat-form-field class="full-width" appearance="legacy">
+                    <mat-chip-list #chipList aria-label="Language selection">
+                        <mat-chip *ngFor="let lang of languages" [selectable]="selectable" [removable]="removable"
+                            (removed)="remove(lang)">
+                            {{lang}}
+                            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                        </mat-chip>
+                        <input [readonly]="loading" placeholder="Languages" required formControlName="languages"
+                            [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                            [matChipInputAddOnBlur]="addOnBlur" (matChipInputTokenEnd)="add($event)">
+                        <mat-error *ngIf="!form.controls.languages.valid && form.controls.languages.touched">
+                            This field is required.
+                        </mat-error>
+                    </mat-chip-list>
+
+                </mat-form-field>
+            </div>
+            <div class="col-lg-6">
+                <mat-form-field class="full-width" appearance="legacy">
+                    <mat-label>Quiz Duration: </mat-label>
+                    <input [readonly]="loading" type="text" matInput formControlName="duration"
+                        placeholder="Enter quiz duration in minutes">
+                    <mat-error *ngIf="!form.controls.duration.valid && form.controls.duration.touched">
+                        This field is required.
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div>
+            <label>Description *</label>
+            <ckeditor tagName="textarea" [editor]="Editor" formControlName="description_EN" required></ckeditor>
+            <span class="small text-danger"
+                *ngIf="!form.controls.description_EN.valid && form.controls.description_EN.touched">
+                This field is required.
+            </span>
+        </div>
+
+        <div class="row mt-3 mb-4">
+            <div class="col-lg-8">
+                <mat-form-field class="full-width" appearance="legacy">
+                    <mat-label>Image </mat-label>
+                    <input readonly type="text" matInput formControlName="imagePath" required
+                        placeholder="add quiz image">
+                    <mat-icon (click)="selectImage()" style="cursor: pointer;" matSuffix>mode_edit</mat-icon>
+                    <mat-error *ngIf="!form.controls.imagePath.valid && form.controls.imagePath.touched">
+                        This field is required.
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-lg-4">
+                <div class="imagePreview">
+                    <img [src]="form.value.imagePath" alt="no preview" width="100%" height="300">
+                </div>
+            </div>
+        </div>
+    </form>
+
+</div>
