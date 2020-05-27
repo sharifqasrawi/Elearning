@@ -1,3 +1,4 @@
+
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule } from '@angular/common/http';
@@ -58,7 +59,11 @@ import { AppSettingsEffects } from './AppSettings/store/app-settings.effects';
 import { CommentLikesComponent } from './courses/course-view/course-comments/comment-likes/comment-likes.component';
 import { ReportBugComponent } from './report-bug/report-bug.component';
 import { QuizzesEffects } from './admin/quizzes/store/quizzes.effects';
+import { HomeQuizzesEffects } from './quizzes/store/quizzes.effects';
 import { QuizzesComponent } from './quizzes/quizzes.component';
+import { QuizComponent } from './quizzes/quiz/quiz.component';
+import { QuizProccessComponent } from './quizzes/quiz-proccess/quiz-proccess.component';
+import { CanDeactivateGuard } from './quizzes/quiz-proccess/can-deactivate-guard.service';
 
 @NgModule({
   declarations: [
@@ -78,6 +83,8 @@ import { QuizzesComponent } from './quizzes/quizzes.component';
     CommentLikesComponent,
     ReportBugComponent,
     QuizzesComponent,
+    QuizComponent,
+    QuizProccessComponent,
   ],
   imports: [
     BrowserModule,
@@ -106,7 +113,8 @@ import { QuizzesComponent } from './quizzes/quizzes.component';
       MemberEffects,
       AppSettingsEffects,
       ReportsEffects,
-      QuizzesEffects
+      QuizzesEffects,
+      HomeQuizzesEffects
     ]),
     MaterialModule,
     MatNativeDateModule,
@@ -130,6 +138,7 @@ import { QuizzesComponent } from './quizzes/quizzes.component';
     //   useClass: AuthInterceptorService,
     //   multi: true
     // },
+    CanDeactivateGuard
   ],
   bootstrap: [AppComponent]
 })

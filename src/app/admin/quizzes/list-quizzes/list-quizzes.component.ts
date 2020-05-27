@@ -43,7 +43,8 @@ export class ListQuizzesComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.store.dispatch(new QuizzesActions.FetchQuizzesStart());
+    if (!this.quizzes)
+      this.store.dispatch(new QuizzesActions.FetchQuizzesStart());
 
     this.store.select('quizzes').subscribe(state => {
       this.quizzes = state.quizzes;

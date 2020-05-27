@@ -146,7 +146,7 @@ const routes: Routes = [
             path: ':quizId/:quizSlug',
             component: SetQuizComponent,
             children: [
-              { path: 'question/:questionId/:questionSlug', component: SetQuestionComponent },
+              { path: 'question/:quizId/:questionId/:questionSlug', component: SetQuestionComponent },
               { path: '', component: QuestionsLandingPageComponent, pathMatch: 'full' }
             ]
           },

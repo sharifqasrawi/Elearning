@@ -29,7 +29,9 @@ export class SetQuestionComponent implements OnInit, OnDestroy {
 
   question: Question = null;
   questionId: number = null;
-
+  quizId: number = null;
+  answers: Answer[] = null;
+  loadingAs = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -43,59 +45,24 @@ export class SetQuestionComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.route.params.subscribe((params: Params) => {
       this.questionId = +params.questionId;
+      this.quizId = +params.quizId;
+    });
 
-      this.store.select('quizzes').subscribe(state => {
-        this.question = state.quizzes.find(qz => qz.questions.find(q => q.id === this.questionId)).questions.find(q => q.id === this.questionId);
-      });
+    this.store.dispatch(new QuizzesActions.FetchQuestionsStart(this.quizId));
+    this.store.dispatch(new QuizzesActions.FetchAnswersStart(this.questionId));
+
+    this.store.select('quizzes').subscribe(state => {
+      this.question = state.questions.find(q => q.id === this.questionId);
+      this.answers = state.answers;
+      this.loadingAs = state.loadingAnswers;
     });
 
   }
 
-  onEdit() {
-    this.dialog.open(NewQuestionComponent, {
-      width: '650px',
-      disableClose: true,
-      data: { question: this.question, editMode: true, quizId: null }
-    });
+  onBackToQuestions() {
+    this.location.back();
   }
 
-  onTrash() {
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      width: '300px',
-      data: { header: 'Confirmation', message: 'Move this question to trash ?' }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result)
-        this.store.dispatch(new QuizzesActions.TrashRestoreQuestionStart({ id: this.questionId, action: 'trash' }));
-    });
-  }
-
-  onRestore() {
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      width: '300px',
-      data: { header: 'Confirmation', message: 'Restore this question from trash ?' }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result)
-        this.store.dispatch(new QuizzesActions.TrashRestoreQuestionStart({ id: this.questionId, action: 'restore' }));
-    });
-  }
-
-  onDelete() {
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      width: '300px',
-      data: { header: 'Confirmation', message: 'Delete this question permanently ?' }
-    });
-
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.store.dispatch(new QuizzesActions.DeleteQuestionStart(this.questionId));
-        this.location.back();
-      }
-    });
-  }
 
   onAddAnswer(questionId: number) {
     this.dialog.open(NewAnswerComponent, {

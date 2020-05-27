@@ -86,6 +86,12 @@
   color: #FFF;
 }
 
+.card-counter.purple {
+  background-color: purple;
+  color: #FFF;
+}
+
+
 
 .card-counter i {
   font-size: 5em;

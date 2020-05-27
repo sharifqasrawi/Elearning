@@ -14,6 +14,7 @@ import * as DirectoriesActions from '../directories/store/directories.actions';
 import * as FilesActions from '../files/store/files.actions';
 import * as TagsActions from '../tags/store/tags.actions';
 import * as ReportsActions from '../reports/store/reports.action';
+import * as QuizzesActions from '../quizzes/store/quizzes.actions';
 
 @Component({
   selector: 'app-dashboard',
@@ -35,6 +36,7 @@ export class DashboardComponent implements OnInit {
   commentsCount = 0;
   likesCount = 0;
   reportsCount = 0;
+  quizzesCount = 0;
 
   constructor(
     private store: Store<fromApp.AppState>,
@@ -58,6 +60,8 @@ export class DashboardComponent implements OnInit {
     this.store.select('tags').pipe(map(state => state.tags.length)).subscribe(count => this.tagsCount = count);
    
     this.store.select('reports').pipe(map(state => state.reports.length)).subscribe(count => this.reportsCount = count);
+
+    this.store.select('quizzes').pipe(map(state => state.quizzes.length)).subscribe(count => this.quizzesCount = count);
 
     this.store.select('messages').subscribe(state => {
       this.messagesCount = state.messages.length; this.sentEmailsCount = state.emailMessages.length;
@@ -88,6 +92,7 @@ export class DashboardComponent implements OnInit {
     this.store.dispatch(new FilesActions.FetchStart());
     this.store.dispatch(new TagsActions.FetchStart());
     this.store.dispatch(new ReportsActions.FetchStart());
+    this.store.dispatch(new QuizzesActions.FetchQuizzesStart());
 
     this.http.get<{ count: number }>(environment.API_BASE_URL + 'comments/count', {
       headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)

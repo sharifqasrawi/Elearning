@@ -272,6 +272,41 @@ export class QuizzesEffects {
         })
     );
 
+
+    @Effect()
+    fetchQuestions = this.actions$.pipe(
+        ofType(QuizzesActions.FETCH_QUESTIONS_START),
+        switchMap((questionData: QuizzesActions.FetchQuestionsStart) => {
+
+            return this.http.get<{ questions: Question[] }>(environment.API_BASE_URL + 'quizzesAdmin/questions',
+                {
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    params: new HttpParams().set('quizId', questionData.payload.toString())
+                })
+                .pipe(
+                    map(resData => {
+                        return new QuizzesActions.FetchQuestionsSuccess(resData.questions);
+                    }),
+                    catchError(errorRes => {
+
+                        switch (errorRes.status) {
+                            case 403:
+                            case 401:
+                                return of(new QuizzesActions.FetchQuestionsFail(['Access Denied']));
+                            case 404:
+                                return of(new QuizzesActions.FetchQuestionsFail(['Error 404. Not Found']));
+                            case 400:
+                                return of(new QuizzesActions.FetchQuestionsFail(errorRes.error.errors));
+
+                            default:
+                                return of(new QuizzesActions.FetchQuestionsFail(['Error Fetching Data']));
+                        }
+                    })
+                )
+        }),
+
+    );
+
     @Effect()
     createQuestion = this.actions$.pipe(
         ofType(QuizzesActions.CREATE_QUESTION_START),
@@ -320,7 +355,7 @@ export class QuizzesEffects {
                 text_EN: questionData.payload.text_EN,
                 imagePath: questionData.payload.imagePath,
                 duration: questionData.payload.duration,
-                createdBy: this.userFullName
+                updatedBy: this.userFullName
             };
 
             return this.http.put<{ updatedQuestion: Question }>(environment.API_BASE_URL + 'quizzesAdmin/update-question',
@@ -390,14 +425,14 @@ export class QuizzesEffects {
         ofType(QuizzesActions.DELETE_QUESTION_START),
         switchMap((questionData: QuizzesActions.DeleteQuestionStart) => {
 
-            return this.http.delete<{ deletedQuestion: Question }>(environment.API_BASE_URL + 'quizzesAdmin/delete-question',
+            return this.http.delete<{ deletedQuestionId: number }>(environment.API_BASE_URL + 'quizzesAdmin/delete-question',
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
                     params: new HttpParams().set('questionId', questionData.payload.toString())
                 })
                 .pipe(
                     map(resData => {
-                        return new QuizzesActions.DeleteQuestionSuccess(resData.deletedQuestion);
+                        return new QuizzesActions.DeleteQuestionSuccess(resData.deletedQuestionId);
                     }),
                     catchError(errorRes => {
 
@@ -420,6 +455,39 @@ export class QuizzesEffects {
     );
 
     @Effect()
+    fetchAnswers = this.actions$.pipe(
+        ofType(QuizzesActions.FETCH_ANSWERS_START),
+        switchMap((questionData: QuizzesActions.FetchAnswersStart) => {
+
+            return this.http.get<{ answers: Answer[] }>(environment.API_BASE_URL + 'quizzesAdmin/answers',
+                {
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    params: new HttpParams().set('questionId', questionData.payload.toString())
+                })
+                .pipe(
+                    map(resData => {
+                        return new QuizzesActions.FetchAnswersSuccess(resData.answers);
+                    }),
+                    catchError(errorRes => {
+                        switch (errorRes.status) {
+                            case 403:
+                            case 401:
+                                return of(new QuizzesActions.FetchAnswersFail(['Access Denied']));
+                            case 404:
+                                return of(new QuizzesActions.FetchAnswersFail(['Error 404. Not Found']));
+                            case 400:
+                                return of(new QuizzesActions.FetchAnswersFail(errorRes.error.errors));
+
+                            default:
+                                return of(new QuizzesActions.FetchAnswersFail(['Error Fetching Data']));
+                        }
+                    })
+                )
+        }),
+
+    );
+
+    @Effect()
     createAnswer = this.actions$.pipe(
         ofType(QuizzesActions.CREATE_ANSWER_START),
         switchMap((answernData: QuizzesActions.CreateAnswerStart) => {
@@ -431,14 +499,14 @@ export class QuizzesEffects {
                 createdBy: this.userFullName
             };
 
-            return this.http.post<{ question: Question }>(environment.API_BASE_URL + 'quizzesAdmin/create-answer',
+            return this.http.post<{ createdAnswer: Answer }>(environment.API_BASE_URL + 'quizzesAdmin/create-answer',
                 data,
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
                 })
                 .pipe(
                     map(resData => {
-                        return new QuizzesActions.CreateAnswerSuccess(resData.question);
+                        return new QuizzesActions.CreateAnswerSuccess(resData.createdAnswer);
                     }),
                     catchError(errorRes => {
                         switch (errorRes.status) {
@@ -451,7 +519,7 @@ export class QuizzesEffects {
                                 return of(new QuizzesActions.CreateAnswerFail(errorRes.error.errors));
 
                             default:
-                                return of(new QuizzesActions.CreateAnswerFail(['Error Fetching Data']));
+                                return of(new QuizzesActions.CreateAnswerFail(['Error creating answer']));
                         }
                     })
                 );
@@ -469,17 +537,17 @@ export class QuizzesEffects {
                 text_EN: answernData.payload.text_EN,
                 imagePath: answernData.payload.imagePath,
                 isCorrect: answernData.payload.isCorrect,
-                createdBy: this.userFullName
+                updatedBy: this.userFullName
             };
 
-            return this.http.put<{ question: Question }>(environment.API_BASE_URL + 'quizzesAdmin/update-answer',
+            return this.http.put<{ updatedAnswer: Answer }>(environment.API_BASE_URL + 'quizzesAdmin/update-answer',
                 data,
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
                 })
                 .pipe(
                     map(resData => {
-                        return new QuizzesActions.UpdateAnswerSuccess(resData.question);
+                        return new QuizzesActions.UpdateAnswerSuccess(resData.updatedAnswer);
                     }),
                     catchError(errorRes => {
                         switch (errorRes.status) {
@@ -492,7 +560,7 @@ export class QuizzesEffects {
                                 return of(new QuizzesActions.UpdateAnswerFail(errorRes.error.errors));
 
                             default:
-                                return of(new QuizzesActions.UpdateAnswerFail(['Error Fetching Data']));
+                                return of(new QuizzesActions.UpdateAnswerFail(['Error updating answer']));
                         }
                     }))
         }),
@@ -505,14 +573,14 @@ export class QuizzesEffects {
         ofType(QuizzesActions.DELETE_ANSWER_START),
         switchMap((answerData: QuizzesActions.DeleteAnswerStart) => {
 
-            return this.http.delete<{ question: Question }>(environment.API_BASE_URL + 'quizzesAdmin/delete-answer',
+            return this.http.delete<{ deletedAnswerId: number }>(environment.API_BASE_URL + 'quizzesAdmin/delete-answer',
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
                     params: new HttpParams().set('answerId', answerData.payload.toString())
                 })
                 .pipe(
                     map(resData => {
-                        return new QuizzesActions.DeleteAnswerSuccess(resData.question);
+                        return new QuizzesActions.DeleteAnswerSuccess(resData.deletedAnswerId);
                     }),
                     catchError(errorRes => {
 
@@ -526,7 +594,7 @@ export class QuizzesEffects {
                                 return of(new QuizzesActions.DeleteAnswerFail(errorRes.error.errors));
 
                             default:
-                                return of(new QuizzesActions.DeleteAnswerFail(['Error Fetching Data']));
+                                return of(new QuizzesActions.DeleteAnswerFail(['Error deleting answer']));
                         }
                     })
                 )

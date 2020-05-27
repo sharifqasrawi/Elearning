@@ -22,6 +22,7 @@ import * as fromHomeComments from '../courses/course-view/course-comments/store/
 import * as fromMember from '../member/store/member.reducer';
 import * as fromAppSettings from '../AppSettings/store/app-settings.reducer';
 import * as fromQuizzes from '../admin/quizzes/store/quizzes.reducer';
+import * as fromHomeQuizzes from '../quizzes/store/quizzes.reducer';
 
 
 export interface AppState {
@@ -46,6 +47,7 @@ export interface AppState {
     appSettings: fromAppSettings.State,
     reports: fromReports.State,
     quizzes: fromQuizzes.State,
+    homeQuizzes: fromHomeQuizzes.State,
 }
 
 export const appReducer: ActionReducerMap<AppState> = {
@@ -70,4 +72,5 @@ export const appReducer: ActionReducerMap<AppState> = {
     appSettings: fromAppSettings.appSettingsReducer,
     reports: fromReports.reportsReducer,
     quizzes: fromQuizzes.quizzesReducer,
+    homeQuizzes:fromHomeQuizzes.homeQuizzesReducer,
 };

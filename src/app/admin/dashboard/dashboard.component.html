@@ -111,7 +111,11 @@
             </div>
         </div>
         <div class="col-md-3">
-
+            <div class="card-counter purple">
+                <mat-icon class="icon">help</mat-icon>
+                <span [countUp]="quizzesCount" class="count-numbers">0</span>
+                <span class="count-name">Quizzes</span>
+            </div>
         </div>
     </div>
 
@@ -121,7 +125,7 @@
 
     <hr>
 
-    <app-app-ratings></app-app-ratings>    
+    <app-app-ratings></app-app-ratings>
 
     <div class="mb-5"></div>
 </div>

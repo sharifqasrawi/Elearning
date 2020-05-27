@@ -33,6 +33,9 @@ export const PUBLISH_UNPUBLISH_START = '[Quizzes] Publish Unpublish Start';
 export const PUBLISH_UNPUBLISH_SUCCESS = '[Quizzes] Publish Unpublish Success';
 export const PUBLISH_UNPUBLISH_FAIL = '[Quizzes] Publish Unpublish Fail';
 
+export const FETCH_QUESTIONS_START = '[Quizzes] Fetch Questions Start';
+export const FETCH_QUESTIONS_SUCCESS = '[Quizzes] Fetch Questions Success';
+export const FETCH_QUESTIONS_FAIL = '[Quizzes] Fetch Questions Fail';
 
 export const CREATE_QUESTION_START = '[Quizzes] Create Question Start';
 export const CREATE_QUESTION_SUCCESS = '[Quizzes] Create Question Success';
@@ -49,6 +52,10 @@ export const TRASH_RESTORE_QUESTION_FAIL = '[Quizzes] Trash Restore Question Fai
 export const DELETE_QUESTION_START = '[Quizzes] Delete Question Start';
 export const DELETE_QUESTION_SUCCESS = '[Quizzes] Delete Question Success';
 export const DELETE_QUESTION_FAIL = '[Quizzes] Delete Question Fail';
+
+export const FETCH_ANSWERS_START = '[Quizzes] Fetch Answers Start';
+export const FETCH_ANSWERS_SUCCESS = '[Quizzes] Fetch Answers Success';
+export const FETCH_ANSWERS_FAIL = '[Quizzes] Fetch Answers Fail';
 
 export const CREATE_ANSWER_START = '[Quizzes] Create Answer Start';
 export const CREATE_ANSWER_SUCCESS = '[Quizzes] Create Answer Success';
@@ -220,6 +227,24 @@ export class PublishUnpublishFail implements Action {
     constructor(public payload: string[]) { }
 }
 
+////////////
+
+export class FetchQuestionsStart implements Action {
+    readonly type = FETCH_QUESTIONS_START;
+    constructor(public payload: number) { }
+}
+
+export class FetchQuestionsSuccess implements Action {
+    readonly type = FETCH_QUESTIONS_SUCCESS;
+
+    constructor(public payload: Question[]) { }
+}
+
+export class FetchQuestionsFail implements Action {
+    readonly type = FETCH_QUESTIONS_FAIL;
+
+    constructor(public payload: string[]) { }
+}
 
 ////////////
 
@@ -306,7 +331,7 @@ export class DeleteQuestionStart implements Action {
 export class DeleteQuestionSuccess implements Action {
     readonly type = DELETE_QUESTION_SUCCESS;
 
-    constructor(public payload: Question) { }
+    constructor(public payload: number) { }
 }
 
 export class DeleteQuestionFail implements Action {
@@ -317,6 +342,26 @@ export class DeleteQuestionFail implements Action {
 
 
 ////////////
+
+export class FetchAnswersStart implements Action {
+    readonly type = FETCH_ANSWERS_START;
+    constructor(public payload: number) { }
+}
+
+export class FetchAnswersSuccess implements Action {
+    readonly type = FETCH_ANSWERS_SUCCESS;
+
+    constructor(public payload: Answer[]) { }
+}
+
+export class FetchAnswersFail implements Action {
+    readonly type = FETCH_ANSWERS_FAIL;
+
+    constructor(public payload: string[]) { }
+}
+
+////////////
+
 
 export class CreateAnswerStart implements Action {
     readonly type = CREATE_ANSWER_START;
@@ -332,7 +377,7 @@ export class CreateAnswerStart implements Action {
 export class CreateAnswerSuccess implements Action {
     readonly type = CREATE_ANSWER_SUCCESS;
 
-    constructor(public payload: Question) { }
+    constructor(public payload: Answer) { }
 }
 
 export class CreateAnswerFail implements Action {
@@ -358,7 +403,7 @@ export class UpdateAnswerStart implements Action {
 export class UpdateAnswerSuccess implements Action {
     readonly type = UPDATE_ANSWER_SUCCESS;
 
-    constructor(public payload: Question) { }
+    constructor(public payload: Answer) { }
 }
 
 export class UpdateAnswerFail implements Action {
@@ -379,7 +424,7 @@ export class DeleteAnswerStart implements Action {
 export class DeleteAnswerSuccess implements Action {
     readonly type = DELETE_ANSWER_SUCCESS;
 
-    constructor(public payload: Question) { }
+    constructor(public payload: number) { }
 }
 
 export class DeleteAnswerFail implements Action {
@@ -405,6 +450,9 @@ export type QuizzesActions =
     | FetchQuizzesStart
     | FetchQuizzesSuccess
     | FetchQuizzesFail
+    | FetchQuestionsStart
+    | FetchQuestionsSuccess
+    | FetchQuestionsFail
     | FetchTrashedQuizzesStart
     | FetchTrashedQuizzesSuccess
     | CreateQuizStart
@@ -435,6 +483,9 @@ export type QuizzesActions =
     | DeleteQuestionStart
     | DeleteQuestionSuccess
     | DeleteQuestionFail
+    | FetchAnswersStart
+    | FetchAnswersSuccess
+    | FetchAnswersFail
     | CreateAnswerStart
     | CreateAnswerSuccess
     | CreateAnswerFail

@@ -61,7 +61,7 @@ export class CoursesComponent implements OnInit {
       this.categoryTitle = (params.categorySlug as string).split('-').join(' ');
 
       this.breadcrumbLinks = [
-        { url: '/home', label: 'Home' },
+        { url: '/', label: 'Home' },
         { label: `${this.categoryTitle}` },
       ];
     });

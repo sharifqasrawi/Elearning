@@ -1,13 +1,21 @@
+import { Answer } from './../../../models/answer.model';
 
 import * as QuizzesActions from './quizzes.actions';
 import { Quiz } from './../../../models/quiz.model';
+import { Question } from './../../../models/question.model';
 
 
 export interface State {
     quizzes: Quiz[],
+    questions: Question[],
+    answers: Answer[],
     trashedQuizzes: Quiz[],
     loadingQuizzes: boolean,
     loadedQuizzes: boolean,
+    loadingQuestions: boolean,
+    loadedQuestions: boolean,
+    loadingAnswers: boolean,
+    loadedAnswers: boolean,
     quizCreating: boolean,
     quizCreated: boolean,
     quizUpdating: boolean,
@@ -20,6 +28,12 @@ export interface State {
     questionUpdated: boolean,
     questionDeleting: boolean,
     questionDeleted: boolean,
+    answerCreating: boolean,
+    answerCreated: boolean,
+    answerUpdating: boolean,
+    answerUpdated: boolean,
+    answerDeleting: boolean,
+    answerDeleted: boolean,
     publishing: boolean,
     published: boolean,
     errors: string[],
@@ -27,9 +41,15 @@ export interface State {
 
 const initialState: State = {
     quizzes: [],
+    questions: [],
+    answers: [],
     trashedQuizzes: [],
     loadingQuizzes: false,
     loadedQuizzes: false,
+    loadingQuestions: false,
+    loadedQuestions: false,
+    loadingAnswers: false,
+    loadedAnswers: false,
     quizCreating: false,
     quizCreated: false,
     quizUpdating: false,
@@ -42,6 +62,12 @@ const initialState: State = {
     questionUpdated: false,
     questionDeleting: false,
     questionDeleted: false,
+    answerCreating: false,
+    answerCreated: false,
+    answerUpdating: false,
+    answerUpdated: false,
+    answerDeleting: false,
+    answerDeleted: false,
     publishing: false,
     published: false,
     errors: null
@@ -89,7 +115,7 @@ export function quizzesReducer(state: State = initialState, action: QuizzesActio
             };
 
 
-        /////////////////
+        ///////////////
 
         case QuizzesActions.CREATE_QUIZ_START:
             return {
@@ -162,8 +188,8 @@ export function quizzesReducer(state: State = initialState, action: QuizzesActio
         case QuizzesActions.TRASH_RESTORE_QUIZ_START:
             return {
                 ...state,
-                quizUpdating: true,
-                quizUpdated: false,
+                loadingQuizzes: true,
+                loadedQuizzes: false,
                 errors: null
             };
         case QuizzesActions.TRASH_QUIZ_SUCCESS:
@@ -173,8 +199,8 @@ export function quizzesReducer(state: State = initialState, action: QuizzesActio
 
             return {
                 ...state,
-                quizUpdating: false,
-                quizUpdated: true,
+                loadingQuizzes: false,
+                loadedQuizzes: true,
                 quizzes: quizzesAfterTrash,
             };
         case QuizzesActions.RESTORE_QUIZ_SUCCESS:
@@ -184,14 +210,14 @@ export function quizzesReducer(state: State = initialState, action: QuizzesActio
 
             return {
                 ...state,
-                quizUpdating: false,
-                quizUpdated: true,
+                loadingQuizzes: false,
+                loadedQuizzes: true,
                 trashedQuizzes: quizzesAfterRestore,
             };
         case QuizzesActions.TRASH_RESTORE_QUIZ_FAIL:
             return {
                 ...state,
-                quizUpdating: false,
+                loadingQuizzes: false,
                 errors: [...action.payload]
             };
         /////////////////
@@ -261,6 +287,31 @@ export function quizzesReducer(state: State = initialState, action: QuizzesActio
 
         /////////////////
 
+        case QuizzesActions.FETCH_QUESTIONS_START:
+            return {
+                ...state,
+                loadingQuestions: true,
+                loadedQuestions: false,
+                errors: null
+            };
+
+        case QuizzesActions.FETCH_QUESTIONS_SUCCESS:
+            return {
+                ...state,
+                loadingQuestions: false,
+                loadedQuestions: true,
+                questions: [...action.payload]
+            };
+
+        case QuizzesActions.FETCH_QUESTIONS_FAIL:
+            return {
+                ...state,
+                loadingQuestions: true,
+                errors: [...action.payload]
+            };
+
+        /////////////////
+
         case QuizzesActions.CREATE_QUESTION_START:
             return {
                 ...state,
@@ -270,22 +321,12 @@ export function quizzesReducer(state: State = initialState, action: QuizzesActio
             };
 
         case QuizzesActions.CREATE_QUESTION_SUCCESS:
-            const quizToAddQuestionIndex = state.quizzes.findIndex(q => q.id === action.payload.quizId);
-            const quizToAddQuestion = state.quizzes.find(q => q.id === action.payload.quizId);
-            const quizzesAfterAddQuestion = [...state.quizzes];
-
-            const quizAfterAddQuestion = {
-                ...quizToAddQuestion,
-                questions: [...quizToAddQuestion.questions, action.payload]
-            };
-
-            quizzesAfterAddQuestion[quizToAddQuestionIndex] = quizAfterAddQuestion;
 
             return {
                 ...state,
                 questionCreating: false,
                 questionCreated: true,
-                quizzes: [...quizzesAfterAddQuestion]
+                questions: [...state.questions, action.payload]
             };
 
         case QuizzesActions.CREATE_QUESTION_FAIL:
@@ -306,13 +347,9 @@ export function quizzesReducer(state: State = initialState, action: QuizzesActio
             };
 
         case QuizzesActions.UPDATE_QUESTION_SUCCESS:
-            const quizToUpdateQuestionIndex = state.quizzes.findIndex(q => q.id === action.payload.quizId);
-            const quizToUpdateQuestion = state.quizzes.find(q => q.id === action.payload.quizId);
-            const quizzesAfterUpdateQuestion = [...state.quizzes];
-
-            const quizQuestions = [...quizzesAfterUpdateQuestion[quizToUpdateQuestionIndex].questions];
-            const questionToUpdateIndex = quizQuestions.findIndex(q => q.id === action.payload.id);
-            const questionToUpdate = quizQuestions.find(q => q.id === action.payload.id);
+            const questionToUpdateIndex = state.questions.findIndex(q => q.id === action.payload.id);
+            const questionToUpdate = state.questions.find(q => q.id === action.payload.id);
+            const questionsAfterUpdate = [...state.questions];
 
             const questionAfterUpdate = {
                 ...questionToUpdate,
@@ -324,20 +361,13 @@ export function quizzesReducer(state: State = initialState, action: QuizzesActio
                 updatedBy: action.payload.updatedBy,
             };
 
-            quizQuestions[questionToUpdateIndex] = questionAfterUpdate;
-
-            const quizAfterUpdateQuestion = {
-                ...quizToUpdateQuestion,
-                questions: [...quizQuestions]
-            };
-
-            quizzesAfterUpdateQuestion[quizToUpdateQuestionIndex] = quizAfterUpdateQuestion;
+            questionsAfterUpdate[questionToUpdateIndex] = questionAfterUpdate;
 
             return {
                 ...state,
                 questionUpdating: false,
                 questionUpdated: true,
-                quizzes: [...quizzesAfterUpdateQuestion]
+                questions: [...questionsAfterUpdate]
             };
 
         case QuizzesActions.UPDATE_QUESTION_FAIL:
@@ -352,19 +382,15 @@ export function quizzesReducer(state: State = initialState, action: QuizzesActio
         case QuizzesActions.TRASH_RESTORE_QUESTION_START:
             return {
                 ...state,
-                questionUpdating: true,
-                questionUpdated: false,
+                loadingQuestions: true,
+                loadedQuestions: false,
                 errors: null
             };
 
         case QuizzesActions.TRASH_RESTORE_QUESTION_SUCCESS:
-            const quizToTrashRestoreQuestionIndex = state.quizzes.findIndex(q => q.id === action.payload.quizId);
-            const quizToTrashRestoreQuestion = state.quizzes.find(q => q.id === action.payload.quizId);
-            const quizzesAfterTrashRestoreQuestion = [...state.quizzes];
-
-            const quizQuestions2 = [...quizzesAfterTrashRestoreQuestion[quizToTrashRestoreQuestionIndex].questions];
-            const questionToTrashRestoreIndex = quizQuestions2.findIndex(q => q.id === action.payload.id);
-            const questionToTrashRestore = quizQuestions2.find(q => q.id === action.payload.id);
+            const questionToTrashRestoreIndex = state.questions.findIndex(q => q.id === action.payload.id);
+            const questionToTrashRestore = state.questions.find(q => q.id === action.payload.id);
+            const questionsAfterTrashRestore = [...state.questions];
 
             const questionAfterTrashRestore = {
                 ...questionToTrashRestore,
@@ -372,26 +398,19 @@ export function quizzesReducer(state: State = initialState, action: QuizzesActio
                 deletedBy: action.payload.deletedBy,
             };
 
-            quizQuestions2[questionToTrashRestoreIndex] = questionAfterTrashRestore;
-
-            const quizAfterTrashRestoreQuestion = {
-                ...quizToTrashRestoreQuestion,
-                questions: [...quizQuestions2]
-            };
-
-            quizzesAfterTrashRestoreQuestion[quizToTrashRestoreQuestionIndex] = quizAfterTrashRestoreQuestion;
+            questionsAfterTrashRestore[questionToTrashRestoreIndex] = questionAfterTrashRestore;
 
             return {
                 ...state,
-                questionUpdating: false,
-                questionUpdated: true,
-                quizzes: [...quizzesAfterTrashRestoreQuestion]
+                loadingQuestions: false,
+                loadedQuestions: true,
+                questions: [...questionsAfterTrashRestore]
             };
 
         case QuizzesActions.TRASH_RESTORE_QUESTION_FAIL:
             return {
                 ...state,
-                questionUpdating: false,
+                loadingQuestions: false,
                 errors: [...action.payload]
             };
 
@@ -401,86 +420,80 @@ export function quizzesReducer(state: State = initialState, action: QuizzesActio
         case QuizzesActions.DELETE_QUESTION_START:
             return {
                 ...state,
-                questionDeleting: true,
-                questionDeleted: false,
+                loadingQuestions: true,
+                loadedQuestions: false,
                 errors: null
             };
 
         case QuizzesActions.DELETE_QUESTION_SUCCESS:
-            const quizToDeleteQuestionIndex = state.quizzes.findIndex(q => q.id === action.payload.quizId);
-            const quizToDeleteQuestion = state.quizzes.find(q => q.id === action.payload.quizId);
-            const quizzesAfterDeleteQuestion = [...state.quizzes];
-
-            const quizQuestions3 = [...quizzesAfterDeleteQuestion[quizToDeleteQuestionIndex].questions];
-            const questionToDeleteIndex = quizQuestions3.findIndex(q => q.id === action.payload.id);
-
-            quizQuestions3.splice(questionToDeleteIndex, 1);
-
-            const quizAfterDeleteQuestion = {
-                ...quizToDeleteQuestion,
-                questions: [...quizQuestions3]
-            };
-
-            quizzesAfterDeleteQuestion[quizToDeleteQuestionIndex] = quizAfterDeleteQuestion;
+            const questionToDeleteIndex = state.questions.findIndex(c => c.id === action.payload);
+            const questionsAfterDelete = [...state.questions];
+            questionsAfterDelete.splice(questionToDeleteIndex, 1);
 
             return {
                 ...state,
-                questionDeleting: false,
-                questionDeleted: true,
-                quizzes: [...quizzesAfterDeleteQuestion]
+                loadingQuestions: false,
+                loadedQuestions: true,
+                questions: [...questionsAfterDelete]
             };
 
         case QuizzesActions.DELETE_QUESTION_FAIL:
             return {
                 ...state,
-                questionDeleting: false,
+                loadingQuestions: false,
                 errors: [...action.payload]
             };
 
         /////////////////
 
+        case QuizzesActions.FETCH_ANSWERS_START:
+            return {
+                ...state,
+                loadingAnswers: true,
+                loadedAnswers: false,
+                errors: null
+            };
+
+        case QuizzesActions.FETCH_ANSWERS_SUCCESS:
+            return {
+                ...state,
+                loadingAnswers: false,
+                loadedAnswers: true,
+                answers: [...action.payload]
+            };
+
+        case QuizzesActions.FETCH_ANSWERS_FAIL:
+            return {
+                ...state,
+                loadingAnswers: true,
+                errors: [...action.payload]
+            };
+
+
+        /////////////////
+
+
         case QuizzesActions.CREATE_ANSWER_START:
             return {
                 ...state,
-                questionUpdating: true,
-                questionUpdated: false,
+                answerCreating: true,
+                answerCreated: false,
                 errors: null
             };
 
         case QuizzesActions.CREATE_ANSWER_SUCCESS:
-            const quizToAddAnswerQuestionIndex = state.quizzes.findIndex(q => q.id === action.payload.quizId);
-            const quizToAddAnswerQuestion = state.quizzes.find(q => q.id === action.payload.quizId);
-            const quizzesAfterAddAnswerQuestion = [...state.quizzes];
-
-            const quizQuestions4 = [...quizzesAfterAddAnswerQuestion[quizToAddAnswerQuestionIndex].questions];
-            const questionToAddAnswerIndex = quizQuestions4.findIndex(q => q.id === action.payload.id);
-            const questionToAddAnswer = quizQuestions4.find(q => q.id === action.payload.id);
-
-            const questionAfterAddAnswer = {
-                ...questionToAddAnswer,
-                answers: [...action.payload.answers]
-            };
-
-            quizQuestions4[questionToAddAnswerIndex] = questionAfterAddAnswer;
-
-            const quizAfterAddAnswerQuestion = {
-                ...quizToAddAnswerQuestion,
-                questions: [...quizQuestions4]
-            };
-
-            quizzesAfterAddAnswerQuestion[quizToAddAnswerQuestionIndex] = quizAfterAddAnswerQuestion;
-
+           
             return {
                 ...state,
-                questionUpdating: false,
-                questionUpdated: true,
-                quizzes: [...quizzesAfterAddAnswerQuestion]
+                answerCreating: false,
+                answerCreated: true,
+                answers: [...state.answers, action.payload]
             };
 
         case QuizzesActions.CREATE_ANSWER_FAIL:
             return {
                 ...state,
-                questionUpdating: false,
+                answerCreating: false,
                 errors: [...action.payload]
             };
 
@@ -489,45 +502,37 @@ export function quizzesReducer(state: State = initialState, action: QuizzesActio
         case QuizzesActions.UPDATE_ANSWER_START:
             return {
                 ...state,
-                questionUpdating: true,
-                questionUpdated: false,
+                answerUpdating: true,
+                answerUpdated: false,
                 errors: null
             };
 
         case QuizzesActions.UPDATE_ANSWER_SUCCESS:
-            const quizToUpdateAnswerQuestionIndex = state.quizzes.findIndex(q => q.id === action.payload.quizId);
-            const quizToUpdateAnswerQuestion = state.quizzes.find(q => q.id === action.payload.quizId);
-            const quizzesAfterUpdateAnswerQuestion = [...state.quizzes];
+            const answerToUpdateIndex = state.answers.findIndex(q => q.id === action.payload.id);
+            const answerToUpdate = state.answers.find(q => q.id === action.payload.id);
+            const answersAfterUpdate = [...state.answers];
 
-            const quizQuestions5 = [...quizzesAfterUpdateAnswerQuestion[quizToUpdateAnswerQuestionIndex].questions];
-            const questionToUpdateAnswerIndex = quizQuestions5.findIndex(q => q.id === action.payload.id);
-            const questionToUpdateAnswer = quizQuestions5.find(q => q.id === action.payload.id);
-
-            const questionAfterUpdateAnswer = {
-                ...questionToUpdateAnswer,
-                answers: [...action.payload.answers]
+            const answerfterUpdate = {
+                ...answerToUpdate,
+                text_EN: action.payload.text_EN,
+                imagePath: action.payload.imagePath,
+                isCorrect: action.payload.isCorrect,
+                updatedAt: action.payload.updatedAt,
+                updatedBy: action.payload.updatedBy,
             };
 
-            quizQuestions5[questionToUpdateAnswerIndex] = questionAfterUpdateAnswer;
-
-            const quizAfterUpdateAnswerQuestion = {
-                ...quizToUpdateAnswerQuestion,
-                questions: [...quizQuestions5]
-            };
-
-            quizzesAfterUpdateAnswerQuestion[quizToUpdateAnswerQuestionIndex] = quizAfterUpdateAnswerQuestion;
-
+            answersAfterUpdate[answerToUpdateIndex] = answerfterUpdate;
             return {
                 ...state,
-                questionUpdating: false,
-                questionUpdated: true,
-                quizzes: [...quizzesAfterUpdateAnswerQuestion]
+                answerUpdating: false,
+                answerUpdated: true,
+                answers: [...answersAfterUpdate]
             };
 
         case QuizzesActions.UPDATE_ANSWER_FAIL:
             return {
                 ...state,
-                questionUpdating: false,
+                answerUpdating: false,
                 errors: [...action.payload]
             };
 
@@ -536,49 +541,32 @@ export function quizzesReducer(state: State = initialState, action: QuizzesActio
         case QuizzesActions.DELETE_ANSWER_START:
             return {
                 ...state,
-                questionUpdating: true,
-                questionUpdated: false,
+                answerDeleting: true,
+                answerDeleted: false,
                 errors: null
             };
 
         case QuizzesActions.DELETE_ANSWER_SUCCESS:
-            const quizToDeleteAnswerQuestionIndex = state.quizzes.findIndex(q => q.id === action.payload.quizId);
-            const quizToDeleteAnswerQuestion = state.quizzes.find(q => q.id === action.payload.quizId);
-            const quizzesAfterDeleteAnswerQuestion = [...state.quizzes];
+            const answerToDeleteIndex = state.answers.findIndex(q => q.id === action.payload);
+            const answersAfterDelete = [...state.answers];
 
-            const quizQuestions6 = [...quizzesAfterDeleteAnswerQuestion[quizToDeleteAnswerQuestionIndex].questions];
-            const questionToDeleteAnswerIndex = quizQuestions6.findIndex(q => q.id === action.payload.id);
-            const questionToDeleteAnswer = quizQuestions6.find(q => q.id === action.payload.id);
-
-            const questionAfterDeleteAnswer = {
-                ...questionToDeleteAnswer,
-                answers: [...action.payload.answers]
-            };
-
-            quizQuestions6[questionToDeleteAnswerIndex] = questionAfterDeleteAnswer;
-
-            const quizAfterDeleteAnswerQuestion = {
-                ...quizToDeleteAnswerQuestion,
-                questions: [...quizQuestions6]
-            };
-
-            quizzesAfterDeleteAnswerQuestion[quizToDeleteAnswerQuestionIndex] = quizAfterDeleteAnswerQuestion;
+            answersAfterDelete.splice(answerToDeleteIndex, 1);
 
             return {
                 ...state,
-                questionUpdating: false,
-                questionUpdated: true,
-                quizzes: [...quizzesAfterDeleteAnswerQuestion]
+                answerDeleting: false,
+                answerDeleted: true,
+                answers: [...answersAfterDelete]
             };
 
         case QuizzesActions.DELETE_ANSWER_FAIL:
             return {
                 ...state,
-                questionUpdating: false,
+                answerDeleting: false,
                 errors: [...action.payload]
             };
 
-        /////////////////
+        ///////////////
 
         case QuizzesActions.CLEAR_ERRORS:
             return {
@@ -603,6 +591,12 @@ export function quizzesReducer(state: State = initialState, action: QuizzesActio
                 questionUpdated: false,
                 questionDeleting: false,
                 questionDeleted: false,
+                answerCreating: false,
+                answerCreated: false,
+                answerUpdating: false,
+                answerUpdated: false,
+                answerDeleting: false,
+                answerDeleted: false,
                 publishing: false,
                 published: false,
             };

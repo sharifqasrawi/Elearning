@@ -1,0 +1,34 @@
+<div class="container content0">
+    <app-breadcrumb [links]="breadcrumbLinks"></app-breadcrumb>
+
+    <h1>
+        <fa-icon [icon]="faQuestionCircle"></fa-icon>
+        {{ quizTitle }}
+    </h1>
+    <hr>
+
+    <div class="row" *ngIf="!loading">
+        <div class="col-lg-4">
+            <img [src]="getSanitizedImage(quiz.imagePath)" alt="no preview" width="100%" height="200">
+        </div>
+        <div class="col-lg-6">
+            <h3><strong>Description:</strong></h3>
+            <div [innerHTML]="getSanitizedHtml(quiz.description_EN)"></div>
+
+            <h3><strong>Languages:</strong></h3>
+            <ul>
+                <li *ngFor="let lang of quiz.languages.split('-')">
+                    {{ lang }}
+                </li>
+            </ul>
+
+            <h3><strong>Duration :</strong> {{ quiz.duration }} mins. </h3>
+        </div>
+        <div class="col-lg-2">
+            <a [routerLink]="['start']" mat-raised-button color="primary" class="btn-block"
+                style="text-transform: uppercase;">
+                start quiz &nbsp; <fa-icon [icon]="faPlay"></fa-icon>
+            </a>
+        </div>
+    </div>
+</div>

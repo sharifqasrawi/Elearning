@@ -1,5 +1,6 @@
-<div *ngIf="!loading">
-    <div class="adminPageTop">
+<div>
+    <div *ngIf="loading">loading...</div>
+    <div class="adminPageTop" *ngIf="!loading ">
         <div class="row">
             <div class="col-lg-10">
                 <h1>
@@ -31,7 +32,7 @@
     </div>
 
     <div class="adminPageBottom">
-        <div class="row">
+        <div class="row" *ngIf="quiz">
             <div class="col-lg-4 mb-3">
                 <div class="mat-elevation-z4">
                     <img [src]="getSanitizedImage(quiz.imagePath)" alt="no preview" width="100%" height="150">
@@ -63,57 +64,7 @@
 
         <hr>
 
-        <div class="row mb-5">
-            <div class="col-lg-12">
-                <div class="row mb-2">
-                    <div class="col-lg-12">
-                        <h2>
-                            <fa-icon [icon]="faQuestionCircle"></fa-icon>
-                            Questions:
-                        </h2>
-                        <div *ngIf="errors">
-                            <div class="alert alert-danger" *ngFor="let error of errors">
-                                {{ error }}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-lg-4">
-                        <button mat-raised-button color="primary" class="btn-block mb-3" (click)="onAddQuestion()">
-                            <fa-icon [icon]="faPlusCircle"></fa-icon>
-                            Create
-                        </button>
-                        <mat-expansion-panel class="exp-panel" [expanded]="allExpandState">
-                            <mat-expansion-panel-header>
-                                <mat-panel-title>
-                                    <strong> Questions</strong>
-                                </mat-panel-title>
-                                <mat-panel-description>
-                                    <span class="small">{{ quiz.questions.length }} questions</span>
-                                </mat-panel-description>
-                            </mat-expansion-panel-header>
-
-                            <ul class="list-group">
-                                <li routerLinkActive="active" class="list-group-item full-width"
-                                    *ngFor="let question of quiz.questions; let i = index;">
-                                    <a [routerLink]="['question', question.id, question.slug_EN]">
-                                        <!-- {{ i + 1 }} - {{ question.text_EN }} -->
-                                        <span [class.text-danger]="question.deletedAt"
-                                            [innerHTML]="(i + 1) + '- ' + getPlainText(question.text_EN)"></span>
-                                        <span class="small text-muted ml-2">({{question.duration}} mins.)</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </mat-expansion-panel>
-
-                    </div>
-                    <div class="col-lg-8">
-                        <router-outlet></router-outlet>
-                    </div>
-                </div>
-            </div>
-        </div>
+      <router-outlet></router-outlet>
+      
     </div>
 </div>

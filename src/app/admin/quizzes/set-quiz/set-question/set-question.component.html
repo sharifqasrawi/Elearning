@@ -1,4 +1,4 @@
-<div class="question">
+<div class="question mb-5" *ngIf="question">
     <h2>
         <strong *ngIf="question.text_EN">
             <span [innerHTML]="getSanitizedHtml(question.text_EN)"></span>
@@ -16,32 +16,22 @@
         </p>
     </div>
     <div>
-        <button class="btn btn-link" (click)="onEdit()">
+        <button mat-raised-button color="primary" class="mr-3" (click)="onBackToQuestions()">
             <fa-icon [icon]="faEdit"></fa-icon>
-            Edit
+            Back to questions
         </button>
-        <button class="btn btn-link text-danger" (click)="onTrash()" *ngIf="!question.deletedAt">
-            <fa-icon [icon]="faTrash"></fa-icon>
-            Move to trash
-        </button>
-        <button class="btn btn-link text-success" (click)="onRestore()" *ngIf="question.deletedAt">
-            <fa-icon [icon]="faCheckCircle"></fa-icon>
-            Restore from trash
-        </button>
-        <button class="btn btn-link text-danger" (click)="onDelete()" *ngIf="question.deletedAt">
-            <fa-icon [icon]="faTrashAlt"></fa-icon>
-            Delete
-        </button>
-        <button class="btn btn-link text-warning" (click)="onAddAnswer(question.id)" >
+    
+        <button mat-raised-button color="accent" (click)="onAddAnswer(question.id)" >
             <fa-icon [icon]="faPlusCircle"></fa-icon>
             Add Answer
         </button>
     </div>
     <hr>
 
-    <div>
+    <div *ngIf="loadingAs">Loading...</div>
+    <div *ngIf="!loadingAs">
         <ul>
-            <li *ngFor="let answer of question.answers">
+            <li *ngFor="let answer of answers">
                 <dl>
                     <dt [class.text-success]="answer.isCorrect"> 
                         <div [innerHTML]="getSanitizedHtml(answer.text_EN)"></div>

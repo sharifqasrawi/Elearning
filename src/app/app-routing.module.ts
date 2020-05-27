@@ -13,7 +13,10 @@ import { CourseViewComponent } from './courses/course-view/course-view.component
 import { CourseInfoComponent } from './courses/course-view/course-info/course-info.component';
 import { CourseSessionComponent } from './courses/course-view/course-session/course-session.component';
 import { QuizzesComponent } from './quizzes/quizzes.component';
+import { QuizComponent } from './quizzes/quiz/quiz.component';
 import { CourseCommentsComponent } from './courses/course-view/course-comments/course-comments.component';
+import { QuizProccessComponent } from './quizzes/quiz-proccess/quiz-proccess.component';
+import { CanDeactivateGuard } from './quizzes/quiz-proccess/can-deactivate-guard.service';
 
 
 const routes: Routes = [
@@ -45,6 +48,12 @@ const routes: Routes = [
       {
         path: 'quizzes',
         children: [
+          { path: ':quizId/:quizSlug', component: QuizComponent },
+          {
+            path: ':quizId/:quizSlug/start',
+            component: QuizProccessComponent,
+            canDeactivate: [CanDeactivateGuard]
+          },
           { path: '', component: QuizzesComponent, pathMatch: 'full' }
         ]
       },

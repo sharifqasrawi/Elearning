@@ -49,10 +49,10 @@ export class NewQuestionComponent implements OnInit, OnDestroy {
     });
 
     this.store.select('quizzes').subscribe(state => {
-      this.loading = state.loadingQuizzes;
-      if (state.questionCreated || state.questionUpdated) {
-        this.dialogRef.close();
-      }
+      this.loading = state.loadingQuestions;
+      // if (state.questionCreated || state.questionUpdated) {
+      //   this.dialogRef.close();
+      // }
     });
 
     if (this.data.question && this.data.editMode) {
@@ -88,7 +88,7 @@ export class NewQuestionComponent implements OnInit, OnDestroy {
         duration: this.form.value.duration
       }));
     }
-
+    this.dialogRef.close();
   }
 
   selectImage() {
