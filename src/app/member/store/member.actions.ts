@@ -1,3 +1,4 @@
+import { UserQuiz } from './../../models/userQuiz.model';
 import { DoneSession } from './../../models/doneSession.model';
 import { Action } from '@ngrx/store';
 
@@ -56,6 +57,10 @@ export const FETCH_DONE_SESSIONS_FAIL = '[Member] Fetch Done Sessions Fail';
 export const FETCH_PROGRESS_COURSES_START = '[Member] Fetch Progress Courses Start';
 export const FETCH_PROGRESS_COURSES_SUCCESS = '[Member] Fetch Progress Courses Success';
 export const FETCH_PROGRESS_COURSES_FAIL = '[Member] Fetch Progress Courses Fail';
+
+export const FETCH_USER_QUIZZES_START = '[Member] Fetch User Quizzes Start';
+export const FETCH_USER_QUIZZES_SUCCESS = '[Member] Fetch User Quizzes Success';
+export const FETCH_USER_QUIZZES_FAIL = '[Member] Fetch User Quizzes Fail';
 
 
 export const CLEAR_ERRORS = '[Member] Clear Errors';
@@ -305,6 +310,25 @@ export class FetchProgressCoursesFail implements Action {
 
 //////////////
 
+export class FetchUserQuizzesStart implements Action {
+    readonly type = FETCH_USER_QUIZZES_START;
+}
+
+
+export class FetchUserQuizzesSuccess implements Action {
+    readonly type = FETCH_USER_QUIZZES_SUCCESS;
+
+    constructor(public payload: UserQuiz[]) { }
+}
+
+export class FetchUserQuizzesFail implements Action {
+    readonly type = FETCH_USER_QUIZZES_FAIL;
+
+    constructor(public payload: string[]) { }
+}
+
+/////////////////////
+
 export class ClearErrors implements Action {
     readonly type = CLEAR_ERRORS;
 }
@@ -353,6 +377,9 @@ export type MemberActions =
     | FetchProgressCoursesStart
     | FetchProgressCoursesSuccess
     | FetchProgressCoursesFail
+    | FetchUserQuizzesStart
+    | FetchUserQuizzesSuccess
+    | FetchUserQuizzesFail
     | ClearErrors
     | ClearStatus
     ;

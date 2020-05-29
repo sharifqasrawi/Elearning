@@ -1,3 +1,5 @@
+import { UserQuizAnswer } from './../../models/userQuizAnswer.model';
+import { UserQuiz } from './../../models/userQuiz.model';
 import { Question } from './../../models/question.model';
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
@@ -74,6 +76,141 @@ export class HomeQuizzesEffects {
         })
     );
 
+    @Effect()
+    startQuiz = this.actions$.pipe(
+        ofType(HomeQuizzesActions.START_QUIZ_START),
+        switchMap((quizData: HomeQuizzesActions.StartQuizStart) => {
+            return this.http.post<{ startedQuiz: UserQuiz }>(environment.API_BASE_URL + 'userquizzes/start-quiz',
+                {
+                    quizId: quizData.payload,
+                    userID: this.userId
+                },
+                {
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                })
+                .pipe(
+                    map(resData => {
+                        return new HomeQuizzesActions.StartQuizSuccess(resData.startedQuiz);
+                    }),
+                    catchError(errorRes => {
+                        switch (errorRes.status) {
+                            case 403:
+                            case 401:
+                                return of(new HomeQuizzesActions.StartQuizFail(['Access Denied']));
+                            case 404:
+                                return of(new HomeQuizzesActions.StartQuizFail(['Error 404. Not Found']));
+                            case 400:
+                                return of(new HomeQuizzesActions.StartQuizFail(errorRes.error.errors));
+
+                            default:
+                                return of(new HomeQuizzesActions.StartQuizFail(['Error Fetching Data']));
+                        }
+                    })
+                )
+        })
+    );
+
+    @Effect()
+    chooseAnswer = this.actions$.pipe(
+        ofType(HomeQuizzesActions.CHOOSE_ANSWER_START),
+        switchMap((answerData: HomeQuizzesActions.ChooseAnswerStart) => {
+            return this.http.post<{ createdUserQuizAnswer: UserQuizAnswer }>(environment.API_BASE_URL + 'userquizzes/choose-answer',
+                {
+                    userQuizId: answerData.payload.userQuizId,
+                    questionId: answerData.payload.questionId,
+                    answerId: answerData.payload.answerId,
+                },
+                {
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                })
+                .pipe(
+                    map(resData => {
+                        return new HomeQuizzesActions.ChooseAnswerSuccess(resData.createdUserQuizAnswer);
+                    }),
+                    catchError(errorRes => {
+                        switch (errorRes.status) {
+                            case 403:
+                            case 401:
+                                return of(new HomeQuizzesActions.ChooseAnswerFail(['Access Denied']));
+                            case 404:
+                                return of(new HomeQuizzesActions.ChooseAnswerFail(['Error 404. Not Found']));
+                            case 400:
+                                return of(new HomeQuizzesActions.ChooseAnswerFail(errorRes.error.errors));
+
+                            default:
+                                return of(new HomeQuizzesActions.ChooseAnswerFail(['Error Fetching Data']));
+                        }
+                    })
+                )
+        })
+    );
+
+
+    @Effect()
+    fetchUserQuiz = this.actions$.pipe(
+        ofType(HomeQuizzesActions.FETCH_USER_QUIZ_START),
+        switchMap((quizData: HomeQuizzesActions.FetchUserQuizStart) => {
+            return this.http.get<{ userQuiz: UserQuiz, userQuizAnswers: UserQuizAnswer[] }>(environment.API_BASE_URL + 'UserQuizzes/get-user-quiz',
+                {
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    params: new HttpParams().set('quizId', quizData.payload.toString())
+                        .append('userId', this.userId)
+                })
+                .pipe(
+                    map(resData => {
+                        return new HomeQuizzesActions.FetchUserQuizSuccess(resData);
+                    }),
+                    catchError(errorRes => {
+                        switch (errorRes.status) {
+                            case 403:
+                            case 401:
+                                return of(new HomeQuizzesActions.FetchUserQuizFail(['Access Denied']));
+                            case 404:
+                                return of(new HomeQuizzesActions.FetchUserQuizFail(['Error 404. Not Found']));
+                            case 400:
+                                return of(new HomeQuizzesActions.FetchUserQuizFail(errorRes.error.errors));
+
+                            default:
+                                return of(new HomeQuizzesActions.FetchUserQuizFail(['Error Fetching Data']));
+                        }
+                    })
+                )
+        })
+    );
+
+    @Effect()
+    submitQuiz = this.actions$.pipe(
+        ofType(HomeQuizzesActions.SUBMIT_QUIZ_START),
+        switchMap((quizData: HomeQuizzesActions.SubmitQuizStart) => {
+            return this.http.post<{ updatedUserQuiz: UserQuiz, userQuizAnswers: UserQuizAnswer[] }>(environment.API_BASE_URL + 'userquizzes/submit-quiz',
+                {
+                    quizId: quizData.payload,
+                    userId: this.userId
+                },
+                {
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                })
+                .pipe(
+                    map(resData => {
+                        return new HomeQuizzesActions.SubmitQuizSuccess(resData);
+                    }),
+                    catchError(errorRes => {
+                        switch (errorRes.status) {
+                            case 403:
+                            case 401:
+                                return of(new HomeQuizzesActions.SubmitQuizFail(['Access Denied']));
+                            case 404:
+                                return of(new HomeQuizzesActions.SubmitQuizFail(['Error 404. Not Found']));
+                            case 400:
+                                return of(new HomeQuizzesActions.SubmitQuizFail(errorRes.error.errors));
+
+                            default:
+                                return of(new HomeQuizzesActions.SubmitQuizFail(['Error Fetching Data']));
+                        }
+                    })
+                )
+        })
+    );
 
     constructor(
         private actions$: Actions,

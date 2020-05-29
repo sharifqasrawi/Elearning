@@ -5,22 +5,73 @@
     }
 }
 
-.dashNav div{
+.dashNav div {
     padding: 12px;
     width: 180px;
     height: 45px;
-    background-color: rgb(255, 180, 217);
     text-align: center;
     border-radius: 5px;
     margin: 0 20px 20px 0;
     float: left;
+
+    animation: dashNavAnim .4s ease-in forwards;
 }
 
-.dashNav div a{
-    color: rgb(66, 66, 66);
+@keyframes dashNavAnim {
+    0%{
+        transform: translateX(-500%);
+    }
+    100%{
+        transform: translateX(0);
+    }
 }
 
-.dashNav div a:hover{
-    color: rgb(0, 0, 0);
+.dashNav div a {
+    color: #FFF;
+}
+
+.dashNav div a:hover {
+    color: rgb(65, 65, 65);
     text-decoration: none;
+}
+
+.dashNav div.primary {
+    background-color: #007bff;
+    color: #FFF;
+}
+
+.dashNav div.success {
+    background-color: #66bb6a;
+    color: #FFF;
+}
+
+.dashNav div.info {
+    background-color: #26c6da;
+    color: #FFF;
+}
+
+.dashNav div.darkcyan {
+    background-color: darkcyan;
+    color: #FFF;
+}
+
+.dashNav div.darkorange {
+    background-color: darkorange;
+    color: #FFF;
+}
+
+.dashNav div.coral {
+    background-color: coral;
+    color: #FFF;
+}
+
+.dashNav div.crimson {
+    background-color: crimson;
+    color: #FFF;
+}
+
+@media (max-width: 430px){
+    .dashNav div {
+        width: 100%;
+    }
 }

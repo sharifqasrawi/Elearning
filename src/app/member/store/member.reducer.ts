@@ -1,3 +1,4 @@
+import { UserQuiz } from './../../models/userQuiz.model';
 import { DoneSession } from './../../models/doneSession.model';
 import { SavedSession } from './../../models/savedSession.model';
 import { Favorite } from './../../models/favorite.model';
@@ -33,6 +34,10 @@ export interface State {
     loadingMemberCoursesProgress: boolean,
     loadedMemberCoursesProgress: boolean,
 
+    userQuizzes: UserQuiz[],
+    loadingUserQuizzes: boolean,
+    loadedUserQuizzes: boolean,
+
     // loadingLike: boolean,
     // loadingEnroll: boolean,
     errors: string[],
@@ -64,6 +69,10 @@ const initialState: State = {
     memberCoursesProgress: [],
     loadingMemberCoursesProgress: false,
     loadedMemberCoursesProgress: false,
+
+    userQuizzes: [],
+    loadingUserQuizzes: false,
+    loadedUserQuizzes: false,
 
     // loadingLike: false,
     // loadingEnroll:false,
@@ -337,6 +346,30 @@ export function memberReducer(state: State = initialState, action: MemberActions
                 loadingMemberCoursesProgress: false,
                 errors: [...action.payload]
             };
+
+        /////////////////////
+
+        case MemberActions.FETCH_USER_QUIZZES_START:
+            return {
+                ...state,
+                loadingUserQuizzes: true,
+                loadedUserQuizzes: false,
+                errors: null
+            };
+        case MemberActions.FETCH_USER_QUIZZES_SUCCESS:
+            return {
+                ...state,
+                loadingUserQuizzes: false,
+                loadedUserQuizzes: true,
+                userQuizzes: [...action.payload]
+            };
+        case MemberActions.FETCH_USER_QUIZZES_FAIL:
+            return {
+                ...state,
+                loadingUserQuizzes: false,
+                errors: [...action.payload]
+            };
+
 
         /////////////////////
 

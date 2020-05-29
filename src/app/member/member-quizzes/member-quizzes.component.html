@@ -1,0 +1,128 @@
+<div class="adminPageBottom">
+    <h1>
+        <mat-icon>help</mat-icon>
+        My Quizzes
+    </h1>
+
+    <hr>
+
+    <div class="row ">
+        <div class="col-lg-10 mb-3">
+            <mat-form-field appearance="legacy">
+                <mat-label>
+                    <fa-icon [icon]="faSearch"></fa-icon>
+                    Search
+                </mat-label>
+                <input matInput (keyup)="applyFilter($event)" placeholder="By: any field">
+            </mat-form-field>
+        </div>
+
+        <div class="col-lg-2 mb-3">
+            <button mat-raised-button class="btn-block mt-1" color="accent" [disabled]="loading" (click)="onRefresh()">
+                Refresh
+            </button>
+        </div>
+    </div>
+
+    <div *ngIf="errors">
+        <div class="alert alert-danger" *ngFor="let error of errors">
+            <strong>{{error}}</strong>
+        </div>
+    </div>
+
+    <div class="dataTable-container mat-elevation-z8">
+        <div class="dataTable-loading-shade" *ngIf="loading">
+            <mat-spinner *ngIf="loading"></mat-spinner>
+        </div>
+
+
+        <div class="dataTable-table-container">
+            <table mat-table [dataSource]="dataSource" matSort>
+
+                <!-- Id Column -->
+                <ng-container matColumnDef="id">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Id </th>
+                    <td mat-cell *matCellDef="let row">
+                        {{row.id}}
+                    </td>
+                </ng-container>
+
+                <!-- quizId Column -->
+                <ng-container matColumnDef="quizTitle">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Quiz </th>
+                    <td mat-cell *matCellDef="let row">
+                        <a [routerLink]="['/quizzes', row.quizId, generateQuizSlug(row.quizTitle)]">
+                            {{row.quizTitle}}
+                        </a>    
+                    </td>
+                </ng-container>
+
+                <!-- takeDateTime Column -->
+                <ng-container matColumnDef="takeDateTime">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Date </th>
+                    <td mat-cell *matCellDef="let row"> {{row.takeDateTime | date:'medium'}} </td>
+                </ng-container>
+
+
+                <!-- isStarted Column -->
+                <ng-container matColumnDef="isStarted" >
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Started </th>
+                    <td mat-cell *matCellDef="let row">
+                        <fa-icon [icon]="faCheckCircle" *ngIf="row.isStarted" class="text-success"></fa-icon>
+                        <fa-icon [icon]="faTimesCircle" *ngIf="!row.isStarted" class="text-danger">
+                        </fa-icon>
+                    </td>
+                </ng-container>
+
+                <!-- isOngoing Column -->
+                <ng-container matColumnDef="isOngoing">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Ongoing </th>
+                    <td mat-cell *matCellDef="let row">
+                        <fa-icon [icon]="faCheckCircle" *ngIf="row.isOngoing" class="text-success"></fa-icon>
+                        <fa-icon [icon]="faTimesCircle" *ngIf="!row.isOngoing" class="text-danger">
+                        </fa-icon>
+                    </td>
+                </ng-container>
+
+                <!-- isOngoing Column -->
+                <ng-container matColumnDef="isSubmitted">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Submitted </th>
+                    <td mat-cell *matCellDef="let row">
+                        <fa-icon [icon]="faCheckCircle" *ngIf="row.isSubmitted" class="text-success"></fa-icon>
+                        <fa-icon [icon]="faTimesCircle" *ngIf="!row.isSubmitted" class="text-danger">
+                        </fa-icon>
+                    </td>
+                </ng-container>
+
+                <!-- result Column -->
+                <ng-container matColumnDef="result">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>Result</th>
+                    <td mat-cell *matCellDef="let row">  
+                        <span class="text-success" *ngIf="row.result >= 70">Passed  ({{row.result}} %)</span>
+                        <span class="text-danger" *ngIf="row.result < 70">Failed  ({{row.result}} %)</span>
+                    </td>
+                </ng-container>
+
+                
+
+                <!-- Actions Column -->
+                <ng-container matColumnDef="actions">
+                    <th mat-header-cell *matHeaderCellDef>
+                        Actions
+                    </th>
+                    <td mat-cell *matCellDef="let row">
+                        <!-- <a mat-icon-button (click)="onViewReport(row.id)">
+                            View
+                        </a> -->
+                    </td>
+                </ng-container>
+
+
+                <tr mat-header-row *matHeaderRowDef="displayedColumns;"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+                </tr>
+            </table>
+        </div>
+        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+    </div>
+</div>

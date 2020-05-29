@@ -1,27 +1,37 @@
 <div class="container-fluid content0">
-    <h1>
+    <h1 class="adminPageTop">
         <mat-icon>dashboard</mat-icon>
         My Dashboard
     </h1>
     <hr>
 
     <div class="dashNav">
-        <div class="mat-elevation-z4">
+        <div class="mat-elevation-z4 primary">
+            <a [routerLink]="['/member', 'dashboard']">
+                Dashboard
+            </a>
+        </div>
+        <div class="mat-elevation-z4 coral">
             <a [routerLink]="['courses']" [queryParams]="{'fetch': 'enrolled'}">
                 Enrolled Courses
             </a>
         </div>
-        <div class="mat-elevation-z4">
+        <div class="mat-elevation-z4 info">
             <a [routerLink]="['courses']" [queryParams]="{'fetch': 'favorites'}">
                 Favorite Courses
             </a>
         </div>
-        <div class="mat-elevation-z4">
+        <div class="mat-elevation-z4 success">
             <a [routerLink]="['saved-sessions']">
                 Saved Sessions
             </a>
         </div>
-        <div class="mat-elevation-z4">
+        <div class="mat-elevation-z4 darkcyan">
+            <a [routerLink]="['quizzes']">
+                My Quizzes
+            </a>
+        </div>
+        <div class="mat-elevation-z4 crimson">
             <a [routerLink]="['reports']">
                 Reports
             </a>

@@ -64,6 +64,7 @@ import { QuizzesComponent } from './quizzes/quizzes.component';
 import { QuizComponent } from './quizzes/quiz/quiz.component';
 import { QuizProccessComponent } from './quizzes/quiz-proccess/quiz-proccess.component';
 import { CanDeactivateGuard } from './quizzes/quiz-proccess/can-deactivate-guard.service';
+import { QuizResultComponent } from './quizzes/quiz-result/quiz-result.component';
 
 @NgModule({
   declarations: [
@@ -85,6 +86,7 @@ import { CanDeactivateGuard } from './quizzes/quiz-proccess/can-deactivate-guard
     QuizzesComponent,
     QuizComponent,
     QuizProccessComponent,
+    QuizResultComponent,
   ],
   imports: [
     BrowserModule,

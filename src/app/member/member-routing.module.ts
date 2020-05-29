@@ -10,6 +10,7 @@ import { MemberSavedSessionsComponent } from './member-saved-sessions/member-sav
 import { ReportsComponent } from './reports/reports.component';
 import { EditProfileComponent } from './edit-profile/edit-profile.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
+import { MemberQuizzesComponent } from './member-quizzes/member-quizzes.component';
 
 const routes: Routes = [
     {
@@ -23,6 +24,7 @@ const routes: Routes = [
                 children: [
                     { path: 'courses', component: MemberCoursesComponent },
                     { path: 'saved-sessions', component: MemberSavedSessionsComponent },
+                    { path: 'quizzes', component: MemberQuizzesComponent },
                     { path: 'reports', component: ReportsComponent },
                 ]
             },

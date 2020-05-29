@@ -1,17 +1,24 @@
 <div class="container content0">
     <div class="row">
-        <div class="col-lg-10">
+        <div class="col-lg-8">
             <h1>
                 <fa-icon [icon]="faQuestionCircle"></fa-icon>
                 {{quizTitle}}
             </h1>
         </div>
         <div class="col-lg-2">
+            <button mat-raised-button color="warn" class="btn-block" (click)="onPreviousQuestion()"
+                [disabled]="currentQuestionIndex === 0" >
+                Previous Question
+            </button>
+        </div>
+        <div class="col-lg-2">
             <button mat-raised-button color="primary" class="btn-block" (click)="onNextQuestion()"
-                *ngIf="!questionsFinished">
+                *ngIf="currentQuestionIndex !== lastQuestionIndex">
                 Next Question
             </button>
-            <button mat-raised-button color="accent" class="btn-block" *ngIf="questionsFinished">
+            <button mat-raised-button color="accent" class="btn-block" (click)="onSubmitQuiz()"
+                *ngIf="currentQuestionIndex === lastQuestionIndex" >
                 Submit Quiz
             </button>
         </div>
@@ -28,19 +35,20 @@
             *ngIf="questions[currentQuestionIndex].imagePath" width="100%">
 
         <p class="badge badge-secondary mt-3">Duration: {{ questions[currentQuestionIndex].duration }} mins.</p>
+
         <hr>
 
         <strong>Options:</strong>
         <div class="mt-2">
-            <mat-radio-group aria-labelledby="answers-radio-group-label" class="answers-radio-group">
-                <mat-radio-button class="answers-radio-button"
-                    *ngFor="let answer of questions[currentQuestionIndex].answers" [value]="answer.id">
+            <mat-radio-group aria-labelledby="answers-radio-group-label" class="answers-radio-group"
+                [(ngModel)]="answerId" (change)="onChooseAnswer()">
+                <mat-radio-button class="answers-radio-button" [checked]="onCheckIfChoiceSelected(answer.id)"
+                    *ngFor="let answer of questions[currentQuestionIndex].answers" [value]="answer.id"
+                    [disabled]="isSubmitted">
                     <span [innerHTML]="getSanitizedHtml(answer.text_EN)"></span>
-                    <img [src]="getSanitizedImage(answer.imagePath)"
-                        *ngIf="answer.imagePath" width="100%">
+                    <img [src]="getSanitizedImage(answer.imagePath)" *ngIf="answer.imagePath" width="100%">
                 </mat-radio-button>
             </mat-radio-group>
         </div>
-
     </div>
 </div>

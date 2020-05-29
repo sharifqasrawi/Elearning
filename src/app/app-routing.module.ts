@@ -16,6 +16,7 @@ import { QuizzesComponent } from './quizzes/quizzes.component';
 import { QuizComponent } from './quizzes/quiz/quiz.component';
 import { CourseCommentsComponent } from './courses/course-view/course-comments/course-comments.component';
 import { QuizProccessComponent } from './quizzes/quiz-proccess/quiz-proccess.component';
+import { QuizResultComponent } from './quizzes/quiz-result/quiz-result.component';
 import { CanDeactivateGuard } from './quizzes/quiz-proccess/can-deactivate-guard.service';
 
 
@@ -52,8 +53,9 @@ const routes: Routes = [
           {
             path: ':quizId/:quizSlug/start',
             component: QuizProccessComponent,
-            canDeactivate: [CanDeactivateGuard]
+            // canDeactivate: [CanDeactivateGuard]
           },
+          { path: ':quizId/:quizSlug/result', component: QuizResultComponent },
           { path: '', component: QuizzesComponent, pathMatch: 'full' }
         ]
       },

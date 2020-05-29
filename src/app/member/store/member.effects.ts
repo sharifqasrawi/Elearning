@@ -1,3 +1,4 @@
+import { UserQuiz } from './../../models/userQuiz.model';
 import { DoneSession } from './../../models/doneSession.model';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
@@ -432,6 +433,37 @@ export class MemberEffects {
                                 return of(new MemberActions.FetchProgressCoursesFail(errorRes.error.errors));
                             default:
                                 return of(new MemberActions.FetchProgressCoursesFail(['Oops! An error occured']));
+                        }
+                    })
+                )
+        })
+    );
+
+    @Effect()
+    fetchUserQuizzes = this.actions$.pipe(
+        ofType(MemberActions.FETCH_USER_QUIZZES_START),
+        switchMap(() => {
+
+            return this.http.get<{ userQuizzes: UserQuiz[] }>(environment.API_BASE_URL + 'member/get-user-quizzes',
+                {
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    params: new HttpParams().set('userId', this.userId)
+                })
+                .pipe(
+                    map(resData => {
+                        return new MemberActions.FetchUserQuizzesSuccess(resData.userQuizzes);
+                    }),
+                    catchError(errorRes => {
+                        switch (errorRes.status) {
+                            case 403:
+                            case 401:
+                                return of(new MemberActions.FetchUserQuizzesFail(['Access Denied']));
+                            case 404:
+                                return of(new MemberActions.FetchUserQuizzesFail(['Error 404. Not Found']));
+                            case 400:
+                                return of(new MemberActions.FetchUserQuizzesFail(errorRes.error.errors));
+                            default:
+                                return of(new MemberActions.FetchUserQuizzesFail(['Oops! An error occured']));
                         }
                     })
                 )

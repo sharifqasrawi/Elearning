@@ -2,7 +2,7 @@ import { Question } from './../../models/question.model';
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { DomSanitizer } from '@angular/platform-browser';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { faQuestionCircle, faPlay } from '@fortawesome/free-solid-svg-icons';
 
 import * as fromApp from '../../store/app.reducer';
@@ -26,9 +26,11 @@ export class QuizComponent implements OnInit {
 
   breadcrumbLinks: { url?: string, label: string }[];
 
+  isAuthenticated = false;
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private sanitizer: DomSanitizer,
     private store: Store<fromApp.AppState>
 
@@ -38,14 +40,15 @@ export class QuizComponent implements OnInit {
     this.route.params.subscribe((params: Params) => {
       this.quizId = +params.quizId;
       this.quizTitle = (params.quizSlug as string).split('-').join(' ');
-
-
-
       this.breadcrumbLinks = [
         { url: '/', label: 'Home' },
         { url: '/quizzes', label: 'Quizzes' },
         { label: `${this.quizTitle}` },
       ];
+    });
+
+    this.store.select('login').subscribe(state => {
+      this.isAuthenticated = state.isAuthenticated;
     });
 
 
@@ -59,6 +62,13 @@ export class QuizComponent implements OnInit {
     });
 
   }
+
+
+  onStartQuiz() {
+    this.store.dispatch(new HomeQuizzesActions.StartQuizStart(this.quizId));
+    this.router.navigate(['start'], { relativeTo: this.route });
+  }
+
 
   getSanitizedHtml = (html: string) => this.sanitizer.bypassSecurityTrustHtml(html);
   getSanitizedImage = (imagePath: string) => this.sanitizer.bypassSecurityTrustResourceUrl(imagePath);

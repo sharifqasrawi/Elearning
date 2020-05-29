@@ -25,8 +25,8 @@
             <h3><strong>Duration :</strong> {{ quiz.duration }} mins. </h3>
         </div>
         <div class="col-lg-2">
-            <a [routerLink]="['start']" mat-raised-button color="primary" class="btn-block"
-                style="text-transform: uppercase;">
+            <a (click)="onStartQuiz()" mat-raised-button color="primary" class="btn-block"
+                style="text-transform: uppercase;" *ngIf="isAuthenticated">
                 start quiz &nbsp; <fa-icon [icon]="faPlay"></fa-icon>
             </a>
         </div>
