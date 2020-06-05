@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { ConfirmDialogComponent } from 'src/app/shared/confirm-dialog/confirm-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { UserQuizAnswer } from './../../models/userQuizAnswer.model';
@@ -28,8 +29,7 @@ export class QuizProccessComponent implements OnInit {
   quizTitle: string = null;
 
   currentQuiz: UserQuiz = null;
-  startingQuiz = false;
-  startedQuiz = false;
+
   answerId: number;
   userQuizAnswers: UserQuizAnswer[] = null;
   submitting = false;
@@ -37,6 +37,7 @@ export class QuizProccessComponent implements OnInit {
 
   questions: Question[] = null;
   loading = false;
+  choosing = false;
 
   currentQuestionIndex = 0;
   firstQuestionIndex: number = null;
@@ -47,7 +48,8 @@ export class QuizProccessComponent implements OnInit {
     private router: Router,
     private store: Store<fromApp.AppState>,
     private sanitizer: DomSanitizer,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private translate: TranslateService
   ) { }
 
   ngOnInit(): void {
@@ -64,11 +66,10 @@ export class QuizProccessComponent implements OnInit {
     this.store.select('homeQuizzes').subscribe(state => {
       this.questions = state.questions;
       this.currentQuiz = state.currentQuiz;
-      this.startingQuiz = state.startingQuiz;
-      this.startedQuiz = state.startedQuiz;
       this.loading = state.loadingQs;
       this.userQuizAnswers = state.userQuizAnswers;
       this.submitting = state.submittingQuiz;
+      this.choosing = state.choosingAnswer;
       this.firstQuestionIndex = 0;
 
       if (state.currentQuiz)
@@ -76,13 +77,20 @@ export class QuizProccessComponent implements OnInit {
       this.lastQuestionIndex = state.questions.length - 1;
     });
 
-
   }
 
   onSubmitQuiz() {
+    let alertHeader ='';
+    let alertMsg ='';
+
+    this.translate.get(['QUIZZES.SUBMIT_QUIZ', 'QUIZZES.SUBMIT_QUIZ_MSG']).subscribe(trans => {
+      alertHeader = trans['QUIZZES.SUBMIT_QUIZ'];
+      alertMsg = trans['QUIZZES.SUBMIT_QUIZ_MSG'];
+    });
+
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '450px',
-      data: { header: 'Submit Quiz', message: 'Are you sure you wish to submit your quiz ?' }
+      data: { header: alertHeader, message: alertMsg }
     })
 
     dialogRef.afterClosed().subscribe(result => {

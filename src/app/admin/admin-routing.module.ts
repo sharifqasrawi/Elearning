@@ -69,14 +69,14 @@ const routes: Routes = [
           {
             path: 'new-course',
             component: NewCourseComponent,
-            canDeactivate: [CanDeactivateGuard]
+            // canDeactivate: [CanDeactivateGuard]
           },
           { path: 'trashed', component: TrashedCoursesComponent },
           {
             path: 'edit-course/:id/:slug',
             component: NewCourseComponent,
             resolve: [CoursesResolverService],
-            canDeactivate: [CanDeactivateGuard]
+            // canDeactivate: [CanDeactivateGuard]
           },
           {
             path: ':courseId/:slug',

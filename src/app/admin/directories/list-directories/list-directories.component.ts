@@ -1,8 +1,8 @@
+import { TranslateService } from '@ngx-translate/core';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
@@ -41,7 +41,7 @@ export class ListDirectoriesComponent implements OnInit {
 
   constructor(
     private store: Store<fromApp.AppState>,
-    private snackBar: MatSnackBar,
+    private translate: TranslateService,
     private dialog: MatDialog,
   ) { }
 
@@ -72,9 +72,16 @@ export class ListDirectoriesComponent implements OnInit {
   }
 
   onDelete(id: number) {
+    let alertHeader = '';
+    let alertMsg = '';
+
+    this.translate.get(['COMMON.CONFIRM_ACTION', 'COMMON.DELETE_MESSAGE']).subscribe(trans => {
+      alertHeader = trans['COMMON.CONFIRM_ACTION'];
+      alertMsg = trans['COMMON.DELETE_MESSAGE'];
+    });
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      width: '300px',
-      data: { header: 'Confirmation', message: 'Delete this directory ?' }
+      width: '400px',
+      data: { header: alertHeader, message: alertMsg }
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -88,15 +95,13 @@ export class ListDirectoriesComponent implements OnInit {
     const dialogRef = this.dialog.open(PhysicalDirectoriesComponent, {
       width: '700px',
       data: { path: path }
-    })
+    });
   }
 
   onRefresh() {
     this.store.dispatch(new DirectoriesActions.FetchStart());
     this.setTable();
-    this.snackBar.open('Refreshing...', 'OK', {
-      duration: 2000
-    });
+   
   }
 
   private setTable() {

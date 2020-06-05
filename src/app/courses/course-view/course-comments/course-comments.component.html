@@ -1,28 +1,21 @@
-<!-- <div class="courseInfoNav" *ngIf="!loading">
-    <a [routerLink]="['../']">
-        Course Info
-    </a>
-
-    <a [routerLink]="[currentUrl]" [queryParams]="{'courseId': courseId}" routerLinkActive="active">
-        Comments
-    </a>
-</div> -->
 
 <div *ngIf="!loading">
     <h2>
-        Comments:
+        {{ 'COURSE.COMMENTS' | translate }}:
         [ <span [countUp]="count" class="count-numbers">0</span> ]
     </h2>
     <hr>
 
     <h3 *ngIf="loadedComments.length === 0" class="alert alert-info text-center">
-        NO COMMENTS YET.
+        {{ 'COURSE.NO_COMMENTS_YET' | translate }}.
     </h3>
 
     <div class="comments-container">
         <div class="loadCommentsDiv">
-            <a (click)="loadLess()" *ngIf="showLoadLessBtn && loadedComments.length > 0"> load less </a>
-            <a (click)=" loadMore()" *ngIf="showLoadMoreBtn && loadedComments.length > 0"> load more </a>
+            <a (click)="loadLess()" *ngIf="showLoadLessBtn && loadedComments.length > 0" translate> COURSE.LOAD_LESS
+            </a>
+            <a (click)=" loadMore()" *ngIf="showLoadMoreBtn && loadedComments.length > 0" translate> COURSE.LOAD_MORE
+            </a>
         </div>
 
         <div class="clearfix"></div>
@@ -69,19 +62,19 @@
 
                             <form [formGroup]="editForm" (ngSubmit)="onSubmitEdit(comment.id)" *ngIf="showEditForm[i]">
                                 <mat-form-field class="full-width" appearance="legacy">
-                                    <mat-label class="lblNewComment">Edit comment</mat-label>
+                                    <mat-label class="lblNewComment" translate>COURSE.EDIT_COMMENT</mat-label>
                                     <textarea matInput formControlName="editedText"
                                         placeholder="Ex. It makes me feel..."></textarea>
-                                    <mat-error>This field is required.</mat-error>
+                                    <mat-error translate>VALIDATION.REQUIRED</mat-error>
                                 </mat-form-field>
                                 <button type="submit" mat-raised-button color="primary" class="float-right"
                                     [disabled]="!editForm.valid || updating" *ngIf="isAuthenticated">
-                                    {{ !updating ? 'Save' : 'Saving...' }}
+                                    {{ !updating ? ('COMMON.SAVE' | translate)  : ('COMMON.SAVING'  | translate) }}
                                 </button>
 
                                 <button type="button" mat-raised-button color="warn" class="float-right mr-2"
                                     (click)="onCancelEdit(i)">
-                                    Cancel
+                                    {{ 'COMMON.CANCEL' | translate }}
                                 </button>
 
                                 <div class="clearfix"></div>
@@ -91,15 +84,16 @@
 
                             <span class="text-muted">{{ comment.commentDateTime | timeago:'live' }}</span>
                             <div>
-                                <a class="text-muted" (click)="onShowLikes(comment.id)">likes
+                                <a class="text-muted" (click)="onShowLikes(comment.id)">
+                                    {{ 'COURSE.LIKES' | translate }}
                                     ({{ comment.likes.length }})
                                 </a>
 
                                 <a (click)="onShowReplies(i)" *ngIf="!showReplies[i]">
-                                    Replies ({{ comment.replies.length }})
+                                    {{ 'COURSE.REPLIES' | translate }} ({{ comment.replies.length }})
                                 </a>
                                 <a (click)="onHideReplies(i)" *ngIf="showReplies[i]">
-                                    Hide Replies ({{ comment.replies.length }})
+                                    {{ 'COMMON.HIDE' | translate }} ({{ comment.replies.length }})
                                 </a>
                             </div>
                         </div>
@@ -142,19 +136,19 @@
                                 <form [formGroup]="editForm" (ngSubmit)="onSubmitEdit(reply.id)"
                                     *ngIf="showEditReplyForm[j]">
                                     <mat-form-field class="full-width" appearance="legacy">
-                                        <mat-label class="lblNewComment">Edit reply</mat-label>
+                                        <mat-label class="lblNewComment" translate>COURSE.EDIT_REPLY</mat-label>
                                         <textarea matInput formControlName="editedText"
                                             placeholder="Ex. It makes me feel..."></textarea>
-                                        <mat-error>This field is required.</mat-error>
+                                        <mat-error translate>VALIDATION.REQUIRED</mat-error>
                                     </mat-form-field>
                                     <button type="submit" mat-raised-button color="primary" class="float-right"
                                         [disabled]="!editForm.valid || updating" *ngIf="isAuthenticated">
-                                        {{ !updating ? 'Save' : 'Saving...' }}
+                                        {{ !updating ? ('COMMON.SAVE' | translate)  : ('COMMON.SAVING'  | translate) }}
                                     </button>
 
                                     <button type="button" mat-raised-button color="warn" class="float-right mr-2"
                                         (click)="onCancelEditReply(j)">
-                                        Cancel
+                                        {{ 'COMMON.CANCEL' | translate }}
                                     </button>
 
                                     <div class="clearfix"></div>
@@ -162,7 +156,8 @@
                             </div>
                             <div class="comment-footer">
                                 <span class="text-muted">{{ reply.commentDateTime | timeago:'live' }}</span>
-                                <a class="text-muted" (click)="onShowLikes(comment.id , reply.id)">likes
+                                <a class="text-muted" (click)="onShowLikes(comment.id , reply.id)">
+                                    {{ 'COURSE.LIKES' | translate }}
                                     ({{ reply.likes.length }})
                                 </a>
                             </div>
@@ -173,18 +168,18 @@
                 <div class="replyFormDiv" *ngIf="showReplyForm[i]">
                     <form [formGroup]="replyForm" (ngSubmit)="onSubmitReply(comment.id)">
                         <mat-form-field class="full-width" appearance="legacy">
-                            <mat-label class="lblNewComment">Reply</mat-label>
+                            <mat-label class="lblNewComment" translate>COMMON.REPLY</mat-label>
                             <textarea matInput formControlName="text" placeholder="Ex. It makes me feel..."></textarea>
-                            <mat-error>This field is required.</mat-error>
+                            <mat-error translate>VALIDATION.REQUIRED</mat-error>
                         </mat-form-field>
                         <button type="submit" mat-raised-button color="primary" class="float-right"
                             [disabled]="!replyForm.valid || creating" *ngIf="isAuthenticated">
-                            {{ !creating ? 'Reply' : 'POSTING...' }}
+                            {{ !creating ? ('COMMON.REPLY' | translate)  : ('COMMON.SAVING'  | translate)}}
                         </button>
 
                         <button type="button" mat-raised-button color="warn" class="float-right mr-2"
                             (click)="onCancelReply(i)">
-                            Cancel
+                            {{ 'COMMON.CANCEL' | translate }}
                         </button>
                     </form>
                 </div>
@@ -195,18 +190,18 @@
         <div class="newCommentDiv">
             <form [formGroup]="form" (ngSubmit)="onSubmit()">
                 <mat-form-field class="full-width" appearance="legacy">
-                    <mat-label class="lblNewComment">Leave a comment</mat-label>
+                    <mat-label class="lblNewComment" translate>COURSE.LEAVE_COMMENT</mat-label>
                     <textarea matInput formControlName="text" placeholder="Ex. It makes me feel..."></textarea>
-                    <mat-error>This field is required.</mat-error>
+                    <mat-error translate>VALIDATION.REQUIRED</mat-error>
                 </mat-form-field>
                 <button type="submit" mat-raised-button color="primary" class="float-right"
                     [disabled]="!form.valid || creating" *ngIf="isAuthenticated">
-                    {{ !creating ? 'POST' : 'POSTING...' }}
+                    {{ !creating ? ('COMMON.POST' | translate)  : ('COMMON.SAVING'  | translate) }}
                 </button>
 
                 <a mat-raised-button color="primary" class="float-right" [routerLink]="['/security', 'auth']"
                     [queryParams]="{'returnUrl': currentUrl}" *ngIf="!isAuthenticated">
-                    Login to add a comment.
+                    {{'COURSE.LOGIN_TO_ADD_COMMENT' | translate }}
                 </a>
             </form>
         </div>

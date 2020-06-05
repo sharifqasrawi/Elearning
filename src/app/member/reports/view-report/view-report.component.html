@@ -3,25 +3,28 @@
     <div mat-dialog-title>
         <h2 class="text-danger">
             <fa-icon [icon]="faBug" *ngIf="data.report.type === 'bug'"></fa-icon>
-            Report
+            {{ 'DASHBOARD.REPORTS.REPORT' | translate }}
         </h2>
         <div style="display: flex; justify-content: space-between;">
-            <p class="text-muted" style="font-size: 10px;"><strong>Report Date:</strong>{{data.report.reportDateTime | date:'medium'}}</p>
-            <p class="text-muted" style="font-size: 10px;"><strong>Reply Date:</strong>{{data.report.replyDateTime | date:'medium'}}</p>
+            <p class="text-muted" style="font-size: 10px;"><strong>
+                    {{ 'DASHBOARD.REPORTS.REPORT_DATE' | translate }}:</strong>{{data.report.reportDateTime | date:'medium'}}
+            </p>
+            <p class="text-muted" style="font-size: 10px;"><strong>
+                    {{ 'COMMON.REPLY_DATE' | translate }}:</strong>{{data.report.replyDateTime | date:'medium'}}</p>
         </div>
     </div>
     <hr>
     <div mat-dialog-content>
         <div style="display: flex; justify-content: space-between;">
-            <h4><strong>Reporter Name:</strong> {{data.report.userFullName}}</h4>
-            <h4><strong>Reporter Email:</strong> {{data.report.userEmail}}</h4>
+            <h4><strong>{{ 'DASHBOARD.REPORTS.REPORTER_NAME' | translate }}:</strong> {{data.report.userFullName}}</h4>
+            <h4><strong>{{ 'DASHBOARD.REPORTS.REPORTER_EMAIL' | translate }}:</strong> {{data.report.userEmail}}</h4>
         </div>
         <div>
-            <h4><strong>Description:</strong></h4>
+            <h4><strong>{{ 'DASHBOARD.REPORTS.DESCRIPTION' | translate }}:</strong></h4>
             <pre class="desc">{{data.report.description}}</pre>
         </div>
         <div>
-            <h4><strong>Reply Message:</strong></h4>
+            <h4><strong>{{ 'DASHBOARD.REPORTS.REPLY_MSG' | translate }}:</strong></h4>
             <pre class="desc">{{data.report.replyMessage}}</pre>
         </div>
     </div>

@@ -1,6 +1,6 @@
 <div class="container-fluid content0">
     <h1 style="text-transform: capitalize;">
-        {{ categoryTitle }}
+        {{ categoryTitle ? categoryTitle : ('COURSES.COURSES' | translate ) }}
     </h1>
 
     <app-breadcrumb [links]="breadcrumbLinks"></app-breadcrumb>
@@ -11,10 +11,10 @@
             <form [formGroup]="searchForm">
                 <mat-form-field class="full-width" appearance="legacy">
                     <mat-label>
-                        <fa-icon [icon]="faSearch"></fa-icon> Search
+                        <fa-icon [icon]="faSearch"></fa-icon> {{ 'COMMON.SEARCH' | translate }}
                     </mat-label>
                     <input type="text" #searchKey matInput formControlName="title_EN"
-                        placeholder="Search by course title" (input)="onSearch()">
+                        [placeholder]="'COURSES.SEARCH_BY_TITLE' | translate" (input)="onSearch()">
                     <button mat-button *ngIf="searchKey.value" matSuffix mat-icon-button aria-label="Clear"
                         (click)="onClearSearch()">
                         <mat-icon>close</mat-icon>
@@ -24,7 +24,7 @@
         </div>
         <div class="col-lg-2">
             <mat-form-field class="full-width" appearance="legacy">
-                <mat-label>Filter by level</mat-label>
+                <mat-label>{{ 'COURSES.FILTER_LEVEL' | translate }}</mat-label>
                 <mat-select [(ngModel)]="level" (ngModelChange)="onFilterByLevel()">
                     <mat-option *ngFor="let level of levels" [value]="level">
                         {{ level }}
@@ -34,7 +34,7 @@
         </div>
         <div class="col-lg-2">
             <mat-form-field class="full-width" appearance="legacy">
-                <mat-label>Filter by language</mat-label>
+                <mat-label>{{ 'COURSES.FILTER_LANGUAGE' | translate }}</mat-label>
                 <mat-select [(ngModel)]="language" (ngModelChange)="onFilterByLanguage()">
                     <mat-option *ngFor="let language of languages" [value]="language">
                         {{ language }}
@@ -44,7 +44,7 @@
         </div>
         <div class="col-lg-2">
             <mat-form-field class="full-width" appearance="legacy">
-                <mat-label>Order By</mat-label>
+                <mat-label>{{ 'COMMON.ORDER_BY' | translate }}</mat-label>
                 <mat-select [(ngModel)]="orderBy" (ngModelChange)="onOrderBy()">
                     <mat-option *ngFor="let orderByOption of orderByOptions" [value]="orderByOption">
                         {{ orderByOption }}
@@ -66,15 +66,9 @@
                 <app-loader-home-course [count]='9'></app-loader-home-course>
             </div>
 
-            <div *ngIf="categoryEmpty && !loading">
-                <div class="alert alert-info text-center">
-                    <h2>No courses in this category.</h2>
-                </div>
-            </div>
-
-            <div *ngIf="courses.length === 0 && !loading">
+            <div *ngIf="(courses.length === 0 || categoryEmpty) && !loading">
                 <div class="alert alert-info text-center notFoundMsg">
-                    <h2>No courses found.</h2>
+                    <h2>{{ 'COURSES.NO_COURSES_FOUND' | translate }}.</h2>
                 </div>
             </div>
 
@@ -91,7 +85,7 @@
                             </p>
                         </div>
                         <div class="enrolled mat-elevation-z8" *ngIf="onCheckIfUserEnrolled(course.id)">
-                            <em> Enrolled !</em>
+                            <em> {{ 'COURSE.ENROLLED' | translate }} !</em>
                         </div>
                         <mat-card-header>
                             <div mat-card-avatar class="course-header-image"></div>
@@ -101,16 +95,16 @@
                             </mat-card-subtitle>
                         </mat-card-header>
                         <mat-card-content>
-                            
+
                             <div class="row">
                                 <div class="col-lg-6">
-                                    <p> <strong>Level: </strong></p>
+                                    <p> <strong>{{ 'COURSE.LEVEL' | translate }}: </strong></p>
                                     <div class="levelDiv bg-warning mat-elevation-z4">
                                         {{ course.level }}
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
-                                    <p> <strong>Languages: </strong></p>
+                                    <p> <strong>{{ 'COURSE.LANGUAGES' | translate }}: </strong></p>
                                     <div class="langDiv bg-teal mat-elevation-z4"
                                         *ngFor="let lang of course.languages.split('-')">
                                         {{ lang }}
@@ -123,8 +117,8 @@
                         </mat-card-content>
                         <mat-card-actions class="actions">
                             <div>
-                                <a mat-button [routerLink]="['course', course.id, course.slug_EN]">
-                                    VIEW COURSE
+                                <a mat-button [routerLink]="['course', course.id, course.slug_EN]" style="text-transform: uppercase;">
+                                    {{ 'COURSES.VIEW_COURSE' | translate }}
                                 </a>
 
                             </div>

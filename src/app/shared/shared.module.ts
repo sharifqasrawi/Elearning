@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
 
 import { DropdownDirective } from './dropdown.directive';
 import { ConfirmDialogComponent } from './confirm-dialog/confirm-dialog.component';
@@ -52,6 +53,7 @@ import { ErrorDialogComponent } from './error-dialog/error-dialog.component';
         MatButtonModule,
         PdfViewerModule,
         FontAwesomeModule,
+        TranslateModule,
         RouterModule
     ],
     exports: [

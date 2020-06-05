@@ -9,15 +9,15 @@
             <div class="col-lg-4 mb-2 ">
                 <div class="box2">
                     <p>
-                        <strong>Category: </strong>
+                        <strong>{{ 'ADMINISTRATION.CATEGORIES.CATEGORY' | translate }}: </strong>
                         {{ course.category.title_EN }}
                     </p>
                     <p>
-                        <strong>Level: </strong>
+                        <strong>{{ 'COURSE.LEVEL' | translate }}: </strong>
                         {{ course.level }}
                     </p>
                     <p>
-                        <strong>Languages: </strong>
+                        <strong>{{ 'COURSE.LANGUAGES' | translate }}: </strong>
                     </p>
                     <ul>
                         <li *ngFor="let lang of course.languages.split('-')">
@@ -25,33 +25,33 @@
                         </li>
                     </ul>
                     <p>
-                        <strong>Duration: </strong>
+                        <strong>{{ 'COURSE.DURATION' | translate }}: </strong>
                         {{ course.duration }} min
                     </p>
                     <p>
-                        <strong>Price: </strong>
+                        <strong>{{ 'COURSE.PRICE' | translate }}: </strong>
                         <span *ngIf="!course.isFree">{{ course.price }} €</span>
-                        <span *ngIf="course.isFree" class="badge badge-warning"> Free </span>
+                        <span *ngIf="course.isFree" class="badge badge-warning"> {{ 'COURSE.FREE' | translate }} </span>
                     </p>
                 </div>
             </div>
             <div class="col-lg-4  mb-2 ">
                 <div class="box3">
                     <p>
-                        <strong>Updated At: </strong>
+                        <strong>{{ 'COMMON.UPDATED_AT' | translate }}: </strong>
                         {{ course.updatedAt | date:'medium' }}
                     </p>
                     <p>
-                        <strong>Updated By: </strong>
+                        <strong>{{ 'COMMON.UPDATED_BY' | translate }}: </strong>
                         {{ course.updatedBy  }}
                     </p>
 
                     <p>
-                        <strong>Deleted At: </strong>
+                        <strong>{{ 'COMMON.DELETED_AT' | translate }}: </strong>
                         {{ course.deletedAt | date:'medium' }}
                     </p>
                     <p>
-                        <strong>Deleted By: </strong>
+                        <strong>{{ 'COMMON.DELETED_BY' | translate }}: </strong>
                         {{ course.deletedBy  }}
                     </p>
                 </div>
@@ -61,12 +61,12 @@
         <hr>
         <div class="row ">
             <div class="col-lg-6 mb-4 ">
-                <strong>Description:</strong>
+                <strong>{{ 'COURSE.DESCRIPTION' | translate }}:</strong>
                 <hr>
                 <div [innerHTML]="getSanitizedHtml(course.description_EN)" class="desc"></div>
             </div>
             <div class="col-lg-6 mb-4 ">
-                <strong>Prerequisites:</strong>
+                <strong>{{ 'COURSE.PREREQUISITES' | translate }}:</strong>
                 <hr>
                 <div [innerHTML]="getSanitizedHtml(course.prerequisites_EN)" class="desc"></div>
             </div>
@@ -80,7 +80,7 @@
                     <div class="col-lg-10">
                         <h1>
                             <mat-icon>dynamic_feed</mat-icon>
-                            Course Ratings
+                            {{ 'COURSE.RATINGS' | translate }}
                         </h1>
                     </div>
                     <div class="col-lg-2 text-center">
@@ -94,9 +94,9 @@
                         <mat-form-field appearance="legacy">
                             <mat-label>
                                 <fa-icon [icon]="faSearch"></fa-icon>
-                                Search
+                                {{ 'COMMON.SEARCH' | translate }}
                             </mat-label>
-                            <input matInput (keyup)="applyFilter($event)" placeholder="By: any field">
+                            <input matInput (keyup)="applyFilter($event)" [placeholder]="'COMMON.BY_ANY_FIELD' | translate">
                         </mat-form-field>
                     </div>
                 </div>
@@ -109,25 +109,25 @@
 
                                 <!-- Id Column -->
                                 <ng-container matColumnDef="id">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Id </th>
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>  {{ 'COMMON.ID' | translate }} </th>
                                     <td mat-cell *matCellDef="let row"> {{row.id}} </td>
                                 </ng-container>
 
                                 <!-- User Id Column -->
                                 <ng-container matColumnDef="userId">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> User Id </th>
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>  {{ 'COMMON.USER_ID' | translate }} </th>
                                     <td mat-cell *matCellDef="let row"> {{row.userId}} </td>
                                 </ng-container>
 
                                 <!-- User Name Column -->
                                 <ng-container matColumnDef="userName">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> User Name </th>
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>  {{ 'COMMON.USER_NAME' | translate }} </th>
                                     <td mat-cell *matCellDef="let row"> {{row.userName}} </td>
                                 </ng-container>
 
                                 <!-- User Gender Column -->
                                 <ng-container matColumnDef="userGender">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Gender </th>
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>  {{ 'REGISTER.GENDER' | translate }} </th>
                                     <td mat-cell *matCellDef="let row">
                                         <span *ngIf="row.userGender === 'male' || row.userGender === 'custom'">
                                             <fa-icon [icon]="faMale"></fa-icon>
@@ -140,31 +140,31 @@
 
                                 <!-- User Country Column -->
                                 <ng-container matColumnDef="userCountry">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Country </th>
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>  {{ 'REGISTER.COUNTRY' | translate }} </th>
                                     <td mat-cell *matCellDef="let row"> {{row.userCountry}} </td>
                                 </ng-container>
 
                                 <!-- Value Column -->
                                 <ng-container matColumnDef="value">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Value </th>
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header>  {{ 'COMMON.VALUE' | translate }} </th>
                                     <td mat-cell *matCellDef="let row"> {{row.value}} </td>
                                 </ng-container>
 
                                  <!-- Old Value Column -->
                                  <ng-container matColumnDef="oldValue">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Old Value </th>
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ 'COMMON.OLD_VALUE' | translate }} </th>
                                     <td mat-cell *matCellDef="let row"> {{row.oldValue}} </td>
                                 </ng-container>
 
                                 <!-- Rate Date Time en Column -->
                                 <ng-container matColumnDef="rateDateTime">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Date </th>
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ 'COMMON.DATE' | translate }} </th>
                                     <td mat-cell *matCellDef="let row"> {{row.rateDateTime | date:'medium'}} </td>
                                 </ng-container>
 
                                 <!-- Rate Date Time Updated en Column -->
                                 <ng-container matColumnDef="rateDateTimeUpdated">
-                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Updated </th>
+                                    <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ 'COMMON.UPDATED_AT' | translate }} </th>
                                     <td mat-cell *matCellDef="let row"> {{row.rateDateTimeUpdated | date:'medium'}}
                                     </td>
                                 </ng-container>

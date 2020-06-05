@@ -1,9 +1,9 @@
 <div class="container content0">
     <div class="alert alert-success text-center" *ngIf="confirmed">
-        <h1>Thank you for confirming your email address. You can now login to your account.</h1>
+        <h1 translate>REGISTER.EMAIL_CONFIRMED_MESSAGE</h1>
         <p>
            <a [routerLink]="['/auth']" routerLinkActive="active" >
-            Login now
+            {{ 'LOGIN.LOGIN' | translate}}
         </a>
         </p>
     </div>

@@ -12,37 +12,37 @@
                 <li class="nav-item">
                     <a class="nav-link" [routerLink]="[ '/' ]" routerlinkactive="active">
                         <fa-icon [icon]="faHome"></fa-icon>
-                        Home
+                        {{ 'HOME.HOME' | translate }}
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" [routerLink]="[ '/quizzes' ]" routerlinkactive="active">
                         <fa-icon [icon]="faQuestionCircle"></fa-icon>
-                        Quizzes
+                        {{ 'QUIZZES.QUIZZES' | translate }}
                     </a>
                 </li>
                 <li class="nav-item" *ngIf="isAuthenticated">
                     <a class="nav-link" [routerLink]="[ '/member', 'dashboard' ]" routerlinkactive="active">
                         <fa-icon [icon]="faWrench"></fa-icon>
-                        Dashboard
+                        {{ 'DASHBOARD.DASHBOARD' | translate }}
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" [routerLink]="[ '/about-me' ]" routerlinkactive="active">
                         <fa-icon [icon]="faAbout"></fa-icon>
-                        About me
+                        {{ 'ABOUT_ME.ABOUT_ME' | translate }}
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" [routerLink]="[ '/contact-us' ]" routerlinkactive="active">
                         <fa-icon [icon]="faEnvelopeOpenText"></fa-icon>
-                        Contact us
+                        {{ 'CONTACT_ME.CONTACT_ME' | translate }}
                     </a>
                 </li>
                 <li class="nav-item" *ngIf="isAdmin">
                     <a class="nav-link" [routerLink]="[ '/admin' ]" routerlinkactive="active">
                         <fa-icon [icon]="faChessKing"></fa-icon>
-                        Administration
+                        {{ 'ADMINISTRATION.ADMINISTRATION.ADMINISTRATION' | translate }}
                     </a>
                 </li>
                 <!-- <li class="nav-item">
@@ -61,7 +61,7 @@
                 <li class="nav-item" *ngIf="!isAuthenticated">
                     <a class="nav-link" [routerLink]="['/security']" routerlinkactive="active">
                         <fa-icon [icon]="faLogin"></fa-icon>
-                        Login
+                        {{ 'LOGIN.LOGIN' | translate }}
                     </a>
                 </li>
 
@@ -78,17 +78,17 @@
                         <h3 class="dropdown-header">Account</h3>
                         <a class="dropdown-item" [routerLink]="['/member', 'edit-profile']">
                             <fa-icon [icon]="faUserEdit"></fa-icon>
-                            Edit Profile
+                            {{ 'EDIT_PROFILE.EDIT_PROFILE' | translate }}
                         </a>
                         <a class="dropdown-item" [routerLink]="['/member', 'change-password']">
                             <fa-icon [icon]="faEye"></fa-icon>
-                            Change Password
+                            {{ 'CHANGE_PASSWORD.CHANGE_PASSWORD' | translate }}
                         </a>
 
                         <h3 class="dropdown-header">Session</h3>
                         <a class="dropdown-item" style="cursor: pointer;" (click)="onLogout()">
                             <fa-icon [icon]="faLogout"></fa-icon>
-                            Logout
+                            {{ 'LOGOUT.LOGOUT' | translate }}
                         </a>
                     </div>
                 </li>
@@ -104,43 +104,49 @@
                 <mat-list-item class="mt-3">
                     <a class="full-width" [routerLink]="[ '/' ]" routerlinkactive="active" (click)="sidenav.toggle()">
                         <fa-icon [icon]="faHome"></fa-icon>
-                        Home
+                        {{ 'HOME.HOME' | translate }}
                     </a>
                 </mat-list-item>
                 <mat-list-item class="mt-3">
-                    <a class="full-width" [routerLink]="[ '/quizzes' ]" routerlinkactive="active" (click)="sidenav.toggle()">
+                    <a class="full-width" [routerLink]="[ '/quizzes' ]" routerlinkactive="active"
+                        (click)="sidenav.toggle()">
                         <fa-icon [icon]="faQuestionCircle"></fa-icon>
-                        Quizzes
+                        {{ 'QUIZZES.QUIZZES' | translate }}
                     </a>
                 </mat-list-item>
                 <mat-list-item class="mt-3">
-                    <a class="full-width" [routerLink]="[ '/member', 'dashboard' ]" routerlinkactive="active" (click)="sidenav.toggle()">
+                    <a class="full-width" [routerLink]="[ '/member', 'dashboard' ]" routerlinkactive="active"
+                        (click)="sidenav.toggle()">
                         <fa-icon [icon]="faWrench"></fa-icon>
-                        Dashboard
+                        {{ 'DASHBOARD.DASHBOARD' | translate }}
                     </a>
                 </mat-list-item>
                 <mat-list-item class="mt-3">
-                    <a class="full-width" [routerLink]="[ '/about-me' ]" routerlinkactive="active" (click)="sidenav.toggle()">
+                    <a class="full-width" [routerLink]="[ '/about-me' ]" routerlinkactive="active"
+                        (click)="sidenav.toggle()">
                         <fa-icon [icon]="faAbout"></fa-icon>
-                        About me
+                        {{ 'ABOUT_ME.ABOUT_ME' | translate }}
                     </a>
                 </mat-list-item>
                 <mat-list-item class="mt-3">
-                    <a class="full-width" [routerLink]="[ '/contact-us' ]" routerlinkactive="active" (click)="sidenav.toggle()">
+                    <a class="full-width" [routerLink]="[ '/contact-us' ]" routerlinkactive="active"
+                        (click)="sidenav.toggle()">
                         <fa-icon [icon]="faEnvelopeOpenText"></fa-icon>
-                        Contact us
+                        {{ 'CONTACT_ME.CONTACT_ME' | translate }}
                     </a>
                 </mat-list-item>
                 <mat-list-item class="mt-3" *ngIf="isAdmin">
-                    <a class="full-width" [routerLink]="[ '/admin' ]" routerlinkactive="active" (click)="sidenav.toggle()">
+                    <a class="full-width" [routerLink]="[ '/admin' ]" routerlinkactive="active"
+                        (click)="sidenav.toggle()">
                         <fa-icon [icon]="faChessKing"></fa-icon>
-                        Administration
+                        {{ 'ADMINISTRATION.ADMINISTRATION' | translate }}
                     </a>
                 </mat-list-item>
                 <mat-list-item class="mt-3" *ngIf="!isAuthenticated">
-                    <a class="full-width" [routerLink]="['/security']" routerlinkactive="active" (click)="sidenav.toggle()">
+                    <a class="full-width" [routerLink]="['/security']" routerlinkactive="active"
+                        (click)="sidenav.toggle()">
                         <fa-icon [icon]="faLogin"></fa-icon>
-                        Login
+                        {{ 'LOGIN.LOGIN' | translate }}
                     </a>
                 </mat-list-item>
 
@@ -156,8 +162,16 @@
                     </mat-icon>
                 </mat-list-item>
                 <div class="submenu" [ngClass]="{'expanded' : showSubmenuUser}" *ngIf="isAuthenticated">
+                    <a mat-list-item [routerLink]="['/member', 'edit-profile']">
+                        <fa-icon [icon]="faUserEdit"></fa-icon>
+                        {{ 'EDIT_PROFILE.EDIT_PROFILE' | translate }}
+                    </a>
+                    <a mat-list-item [routerLink]="['/member', 'change-password']">
+                        <fa-icon [icon]="faEye"></fa-icon>
+                        {{ 'CHANGE_PASSWORD.CHANGE_PASSWORD' | translate }}
+                    </a>
                     <a mat-list-item (click)="onLogout()">
-                        <fa-icon [icon]="faLogout"></fa-icon> Logout
+                        <fa-icon [icon]="faLogout"></fa-icon> {{ 'LOGOUT.LOGOUT' | translate }}
                     </a>
 
                 </div>

@@ -1,4 +1,4 @@
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { TranslateService } from '@ngx-translate/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Component, OnInit, OnDestroy } from '@angular/core';
@@ -48,7 +48,7 @@ export class NewUserComponent implements OnInit, OnDestroy {
     private store: Store<fromApp.AppState>,
     private route: ActivatedRoute,
     private router: Router,
-    private snackBar: MatSnackBar,
+    private translate: TranslateService,
     private dialog: MatDialog,
   ) { }
 
@@ -71,10 +71,6 @@ export class NewUserComponent implements OnInit, OnDestroy {
           this.regForm.reset();
 
           this.router.navigate(['/admin', 'users']);
-          this.snackBar.open('User Saved successfully', 'Okay',
-            {
-              duration: 2000
-            });
         }
       });
 
@@ -161,9 +157,16 @@ export class NewUserComponent implements OnInit, OnDestroy {
   }
 
   onCancel() {
+    let alertHeader = '';
+    let alertMsg = '';
+
+    this.translate.get(['COMMON.CONFIRM_CANCEL', 'COMMON.CANCEL_MESSAGE']).subscribe(trans => {
+      alertHeader = trans['COMMON.CONFIRM_CANCEL'];
+      alertMsg = trans['COMMON.CANCEL_MESSAGE'];
+    });
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      width: '360px',
-      data: { header: 'Confirm cancel', message: 'Cancel and discard all changes?' }
+      width: '400px',
+      data: { header: alertHeader, message: alertMsg }
     });
 
     dialogRef.afterClosed().subscribe(result => {

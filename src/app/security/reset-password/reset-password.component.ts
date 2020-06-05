@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
@@ -21,14 +21,18 @@ export class ResetPasswordComponent implements OnInit {
   token: string = null;
   errors: string[] = null;
 
-  constructor(private http: HttpClient, private route: ActivatedRoute) { }
+  constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit(): void {
 
     this.route.queryParams.subscribe((params: Params) => {
-      this.email = params.email,
-        this.token = params.token
+      this.email = params.email;
+      this.token = params.token;
     });
+
+    if (!this.email || !this.token) {
+      this.router.navigate(['/security', 'access-denied']);
+    }
 
     this.resetPwdForm = new FormGroup({
       passwordGroup: new FormGroup({

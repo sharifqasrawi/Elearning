@@ -2,14 +2,14 @@
 
     <h2>
         <fa-icon [icon]="faRegister"></fa-icon>
-        Register a new user
+        {{ 'REGISTER.REGISTER_NEW_USER' | translate}}
     </h2>
     <hr>
 
     <div class="alert alert-success text-center" *ngIf="registerd">
         <div class="registerMsg">
-            <h1>Thank you for registering</h1>
-            <h3>A confirmation email was sent to your email. Please confirm your email in order to sign in</h3>
+            <h1 translate>REGISTER.THANK_REGISTER</h1>
+            <h3 translate>REGISTER.CONFIRMATION_EMAIL_SENT</h3>
         </div>
     </div>
 
@@ -24,51 +24,53 @@
         <mat-vertical-stepper #linearVerticalStepper="matVerticalStepper" formArrayName="formArray" [linear]="true"
             class="p-2" style="background: rgb(255, 251, 251);">
             <mat-step formGroupName="0" [stepControl]="formArray?.get([0])">
-                <ng-template matStepLabel>Fill out your name</ng-template>
+                <ng-template matStepLabel>
+                    <div translate>REGISTER.FILL_OUT_YOUR_NAME</div>
+                </ng-template>
 
                 <div class="row">
                     <div class="col-lg-6">
                         <mat-form-field class="full-width" appearance="legacy">
-                            <mat-label>First name</mat-label>
+                            <mat-label translate>REGISTER.FIRSTNAME</mat-label>
                             <input matInput formControlName="firstName" required>
-                            <mat-error>This field is required</mat-error>
+                            <mat-error translate>VALIDATION.REQUIRED</mat-error>
                         </mat-form-field>
                     </div>
                     <div class="col-lg-6">
                         <mat-form-field class="full-width" appearance="legacy">
-                            <mat-label>Last name</mat-label>
+                            <mat-label translate>REGISTER.LASTNAME</mat-label>
                             <input matInput formControlName="lastName" required>
-                            <mat-error>This field is required</mat-error>
+                            <mat-error translate>VALIDATION.REQUIRED</mat-error>
                         </mat-form-field>
                     </div>
                 </div>
                 <div>
-                    <button mat-button matStepperNext>Next</button>
+                    <button mat-button matStepperNext>{{ 'COMMON.NEXT' | translate }}</button>
                 </div>
             </mat-step>
 
 
             <mat-step formGroupName="1" [stepControl]="formArray?.get([1])">
                 <ng-template matStepLabel>
-                    <div>Fill out your email address</div>
+                    <div translate>REGISTER.FILL_OUT_YOUR_EMAIL</div>
                 </ng-template>
                 <mat-form-field class="full-width" appearance="legacy">
-                    <mat-label>Email address</mat-label>
+                    <mat-label translate>COMMON.EMAIL</mat-label>
                     <input matInput placeholder="Ex. laurnace@example.com" formControlName="email">
-                    <mat-error>Please enter a valid email address.</mat-error>
+                    <mat-error translate>VALIDATION.INVALID_EMAIL</mat-error>
                 </mat-form-field>
                 <div>
-                    <button mat-button matStepperPrevious>Back</button>
-                    <button mat-button matStepperNext>Next</button>
+                    <button mat-button matStepperPrevious>{{ 'COMMON.BACK' | translate }} </button>
+                    <button mat-button matStepperNext>{{ 'COMMON.NEXT' | translate }}</button>
                 </div>
             </mat-step>
 
             <mat-step formGroupName="2" [stepControl]="formArray?.get([2])">
                 <ng-template matStepLabel>
-                    <div>Fill out your country</div>
+                    <div translate>REGISTER.FILL_OUT_YOUR_COUNTRY</div>
                 </ng-template>
                 <mat-form-field class="full-width" appearance="legacy">
-                    <mat-label>Country</mat-label>
+                    <mat-label translate>REGISTER.COUNTRY</mat-label>
                     <mat-select formControlName="country" name="country" id="country" required>
                         <mat-option>--</mat-option>
                         <mat-option *ngFor="let c of listCountries" [value]="c.name">
@@ -76,45 +78,47 @@
                         </mat-option>
                     </mat-select>
 
-                    <mat-error>This field is required.</mat-error>
+                    <mat-error translate>VALIDATION.REQUIRED.</mat-error>
                 </mat-form-field>
                 <div>
-                    <button mat-button matStepperPrevious>Back</button>
-                    <button mat-button matStepperNext>Next</button>
+                    <button mat-button matStepperPrevious>{{ 'COMMON.BACK' | translate }} </button>
+                    <button mat-button matStepperNext>{{ 'COMMON.NEXT' | translate }}</button>
                 </div>
             </mat-step>
 
             <mat-step formGroupName="3" [stepControl]="formArray?.get([3])">
                 <ng-template matStepLabel>
-                    <div>Fill out your gender</div>
+                    <div translate>REGISTER.FILL_OUT_YOUR_GENDER</div>
                 </ng-template>
                 <!-- <mat-form-field class="full-width"> -->
                 <mat-radio-group formControlName="gender">
-                    <mat-radio-button class="ml-2" value="male">Male</mat-radio-button>
-                    <mat-radio-button class="ml-2" value="female">Female</mat-radio-button>
-                    <mat-radio-button class="ml-2" value="custom">Custom</mat-radio-button>
+                    <mat-radio-button class="ml-2" value="male">{{ 'REGISTER.MALE' | translate }}</mat-radio-button>
+                    <mat-radio-button class="ml-2" value="female">{{ 'REGISTER.FEMALE' | translate }}</mat-radio-button>
+                    <mat-radio-button class="ml-2" value="custom">{{ 'REGISTER.OTHER' | translate }}</mat-radio-button>
                 </mat-radio-group>
                 <!-- <mat-error>This field is required.</mat-error> -->
                 <!-- </mat-form-field> -->
                 <div>
-                    <button mat-button matStepperPrevious>Back</button>
-                    <button mat-button matStepperNext>Next</button>
+                    <button mat-button matStepperPrevious>{{ 'COMMON.BACK' | translate }} </button>
+                    <button mat-button matStepperNext>{{ 'COMMON.NEXT' | translate }}</button>
                 </div>
             </mat-step>
 
 
             <mat-step formGroupName="4" [stepControl]="formArray?.get([4])">
-                <ng-template matStepLabel>Choose a password</ng-template>
+                <ng-template matStepLabel >
+                    <div translate>REGISTER.CHOOSE_PASSWORD</div>
+                </ng-template>
                 <div class="row">
                     <div class="col-lg-6">
                         <mat-form-field class="full-width" appearance="legacy">
-                            <mat-label>Enter a password</mat-label>
+                            <mat-label translate>REGISTER.ENTER_A_PASSWORD</mat-label>
                             <input matInput formControlName="password" required [type]="hidePwd ? 'password' : 'text'">
                             <button type="button" mat-icon-button matSuffix (click)="hidePwd = !hidePwd"
                                 [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePwd">
                                 <mat-icon>{{hidePwd ? 'visibility_off' : 'visibility'}}</mat-icon>
                             </button>
-                            <mat-error>Password length must be at least 8 charcters</mat-error>
+                            <mat-error translate>VALIDATION.PASSWORD_LENGTH</mat-error>
                         </mat-form-field>
                     </div>
                     <div class="col-lg-6">
@@ -128,8 +132,8 @@
                             </button>
                         </mat-form-field>
                     </div>
-                    <mat-error class="small ml-3 mt-2"
-                        *ngIf="!formArray?.get([4]).valid && formArray?.get([4]).touched">Passwords do not match
+                    <mat-error class="small ml-3 mt-2" translate
+                        *ngIf="!formArray?.get([4]).valid && formArray?.get([4]).touched">VALIDATION.PASSWORDS_MATCH
                     </mat-error>
 
                 </div>
@@ -137,10 +141,10 @@
                     <!-- <re-captcha formControlName="captcha" required
                         siteKey="ghtBHreVgsfZRgsQSD578dh5HTUtyjTYJUIuyotuiytOyt864uRNryjtUOYTUO">
                     </re-captcha> -->
-
-                    <button mat-button matStepperPrevious>Back</button>
+                    <button mat-button matStepperPrevious>{{ 'COMMON.BACK' | translate }} </button>
+                 
                     <button mat-raised-button color="accent" matStepperNext [disabled]="!regForm.valid || loading">
-                        {{ !loading ? 'Register' : 'Registering' }}
+                        {{ !loading ? ('REGISTER.REGISTER' | translate) : ('COMMON.LOADING' | translate) }}
                     </button>
                 </div>
             </mat-step>

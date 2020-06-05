@@ -1,7 +1,7 @@
-import { faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { faCheckCircle, faTimesCircle, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 
 import * as fromApp from '../../store/app.reducer';
 import * as HomeQuizzesActions from '../store/quizzes.actions';
@@ -16,6 +16,8 @@ export class QuizResultComponent implements OnInit, OnDestroy {
 
   faCheckCircle = faCheckCircle;
   faTimesCircle = faTimesCircle;
+  faQuestionCircle = faQuestionCircle;
+
 
   quizId: number = null;
   quizSlug: string = null;
@@ -49,7 +51,7 @@ export class QuizResultComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.store.dispatch(new HomeQuizzesActions.ClearErrors());
     this.store.dispatch(new HomeQuizzesActions.ClearStatus());
   }

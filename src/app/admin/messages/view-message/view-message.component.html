@@ -6,30 +6,31 @@
     <hr>
 
     <div class="float-right">
-        <button mat-raised-button color="primary">
-            <fa-icon [icon]="faReply"></fa-icon> Reply
-        </button>
+        <a mat-raised-button color="primary"  [routerLink]="[ '/admin','messages','send-email']" [queryParams]="{email: message.email}">
+            <fa-icon [icon]="faReply"></fa-icon> {{ 'COMMON.REPLY' | translate }}
+        </a>
         <button mat-raised-button color="accent" class="ml-3" (click)="onGoBack()">
             <fa-icon [icon]="faBackward"></fa-icon>
-            Back
+            {{ 'COMMON.BACK' | translate }}
         </button>
     </div>
 </div>
 <div class="clearfix"></div>
 <div class="adminPageBottom">
     <h3>
-        <strong>Subject:</strong>
+        <strong translate>CONTACT_ME.SUBJECT</strong>
     </h3>
     <p class="subject">
         {{ message.subject }}
     </p>
     <h3>
-        <strong>Message:</strong>
+        <strong translate>COMMON.TEXT</strong>
     </h3>
     <pre class="subject message">{{ message.text }}</pre>
     <div class="details">
-        <p class="badge badge-primary"><strong>Received: </strong> {{ message.dateTime | date:'medium' }}</p>
-        <p class="badge badge-info" *ngIf="message.isSeen"><strong>Seen: </strong>
+        <p class="badge badge-primary"><strong> {{ 'COMMON.RECEIVED' | translate }}: </strong>
+            {{ message.dateTime | date:'medium' }}</p>
+        <p class="badge badge-info" *ngIf="message.isSeen"><strong> {{ 'COMMON.SEEN' | translate }}: </strong>
             {{ message.seenDateTime | date:'medium' }}</p>
     </div>
 </div>

@@ -12,22 +12,44 @@
             <img [src]="getSanitizedImage(quiz.imagePath)" alt="no preview" width="100%" height="200">
         </div>
         <div class="col-lg-6">
-            <h3><strong>Description:</strong></h3>
+            <h3><strong translate>COURSE.DESCRIPTION</strong></h3>
             <div [innerHTML]="getSanitizedHtml(quiz.description_EN)"></div>
 
-            <h3><strong>Languages:</strong></h3>
+            <h3><strong translate>COURSE.LANGUAGES</strong></h3>
             <ul>
                 <li *ngFor="let lang of quiz.languages.split('-')">
                     {{ lang }}
                 </li>
             </ul>
 
-            <h3><strong>Duration :</strong> {{ quiz.duration }} mins. </h3>
+            <h3><strong translate>COURSE.DURATION</strong> {{ quiz.duration }} mins. </h3>
         </div>
         <div class="col-lg-2">
             <a (click)="onStartQuiz()" mat-raised-button color="primary" class="btn-block"
-                style="text-transform: uppercase;" *ngIf="isAuthenticated">
-                start quiz &nbsp; <fa-icon [icon]="faPlay"></fa-icon>
+                style="text-transform: uppercase;" *ngIf="isAuthenticated" [disabled]="startingQuiz">
+                {{ startingQuiz ? ('COMMON.LOADING' | translate) : ('QUIZZES.START_QUIZ' | translate) }}
+                &nbsp; <fa-icon [icon]="faPlay"></fa-icon>
+            </a>
+        </div>
+    </div>
+
+
+    <div class="row quizLoader" *ngIf="loading">
+        <div class="col-lg-4">
+            <div class="quizImg"></div>
+        </div>
+        <div class="col-lg-6">
+            <h3>&nbsp;</h3>
+            <div class="quizDescription">&nbsp;</div>
+
+            <h3>&nbsp;</h3>
+            <p>&nbsp;</p>
+
+            <h3>&nbsp;</h3>
+        </div>
+        <div class="col-lg-2">
+            <a mat-raised-button color="primary" class="btn-block">
+                &nbsp;
             </a>
         </div>
     </div>

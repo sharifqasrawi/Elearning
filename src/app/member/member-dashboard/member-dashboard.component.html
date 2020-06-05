@@ -1,44 +1,50 @@
 <div class="container-fluid content0">
     <h1 class="adminPageTop">
         <mat-icon>dashboard</mat-icon>
-        My Dashboard
+        {{ 'DASHBOARD.MY_DASHBOARD' | translate }}
     </h1>
     <hr>
 
     <div class="dashNav">
         <div class="mat-elevation-z4 primary">
             <a [routerLink]="['/member', 'dashboard']">
-                Dashboard
+                {{ 'DASHBOARD.DASHBOARD' | translate }}
             </a>
         </div>
         <div class="mat-elevation-z4 coral">
             <a [routerLink]="['courses']" [queryParams]="{'fetch': 'enrolled'}">
-                Enrolled Courses
+                {{ 'DASHBOARD.ENROLLED_COURSES' | translate }}
             </a>
         </div>
         <div class="mat-elevation-z4 info">
             <a [routerLink]="['courses']" [queryParams]="{'fetch': 'favorites'}">
-                Favorite Courses
+                {{ 'DASHBOARD.FAVORITE_COURSES' | translate }}
             </a>
         </div>
         <div class="mat-elevation-z4 success">
             <a [routerLink]="['saved-sessions']">
-                Saved Sessions
+                {{ 'DASHBOARD.SAVED_SESSIONS.SAVED_SESSIONS' | translate }}
             </a>
         </div>
         <div class="mat-elevation-z4 darkcyan">
             <a [routerLink]="['quizzes']">
-                My Quizzes
+                {{ 'DASHBOARD.MY_QUIZZES.MY_QUIZZES' | translate }}
             </a>
         </div>
         <div class="mat-elevation-z4 crimson">
             <a [routerLink]="['reports']">
-                Reports
+                {{ 'DASHBOARD.REPORTS.REPORTS' | translate }}
             </a>
         </div>
     </div>
     <div class="clearfix"></div>
     <hr>
+    
+    <div *ngIf="errors">
+        <div class="alert alert-danger text-center" *ngFor="let error of errors">
+            {{ error }}
+        </div>
+    </div>
 
     <div>
         <!-- <app-member-courses></app-member-courses> -->

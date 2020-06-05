@@ -1,7 +1,7 @@
 
 .quiz-card {
     width: 250px;
-    height: 350px;
+    height: 360px;
     overflow-y: auto;
 
     animation: quizDivAnim .4s ease-in-out forwards;
@@ -70,4 +70,56 @@
     padding: 8px;
     border-radius: 10px;
     font-size: 12px;
+}
+
+
+/* loader */
+
+.loader-quiz-card {
+    width: 250px;
+    height: 350px;
+    overflow-y: auto;
+}
+
+.loader-quiz-card img {
+    width: 250px;
+    height: 150px;
+}
+
+.loader-quiz-card .actions {
+    position: absolute;
+    bottom: 10px;
+    background-color: rgb(230, 228, 228);
+    width: 100px;
+}
+
+
+.loader-quiz-card .title{
+    font-size: 14px;
+    text-align: center;
+    margin: 0 auto;
+    width: 160px;
+    background-color: rgb(230, 228, 228);
+}
+
+.loader-quiz-div {
+    float: left;
+    margin: 0 20px 25px 0;
+
+    animation: loaderQuizDivAnim 1s ease-in-out infinite;
+}
+
+@keyframes loaderQuizDivAnim {
+    0% {
+        opacity: 0.3;
+    }
+    50% {
+        opacity: 0.5;
+    }
+    75% {
+        opacity: 0.6;
+    }
+    100% {
+        opacity: 0.3;
+    }
 }

@@ -2,19 +2,21 @@
     <div class="col-lg-12">
         <div *ngIf="!loading">
             <h2>
-                Comments:
+                {{ 'COURSE.COMMENTS' | translate }}:
                 [ <span [countUp]="count" class="count-numbers">0</span> ]
             </h2>
             <hr>
 
             <h3 *ngIf="loadedComments.length === 0" class="alert alert-info text-center">
-                NO COMMENTS YET.
+                {{ 'COURSE.NO_COMMENTS_YET' | translate }}.
             </h3>
 
             <div class="comments-container">
                 <div class="loadCommentsDiv">
-                    <a (click)="loadLess()" *ngIf="showLoadLessBtn && loadedComments.length > 0"> load less </a>
-                    <a (click)=" loadMore()" *ngIf="showLoadMoreBtn && loadedComments.length > 0"> load more </a>
+                    <a (click)="loadLess()" *ngIf="showLoadLessBtn && loadedComments.length > 0" translate>
+                        COURSE.LOAD_LESS</a>
+                    <a (click)=" loadMore()" *ngIf="showLoadMoreBtn && loadedComments.length > 0" translate>
+                        COURSE.LOAD_MORE </a>
                 </div>
 
                 <div class="clearfix"></div>
@@ -51,10 +53,10 @@
                                         <span class="text-muted">likes ({{ comment.likes.length }})</span>
 
                                         <a (click)="onShowReplies(i)" *ngIf="!showReplies[i]">
-                                            Replies ({{ comment.replies.length }})
+                                            {{ 'COURSE.REPLIES' | translate }} ({{ comment.replies.length }})
                                         </a>
                                         <a (click)="onHideReplies(i)" *ngIf="showReplies[i]">
-                                            Hide Replies ({{ comment.replies.length }})
+                                            {{ 'COMMON.HIDE' | translate }} ({{ comment.replies.length }})
                                         </a>
                                     </div>
                                 </div>
@@ -86,7 +88,9 @@
                                     </div>
                                     <div class="comment-footer">
                                         <span class="text-muted">{{ reply.commentDateTime | timeago:'live' }}</span>
-                                        <span class="text-muted">likes ({{ reply.likes.length }})</span>
+                                        <span class="text-muted"> 
+                                            {{ 'COURSE.LIKES' | translate }}
+                                            ({{ reply.likes.length }})</span>
                                     </div>
                                 </div>
                             </li>

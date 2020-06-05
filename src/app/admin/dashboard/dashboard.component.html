@@ -3,7 +3,7 @@
         <div class="col-lg-11">
             <h1>
                 <mat-icon>dashboard</mat-icon>
-                Dashboard
+                {{ 'DASHBOARD.DASHBOARD' | translate }}
             </h1>
         </div>
         <div class="col-lg-1">
@@ -21,7 +21,7 @@
             <div class="card-counter primary">
                 <mat-icon class="icon">view_quilt</mat-icon>
                 <span [countUp]="categroiesCount" class="count-numbers">0</span>
-                <span class="count-name">Categories</span>
+                <span class="count-name" translate>ADMINISTRATION.CATEGORIES.CATEGORIES</span>
             </div>
         </div>
 
@@ -29,7 +29,7 @@
             <div class="card-counter coral">
                 <mat-icon class="icon">airplay</mat-icon>
                 <span [countUp]="coursesCount" class="count-numbers">0</span>
-                <span class="count-name">Courses</span>
+                <span class="count-name" translate>COURSES.COURSES</span>
             </div>
         </div>
 
@@ -37,7 +37,7 @@
             <div class="card-counter cadetblue">
                 <mat-icon class="icon">comment</mat-icon>
                 <span [countUp]="commentsCount" class="count-numbers">0</span>
-                <span class="count-name">Comments</span>
+                <span class="count-name" translate>COURSE.COMMENTS</span>
             </div>
         </div>
 
@@ -45,7 +45,7 @@
             <div class="card-counter crimson">
                 <mat-icon class="icon">thumb_up</mat-icon>
                 <span [countUp]="likesCount" class="count-numbers">0</span>
-                <span class="count-name">Likes</span>
+                <span class="count-name" translate>COURSE.LIKES</span>
             </div>
         </div>
 
@@ -55,14 +55,14 @@
             <div class="card-counter info">
                 <mat-icon class="icon">loyalty</mat-icon>
                 <span [countUp]="tagsCount" class="count-numbers">0</span>
-                <span class="count-name">Tags</span>
+                <span class="count-name" translate>ADMINISTRATION.TAGS_MANAGEMENT.TAGS</span>
             </div>
         </div>
         <div class="col-md-3">
             <div class="card-counter success">
                 <mat-icon class="icon">message</mat-icon>
                 <span [countUp]="messagesCount" class="count-numbers">0</span>
-                <span class="count-name">Messages</span>
+                <span class="count-name" translate>ADMINISTRATION.MESSAGING.INBOX</span>
             </div>
         </div>
 
@@ -70,7 +70,7 @@
             <div class="card-counter danger">
                 <mat-icon class="icon">mail_outline</mat-icon>
                 <span [countUp]="sentEmailsCount" class="count-numbers">0</span>
-                <span class="count-name">Sent Emails</span>
+                <span class="count-name" translate>ADMINISTRATION.MESSAGING.SENT_EMAILS</span>
             </div>
         </div>
 
@@ -79,7 +79,7 @@
             <div class="card-counter burlywood">
                 <mat-icon class="icon">supervised_user_circle</mat-icon>
                 <span [countUp]="usersCount" class="count-numbers">0</span>
-                <span class="count-name">Users</span>
+                <span class="count-name" translate>ADMINISTRATION.USERS.USERS</span>
             </div>
         </div>
 
@@ -91,14 +91,14 @@
             <div class="card-counter darkorange">
                 <mat-icon class="icon">dynamic_feed</mat-icon>
                 <span [countUp]="directoriesCount" class="count-numbers">0</span>
-                <span class="count-name">Directories</span>
+                <span class="count-name" translate>ADMINISTRATION.FILE_MANAGEMENT.DIRECTORIES</span>
             </div>
         </div>
         <div class="col-md-3">
             <div class="card-counter darkcyan">
                 <mat-icon class="icon">file_copy</mat-icon>
                 <span [countUp]="filesCount" class="count-numbers">0</span>
-                <span class="count-name">Files</span>
+                <span class="count-name" translate>ADMINISTRATION.FILE_MANAGEMENT.FILES</span>
             </div>
         </div>
 
@@ -107,14 +107,14 @@
             <div class="card-counter tomato">
                 <mat-icon class="icon">feedback</mat-icon>
                 <span [countUp]="reportsCount" class="count-numbers">0</span>
-                <span class="count-name">Reports</span>
+                <span class="count-name" translate>DASHBOARD.REPORTS.REPORTS</span>
             </div>
         </div>
         <div class="col-md-3">
             <div class="card-counter purple">
                 <mat-icon class="icon">help</mat-icon>
                 <span [countUp]="quizzesCount" class="count-numbers">0</span>
-                <span class="count-name">Quizzes</span>
+                <span class="count-name" translate>QUIZZES.QUIZZES</span>
             </div>
         </div>
     </div>

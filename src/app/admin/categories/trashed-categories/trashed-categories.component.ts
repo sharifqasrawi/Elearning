@@ -1,30 +1,31 @@
+import { TranslateService } from '@ngx-translate/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ConfirmDialogComponent } from './../../../shared/confirm-dialog/confirm-dialog.component';
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
-import { faSearch, faTrashAlt, faChessKing } from '@fortawesome/free-solid-svg-icons';
+import { faSearch, faTrashAlt, faChessKing, faTimes, faReply } from '@fortawesome/free-solid-svg-icons';
 
 
 import * as fromApp from '../../../store/app.reducer';
 import * as CategoriesActions from '../store/categories.actions';
 import { Category } from './../../../models/category.model';
-import { NewCategoryComponent } from '../new-category/new-category.component';
 
 @Component({
   selector: 'app-trashed-categories',
   templateUrl: './trashed-categories.component.html',
   styleUrls: ['./trashed-categories.component.css']
 })
-export class TrashedCategoriesComponent implements OnInit, OnDestroy {
+export class TrashedCategoriesComponent implements OnInit {
 
   faSearch = faSearch;
   faTrashAlt = faTrashAlt;
   faChessKing = faChessKing;
+  faTimes = faTimes;
+  faReply = faReply;
 
   trashedCategories: Category[] = null;
   errors: string[] = null;
@@ -40,18 +41,18 @@ export class TrashedCategoriesComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
-  
+
   constructor(
     private store: Store<fromApp.AppState>,
-    private snackBar: MatSnackBar,
     private dialog: MatDialog,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private translate: TranslateService
   ) { }
 
   ngOnInit(): void {
     this.store.dispatch(new CategoriesActions.FetchDeletedStart());
 
-     this.store.select('categories').subscribe(catState => {
+    this.store.select('categories').subscribe(catState => {
       this.trashedCategories = catState.trashedCategories;
       this.errors = catState.errors;
       this.loading = catState.loading;
@@ -70,41 +71,45 @@ export class TrashedCategoriesComponent implements OnInit, OnDestroy {
   onRefresh() {
     this.store.dispatch(new CategoriesActions.FetchDeletedStart());
     this.setTableTrashedCategories();
-    this.snackBar.open('Refreshing...', 'OK', {
-      duration: 2000
-    });
+
   }
 
 
   onDelete(id: number) {
+    let alertHeader = '';
+    let alertMsg = '';
+    this.translate.get(['COMMON.CONFIRM_ACTION', 'COMMON.DELETE_MESSAGE']).subscribe(trans => {
+      alertHeader = trans['COMMON.CONFIRM_ACTION'];
+      alertMsg = trans['COMMON.DELETE_MESSAGE'];
+    });
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      width: '300px',
-      data: { header: 'Confirm Delete', message: 'Delete this category ?' }
+      width: '400px',
+      data: { header: alertHeader, message: alertMsg }
     });
 
-     dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.store.dispatch(new CategoriesActions.DeleteStart(id));
-        this.snackBar.open('Deleting...', 'OK', {
-          duration: 2000
-        });
       }
     });
   }
 
 
   onRestore(id: number) {
+    let alertHeader = '';
+    let alertMsg = '';
+    this.translate.get(['COMMON.CONFIRM_ACTION', 'COMMON.RESTORE_MESSAGE']).subscribe(trans => {
+      alertHeader = trans['COMMON.CONFIRM_ACTION'];
+      alertMsg = trans['COMMON.RESTORE_MESSAGE'];
+    });
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      width: '300px',
-      data: { header: 'Confirm Restore', message: 'Restore this category from trash ?' }
+      width: '400px',
+      data: { header: alertHeader, message: alertMsg }
     });
 
-     dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.store.dispatch(new CategoriesActions.RestoreStart(id));
-        this.snackBar.open('Restoring from trash...', 'OK', {
-          duration: 2000
-        });
       }
     });
   }
@@ -130,7 +135,4 @@ export class TrashedCategoriesComponent implements OnInit, OnDestroy {
 
 
 
-  ngOnDestroy(): void {
-   
-  }
 }

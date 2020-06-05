@@ -33,6 +33,8 @@
     "@fortawesome/free-solid-svg-icons": "^5.13.0",
     "@ngrx/effects": "^9.0.0",
     "@ngrx/store": "^9.0.0",
+    "@ngx-translate/core": "^12.1.2",
+    "@ngx-translate/http-loader": "^4.0.0",
     "angular-notifier": "^6.0.1",
     "bootstrap": "^4.4.1",
     "jwt-decode": "^2.2.0",

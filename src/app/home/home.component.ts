@@ -1,4 +1,4 @@
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { faSearch, faThumbsUp } from '@fortawesome/free-solid-svg-icons';
 import { FormGroup, FormControl } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Component, OnInit } from '@angular/core';
@@ -8,8 +8,8 @@ import { Store } from '@ngrx/store';
 import { Category } from './../models/category.model';
 
 import * as fromApp from '../store/app.reducer';
-// import * as CoursesActions from '../admin/courses/store/courses.actions';
-import * as CategoriesActions from './store/categories.actions';
+import * as HomeActions from './store/home.actions';
+import { Course } from '../models/course.model';
 
 @Component({
   selector: 'app-home',
@@ -19,12 +19,16 @@ import * as CategoriesActions from './store/categories.actions';
 export class HomeComponent implements OnInit {
 
   faSearch = faSearch;
+  faThumbsUp = faThumbsUp;
 
   // courses: Course[] = null;
   categories: Category[] = null;
   storeCategories: Category[] = null;
   errors: string[] = null;
   loading = false;
+
+  courses: Course[] = null;
+  loadingCourses = false;
 
   searchForm: FormGroup;
 
@@ -34,19 +38,17 @@ export class HomeComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // this.store.dispatch(new CoursesActions.FetchStart());
-    this.store.dispatch(new CategoriesActions.FetchStart());
+    this.store.dispatch(new HomeActions.FetchStart());
+    this.store.dispatch(new HomeActions.FetchLatestCoursesStart());
 
-    // this.store.select('courses').subscribe(state => {
-    //   this.courses = state.courses;
-    //   this.loading = state.loading;
-    //   this.errors = state.errors;
-    // });
 
-    this.store.select('homeCategories').subscribe(state => {
+    this.store.select('home').subscribe(state => {
       this.storeCategories = state.categories;
       this.categories = this.storeCategories;
       this.loading = state.loading;
+
+      this.courses = state.courses;
+      this.loadingCourses = state.loadingCourses;
       this.errors = state.errors;
     });
 

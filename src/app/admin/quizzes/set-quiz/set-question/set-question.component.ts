@@ -1,18 +1,18 @@
-import { Answer } from './../../../../models/answer.model';
-import { NewAnswerComponent } from './new-answer/new-answer.component';
+import { TranslateService } from '@ngx-translate/core';
 import { Location } from '@angular/common';
 import { MatDialog } from '@angular/material/dialog';
-import { faEdit, faTrash, faCheckCircle, faTrashAlt, faPlusCircle } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faTrash, faCheckCircle, faTrashAlt, faPlusCircle, faReply } from '@fortawesome/free-solid-svg-icons';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
 import { Store } from '@ngrx/store';
 
+import { NewAnswerComponent } from './new-answer/new-answer.component';
 import { ConfirmDialogComponent } from './../../../../shared/confirm-dialog/confirm-dialog.component';
 import * as fromApp from '../../../../store/app.reducer';
 import * as QuizzesActions from '../../store/quizzes.actions';
 import { Question } from './../../../../models/question.model';
-import { NewQuestionComponent } from './new-question/new-question.component';
+import { Answer } from './../../../../models/answer.model';
 
 @Component({
   selector: 'app-set-question',
@@ -26,6 +26,7 @@ export class SetQuestionComponent implements OnInit, OnDestroy {
   faTrashAlt = faTrashAlt;
   faEdit = faEdit;
   faPlusCircle = faPlusCircle;
+  faReply = faReply;
 
   question: Question = null;
   questionId: number = null;
@@ -35,7 +36,7 @@ export class SetQuestionComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router,
+    private translate: TranslateService,
     private location: Location,
     private store: Store<fromApp.AppState>,
     private sanitizer: DomSanitizer,
@@ -81,9 +82,16 @@ export class SetQuestionComponent implements OnInit, OnDestroy {
   }
 
   onDeleteAnswer(answerId: number) {
+    let alertHeader = '';
+    let alertMsg = '';
+
+    this.translate.get(['COMMON.CONFIRM_ACTION', 'COMMON.DELETE_MESSAGE']).subscribe(trans => {
+      alertHeader = trans['COMMON.CONFIRM_ACTION'];
+      alertMsg = trans['COMMON.DELETE_MESSAGE'];
+    });
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      width: '300px',
-      data: { header: 'Confirmation', message: 'Delete this answer permanently ?' }
+      width: '400px',
+      data: { header: alertHeader, message: alertMsg }
     });
 
     dialogRef.afterClosed().subscribe(result => {

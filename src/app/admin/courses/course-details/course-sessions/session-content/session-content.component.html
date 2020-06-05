@@ -4,22 +4,22 @@
             <div class="col-lg-7">
                 <h2>
                     <fa-icon [icon]="faEdit"></fa-icon>
-                    {{ loadingSession ? 'loading...' :  editedSession.title_EN }}
+                    {{ loadingSession ? ( 'COMMON.LOADING' | translate ):  editedSession.title_EN }}
                 </h2>
             </div>
             <div class="col-lg-1">
                 <button mat-raised-button color="warn" class="btn-block" (click)="onGoBack()">
-                    Back
+                    {{ 'COMMON.BACK' | translate }}
                 </button>
             </div>
             <div class="col-lg-2">
                 <button mat-raised-button color="accent" class="btn-block" (click)="onRefresh()">
-                    Refresh
+                    {{ 'COMMON.REFRESH' | translate }}
                 </button>
             </div>
             <div class="col-lg-2">
                 <button mat-raised-button color="primary" class="btn-block" (click)="onAdd()">
-                    Add Content
+                    {{ 'COMMON.ADD' | translate }}
                 </button>
             </div>
         </div>
@@ -75,7 +75,7 @@
 
 
                     <hr>
-                    <h3><strong>Resources:</strong></h3>
+                    <h3><strong translate>COMMON.RESOURCES</strong></h3>
                     <div *ngFor="let content of contents">
                         <div class="contentItem" *ngIf="content.type === 'resource'">
                             <div class="order">

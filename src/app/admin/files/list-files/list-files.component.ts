@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { PdfViewerModalComponent } from './../../../shared/pdf-viewer-modal/pdf-viewer-modal.component';
 import { ImgViewerComponent } from './../../../shared/img-viewer/img-viewer.component';
 import { ConfirmDialogComponent } from 'src/app/shared/confirm-dialog/confirm-dialog.component';
@@ -48,6 +49,7 @@ export class ListFilesComponent implements OnInit {
     private store: Store<fromApp.AppState>,
     private sanitizer: DomSanitizer,
     private dialog: MatDialog,
+    private translate:TranslateService
   ) { }
 
   ngOnInit(): void {
@@ -85,9 +87,16 @@ export class ListFilesComponent implements OnInit {
   }
 
   onDelete(id: number) {
+    let alertHeader = '';
+    let alertMsg = '';
+
+    this.translate.get(['COMMON.CONFIRM_ACTION', 'COMMON.DELETE_MESSAGE']).subscribe(trans => {
+      alertHeader = trans['COMMON.CONFIRM_ACTION'];
+      alertMsg = trans['COMMON.DELETE_MESSAGE'];
+    });
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      width: '300px',
-      data: { header: 'Confirmation', message: 'Delete this file ?' }
+      width: '400px',
+      data: { header: alertHeader, message: alertMsg }
     });
 
     dialogRef.afterClosed().subscribe(result => {

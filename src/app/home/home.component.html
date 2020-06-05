@@ -10,20 +10,26 @@
 
 <div class="container-fluid content">
 
+    <div *ngIf="errors">
+        <div class="alert alert-danger" *ngFor="let error of errors">
+            {{ error }}
+        </div>
+    </div>
+
     <div class="row">
         <div class="col-lg-8">
             <h1>
-                Categories
+                {{ 'HOME.CATEGORIES' | translate }}:
             </h1>
         </div>
         <div class="col-lg-4">
             <form [formGroup]="searchForm">
                 <mat-form-field class="full-width" appearance="legacy">
                     <mat-label>
-                        <fa-icon [icon]="faSearch"></fa-icon> Search
+                        <fa-icon [icon]="faSearch"></fa-icon> {{ 'COMMON.SEARCH' | translate }}:
                     </mat-label>
                     <input type="text" #searchKey matInput formControlName="title_EN"
-                        placeholder="Search by category title" (input)="onSearch()">
+                        [placeholder]="'HOME.SEARCH_BY_CATEGORY' | translate" (input)="onSearch()">
                     <button mat-button *ngIf="searchKey.value" matSuffix mat-icon-button aria-label="Clear"
                         (click)="onClearSearch()">
                         <mat-icon>close</mat-icon>
@@ -43,8 +49,9 @@
                             <mat-card-title class="title">{{ category.title_EN }}</mat-card-title>
                         </mat-card-header>
                         <mat-card-actions class="actions">
-                            <a mat-button [routerLink]="['/categories', category.id, category.slug]">
-                                GO TO COURSES
+                            <a mat-button [routerLink]="['/categories', category.id, category.slug]"
+                                style="text-transform: uppercase;">
+                                {{ 'HOME.GO_TO_COURSES' | translate }}
                             </a>
                         </mat-card-actions>
                     </mat-card>
@@ -52,21 +59,92 @@
 
                 <div class="alert alert-info text-center notFoundMsg" *ngIf="categories.length === 0">
                     <h2>
-                        No categories found.
+                        {{ 'COURSES.NO_COURSES_FOUND' | translate }}
                     </h2>
                 </div>
             </div>
         </div>
     </div>
 
-    <div *ngIf="errors">
-        <div class="alert alert-danger" *ngFor="let error of errors">
-            {{ error }}
-        </div>
-    </div>
-
     <div *ngIf="loading">
         <app-loader-home-category></app-loader-home-category>
     </div>
+    <div class="clearfix"></div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="row alert alert-info">
+                <div class="col-lg-10">
+                    <h1> {{ 'HOME.LATEST_COURSES' | translate }}:</h1>
+                </div>
+                <div class="col-lg-2">
+                    <a [routerLink]="['courses']" mat-raised-button color="primary" class="btn-block"
+                        style="text-decoration: none;">
+                        {{ 'HOME.All_COURSES' | translate }}
+                    </a>
+                </div>
+            </div>
+
+
+            <div *ngIf="loadingCourses">
+                <app-loader-home-course [count]='4'></app-loader-home-course>
+            </div>
+            <div *ngIf="!loadingCourses">
+                <div *ngFor="let course of courses" class="course-div mat-elevation-z8">
+                    <mat-card class="course-card">
+                        <img mat-card-image [src]="getSanitizedImage(course.imagePath)" [alt]="course.title_EN">
+                        <div class="rate mat-elevation-z8">
+                            <p class="text-center">
+                                <star-rating [value]="course.ratings.totalRating" [totalstars]="5" checkedcolor="gold"
+                                    uncheckedcolor="pink" size="25px" readonly="true" style="pointer-events: none;">
+                                </star-rating>
+                            </p>
+                        </div>
+                        <mat-card-header>
+                            <div mat-card-avatar class="course-header-image"></div>
+                            <mat-card-title>{{ course.title_EN }}</mat-card-title>
+                            <mat-card-subtitle>
+                                {{ course.createdBy }} - {{ course.publishedAt | date:'short' }}
+                            </mat-card-subtitle>
+                        </mat-card-header>
+                        <mat-card-content>
+
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <p> <strong>{{ 'COURSE.LEVEL' | translate }}: </strong></p>
+                                    <div class="levelDiv bg-warning mat-elevation-z4">
+                                        {{ course.level }}
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <p> <strong>{{ 'COURSE.LANGUAGES' | translate }}: </strong></p>
+                                    <div class="langDiv bg-teal mat-elevation-z4"
+                                        *ngFor="let lang of course.languages.split('-')">
+                                        {{ lang }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="clearfix"></div>
+                            <br>
+                        </mat-card-content>
+                        <mat-card-actions class="actions">
+                            <div>
+                                <a mat-button style="text-transform: uppercase;"
+                                    [routerLink]="['categories', course.category.id, course.category.slug, 'course', course.id, course.slug_EN]">
+                                    {{ 'COURSES.VIEW_COURSE' | translate }}
+                                </a>
+
+                            </div>
+                            <div>
+                                <fa-icon [icon]="faThumbsUp"></fa-icon> {{ course.likes.length }}
+                            </div>
+                        </mat-card-actions>
+
+                    </mat-card>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="clearfix"></div>
 </div>

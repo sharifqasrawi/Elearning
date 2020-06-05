@@ -2,6 +2,7 @@ import { Store } from '@ngrx/store';
 import { ActivatedRoute, Params } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
+import * as ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 import * as fromApp from '../../../store/app.reducer';
 import * as MessagesAction from '../store/messages.actions';
@@ -19,6 +20,8 @@ export class NewEmailComponent implements OnInit {
   email: string = null;
   sending = false;
   sent = false;
+
+  public Editor = ClassicEditor;
 
   constructor(
     private route: ActivatedRoute,

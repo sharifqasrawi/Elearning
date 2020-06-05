@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import { RatingModule } from 'ng-starrating';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -41,6 +42,7 @@ import { MemberQuizzesComponent } from './member-quizzes/member-quizzes.componen
         FontAwesomeModule,
         CountUpModule,
         RatingModule,
+        TranslateModule,
         MemberRoutingModule,
         SharedModule
     ],

@@ -1,6 +1,6 @@
 <h2 mat-dialog-title>
     <fa-icon [icon]="faPlusCircle"></fa-icon>
-    {{ !editMode ? 'Add content' : 'Edit content' }}
+    {{ !editMode ? ('COMMON.ADD' | translate): ('COMMON.EDIT' | translate) }}
 </h2>
 <hr>
 
@@ -10,23 +10,23 @@
         <div class="row">
             <div class="col-lg-6">
                 <mat-form-field class="full-width mt-2" appearance="legacy">
-                    <mat-label>Order </mat-label>
+                    <mat-label translate>COMMON.ORDER </mat-label>
                     <input type="number" matInput formControlName="order" placeholder="Enter session order">
                     <mat-error *ngIf="!form.controls.order.valid && form.controls.order.touched">
-                        This field is required.
+                        {{ 'VALIDATION.REQUIRED' | translate }}
                     </mat-error>
                 </mat-form-field>
             </div>
             <div class="col-lg-6">
                 <mat-form-field appearance="legacy" class="mt-1">
-                    <mat-label>Content Type</mat-label>
+                    <mat-label translate>COMMON.TYPE</mat-label>
                     <mat-select formControlName="type">
                         <mat-option [value]="type" *ngFor="let type of contentTypes" (click)="onChangeType(type)">
                             {{type}}
                         </mat-option>
                     </mat-select>
                     <mat-error *ngIf="!form.controls.type.valid && form.controls.type.touched">
-                        This field is required.
+                        {{ 'VALIDATION.REQUIRED' | translate }}
                     </mat-error>
                 </mat-form-field>
             </div>
@@ -35,49 +35,49 @@
         <div class="row">
             <div class="col-lg-12">
                 <div *ngIf="textType">
-                    <label>Content *</label>
+                    <label>{{ 'COURSE.CONTENT' | translate }} *</label>
                     <ckeditor tagName="textarea" [editor]="Editor" formControlName="content" required></ckeditor>
                     <span class="small text-danger"
                         *ngIf="!form.controls.content.valid && form.controls.content.touched">
-                        This field is required.
+                        {{ 'VALIDATION.REQUIRED' | translate }}
                     </span>
                 </div>
 
                 <div *ngIf="codeType">
                     <mat-form-field class="mt-2" appearance="legacy">
-                        <mat-label>Language </mat-label>
+                        <mat-label translate>COMMON.PLANGUAGE </mat-label>
                         <mat-select formControlName="note" name=" note" required (selectionChange)="onSelectLanguage()">
                             <mat-option *ngFor="let lang of languages" [value]="lang">
                                 {{ lang }}
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
-                    <label>Code *</label>
+                    <label>{{ 'COMMON.CODE' | translate }} *</label>
                     <ngx-monaco-editor [options]="codeEditorOptions" formControlName="content" required>
                     </ngx-monaco-editor>
                     <span class="small text-danger"
                         *ngIf="!form.controls.content.valid && form.controls.content.touched">
-                        This field is required.
+                        {{ 'VALIDATION.REQUIRED' | translate }}
                     </span>
                 </div>
 
                 <div *ngIf="imageType">
                     <mat-form-field class="mt-2" appearance="legacy">
-                        <mat-label>Caption </mat-label>
+                        <mat-label translate>COMMON.CAPTION </mat-label>
                         <input type="text" matInput formControlName="note" placeholder="Enter image caption">
 
                     </mat-form-field>
 
                     <mat-form-field class="mt-2" appearance="legacy">
-                        <mat-label>Image Path </mat-label>
-                        <input readonly type="text" matInput formControlName="content" placeholder="Enter image path">
+                        <mat-label translate>COMMON.IMAGE_PATH</mat-label>
+                        <input readonly type="text" matInput formControlName="content" >
                         <mat-error *ngIf="!form.controls.content.valid && form.controls.content.touched">
-                            This field is required.
+                            {{ 'VALIDATION.REQUIRED' | translate }}
                         </mat-error>
                     </mat-form-field>
 
                     <button type="button" mat-flat-button color="primary" class="mt-2" (click)="selectImage()">
-                        Choose Image
+                            {{ 'COMMON.CHOOSE_IMAGE' | translate }}
                     </button>
 
                 </div>
@@ -85,21 +85,21 @@
                 <div *ngIf="resourceType">
 
                     <mat-form-field class="mt-2" appearance="legacy">
-                        <mat-label>Resource Name </mat-label>
-                        <input type="text" matInput formControlName="note" placeholder="Enter resource name">
+                        <mat-label translate>COMMON.RESOURCE_NAME </mat-label>
+                        <input type="text" matInput formControlName="note" >
 
                     </mat-form-field>
 
                     <mat-form-field class="mt-2" appearance="legacy">
-                        <mat-label>Resource Path </mat-label>
+                        <mat-label translate>COMMON.RESOURCE_PATH </mat-label>
                         <input readonly type="text" matInput formControlName="content" placeholder="Enter file path">
                         <mat-error *ngIf="!form.controls.content.valid && form.controls.content.touched">
-                            This field is required.
+                            {{ 'VALIDATION.REQUIRED' | translate }}
                         </mat-error>
                     </mat-form-field>
 
                     <button type="button" mat-flat-button color="primary" class="mt-2" (click)="selectFile()">
-                        Choose File
+                        {{ 'COMMON.CHOOSE_FILE' | translate }}
                     </button>
 
                 </div>
@@ -109,9 +109,9 @@
 
 
     <div mat-dialog-actions class="float-right mt-2">
-        <button type="button" mat-raised-button color="warn" cdkFocusInitial (click)="openDialog()">Cancel</button>
+        <button type="button" mat-raised-button color="warn" cdkFocusInitial (click)="openDialog()">{{ 'COMMON.CANCEL' | translate }}</button>
         <button type="submit" mat-raised-button color="accent" [disabled]="!form.valid">
-            {{ editMode ? 'Save' : 'Create' }}
+            {{ editMode ? ('COMMON.SAVE' | translate) : ('COMMON.CREATE' | translate) }}
         </button>
     </div>
 </form>

@@ -2,7 +2,7 @@
     <app-breadcrumb [links]="breadcrumbLinks"></app-breadcrumb>
     <h1>
         <fa-icon [icon]="faQuestionCircle"></fa-icon>
-        Test your knowledge with a quick quiz.
+        {{ 'QUIZZES.TEST_YOUR_KNOWLEDGE' | translate }}.
     </h1>
     <hr>
 
@@ -12,10 +12,10 @@
                 <form [formGroup]="searchForm">
                     <mat-form-field class="full-width" appearance="legacy">
                         <mat-label>
-                            <fa-icon [icon]="faSearch"></fa-icon> Search
+                            <fa-icon [icon]="faSearch"></fa-icon> {{ 'COMMON.SEARCH' | translate }}
                         </mat-label>
                         <input type="text" #searchKey matInput formControlName="title_EN"
-                            placeholder="Search by quiz title" (input)="onSearch()">
+                            [placeholder]="'QUIZZES.SEARCH_BY' | translate" (input)="onSearch()">
                         <button mat-button *ngIf="searchKey.value" matSuffix mat-icon-button aria-label="Clear"
                             (click)="onClearSearch()">
                             <mat-icon>close</mat-icon>
@@ -31,34 +31,64 @@
         </div>
         <div class="row">
             <div class="col-lg-12">
-                <div class="alert alert-info text-center" *ngIf="!quizzes || quizzes.length === 0">
-                    <h2>No quizzes found.</h2>
+                <div class="alert alert-info text-center" *ngIf="(!quizzes || quizzes.length === 0) && !loading">
+                    <h2 translate>QUIZZES.NO_QUIZZES_FOUND</h2>
                 </div>
-                <div *ngFor="let quiz of quizzes" class="quiz-div mat-elevation-z8">
-                    <mat-card class="quiz-card">
-                        <img mat-card-image [src]="getSanitizedImage(quiz.imagePath)" [alt]="quiz.title_EN">
-                        <mat-card-header>
-                            <div mat-card-avatar class="quiz-header-image"></div>
-                            <mat-card-title class="title">{{ quiz.title_EN }}</mat-card-title>
-                            <mat-card-subtitle class="mt-2 small">
-                                <strong>Duration: </strong> {{ quiz.duration }} mins.
-                            </mat-card-subtitle>
-                        </mat-card-header>
-                        <mat-card-content>
-                            <p> <strong>Languages: </strong></p>
-                            <div class="langDiv bg-teal mat-elevation-z4"
-                                *ngFor="let lang of quiz.languages.split('-')">
-                                {{ lang }}
-                            </div>
-                            <div class="clearfix"></div>
-                            <br>
-                        </mat-card-content>
-                        <mat-card-actions class="actions">
-                            <a mat-button [routerLink]='[quiz.id, quiz.slug_EN]'>
-                                TAKE QUIZ
-                            </a>
-                        </mat-card-actions>
-                    </mat-card>
+                <div *ngIf="!loading">
+                    <div *ngFor="let quiz of quizzes" class="quiz-div mat-elevation-z8">
+                        <mat-card class="quiz-card">
+                            <img mat-card-image [src]="getSanitizedImage(quiz.imagePath)" [alt]="quiz.title_EN">
+                            <mat-card-header>
+                                <div mat-card-avatar class="quiz-header-image"></div>
+                                <mat-card-title class="title">{{ quiz.title_EN }}</mat-card-title>
+                                <mat-card-subtitle class="mt-2 small">
+                                    <strong translate>COURSE.DURATION </strong> {{ quiz.duration }} mins.
+                                </mat-card-subtitle>
+                            </mat-card-header>
+                            <mat-card-content>
+                                <p> <strong translate>COURSE.LANGUAGES</strong></p>
+                                <div class="langDiv bg-teal mat-elevation-z4"
+                                    *ngFor="let lang of quiz.languages.split('-')">
+                                    {{ lang }}
+                                </div>
+                                <div class="clearfix"></div>
+                                <br>
+                            </mat-card-content>
+                            <mat-card-actions class="actions">
+                                <a mat-button [routerLink]='[quiz.id, quiz.slug_EN]' style="text-transform: uppercase;">
+                                    {{ 'QUIZZES.TAKE_QUIZ' | translate }}
+                                </a>
+                            </mat-card-actions>
+                        </mat-card>
+                    </div>
+                </div>
+
+                <div class="loader-quiz-div" *ngIf="loading">
+                    <div *ngFor="let i of [].constructor(4)" class="quiz-div mat-elevation-z8">
+                        <mat-card class="loader-quiz-card">
+                            <img mat-card-image src="../../assets/images/placeholder.png" alt="image">
+                            <mat-card-header>
+                                <div mat-card-avatar class="quiz-header-image"></div>
+                                <mat-card-title class="title">&nbsp;</mat-card-title>
+                                <mat-card-subtitle class="mt-2 small">
+                                    &nbsp;
+                                </mat-card-subtitle>
+                            </mat-card-header>
+                            <mat-card-content>
+                                <p> &nbsp;</p>
+                                <div class="langDiv bg-teal mat-elevation-z4">
+                                    &nbsp;
+                                </div>
+                                <div class="clearfix"></div>
+                                <br>
+                            </mat-card-content>
+                            <mat-card-actions class="actions">
+                                <a mat-button>
+                                    &nbsp;
+                                </a>
+                            </mat-card-actions>
+                        </mat-card>
+                    </div>
                 </div>
             </div>
         </div>

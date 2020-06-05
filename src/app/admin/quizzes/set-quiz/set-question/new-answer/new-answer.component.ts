@@ -45,7 +45,7 @@ export class NewAnswerComponent implements OnInit, OnDestroy {
     this.form = new FormGroup({
       text_EN: new FormControl(null, [Validators.required]),
       imagePath: new FormControl(null),
-      isCorrect: new FormControl(null, [Validators.required]),
+      isCorrect: new FormControl(false, [Validators.required]),
     });
 
     this.store.select('quizzes').subscribe(state => {

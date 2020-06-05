@@ -1,44 +1,43 @@
 <h2 mat-dialog-title>
     <fa-icon [icon]="faPlusCircle"></fa-icon>
-    {{ editMode ? 'Edit Category' : 'New Category' }}
+    {{ editMode ? ('COMMON.EDIT' | translate) : ('COMMON.CREATE' | translate) }}
 </h2>
 <hr>
 <form [formGroup]="form" (ngSubmit)="onSubmit()" (change)="formChanged()">
     <div mat-dialog-content>
         <div class="alert alert-info text-center" *ngIf="creating">
-            <strong>Saving...</strong>
+            <strong translate>COMMON.SAVING</strong>
         </div>
 
         <div>
-            <mat-form-field class="full-width">
+            <mat-form-field class="full-width" appearance="legacy">
                 <mat-label>Title </mat-label>
-                <input type="text" matInput formControlName="title_EN" placeholder="Enter category title">
-                <mat-error *ngIf="!form.controls.title_EN.valid && form.controls.title_EN.touched">
-                    This field is required.
+                <input type="text" matInput formControlName="title_EN" >
+                <mat-error *ngIf="!form.controls.title_EN.valid && form.controls.title_EN.touched" translate>
+                   VALIDATION.REQUIRED
                 </mat-error>
             </mat-form-field>
 
 
-            <mat-form-field class="full-width">
+            <mat-form-field class="full-width mt-3" appearance="legacy">
                 <mat-label>Image Path </mat-label>
-                <input readonly type="text" matInput formControlName="imagePath"
-                    placeholder="Enter category image path">
-                <mat-error *ngIf="!form.controls.imagePath.valid && form.controls.imagePath.touched">
-                    This field is required.
+                <input readonly type="text" matInput formControlName="imagePath">
+                <mat-error *ngIf="!form.controls.imagePath.valid && form.controls.imagePath.touched" translate>
+                    VALIDATION.REQUIRED
                 </mat-error>
             </mat-form-field>
 
-            <button type="button" mat-raised-button color="primary" class="btn-block" (click)="selectImage()">
-                Select Image
+            <button type="button" mat-raised-button color="primary" class="btn-block mt-3" (click)="selectImage()">
+                {{ 'COMMON.CHOOSE_IMAGE' | translate }}
             </button>
         </div>
 
     </div>
 
     <div mat-dialog-actions class="mt-3 float-right">
-        <button type="button" mat-raised-button color="warn" cdkFocusInitial (click)="openDialog()">Cancel</button>
+        <button type="button" mat-raised-button color="warn" cdkFocusInitial (click)="openDialog()">{{ 'COMMON.CANCEL' | translate }}</button>
         <button type="submit" mat-raised-button color="accent" [disabled]="!form.valid">
-            {{ editMode ? 'Save' : 'Create' }}
+            {{ editMode ? ('COMMON.SAVE' | translate ): ('COMMON.CREATE' | translate ) }}
         </button>
     </div>
 </form>

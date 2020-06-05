@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Location } from '@angular/common'
 import { ToastrService } from 'ngx-toastr';
@@ -26,7 +27,7 @@ export class SessionContentComponent implements OnInit, OnDestroy {
 
   lang: string = '';
   codeViewerOptions = {
-    theme: 'vs-dark',language: this.lang,readOnly: true,scrollBeyondLastLine: false
+    theme: 'vs-dark', language: this.lang, readOnly: true, scrollBeyondLastLine: false
   };
 
 
@@ -50,6 +51,7 @@ export class SessionContentComponent implements OnInit, OnDestroy {
     private sanitizer: DomSanitizer,
     private toastr: ToastrService,
     private location: Location,
+    private translate: TranslateService
   ) { }
 
   ngOnInit(): void {
@@ -122,10 +124,16 @@ export class SessionContentComponent implements OnInit, OnDestroy {
 
 
   onDeleteContent(contentId: number) {
+    let alertHeader = '';
+    let alertMsg = '';
+    this.translate.get(['COMMON.CONFIRM_ACTION', 'COMMON.DELETE_MESSAGE']).subscribe(trans => {
+      alertHeader = trans['COMMON.CONFIRM_ACTION'];
+      alertMsg = trans['COMMON.DELETE_MESSAGE'];
+    });
     const dialogRef = this.dialog.open(ConfirmDialogComponent,
       {
-        width: '250px',
-        data: { header: 'Confirmation', message: 'Delete this content ?' }
+        width: '400px',
+        data: { header: alertHeader, message: alertMsg }
       });
 
     dialogRef.afterClosed().subscribe(result => {

@@ -19,7 +19,7 @@ nav a {
 .admin-sidenav {
     user-select: none;
     width: 100%;
-    background-color: rgba(24, 0, 88, .8);
+    background-color: rgba(24, 0, 88, .9);
     padding: 15px;
     z-index: 99999;
 

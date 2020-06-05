@@ -4,24 +4,27 @@
 			<div class="col-lg-8">
 				<h1 *ngIf="!editMode">
 					<fa-icon [icon]="faUserPlus"></fa-icon>
-					Create New User
+					{{ 'ADMINISTRATION.USERS.CREATE' | translate }}
 				</h1>
 
 				<h1 *ngIf="editMode">
 					<fa-icon [icon]="faUserEdit"></fa-icon>
-					Edit User
+					{{ 'ADMINISTRATION.USERS.EDIT' | translate }}
 				</h1>
 			</div>
 
 			<div class="col-lg-2">
 				<button type="button" mat-raised-button color="warn" class="btn-block mt-1" (click)="onCancel()">
-					Cancel
+					{{ 'COMMON.CANCEL' | translate }}
 				</button>
 			</div>
 			<div class="col-lg-2">
-				<button type="submit" class="btn-block mt-1" mat-raised-button color="primary" [disabled]="!regForm.valid || creating ||updating ">
-					<span *ngIf="!editMode">{{ !creating ? 'Create' : 'Creating...' }}</span>
-					<span *ngIf="editMode">{{ !updating ? 'Save' : 'Saving...' }}</span>
+				<button type="submit" class="btn-block mt-1" mat-raised-button color="primary"
+					[disabled]="!regForm.valid || creating ||updating ">
+					<span
+						*ngIf="!editMode">{{ !creating ? ('COMMON.CREATE' | translate) : ('COMMON.LOADING' | translate) }}</span>
+					<span
+						*ngIf="editMode">{{ !updating ? ('COMMON.SAVE' | translate) : ('COMMON.SAVING' | translate) }}</span>
 				</button>
 			</div>
 		</div>
@@ -35,18 +38,18 @@
 		</div>
 
 		<div class="alert alert-success text-center" *ngIf="created">
-			<strong>User Created</strong>
+			<strong translate>ADMINISTRATION.USERS.USER_CREATED</strong>
 		</div>
 
 
-		<label>Role:</label>
+		<label translate>COMMON.ROLE</label>
 		<div class="row">
 			<div class="col-lg-6">
 				<div class="form-group">
 
 					<mat-slide-toggle [color]="colorPrimary" [checked]="checked" id="isAdmin" name="isAdmin"
 						formControlName="isAdmin">
-						Admin
+						{{ 'COMMON.ADMIN' | translate }}
 					</mat-slide-toggle>
 				</div>
 			</div>
@@ -54,7 +57,7 @@
 				<div class="form-group">
 					<mat-slide-toggle [color]="colorAccent" [checked]="checked" id="isAuthor" name="isAuthor"
 						formControlName="isAuthor">
-						Author
+						{{ 'COURSE.AUTHOR' | translate }}
 					</mat-slide-toggle>
 				</div>
 			</div>
@@ -63,19 +66,19 @@
 		<div class="row">
 			<div class="col-lg-6">
 				<mat-form-field class="full-width" appearance="legacy">
-					<mat-label>First Name </mat-label>
-					<input type="text" matInput formControlName="firstName" placeholder="Enter user's first name">
+					<mat-label translate>REGISTER.FIRSTNAME</mat-label>
+					<input type="text" matInput formControlName="firstName">
 					<mat-error *ngIf="!regForm.controls.firstName.valid && regForm.controls.firstName.touched">
-						First name is required.
+						{{ 'VALIDATION.REQUIRED' | translate }}
 					</mat-error>
 				</mat-form-field>
 			</div>
 			<div class="col-lg-6">
 				<mat-form-field class="full-width" appearance="legacy">
-					<mat-label>Last Name </mat-label>
-					<input type="text" matInput formControlName="lastName" placeholder="Enter user's last name">
+					<mat-label translate>REGISTER.LASTNAME</mat-label>
+					<input type="text" matInput formControlName="lastName">
 					<mat-error *ngIf="!regForm.controls.lastName.valid && regForm.controls.lastName.touched">
-						Last name is required.
+						{{ 'VALIDATION.REQUIRED' | translate }}
 					</mat-error>
 				</mat-form-field>
 			</div>
@@ -83,10 +86,10 @@
 
 		<div class="form-group">
 			<mat-form-field class="full-width" appearance="legacy">
-				<mat-label>Email </mat-label>
-				<input type="email" matInput formControlName="email" placeholder="Enter user's email">
+				<mat-label translate>COMMON.EMAIL </mat-label>
+				<input type="email" matInput formControlName="email">
 				<mat-error *ngIf="!regForm.controls.email.valid && regForm.controls.email.touched">
-					Please enter a valid email address.
+					{{ 'VALIDATION.INVALID_EMAIL' | translate }}
 				</mat-error>
 			</mat-form-field>
 		</div>
@@ -95,14 +98,14 @@
 
 			<mat-slide-toggle [color]="colorWarn" [checked]="checked" id="emailConfirmed" name="emailConfirmed"
 				formControlName="emailConfirmed">
-				Email Confirmed
+				{{ 'COMMON.EMAIL_CONFIRMED' | translate}}
 			</mat-slide-toggle>
 		</div>
 
 		<div class="form-group">
 
 			<mat-form-field style="width: 100%;" appearance="legacy">
-				<mat-label>Country</mat-label>
+				<mat-label translate>REGISTER.COUNTRY</mat-label>
 				<mat-select formControlName="country" name="country" id="country" required>
 					<mat-option>--</mat-option>
 					<mat-option *ngFor="let c of listCountries" [value]="c.name">
@@ -110,7 +113,7 @@
 					</mat-option>
 				</mat-select>
 				<mat-error *ngIf="!regForm.controls.country.valid && regForm.controls.country.touched">
-					Country is required.
+					{{ 'VALIDATION.REQUIRED' | translate }}
 				</mat-error>
 
 			</mat-form-field>
@@ -118,34 +121,34 @@
 		</div>
 
 		<div class="form-group">
-			<label>Gender:</label>
+			<label translate>REGISTER.GENDER</label>
 
 			<mat-radio-group formControlName="gender" aria-label="Select a gender">
-				<mat-radio-button class="ml-2" value="male">Male</mat-radio-button>
-				<mat-radio-button class="ml-2" value="female">Female</mat-radio-button>
-				<mat-radio-button class="ml-2" value="custom">Custom</mat-radio-button>
+				<mat-radio-button class="ml-2" value="male">{{ 'REGISTER.MALE' | translate }}</mat-radio-button>
+				<mat-radio-button class="ml-2" value="female">{{ 'REGISTER.FEMALE' | translate }}</mat-radio-button>
+				<mat-radio-button class="ml-2" value="custom">{{ 'REGISTER.OTHER' | translate }}</mat-radio-button>
 			</mat-radio-group>
 			<br>
 			<span class="small text-danger" *ngIf="!regForm.controls.gender.valid && regForm.controls.gender.touched">
-				Gender is required
+				{{ 'VALIDATION.REQUIRED' | translate }}
 			</span>
 		</div>
 
 		<div class="row" formGroupName="password" *ngIf="!editMode">
 			<div class="col-lg-6">
 				<mat-form-field class="full-width" appearance="legacy">
-					<mat-label>Enter a password</mat-label>
+					<mat-label translate>CHANGE_PASSWORD.NEW_PASSWORD</mat-label>
 					<input matInput formControlName="password" required [type]="hidePwd ? 'password' : 'text'">
 					<button type="button" mat-icon-button matSuffix (click)="hidePwd = !hidePwd"
 						[attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePwd">
 						<mat-icon>{{hidePwd ? 'visibility_off' : 'visibility'}}</mat-icon>
 					</button>
-					<mat-error>Password length must be at least 8 charcters</mat-error>
+					<mat-error>{{ 'VALIDATION.PASSWORD_LENGTH' | translate }}</mat-error>
 				</mat-form-field>
 			</div>
 			<div class="col-lg-6">
 				<mat-form-field class="full-width" appearance="legacy">
-					<mat-label>Confirm your password</mat-label>
+					<mat-label translate>CHANGE_PASSWORD.CONFIRM_PASSWORD</mat-label>
 					<input matInput formControlName="cpassword" required [type]="hideCpwd ? 'password' : 'text'">
 					<button type="button" mat-icon-button matSuffix (click)="hideCpwd = !hideCpwd"
 						[attr.aria-label]="'Hide password'" [attr.aria-pressed]="hideCpwd">
@@ -153,7 +156,7 @@
 					</button>
 				</mat-form-field>
 				<mat-error class="small" *ngIf="!regForm.controls.password.valid && regForm.controls.password.touched">
-					Passwords do not match
+					{{ 'VALIDATION.PASSWORDS_MATCH' | translate }}
 				</mat-error>
 			</div>
 

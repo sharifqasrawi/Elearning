@@ -22,9 +22,11 @@ export class QuizComponent implements OnInit {
   quizId: number = null;
   quizTitle: string = null;
   quiz: Quiz = null;
+  startingQuiz = false;
+  startedQuiz = false;
   loading = false;
 
-  breadcrumbLinks: { url?: string, label: string }[];
+  breadcrumbLinks: { url?: string, translate?: boolean, label: string }[];
 
   isAuthenticated = false;
 
@@ -41,8 +43,8 @@ export class QuizComponent implements OnInit {
       this.quizId = +params.quizId;
       this.quizTitle = (params.quizSlug as string).split('-').join(' ');
       this.breadcrumbLinks = [
-        { url: '/', label: 'Home' },
-        { url: '/quizzes', label: 'Quizzes' },
+        { url: '/', label: 'Home', translate: true },
+        { url: '/quizzes', label: 'Quizzes', translate: true },
         { label: `${this.quizTitle}` },
       ];
     });
@@ -59,6 +61,13 @@ export class QuizComponent implements OnInit {
     this.store.select('homeQuizzes').subscribe(state => {
       this.quiz = state.quizzes.find(q => q.id === this.quizId);
       this.loading = state.loading;
+
+      this.startingQuiz = state.startingQuiz;
+      this.startedQuiz = state.startedQuiz;
+
+      if (this.startedQuiz) {
+        this.router.navigate(['start'], { relativeTo: this.route });
+      }
     });
 
   }
@@ -66,7 +75,6 @@ export class QuizComponent implements OnInit {
 
   onStartQuiz() {
     this.store.dispatch(new HomeQuizzesActions.StartQuizStart(this.quizId));
-    this.router.navigate(['start'], { relativeTo: this.route });
   }
 
 

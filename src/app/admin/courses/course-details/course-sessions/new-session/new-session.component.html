@@ -1,32 +1,32 @@
 <h2 mat-dialog-title>
     <fa-icon [icon]="faPlusCircle"></fa-icon>
-   {{ !editMode ? ' Create new session' : 'Edit session' }}
+    {{ !editMode ? ('COMMON.CREATE' | translate ) : ('COMMON.EDIT' | translate ) }}
 </h2>
 <hr>
 
 <form [formGroup]="form" (ngSubmit)="onSubmit()" (change)="formChanged()">
     <div mat-dialog-content>
         <mat-form-field class="full-width" appearance="legacy">
-            <mat-label>Title (en) </mat-label>
+            <mat-label translate>COMMON.TITLE</mat-label>
             <input type="text" matInput formControlName="title_EN" placeholder="Enter session title">
             <mat-error *ngIf="!form.controls.title_EN.valid && form.controls.title_EN.touched">
-                This field is required.
+                {{'VALIDATION.REQUIRED' | translate}}
             </mat-error>
         </mat-form-field>
 
         <mat-form-field class="full-width mt-2" appearance="legacy">
-            <mat-label>Duration </mat-label>
+            <mat-label translate>COURSE.DURATION </mat-label>
             <input type="number" matInput formControlName="duration" placeholder="Enter session duration">
             <mat-error *ngIf="!form.controls.duration.valid && form.controls.duration.touched">
-                This field is required.
+                {{'VALIDATION.REQUIRED' | translate}}
             </mat-error>
         </mat-form-field>
 
         <mat-form-field class="full-width mt-2" appearance="legacy">
-            <mat-label>Order </mat-label>
+            <mat-label translate>COMMON.ORDER </mat-label>
             <input type="number" matInput formControlName="order" placeholder="Enter session order">
             <mat-error *ngIf="!form.controls.order.valid && form.controls.order.touched">
-                This field is required.
+                {{'VALIDATION.REQUIRED' | translate}}
             </mat-error>
         </mat-form-field>
 
@@ -34,9 +34,10 @@
 
 
     <div mat-dialog-actions class="float-right">
-        <button type="button" mat-raised-button color="warn" cdkFocusInitial (click)="openDialog()">Cancel</button>
+        <button type="button" mat-raised-button color="warn" cdkFocusInitial (click)="openDialog()">
+            {{'COMMON.CANCEL' | translate}}</button>
         <button type="submit" mat-raised-button color="accent" [disabled]="!form.valid">
-            {{ editMode ? 'Save' : 'Create' }}
+            {{ editMode ? ('COMMON.SAVE' | translate) : 'COMMON.CREATE' | translate }}
         </button>
     </div>
 </form>

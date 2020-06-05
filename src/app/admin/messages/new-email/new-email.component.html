@@ -1,7 +1,7 @@
 <div class="adminPageTop">
     <h1>
         <mat-icon>email</mat-icon>
-        Send Email
+        {{ 'ADMINISTRATION.MESSAGING.SEND_EMAIL' | translate }}
     </h1>
     <hr>
 </div>
@@ -14,37 +14,38 @@
     </div>
 
     <div class="alert alert-success" *ngIf="sent">
-        <strong>Email sent successfully.</strong>
+        <strong translate>ADMINISTRATION.MESSAGING.EMAIL_SENT</strong>
     </div>
 
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
 
-        <mat-form-field class="full-width mt-3">
-            <mat-label>Email</mat-label>
+        <mat-form-field class="full-width mt-3" appearance="legacy">
+            <mat-label translate>COMMON.EMAIL</mat-label>
             <input type="email" formControlName="email" matInput required>
-            <mat-error>Please enter a valid email address.</mat-error>
+            <mat-error>{{ 'VALIDATION.INVALID_EMAIL' | translate }}</mat-error>
         </mat-form-field>
 
-        <mat-form-field class="full-width mt-3">
-            <mat-label>Subject</mat-label>
+        <mat-form-field class="full-width mt-3" appearance="legacy">
+            <mat-label translate>CONTACT_ME.SUBJECT</mat-label>
             <input formControlName="subject" matInput required>
-            <mat-error>This field is required.</mat-error>
+            <mat-error>{{ 'VALIDATION.REQUIRED' | translate }}</mat-error>
         </mat-form-field>
 
-        <mat-form-field class="full-width mt-3">
-            <mat-label>Message</mat-label>
-            <textarea formControlName="message" rows="15" matInput required></textarea>
-            <mat-error>This field is required.</mat-error>
-        </mat-form-field>
+        <div class="mt-3">
+            <mat-label translate>COMMON.TEXT</mat-label>
+            <ckeditor tagName="textarea" [editor]="Editor" formControlName="message" required></ckeditor>
+            <mat-error class="small" *ngIf="!form.controls.message.valid && form.controls.message.touched">
+                {{ 'VALIDATION.REQUIRED' | translate }}
+            </mat-error>
+        </div>
 
-        <div class="float-right">
-            <a mat-raised-button color="accent" class="mr-3" 
-            [routerLink]="['/admin', 'messages', 'sent-emails']">
-                Cancel
+        <div class="float-right mt-3">
+            <a mat-raised-button color="accent" class="mr-3" [routerLink]="['/admin', 'messages', 'sent-emails']">
+                {{ 'COMMON.CANCEL' | translate }}
             </a>
 
             <button mat-raised-button color="primary" [disabled]="!form.valid || sending">
-                Send
+                {{ sending ? ('COMMON.SENDING' | translate) : ('COMMON.SEND' | translate) }}
                 <mat-icon class="ml-1">send</mat-icon>
             </button>
         </div>

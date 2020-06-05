@@ -4,16 +4,12 @@
             <div class="col-lg-12">
                 <app-login *ngIf="isLogin"></app-login>
                 <app-register *ngIf="!isLogin"></app-register>
-                <!-- <button class="btn btn-link  btn-sm mt-3"
-                        (click)="onChangeAuthMode()">
-                    {{ isLogin ? 'Don\'t have an account yet? Register now.': 'Already have an account? Login now.'}}
-                </button> -->
 
                 <div class="changeAuthMode">
                     <mat-chip-list>
                         <mat-chip class="mt-5" color="accent" style="cursor: pointer;" selected
                             (click)="onChangeAuthMode()">
-                            {{ isLogin ? 'Don\'t have an account yet? Register now.': 'Already have an account? Login now.'}}
+                            {{ isLogin ? ('LOGIN.DONT_HAVE_ACCOUNT' | translate): ('REGISTER.ALREADY_HAVE_ACCOUNT' | translate)}}
 
                         </mat-chip>
                     </mat-chip-list>

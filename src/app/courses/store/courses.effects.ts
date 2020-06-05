@@ -25,7 +25,7 @@ export class HomeCoursesEffects {
         ofType(HomeCoursesActions.FETCH_START),
         switchMap((coursesData: HomeCoursesActions.FetchStart) => {
             let params = null;
-            if (coursesData.payload.categoryId) {
+            if (coursesData.payload && coursesData.payload.categoryId) {
                 params = new HttpParams().set('categoryId', coursesData.payload.categoryId.toString());
             }
 

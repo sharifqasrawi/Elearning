@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { faPlusCircle, faEdit, faQuestionCircle, faSearch, faTrash, faTrashAlt, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import { ThemePalette } from '@angular/material/core';
@@ -58,7 +59,8 @@ export class QuestionsLandingPageComponent implements OnInit {
     private store: Store<fromApp.AppState>,
     private route: ActivatedRoute,
     private sanitizer: DomSanitizer,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private translate: TranslateService
   ) { }
 
   ngOnInit(): void {
@@ -98,9 +100,16 @@ export class QuestionsLandingPageComponent implements OnInit {
 
 
   onTrashQuestion(questionId: number) {
+    let alertHeader = '';
+    let alertMsg = '';
+
+    this.translate.get(['COMMON.CONFIRM_ACTION', 'COMMON.TRASH_MESSAGE']).subscribe(trans => {
+      alertHeader = trans['COMMON.CONFIRM_ACTION'];
+      alertMsg = trans['COMMON.TRASH_MESSAGE'];
+    });
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      width: '300px',
-      data: { header: 'Confirmation', message: 'Move this question to trash ?' }
+      width: '400px',
+      data: { header: alertHeader, message: alertMsg }
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -110,11 +119,17 @@ export class QuestionsLandingPageComponent implements OnInit {
   }
 
   onRestoreQuestion(questionId: number) {
-    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      width: '300px',
-      data: { header: 'Confirmation', message: 'Restore this question from trash ?' }
-    });
+    let alertHeader = '';
+    let alertMsg = '';
 
+    this.translate.get(['COMMON.CONFIRM_ACTION', 'COMMON.RESTORE_MESSAGE']).subscribe(trans => {
+      alertHeader = trans['COMMON.CONFIRM_ACTION'];
+      alertMsg = trans['COMMON.RESTORE_MESSAGE'];
+    });
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: { header: alertHeader, message: alertMsg }
+    });
     dialogRef.afterClosed().subscribe(result => {
       if (result)
         this.store.dispatch(new QuizzesActions.TrashRestoreQuestionStart({ id: questionId, action: 'restore' }));
@@ -122,9 +137,16 @@ export class QuestionsLandingPageComponent implements OnInit {
   }
 
   onDeleteQuestion(questionId: number) {
+    let alertHeader = '';
+    let alertMsg = '';
+
+    this.translate.get(['COMMON.CONFIRM_ACTION', 'COMMON.DELETE_MESSAGE']).subscribe(trans => {
+      alertHeader = trans['COMMON.CONFIRM_ACTION'];
+      alertMsg = trans['COMMON.DELETE_MESSAGE'];
+    });
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      width: '300px',
-      data: { header: 'Confirmation', message: 'Delete this question permanently ?' }
+      width: '400px',
+      data: { header: alertHeader, message: alertMsg }
     });
 
     dialogRef.afterClosed().subscribe(result => {

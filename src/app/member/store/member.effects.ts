@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { UserQuiz } from './../../models/userQuiz.model';
 import { DoneSession } from './../../models/doneSession.model';
 import { Injectable } from '@angular/core';
@@ -22,6 +23,10 @@ export class MemberEffects {
     userName = '';
     userId = '';
 
+    errorAccessDenied: string = '';
+    error404: string = '';
+    errorOccured: string = '';
+
     @Effect()
     fetchCourses = this.actions$.pipe(
         ofType(MemberActions.FETCH_COURSES_START),
@@ -37,16 +42,17 @@ export class MemberEffects {
                         return new MemberActions.FetchCoursesSuccess(resData.courses);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new MemberActions.FetchCoursesFail(['Access Denied']));
+                                return of(new MemberActions.FetchCoursesFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new MemberActions.FetchCoursesFail(['Error 404. Not Found']));
+                                return of(new MemberActions.FetchCoursesFail([this.error404]));
                             case 400:
                                 return of(new MemberActions.FetchCoursesFail(errorRes.error.errors));
                             default:
-                                return of(new MemberActions.FetchCoursesFail(['Oops! An error occured']));
+                                return of(new MemberActions.FetchCoursesFail([this.errorOccured]));
                         }
                     })
                 )
@@ -60,7 +66,7 @@ export class MemberEffects {
 
             return this.http.get<{ courses: Course[] }>(environment.API_BASE_URL + 'favorites/courses',
                 {
-                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    // headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
                     params: new HttpParams().set('userId', this.userId)
                 })
                 .pipe(
@@ -68,16 +74,17 @@ export class MemberEffects {
                         return new MemberActions.FetchCoursesSuccess(resData.courses);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new MemberActions.FetchCoursesFail(['Access Denied']));
+                                return of(new MemberActions.FetchCoursesFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new MemberActions.FetchCoursesFail(['Error 404. Not Found']));
+                                return of(new MemberActions.FetchCoursesFail([this.error404]));
                             case 400:
                                 return of(new MemberActions.FetchCoursesFail(errorRes.error.errors));
                             default:
-                                return of(new MemberActions.FetchCoursesFail(['Oops! An error occured']));
+                                return of(new MemberActions.FetchCoursesFail([this.errorOccured]));
                         }
                     })
                 )
@@ -99,16 +106,17 @@ export class MemberEffects {
                         return new MemberActions.FetchFavoritesSuccess(resData.favorites);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new MemberActions.FetchFavoritesFail(['Access Denied']));
+                                return of(new MemberActions.FetchFavoritesFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new MemberActions.FetchFavoritesFail(['Error 404. Not Found']));
+                                return of(new MemberActions.FetchFavoritesFail([this.error404]));
                             case 400:
                                 return of(new MemberActions.FetchFavoritesFail(errorRes.error.errors));
                             default:
-                                return of(new MemberActions.FetchFavoritesFail(['Oops! An error occured']));
+                                return of(new MemberActions.FetchFavoritesFail([this.errorOccured]));
                         }
                     })
                 )
@@ -133,16 +141,17 @@ export class MemberEffects {
                         return new MemberActions.AddCourseToFavoritesSuccess(resData.createdFavorite);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new MemberActions.AddCourseToFavoritesFail(['Access Denied']));
+                                return of(new MemberActions.AddCourseToFavoritesFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new MemberActions.AddCourseToFavoritesFail(['Error 404. Not Found']));
+                                return of(new MemberActions.AddCourseToFavoritesFail([this.error404]));
                             case 400:
                                 return of(new MemberActions.AddCourseToFavoritesFail(errorRes.error.errors));
                             default:
-                                return of(new MemberActions.AddCourseToFavoritesFail(['Oops! An error occured']));
+                                return of(new MemberActions.AddCourseToFavoritesFail([this.errorOccured]));
                         }
                     })
                 )
@@ -164,16 +173,17 @@ export class MemberEffects {
                         return new MemberActions.RemoveCourseFromFavoritesSuccess(resData.deletedFavoriteId);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new MemberActions.RemoveCourseFromFavoritesFail(['Access Denied']));
+                                return of(new MemberActions.RemoveCourseFromFavoritesFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new MemberActions.RemoveCourseFromFavoritesFail(['Error 404. Not Found']));
+                                return of(new MemberActions.RemoveCourseFromFavoritesFail([this.error404]));
                             case 400:
                                 return of(new MemberActions.RemoveCourseFromFavoritesFail(errorRes.error.errors));
                             default:
-                                return of(new MemberActions.RemoveCourseFromFavoritesFail(['Oops! An error occured']));
+                                return of(new MemberActions.RemoveCourseFromFavoritesFail([this.errorOccured]));
                         }
                     })
                 )
@@ -195,16 +205,17 @@ export class MemberEffects {
                         return new MemberActions.FetchSavedSessionsSuccess(resData.savedSessions);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new MemberActions.FetchSavedSessionsFail(['Access Denied']));
+                                return of(new MemberActions.FetchSavedSessionsFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new MemberActions.FetchSavedSessionsFail(['Error 404. Not Found']));
+                                return of(new MemberActions.FetchSavedSessionsFail([this.error404]));
                             case 400:
                                 return of(new MemberActions.FetchSavedSessionsFail(errorRes.error.errors));
                             default:
-                                return of(new MemberActions.FetchSavedSessionsFail(['Oops! An error occured']));
+                                return of(new MemberActions.FetchSavedSessionsFail([this.errorOccured]));
                         }
                     })
                 )
@@ -226,16 +237,17 @@ export class MemberEffects {
                         return new MemberActions.FetchSavedSessionsSuccess(resData.sessions);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new MemberActions.FetchSavedSessionsFail(['Access Denied']));
+                                return of(new MemberActions.FetchSavedSessionsFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new MemberActions.FetchSavedSessionsFail(['Error 404. Not Found']));
+                                return of(new MemberActions.FetchSavedSessionsFail([this.error404]));
                             case 400:
                                 return of(new MemberActions.FetchSavedSessionsFail(errorRes.error.errors));
                             default:
-                                return of(new MemberActions.FetchSavedSessionsFail(['Oops! An error occured']));
+                                return of(new MemberActions.FetchSavedSessionsFail([this.errorOccured]));
                         }
                     })
                 )
@@ -261,16 +273,17 @@ export class MemberEffects {
                         return new MemberActions.SaveSessionSuccess(resData.createdSavedSession);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new MemberActions.SaveSessionFail(['Access Denied']));
+                                return of(new MemberActions.SaveSessionFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new MemberActions.SaveSessionFail(['Error 404. Not Found']));
+                                return of(new MemberActions.SaveSessionFail([this.error404]));
                             case 400:
                                 return of(new MemberActions.SaveSessionFail(errorRes.error.errors));
                             default:
-                                return of(new MemberActions.SaveSessionFail(['Oops! An error occured']));
+                                return of(new MemberActions.SaveSessionFail([this.errorOccured]));
                         }
                     })
                 )
@@ -292,16 +305,17 @@ export class MemberEffects {
                         return new MemberActions.RemoveSessionSuccess(resData.deletedSessionId);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new MemberActions.RemoveSessionFail(['Access Denied']));
+                                return of(new MemberActions.RemoveSessionFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new MemberActions.RemoveSessionFail(['Error 404. Not Found']));
+                                return of(new MemberActions.RemoveSessionFail([this.error404]));
                             case 400:
                                 return of(new MemberActions.RemoveSessionFail(errorRes.error.errors));
                             default:
-                                return of(new MemberActions.RemoveSessionFail(['Oops! An error occured']));
+                                return of(new MemberActions.RemoveSessionFail([this.errorOccured]));
                         }
                     })
                 )
@@ -327,16 +341,17 @@ export class MemberEffects {
                         return new MemberActions.MarkSessionSuccess(resData);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new MemberActions.MarkSessionFail(['Access Denied']));
+                                return of(new MemberActions.MarkSessionFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new MemberActions.MarkSessionFail(['Error 404. Not Found']));
+                                return of(new MemberActions.MarkSessionFail([this.error404]));
                             case 400:
                                 return of(new MemberActions.MarkSessionFail(errorRes.error.errors));
                             default:
-                                return of(new MemberActions.MarkSessionFail(['Oops! An error occured']));
+                                return of(new MemberActions.MarkSessionFail([this.errorOccured]));
                         }
                     })
                 )
@@ -359,16 +374,17 @@ export class MemberEffects {
                         return new MemberActions.UnmarkSessionSuccess(resData);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new MemberActions.UnmarkSessionFail(['Access Denied']));
+                                return of(new MemberActions.UnmarkSessionFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new MemberActions.UnmarkSessionFail(['Error 404. Not Found']));
+                                return of(new MemberActions.UnmarkSessionFail([this.error404]));
                             case 400:
                                 return of(new MemberActions.UnmarkSessionFail(errorRes.error.errors));
                             default:
-                                return of(new MemberActions.UnmarkSessionFail(['Oops! An error occured']));
+                                return of(new MemberActions.UnmarkSessionFail([this.errorOccured]));
                         }
                     })
                 )
@@ -392,16 +408,17 @@ export class MemberEffects {
                         return new MemberActions.FetchDoneSessionsSuccess(resData);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new MemberActions.FetchDoneSessionsFail(['Access Denied']));
+                                return of(new MemberActions.FetchDoneSessionsFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new MemberActions.FetchDoneSessionsFail(['Error 404. Not Found']));
+                                return of(new MemberActions.FetchDoneSessionsFail([this.error404]));
                             case 400:
                                 return of(new MemberActions.FetchDoneSessionsFail(errorRes.error.errors));
                             default:
-                                return of(new MemberActions.FetchDoneSessionsFail(['Oops! An error occured']));
+                                return of(new MemberActions.FetchDoneSessionsFail([this.errorOccured]));
                         }
                     })
                 )
@@ -423,16 +440,17 @@ export class MemberEffects {
                         return new MemberActions.FetchProgressCoursesSuccess(resData);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new MemberActions.FetchProgressCoursesFail(['Access Denied']));
+                                return of(new MemberActions.FetchProgressCoursesFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new MemberActions.FetchProgressCoursesFail(['Error 404. Not Found']));
+                                return of(new MemberActions.FetchProgressCoursesFail([this.error404]));
                             case 400:
                                 return of(new MemberActions.FetchProgressCoursesFail(errorRes.error.errors));
                             default:
-                                return of(new MemberActions.FetchProgressCoursesFail(['Oops! An error occured']));
+                                return of(new MemberActions.FetchProgressCoursesFail([this.errorOccured]));
                         }
                     })
                 )
@@ -454,16 +472,17 @@ export class MemberEffects {
                         return new MemberActions.FetchUserQuizzesSuccess(resData.userQuizzes);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new MemberActions.FetchUserQuizzesFail(['Access Denied']));
+                                return of(new MemberActions.FetchUserQuizzesFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new MemberActions.FetchUserQuizzesFail(['Error 404. Not Found']));
+                                return of(new MemberActions.FetchUserQuizzesFail([this.error404]));
                             case 400:
                                 return of(new MemberActions.FetchUserQuizzesFail(errorRes.error.errors));
                             default:
-                                return of(new MemberActions.FetchUserQuizzesFail(['Oops! An error occured']));
+                                return of(new MemberActions.FetchUserQuizzesFail([this.errorOccured]));
                         }
                     })
                 )
@@ -491,13 +510,13 @@ export class MemberEffects {
     //                     switch (errorRes.status) {
     //                         case 403:
     //                         case 401:
-    //                             return of(new MemberActions.LikeFail(['Access Denied']));
+    //                             return of(new MemberActions.LikeFail([this.errorAccessDenied]));
     //                         case 404:
-    //                             return of(new MemberActions.LikeFail(['Error 404. Not Found']));
+    //                             return of(new MemberActions.LikeFail([this.error404]));
     //                         case 400:
     //                             return of(new MemberActions.LikeFail(errorRes.error.errors));
     //                         default:
-    //                             return of(new MemberActions.LikeFail(['Oops! An error occured']));
+    //                             return of(new MemberActions.LikeFail([this.errorOccured]));
     //                     }
     //                 })
     //             )
@@ -525,13 +544,13 @@ export class MemberEffects {
     //                     switch (errorRes.status) {
     //                         case 403:
     //                         case 401:
-    //                             return of(new MemberActions.EnrollFail(['Access Denied']));
+    //                             return of(new MemberActions.EnrollFail([this.errorAccessDenied]));
     //                         case 404:
-    //                             return of(new MemberActions.EnrollFail(['Error 404. Not Found']));
+    //                             return of(new MemberActions.EnrollFail([this.error404]));
     //                         case 400:
     //                             return of(new MemberActions.EnrollFail(errorRes.error.errors));
     //                         default:
-    //                             return of(new MemberActions.EnrollFail(['Oops! An error occured']));
+    //                             return of(new MemberActions.EnrollFail([this.errorOccured]));
     //                     }
     //                 })
     //             )
@@ -541,7 +560,8 @@ export class MemberEffects {
     constructor(
         private actions$: Actions,
         private http: HttpClient,
-        private store: Store<fromApp.AppState>
+        private store: Store<fromApp.AppState>,
+        private translate: TranslateService
     ) {
 
         this.store.select('login')
@@ -555,5 +575,13 @@ export class MemberEffects {
                     this.userId = user.id;
                 }
             });
+    }
+
+    private getErrorsTranslations() {
+        this.translate.get(['ERRORS.ACCESS_DENIED', 'ERRORS.ERROR404', 'ERRORS.OOPS']).subscribe(trans => {
+            this.errorAccessDenied = trans['ERRORS.ACCESS_DENIED'];
+            this.error404 = trans['ERRORS.ERROR404'];
+            this.errorOccured = trans['ERRORS.OOPS'];
+        });
     }
 }

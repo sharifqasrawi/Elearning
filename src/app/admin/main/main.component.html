@@ -5,12 +5,12 @@
             <button mat-icon-button (click)="sidenav.toggle()">
                 <mat-icon>menu</mat-icon>
             </button>
-            <h1>Administration</h1>
-            <div  class="toolBarButtons">
+            <h1 translate>ADMINISTRATION.ADMINISTRATION.ADMINISTRATION</h1>
+            <div class="toolBarButtons">
                 <a mat-button [routerLink]="['/']" target="_blank"
-                [style.display]="mobileQuery.matches ? 'none' : 'inline'">
+                    [style.display]="mobileQuery.matches ? 'none' : 'inline'">
                     <mat-icon>home</mat-icon>
-                    Home
+                    {{ 'HOME.HOME' | translate }}
                 </a>
 
                 <a mat-icon-button [matMenuTriggerFor]="menu">
@@ -20,25 +20,25 @@
                 <mat-menu #menu="matMenu" [overlapTrigger]="false">
                     <a mat-menu-item (click)="onLogout()">
                         <mat-icon>exit_to_app</mat-icon>
-                        <span>Logout</span>
+                        <span translate>LOGOUT.LOGOUT</span>
                     </a>
                 </mat-menu>
             </div>
         </mat-toolbar-row>
     </mat-toolbar>
 
-    <mat-sidenav-container class="admin-sidenav-container " >
-        <mat-sidenav #sidenav class="admin-sidenav" mode="side" [opened]="mobileQuery.matches ? !navOpened : navOpened" (mouseenter)="mouseenter()"
-            (mouseleave)="mouseleave()" [mode]="mobileQuery.matches ? 'over' : 'side'"
-            [fixedInViewport]="mobileQuery.matches" fixedTopGap="56" >
+    <mat-sidenav-container class="admin-sidenav-container ">
+        <mat-sidenav #sidenav class="admin-sidenav" mode="side" [opened]="mobileQuery.matches ? !navOpened : navOpened"
+            (mouseenter)="mouseenter()" (mouseleave)="mouseleave()" [mode]="mobileQuery.matches ? 'over' : 'side'"
+            [fixedInViewport]="mobileQuery.matches" fixedTopGap="56">
             <mat-nav-list>
                 <a mat-list-item [routerLink]="['/admin', 'dashboard']">
                     <mat-icon mat-list-icon>dashboard</mat-icon>
-                    Dashboard
+                    {{ 'DASHBOARD.DASHBOARD' | translate }}
                 </a>
-                
+
                 <mat-list-item (click)="showSubmenuCategories = !showSubmenuCategories" class="parent">
-                    <span class="full-width">Categories</span>
+                    <span class="full-width" translate>ADMINISTRATION.CATEGORIES.CATEGORIES</span>
                     <mat-icon mat-list-icon class="adminNavColor">view_quilt</mat-icon>
                     <mat-icon class="menu-button adminNavColor" [ngClass]="{'rotated' : showSubmenuCategories}">
                         expand_more
@@ -47,16 +47,16 @@
                 <div class="submenu" [ngClass]="{'expanded' : showSubmenuCategories}">
                     <a mat-list-item [routerLink]="['/admin', 'categories']">
                         <mat-icon mat-list-icon>done_all</mat-icon>
-                        Published
+                       {{ 'COMMON.PUBLISHED' | translate }}
                     </a>
                     <a mat-list-item [routerLink]="['/admin', 'categories', 'trashed']">
                         <mat-icon mat-list-icon>delete</mat-icon>
-                        Trash
+                        {{ 'COMMON.DELETED' | translate }}
                     </a>
                 </div>
 
                 <mat-list-item (click)="showSubmenuCourses = !showSubmenuCourses" class="parent">
-                    <span class="full-width">Courses</span>
+                    <span class="full-width" translate>COURSES.COURSES</span>
                     <mat-icon mat-list-icon class="adminNavColor">airplay</mat-icon>
                     <mat-icon class="menu-button adminNavColor" [ngClass]="{'rotated' : showSubmenuCourses}">
                         expand_more
@@ -65,17 +65,17 @@
                 <div class="submenu" [ngClass]="{'expanded' : showSubmenuCourses}">
                     <a mat-list-item [routerLink]="['/admin', 'courses']">
                         <mat-icon mat-list-icon>done_all</mat-icon>
-                        Published
+                        {{ 'COMMON.PUBLISHED' | translate }}
                     </a>
                     <a mat-list-item [routerLink]="['/admin', 'courses', 'trashed']">
                         <mat-icon mat-list-icon>delete</mat-icon>
-                        Trash
+                        {{ 'COMMON.DELETED' | translate }}
                     </a>
                 </div>
 
-                
+
                 <mat-list-item (click)="showSubmenuQuizzes = !showSubmenuQuizzes" class="parent">
-                    <span class="full-width">Quizzes</span>
+                    <span class="full-width" translate>QUIZZES.QUIZZES</span>
                     <mat-icon mat-list-icon class="adminNavColor">help</mat-icon>
                     <mat-icon class="menu-button adminNavColor" [ngClass]="{'rotated' : showSubmenuQuizzes}">
                         expand_more
@@ -84,16 +84,16 @@
                 <div class="submenu" [ngClass]="{'expanded' : showSubmenuQuizzes}">
                     <a mat-list-item [routerLink]="['/admin', 'quizzes']">
                         <mat-icon mat-list-icon>done_all</mat-icon>
-                        Published
+                        {{ 'COMMON.PUBLISHED' | translate }}
                     </a>
                     <a mat-list-item [routerLink]="['/admin', 'quizzes', 'trashed']">
                         <mat-icon mat-list-icon>delete</mat-icon>
-                        Trash
+                        {{ 'COMMON.DELETED' | translate }}
                     </a>
                 </div>
 
                 <mat-list-item (click)="showSubmenuUsers = !showSubmenuUsers" class="parent">
-                    <span class="full-width">Users</span>
+                    <span class="full-width" translate>ADMINISTRATION.USERS.USERS</span>
                     <mat-icon mat-list-icon class="adminNavColor">supervisor_account</mat-icon>
                     <mat-icon class="menu-button adminNavColor" [ngClass]="{'rotated' : showSubmenuUsers}">expand_more
                     </mat-icon>
@@ -101,16 +101,16 @@
                 <div class="submenu" [ngClass]="{'expanded' : showSubmenuUsers}">
                     <a mat-list-item [routerLink]="['/admin', 'users', 'new-user']">
                         <mat-icon mat-list-icon>add_circle</mat-icon>
-                        New User
+                        {{ 'COMMON.CREATE' | translate }}
                     </a>
                     <a mat-list-item [routerLink]="['/admin', 'users']">
                         <mat-icon mat-list-icon>supervised_user_circle</mat-icon>
-                        List Users
+                        {{ 'ADMINISTRATION.USERS.LIST_USERS' | translate }}
                     </a>
                 </div>
 
                 <mat-list-item (click)="showSubmenuMessages = !showSubmenuMessages" class="parent">
-                    <span class="full-width">Messaging</span>
+                    <span class="full-width" translate>ADMINISTRATION.MESSAGING.MESSAGING</span>
                     <mat-icon mat-list-icon class="adminNavColor">message</mat-icon>
                     <mat-icon class="menu-button adminNavColor" [ngClass]="{'rotated' : showSubmenuMessages}">
                         expand_more
@@ -119,16 +119,16 @@
                 <div class="submenu" [ngClass]="{'expanded' : showSubmenuMessages}">
                     <a mat-list-item [routerLink]="['/admin', 'messages', 'sent-emails']">
                         <mat-icon mat-list-icon>mail_outline</mat-icon>
-                        Sent Emails
+                        {{ 'ADMINISTRATION.MESSAGING.SENT_EMAILS' | translate }}
                     </a>
                     <a mat-list-item [routerLink]="['/admin', 'messages']">
                         <mat-icon mat-list-icon>message</mat-icon>
-                        Messages
+                        {{ 'ADMINISTRATION.MESSAGING.INBOX' | translate }}
                     </a>
                 </div>
 
                 <mat-list-item (click)="showSubmenuDirs = !showSubmenuDirs" class="parent">
-                    <span class="full-width">File Management</span>
+                    <span class="full-width" translate>ADMINISTRATION.FILE_MANAGEMENT.FILE_MANAGEMENT</span>
                     <mat-icon mat-list-icon class="adminNavColor">folder</mat-icon>
                     <mat-icon class="menu-button adminNavColor" [ngClass]="{'rotated' : showSubmenuDirs}">expand_more
                     </mat-icon>
@@ -136,16 +136,16 @@
                 <div class="submenu" [ngClass]="{'expanded' : showSubmenuDirs}">
                     <a mat-list-item [routerLink]="['/admin', 'files']">
                         <mat-icon mat-list-icon>file_copy</mat-icon>
-                        Files
+                        {{ 'ADMINISTRATION.FILE_MANAGEMENT.FILES' | translate }}
                     </a>
                     <a mat-list-item [routerLink]="['/admin', 'directories']">
                         <mat-icon mat-list-icon>dynamic_feed</mat-icon>
-                        Directories
+                        {{ 'ADMINISTRATION.FILE_MANAGEMENT.DIRECTORIES' | translate }}
                     </a>
                 </div>
 
                 <mat-list-item (click)="showSubmenuTags = !showSubmenuTags" class="parent">
-                    <span class="full-width">Tags Management</span>
+                    <span class="full-width" translate>ADMINISTRATION.TAGS_MANAGEMENT.TAGS_MANAGEMENT</span>
                     <mat-icon mat-list-icon class="adminNavColor">loyalty</mat-icon>
                     <mat-icon class="menu-button adminNavColor" [ngClass]="{'rotated' : showSubmenuTags}">expand_more
                     </mat-icon>
@@ -153,14 +153,32 @@
                 <div class="submenu" [ngClass]="{'expanded' : showSubmenuTags}">
                     <a mat-list-item [routerLink]="['/admin', 'tags']">
                         <mat-icon mat-list-icon>loyalty</mat-icon>
-                        Tags
+                        {{ 'ADMINISTRATION.TAGS_MANAGEMENT.TAGS' | translate }}
                     </a>
                 </div>
 
                 <a mat-list-item [routerLink]="['/admin', 'reports']">
                     <mat-icon mat-list-icon>feedback</mat-icon>
-                    Reports
+                    {{ 'DASHBOARD.REPORTS.REPORTS' | translate }}
                 </a>
+
+                <mat-list-item (click)="showSubmenuLanguages = !showSubmenuLanguages" class="parent">
+                    <span class="full-width" translate>COMMON.LANGUAGE</span>
+                    <mat-icon mat-list-icon class="adminNavColor">language</mat-icon>
+                    <mat-icon class="menu-button adminNavColor" [ngClass]="{'rotated' : showSubmenuLanguages}">
+                        expand_more
+                    </mat-icon>
+                </mat-list-item>
+                <div class="submenu" [ngClass]="{'expanded' : showSubmenuLanguages}">
+                    <a mat-list-item (click)="onChangeLanguage('fr')">
+                        <mat-icon mat-list-icon>brightness_auto</mat-icon>
+                        Français
+                    </a>
+                    <a mat-list-item (click)="onChangeLanguage('en')">
+                        <mat-icon mat-list-icon>brightness_auto</mat-icon>
+                        English
+                    </a>
+                </div>
 
             </mat-nav-list>
             <mat-nav-list></mat-nav-list>

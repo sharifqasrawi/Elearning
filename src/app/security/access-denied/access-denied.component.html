@@ -1,18 +1,18 @@
 <div class="acdp">
     <div class="container content0 text-center">
         <div class="alert alert-danger text-center alertMsg">
-            <h1>Access Denied !!</h1>
-            <p>You do not have the required permissions to access to this resource.</p>
+            <h1>{{ 'SECURITY.ACCESS_DENIED' | translate }} !!</h1>
+            <p>{{ 'SECURITY.YOU_DONT_HAVE_PERMISSIONS' | translate }}.</p>
             <p>
-                Please
+                {{ 'COMMON.PLEASE' | translate }}
                 <a [routerLink]="['/security', 'auth']" [queryParams]="{ 'returnUrl' : returnUrl }">
-                    LOGIN
+                    {{ 'LOGIN.LOGIN' | translate }}
                 </a>
-                with the required permissions.
+                {{ 'SECURITY.WITH_REQUIRED_PERMISSIONS' | translate }}.
             </p>
             <p>
-                Or retrun
-                <a [routerLink]="['/home']">HOME.</a>
+                {{ 'SECURITY.OR_RETURN' | translate }}
+                <a [routerLink]="['/']">{{ 'HOME.HOME' | translate }}.</a>
             </p>
         </div>
         <img src="../../../assets/images/acd.png" alt="Access Denied" width="300" class="mt-2 alertImg">

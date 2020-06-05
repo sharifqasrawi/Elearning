@@ -38,7 +38,7 @@ export class CourseClassComponent implements OnInit, OnDestroy {
 
   count = 0;
 
-  displayedColumns: string[] = ['id', 'fullName', 'gender', 'country', 'email', 'enrollDateTime', 'currentSessionId', 'actions'];
+  displayedColumns: string[] = ['id', 'fullName', 'gender', 'country', 'email', 'enrollDateTime', 'actions'];
   dataSource: MatTableDataSource<Member>;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;

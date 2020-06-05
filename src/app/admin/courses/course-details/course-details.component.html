@@ -12,13 +12,13 @@
                 </span>
             </p>
             <button mat-raised-button color="primary" (click)="onRefresh()" [disabled]="loading">
-                {{ loading ? 'Loading...' : 'Refresh' }}
+                {{ loading ? ('COMMON.LOADING' | translate) : ('COMMON.REFRESH' | translate) }}
             </button>
         </div>
         <div class="col-lg-2">
             <mat-slide-toggle [color]="colorAccent" [checked]="course.isPublished" id="isPublished" name="isPublished"
                 class="mt-1" [disabled]="publishing || course.deletedAt" (change)="onPublish(course.isPublished)">
-                {{ !publishing ? 'Published' : 'Publishing...' }}
+                {{ !publishing ? ('COURSE.PUBLISHED' | translate) : ('COMMON.LOADING' | translate)}}
             </mat-slide-toggle>
             <p class="mt-3 badge badge-success" *ngIf="course.isPublished">
                 {{ course.publishedAt | date:'medium' }}
@@ -34,27 +34,27 @@
         <div class="detailsNav">
             <a [routerLink]="['./']" routerLinkActive="active">
                 <fa-icon [icon]="faInfoCircle"></fa-icon>
-                Info
+                {{ 'COURSE.INFO' | translate }}
             </a>
             <a [routerLink]="['sections', course.id]" routerLinkActive="active">
                 <fa-icon [icon]="faPallet"></fa-icon>
-                Sections
+                {{ 'COURSE.SECTIONS' | translate }}
             </a>
             <a [routerLink]="['class', course.id]" routerLinkActive="active">
                 <fa-icon [icon]="faPeopleCarry"></fa-icon>
-                Class
+                {{ 'COURSE.CLASS' | translate }}
             </a>
             <a [routerLink]="['tags', course.id]" routerLinkActive="active">
                 <fa-icon [icon]="faTags"></fa-icon>
-                Tags
+                {{ 'ADMINISTRATION.TAGS_MANAGEMENT.TAGS' | translate }}
             </a>
             <a [routerLink]="['comments', course.id]" routerLinkActive="active">
                 <fa-icon [icon]="faComment"></fa-icon>
-                Comments
+                {{ 'COURSE.COMMENTS' | translate }}
             </a>
             <a [routerLink]="['likes', course.id]" routerLinkActive="active">
                 <fa-icon [icon]="faThumbsUp"></fa-icon>
-                Likes
+                {{ 'COURSE.LIKES' | translate }}
             </a>
         </div>
 

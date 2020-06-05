@@ -1,16 +1,16 @@
+import { TranslateService } from '@ngx-translate/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { ConfirmDialogComponent } from './../../../../shared/confirm-dialog/confirm-dialog.component';
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { faSearch, faTimes, faCheck } from '@fortawesome/free-solid-svg-icons';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Store } from '@ngrx/store';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { ToastrService } from 'ngx-toastr';
 
 
+import { ConfirmDialogComponent } from './../../../../shared/confirm-dialog/confirm-dialog.component';
 import { Section } from './../../../../models/section.model';
 import { NewSectionComponent } from './new-section/new-section.component';
 
@@ -48,7 +48,7 @@ export class CourseSectionsComponent implements OnInit {
   constructor(
     private dialog: MatDialog,
     private store: Store<fromApp.AppState>,
-    private snackBar: MatSnackBar,
+    private translate: TranslateService,
     private toastr: ToastrService,
     private route: ActivatedRoute,
   ) { }
@@ -91,10 +91,16 @@ export class CourseSectionsComponent implements OnInit {
   }
 
   onDelete(id: number) {
+    let alertHeader = '';
+    let alertMsg = '';
+    this.translate.get(['COMMON.CONFIRM_ACTION', 'COMMON.DELETE_MESSAGE']).subscribe(trans => {
+      alertHeader = trans['COMMON.CONFIRM_ACTION'];
+      alertMsg = trans['COMMON.DELETE_MESSAGE'];
+    });
     const dialogRef = this.dialog.open(ConfirmDialogComponent,
       {
-        width: '250px',
-        data: { header: 'Confirmation', message: 'Delete this section?' }
+        width: '400px',
+        data: { header: alertHeader, message: alertMsg }
       });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -144,9 +150,7 @@ export class CourseSectionsComponent implements OnInit {
   onRefresh() {
     this.store.dispatch(new SectionsActions.FetchStart(this.courseId));
     this.setTable();
-    this.snackBar.open('Refreshing...', 'OK', {
-      duration: 2000
-    });
+   
   }
 
 

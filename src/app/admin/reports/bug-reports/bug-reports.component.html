@@ -1,7 +1,7 @@
 <div class="adminPageTop">
     <h1>
         <mat-icon>feedback</mat-icon>
-        Reports
+        {{ 'ADMINISTRATION.REPORTS.REPORTS' | translate }}
     </h1>
 
     <hr>
@@ -11,15 +11,15 @@
             <mat-form-field appearance="legacy">
                 <mat-label>
                     <fa-icon [icon]="faSearch"></fa-icon>
-                    Search
+                    {{ 'COMMON.SEARCH' | translate }}
                 </mat-label>
-                <input matInput (keyup)="applyFilter($event)" placeholder="By: any field">
+                <input matInput (keyup)="applyFilter($event)" [placeholder]="'COMMON.BY_ANY_FIELD' | translate">
             </mat-form-field>
         </div>
 
         <div class="col-lg-2 mb-3">
             <button mat-raised-button class="btn-block mt-1" color="accent" [disabled]="loading" (click)="onRefresh()">
-                Refresh
+                {{ 'COMMON.REFRESH' | translate }}
             </button>
         </div>
     </div>
@@ -44,63 +44,63 @@
 
                 <!-- Id Column -->
                 <ng-container matColumnDef="id">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Id </th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ 'COMMON.ID' | translate }} </th>
                     <td mat-cell *matCellDef="let row" (click)="onViewReport(row.id)" style="cursor: pointer;">
                         {{row.id}} </td>
                 </ng-container>
 
                 <!-- Type Column -->
                 <ng-container matColumnDef="type">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Type </th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ 'COMMON.TYPE' | translate }} </th>
                     <td mat-cell *matCellDef="let row"> {{row.type}} </td>
                 </ng-container>
 
                 <!-- Severity Column -->
                 <ng-container matColumnDef="severity">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Severity </th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ 'REPORT_BUG.SEVERITY' | translate }} </th>
                     <td mat-cell *matCellDef="let row"> {{row.severity}} </td>
                 </ng-container>
 
                 <!-- userId Column -->
                 <ng-container matColumnDef="userId">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> User Id </th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ 'COMMON.USER_ID' | translate }} </th>
                     <td mat-cell *matCellDef="let row"> {{row.userId}} </td>
                 </ng-container>
 
                 <!-- userFullName Column -->
                 <ng-container matColumnDef="userFullName">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Full Name </th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'COMMON.USER_NAME' | translate }} </th>
                     <td mat-cell *matCellDef="let row"> {{row.userFullName}} </td>
                 </ng-container>
 
                 <!-- userEmail Column -->
                 <ng-container matColumnDef="userEmail">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ 'COMMON.EMAIL' | translate }} </th>
                     <td mat-cell *matCellDef="let row"> {{row.userEmail}} </td>
                 </ng-container>
 
 
                 <!-- reportDateTime Column -->
                 <ng-container matColumnDef="reportDateTime">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Date </th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ 'COMMON.DATE_TIME' | translate }} </th>
                     <td mat-cell *matCellDef="let row"> {{row.reportDateTime | date:'medium'}} </td>
                 </ng-container>
 
 
                 <!-- replyDateTime Column -->
                 <ng-container matColumnDef="replyDateTime">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Reply Date </th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>{{ 'COMMON.REPLY_DATE' | translate }} </th>
                     <td mat-cell *matCellDef="let row"> {{row.replyDateTime | date:'medium'}} </td>
                 </ng-container>
 
                 <!-- isSeen Column -->
                 <ng-container matColumnDef="isSeen">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Seen </th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ 'COMMON.SEEN' | translate }} </th>
                     <td mat-cell *matCellDef="let row">
                         <fa-icon [icon]="faEye" *ngIf="row.isSeen" class="text-success" style="cursor: pointer;"
-                            (click)="onMarkReport(row.id, false)" matTooltip="Mark as unseen"></fa-icon>
+                            (click)="onMarkReport(row.id, false)" [matTooltip]="'COMMON.MARK_UNSEEN' | translate"></fa-icon>
                         <fa-icon [icon]="faEyeSlash" *ngIf="!row.isSeen" class="text-danger" style="cursor: pointer;"
-                            (click)="onMarkReport(row.id, true)" matTooltip="Mark as seen"></fa-icon>
+                            (click)="onMarkReport(row.id, true)" [matTooltip]="'COMMON.MARK_SEEN' | translate"></fa-icon>
                     </td>
                 </ng-container>
 

@@ -1,22 +1,13 @@
-<!-- <div class="courseInfoNav" *ngIf="!loadingCourse">
-    <a [routerLink]="currentUrl" routerLinkActive="active">
-        Course Info
-    </a>
-
-    <a [routerLink]="[currentUrl, 'comments']" [queryParams]="{'courseId': courseId}" routerLinkActive="active">
-        Comments
-    </a>
-</div> -->
 
 <div *ngIf="!loadingCourse && course" class="courseInfo">
 
     <div class="rating">
         <div class="row">
             <div class="col-lg-8">
-                <h3><strong>Rate this course:</strong></h3>
+                <h3><strong translate>COURSE.RATE_COURSE</strong></h3>
                 <hr>
-                <p class="small text-muted" *ngIf="!isAuthenticated">Please login to rate this course.</p>
-                <p class="small text-muted" *ngIf="isAuthenticated">Choose 1 - 5 star(s):</p>
+                <p class="small text-muted" *ngIf="!isAuthenticated" translate>COURSE.LOGIN_TO_RATE_COURSE</p>
+                <p class="small text-muted" *ngIf="isAuthenticated" translate>FOOTER.CHOOSE_STARS</p>
                 <p class="mt-4">
                     <star-rating [value]="courseRateUserValue" [totalstars]="5" checkedcolor="gold"
                         uncheckedcolor="pink" size="70px" [readonly]="!isAuthenticated" (rate)="onRate($event)"
@@ -51,18 +42,18 @@
     <div class="row mt-2">
         <div class="col-lg-6">
             <h3>
-                <strong>Level: </strong> {{ course.level }}
+                <strong translate> COURSE.LEVEL </strong>: {{ course.level }}
             </h3>
         </div>
         <div class="col-lg-6">
             <h3>
-                <strong>Duration: </strong> {{ course.duration }} mins.
+                <strong translate> COURSE.DURATION</strong>: {{ course.duration }} mins.
             </h3>
         </div>
     </div>
 
     <div>
-        <h3 class="alert alert-info"><strong>Languages:</strong></h3>
+        <h3 class="alert alert-info"><strong translate>COURSE.LANGUAGES</strong></h3>
         <ul>
             <li *ngFor="let lang of course.languages.split('-')">
                 {{ lang }}
@@ -71,12 +62,12 @@
     </div>
 
     <div>
-        <h3 class="alert alert-info"><strong>Prerequisites:</strong></h3>
+        <h3 class="alert alert-info"><strong translate>COURSE.PREREQUISITES</strong></h3>
         <div [innerHtml]="getSanitizedHtml(course.prerequisites_EN)" style="padding-left: 23px;"></div>
     </div>
 
     <div>
-        <h3 class="alert alert-info"><strong>Description:</strong></h3>
+        <h3 class="alert alert-info"><strong translate>COURSE.DESCRIPTION</strong></h3>
         <div [innerHtml]="getSanitizedHtml(course.description_EN)" style="padding-left: 23px;"></div>
     </div>
 </div>

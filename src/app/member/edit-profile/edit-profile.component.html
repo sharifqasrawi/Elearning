@@ -4,12 +4,12 @@
             <div class="col-lg-10">
                 <h1>
                     <fa-icon [icon]="faUserEdit"></fa-icon>
-                    Edit Profile
+                  {{ 'EDIT_PROFILE.EDIT_PROFILE' | translate }}
                 </h1>
             </div>
             <div class="col-lg-2">
                 <button type="submit" mat-raised-button color="primary" class="btn-block" [disabled]="loading || updating">
-                    {{ loading ? 'loading...' : (updating ? 'Saving...' : 'Save') }}
+                    {{ loading ? ('COMMON.LOADING' | translate) : (updating ? ('COMMON.SAVING' | translate) : ('COMMON.SAVE' | translate)) }}
                 </button>
             </div>
         </div>
@@ -23,22 +23,22 @@
         </div>
 
         <div class="alert alert-success mb-3 text-center" *ngIf="updated">
-            Profile Updated Successfully.
+            {{ 'EDIT_PROFILE.PROFILE_UPDATED' | translate }}.
         </div>
 
         <div class="row">
             <div class="col-lg-6">
                 <mat-form-field class="full-width" appearance="legacy">
-                    <mat-label>First name</mat-label>
+                    <mat-label translate>REGISTER.FIRSTNAME</mat-label>
                     <input [readonly]="loading" matInput formControlName="firstName" required>
-                    <mat-error>This field is required</mat-error>
+                    <mat-error translate>VALIDATION.REQUIRED</mat-error>
                 </mat-form-field>
             </div>
             <div class="col-lg-6">
                 <mat-form-field class="full-width" appearance="legacy">
-                    <mat-label>Last name</mat-label>
+                    <mat-label translate>REGISTER.LASTNAME</mat-label>
                     <input [readonly]="loading" matInput formControlName="lastName" required>
-                    <mat-error>This field is required</mat-error>
+                    <mat-error translate>VALIDATION.REQUIRED</mat-error>
                 </mat-form-field>
             </div>
         </div>
@@ -46,14 +46,14 @@
         <div class="row mt-3">
             <div class="col-lg-6">
                 <mat-form-field class="full-width" appearance="legacy">
-                    <mat-label>Email address</mat-label>
+                    <mat-label translate>COMMON.EMAIL</mat-label>
                     <input [readonly]="loading" matInput placeholder="Ex. laurnace@example.com" formControlName="email">
-                    <mat-error>Please enter a valid email address.</mat-error>
+                    <mat-error translate>VALIDATION.INVALID_EMAIL</mat-error>
                 </mat-form-field>
             </div>
             <div class="col-lg-6">
                 <mat-form-field class="full-width" appearance="legacy">
-                    <mat-label>Country</mat-label>
+                    <mat-label translate>REGISTER.COUNTRY</mat-label>
                     <mat-select formControlName="country" name="country" id="country" required>
                         <mat-option>--</mat-option>
                         <mat-option *ngFor="let c of listCountries" [value]="c.name" [disabled]="loading">
@@ -61,17 +61,17 @@
                         </mat-option>
                     </mat-select>
 
-                    <mat-error>This field is required.</mat-error>
+                    <mat-error translate>VALIDATION.REQUIRED</mat-error>
                 </mat-form-field>
             </div>
         </div>
 
         <div class="mt-3">
-            <mat-label>Gender:</mat-label>
+            <mat-label translate>REGISTER.GENDER</mat-label>
             <mat-radio-group formControlName="gender">
-                <mat-radio-button class="ml-2" value="male" [disabled]="loading">Male</mat-radio-button>
-                <mat-radio-button class="ml-2" value="female" [disabled]="loading">Female</mat-radio-button>
-                <mat-radio-button class="ml-2" value="custom" [disabled]="loading">Custom</mat-radio-button>
+                <mat-radio-button class="ml-2" value="male" [disabled]="loading">{{ 'REGISTER.MALE' | translate }}</mat-radio-button>
+                <mat-radio-button class="ml-2" value="female" [disabled]="loading">{{ 'REGISTER.FEMALE' | translate }}</mat-radio-button>
+                <mat-radio-button class="ml-2" value="custom" [disabled]="loading">{{ 'REGISTER.OTHER' | translate }}</mat-radio-button>
             </mat-radio-group>
         </div>
 

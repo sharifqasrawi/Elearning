@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { Like } from './../../../models/like.model';
 import { CommentLikesComponent } from './comment-likes/comment-likes.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -70,6 +71,7 @@ export class CourseCommentsComponent implements OnInit {
     private router: Router,
     private dialog: MatDialog,
     private bottomSheet: MatBottomSheet,
+    private tranlate: TranslateService,
     private signalRService: SignalRCommentsService
   ) { }
 
@@ -245,9 +247,17 @@ export class CourseCommentsComponent implements OnInit {
   }
 
   onDelete(id: number) {
+    let alertHeader = '';
+    let alertMsg = '';
+
+    this.tranlate.get(['COMMON.DELETE_CONFIRMATION', 'COURSE.DELETE_COMMENT']).subscribe(trans => {
+      alertHeader = trans['COMMON.DELETE_CONFIRMATION'];
+      alertMsg = trans['COURSE.DELETE_COMMENT'];
+    });
+
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '350px',
-      data: { header: 'Delete Confirmation', message: 'Are you sure you wish to delete this comment ?' }
+      data: { header: alertHeader, message: alertMsg }
     });
 
     dialogRef.afterClosed().subscribe(result => {

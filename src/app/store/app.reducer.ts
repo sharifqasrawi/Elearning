@@ -15,7 +15,7 @@ import * as fromSessionContents from '../admin/courses/course-details/course-ses
 import * as fromNotifications from '../admin/notifications/store/notifications.reducer';
 import * as fromReports from '../admin/reports/store/reports.reducer';
 
-import * as fromHomeCategories from '../home/store/categories.reducer';
+import * as fromHome from '../home/store/home.reducer';
 import * as fromHomeCourses from '../courses/store/courses.reducer';
 import * as fromHomeSession from '../courses/course-view/course-session/store/session.reducer';
 import * as fromHomeComments from '../courses/course-view/course-comments/store/comments.reducer';
@@ -32,7 +32,7 @@ export interface AppState {
     messages: fromMessages.State,
     notifications: fromNotifications.State,
     categories: fromCategories.State,
-    homeCategories: fromHomeCategories.State,
+    home: fromHome.State,
     homeCourses: fromHomeCourses.State,
     courses: fromCourses.State,
     sections: fromSections.State,
@@ -57,7 +57,7 @@ export const appReducer: ActionReducerMap<AppState> = {
     messages: fromMessages.messagesReducer,
     notifications: fromNotifications.notificationsReducer,
     categories: fromCategories.categoriesReducer,
-    homeCategories: fromHomeCategories.categoriesReducer,
+    home: fromHome.homeReducer,
     courses: fromCourses.coursesReducer,
     homeCourses: fromHomeCourses.coursesReducer,
     sections: fromSections.sectionsReducer,

@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 import { ConfirmDialogComponent } from './../../../shared/confirm-dialog/confirm-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -7,7 +8,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { faEnvelope, faEye, faEyeSlash, faSearch, faChessKing } from '@fortawesome/free-solid-svg-icons';
+import { faEnvelope, faEye, faEyeSlash, faSearch, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 import * as fromApp from '../../../store/app.reducer';
 import * as MessagesActions from './../store/messages.actions';
@@ -25,6 +26,8 @@ export class ListMessagesComponent implements OnInit {
   faEye = faEye;
   faEyeSlash = faEyeSlash;
   faSearch = faSearch;
+  faEdit = faEdit;
+  faTrash = faTrash;
 
 
   messages: Message[] = null;
@@ -40,7 +43,7 @@ export class ListMessagesComponent implements OnInit {
 
   constructor(
     private store: Store<fromApp.AppState>,
-    private snachBar: MatSnackBar,
+    private translate: TranslateService,
     private dialog: MatDialog,
     private router: Router,
   ) {
@@ -66,9 +69,7 @@ export class ListMessagesComponent implements OnInit {
     this.store.dispatch(new MessagesActions.FetchStart());
 
     this.setTable();
-    this.snachBar.open('Refreshing...', 'OK', {
-      duration: 2000
-    });
+   
   }
 
   onSelect(id: number) {
@@ -76,11 +77,17 @@ export class ListMessagesComponent implements OnInit {
   }
 
   onDelete(id: number) {
-    const dialogRef = this.dialog.open(ConfirmDialogComponent,
-      {
-        width: '250px',
-        data: { header: 'Confirmation', message: 'Delete this message ?' }
-      });
+    let alertHeader = '';
+    let alertMsg = '';
+
+    this.translate.get(['COMMON.CONFIRM_ACTION', 'COMMON.DELETE_MESSAGE']).subscribe(trans => {
+      alertHeader = trans['COMMON.CONFIRM_ACTION'];
+      alertMsg = trans['COMMON.DELETE_MESSAGE'];
+    });
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      width: '400px',
+      data: { header: alertHeader, message: alertMsg }
+    });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result)

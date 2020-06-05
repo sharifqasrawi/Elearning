@@ -1,10 +1,8 @@
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormControl, FormGroupDirective, NgForm, Validators, FormGroup, FormBuilder, AbstractControl } from '@angular/forms';
 import { faEnvelopeOpenText, faEdit } from '@fortawesome/free-solid-svg-icons';
 import { Store } from '@ngrx/store';
 
-import { Message } from './../models/message.model';
 import * as fromApp from '../store/app.reducer';
 import * as MessagesActions from '../admin/messages/store/messages.actions';
 
@@ -32,7 +30,6 @@ export class ContactUsComponent implements OnInit, OnDestroy {
   constructor(
     private store: Store<fromApp.AppState>,
     private _formBuilder: FormBuilder,
-    private snackBar: MatSnackBar,
   ) { }
 
 
@@ -73,12 +70,6 @@ export class ContactUsComponent implements OnInit, OnDestroy {
       text: this.form.value.formArray[3].text,
     }));
 
-    if (this.sent && !this.sending) {
-      this.snackBar.open('Message Sent!', 'Okay',
-        {
-          duration: 2000
-        });
-    }
   }
 
   ngOnDestroy() {

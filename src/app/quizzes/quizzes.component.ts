@@ -27,7 +27,7 @@ export class QuizzesComponent implements OnInit {
 
   searchForm: FormGroup;
 
-  breadcrumbLinks: { url?: string, label: string }[];
+  breadcrumbLinks: { url?: string, translate?: boolean, label: string }[];
 
   constructor(
     private store: Store<fromApp.AppState>,
@@ -36,15 +36,15 @@ export class QuizzesComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.dispatch(new HomeQuizzesActions.FetchQuizzesStart());
-    
+
     this.searchForm = new FormGroup({
       title_EN: new FormControl(null)
     });
 
 
     this.breadcrumbLinks = [
-      { url: '/', label: 'Home' },
-      { label: 'Quizzes' },
+      { url: '/', label: 'Home', translate: true },
+      { label: 'Quizzes', translate: true },
     ];
 
     this.store.select('homeQuizzes').subscribe(state => {

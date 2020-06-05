@@ -8,18 +8,18 @@
         </div>
         <div class="col-lg-2">
             <button mat-raised-button color="warn" class="btn-block" (click)="onPreviousQuestion()"
-                [disabled]="currentQuestionIndex === 0" >
-                Previous Question
+                [disabled]="currentQuestionIndex === 0">
+                {{ 'QUIZZES.PREV_QUESTION' | translate }}
             </button>
         </div>
         <div class="col-lg-2">
             <button mat-raised-button color="primary" class="btn-block" (click)="onNextQuestion()"
-                *ngIf="currentQuestionIndex !== lastQuestionIndex">
-                Next Question
+                *ngIf="currentQuestionIndex !== lastQuestionIndex" [disabled]="loading || choosing">
+                {{ loading ? ('COMMON.LOADING' | translate) : (choosing ? ('QUIZZES.SAVING_CHOICE' | translate) : ('QUIZZES.NEXT_QUESTION' | translate)) }}
             </button>
             <button mat-raised-button color="accent" class="btn-block" (click)="onSubmitQuiz()"
-                *ngIf="currentQuestionIndex === lastQuestionIndex" >
-                Submit Quiz
+                *ngIf="currentQuestionIndex === lastQuestionIndex">
+                {{ 'QUIZZES.SUBMIT_QUIZ' | translate }}
             </button>
         </div>
     </div>
@@ -28,17 +28,17 @@
 
     <div *ngIf="!loading">
         <h3>
-            <strong> Question {{ currentQuestionIndex + 1 }}:</strong>
+            <strong> {{ 'QUIZZES.QUESTION' | translate }} {{ currentQuestionIndex + 1 }}:</strong>
         </h3>
         <div [innerHTML]="getSanitizedHtml(questions[currentQuestionIndex].text_EN)"></div>
         <img [src]="getSanitizedImage(questions[currentQuestionIndex].imagePath)"
             *ngIf="questions[currentQuestionIndex].imagePath" width="100%">
 
-        <p class="badge badge-secondary mt-3">Duration: {{ questions[currentQuestionIndex].duration }} mins.</p>
+        <p class="badge badge-secondary mt-3">{{ 'COURSE.DURATION' | translate }}: {{ questions[currentQuestionIndex].duration }} mins.</p>
 
         <hr>
 
-        <strong>Options:</strong>
+        <strong>{{ 'QUIZZES.CHOICES' | translate }}:</strong>
         <div class="mt-2">
             <mat-radio-group aria-labelledby="answers-radio-group-label" class="answers-radio-group"
                 [(ngModel)]="answerId" (change)="onChooseAnswer()">
@@ -47,6 +47,27 @@
                     [disabled]="isSubmitted">
                     <span [innerHTML]="getSanitizedHtml(answer.text_EN)"></span>
                     <img [src]="getSanitizedImage(answer.imagePath)" *ngIf="answer.imagePath" width="100%">
+                </mat-radio-button>
+            </mat-radio-group>
+        </div>
+    </div>
+
+
+    <div class="questionLoader" *ngIf="loading">
+        <h3>
+            &nbsp;
+        </h3>
+        <div class="question">&nbsp;</div>
+
+        <p class="badge badge-secondary mt-3">&nbsp;</p>
+
+        <hr>
+
+        <p><strong>&nbsp;</strong></p>
+        <div class="mt-2">
+            <mat-radio-group aria-labelledby="answers-radio-group-label" class="answers-radio-group">
+                <mat-radio-button class="answers-radio-button" *ngFor=" let i of [].constructor(4)" disabled="true">
+                    <div class="answer">&nbsp;</div>
                 </mat-radio-button>
             </mat-radio-group>
         </div>

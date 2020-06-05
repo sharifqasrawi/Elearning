@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -34,6 +35,7 @@ import { AccessDeniedComponent } from './access-denied/access-denied.component';
         // RecaptchaFormsModule,
         MaterialModule,
         FontAwesomeModule,
+        TranslateModule,
         SecurityRoutingModule,
     ],
     exports: [],

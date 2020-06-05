@@ -1,3 +1,4 @@
+import { TranslateModule } from '@ngx-translate/core';
 import { MaterialModule } from './../material-module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -9,7 +10,6 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { ToastrModule } from 'ngx-toastr';
 import { MonacoEditorModule } from 'ngx-monaco-editor';
 
-import { NavigationComponent } from './navigation/navigation.component';
 import { MainComponent } from './main/main.component';
 import { ListUsersComponent } from './users/list-users/list-users.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -65,7 +65,6 @@ import { NewAnswerComponent } from './quizzes/set-quiz/set-question/new-answer/n
 @NgModule({
     declarations: [
         MainComponent,
-        NavigationComponent,
         ListUsersComponent,
         DashboardComponent,
         NewUserComponent,
@@ -128,6 +127,7 @@ import { NewAnswerComponent } from './quizzes/set-quiz/set-question/new-answer/n
         }),
         MonacoEditorModule.forRoot(),
         TimeagoModule.forRoot(),
+        TranslateModule,
         AdminRoutingModule,
         SharedModule,
     ],

@@ -1,12 +1,12 @@
+import { TranslateService } from '@ngx-translate/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatSort } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
-import { faSearch, faCogs, faChessKing } from '@fortawesome/free-solid-svg-icons';
+import { faSearch, faCogs, faChessKing, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 
 import { ConfirmDialogComponent } from './../../../shared/confirm-dialog/confirm-dialog.component';
@@ -20,11 +20,13 @@ import { NewCategoryComponent } from './../new-category/new-category.component';
   templateUrl: './list-categories.component.html',
   styleUrls: ['./list-categories.component.css']
 })
-export class ListCategoriesComponent implements OnInit, OnDestroy {
+export class ListCategoriesComponent implements OnInit {
 
   faSearch = faSearch;
   faCogs = faCogs;
   faChessKing = faChessKing;
+  faEdit = faEdit;
+  faTrash = faTrash;
 
   categories: Category[] = null;
   errors: string[] = null;
@@ -43,18 +45,17 @@ export class ListCategoriesComponent implements OnInit, OnDestroy {
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
 
-
   constructor(
     private store: Store<fromApp.AppState>,
-    private snackBar: MatSnackBar,
     private dialog: MatDialog,
     private sanitizer: DomSanitizer,
+    private translate: TranslateService
   ) { }
 
   ngOnInit(): void {
     this.store.dispatch(new CategoriesActions.FetchStart());
 
-     this.store.select('categories').subscribe(catState => {
+    this.store.select('categories').subscribe(catState => {
       this.categories = catState.categories;
       this.errors = catState.errors;
       this.loading = catState.loading;
@@ -74,9 +75,6 @@ export class ListCategoriesComponent implements OnInit, OnDestroy {
   onRefresh() {
     this.store.dispatch(new CategoriesActions.FetchStart());
     this.setTableCategories();
-    this.snackBar.open('Refreshing...', 'OK', {
-      duration: 2000
-    });
   }
 
 
@@ -94,17 +92,20 @@ export class ListCategoriesComponent implements OnInit, OnDestroy {
 
 
   onTrash(id: number) {
+    let alertHeader = '';
+    let alertMsg = '';
+   this.translate.get(['COMMON.CONFIRM_ACTION', 'COMMON.TRASH_MESSAGE']).subscribe(trans => {
+      alertHeader = trans['COMMON.CONFIRM_ACTION'];
+      alertMsg = trans['COMMON.TRASH_MESSAGE'];
+    });
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      width: '300px',
-      data: { header: 'Confirm Action', message: 'Move this category to trash ?' }
+      width: '400px',
+      data: { header: alertHeader, message: alertMsg }
     });
 
-     dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.store.dispatch(new CategoriesActions.TrashStart(id));
-        this.snackBar.open('Moving to trash...', 'OK', {
-          duration: 2000
-        });
       }
     });
   }
@@ -129,6 +130,5 @@ export class ListCategoriesComponent implements OnInit, OnDestroy {
 
   getSanitizedImage = (imagePath: string) => this.sanitizer.bypassSecurityTrustResourceUrl(imagePath);
 
-  ngOnDestroy(): void {
-  }
+
 }

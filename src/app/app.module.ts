@@ -1,7 +1,6 @@
-
-import { NgModule } from '@angular/core';
+import { NgModule, LOCALE_ID } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { StoreModule } from '@ngrx/store';
@@ -13,6 +12,10 @@ import { CountUpModule } from 'ngx-countup';
 import { TimeagoModule } from 'ngx-timeago';
 import { MonacoEditorModule } from 'ngx-monaco-editor';
 import { RatingModule } from 'ng-starrating';
+import { registerLocaleData } from '@angular/common';
+import localeFr from '@angular/common/locales/fr';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import * as fromApp from './store/app.reducer';
 
@@ -39,7 +42,7 @@ import { DirectoriesEffects } from './admin/directories/store/directories.effect
 import { FilesEffects } from './admin/files/store/files.effects';
 import { SessionContentsEffects } from './admin/courses/course-details/course-sessions/session-content/store/session-contents.effects';
 import { CoursesComponent } from './courses/courses.component';
-import { HomeCategoriesEffects } from './home/store/categories.effects';
+import { HomeEffects } from './home/store/home.effects';
 import { SessionsEffects } from './admin/courses/course-details/course-sessions/store/sessions.effects';
 import { SectionsEffects } from './admin/courses/course-details/course-sections/store/sections.effects';
 import { TagsEffects } from './admin/tags/store/tags.effects';
@@ -65,6 +68,12 @@ import { QuizComponent } from './quizzes/quiz/quiz.component';
 import { QuizProccessComponent } from './quizzes/quiz-proccess/quiz-proccess.component';
 import { CanDeactivateGuard } from './quizzes/quiz-proccess/can-deactivate-guard.service';
 import { QuizResultComponent } from './quizzes/quiz-result/quiz-result.component';
+import { DynamicLocaleId } from './internationalization/DynamicLocaleId';
+
+registerLocaleData(localeFr, 'fr');
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http);
+}
 
 @NgModule({
   declarations: [
@@ -96,12 +105,12 @@ import { QuizResultComponent } from './quizzes/quiz-result/quiz-result.component
     StoreModule.forRoot(fromApp.appReducer),
     EffectsModule.forRoot([
       LoginEffects,
-      RegisterEffects, 
-      UsersEffects, 
-      MessagesEffects, 
+      RegisterEffects,
+      UsersEffects,
+      MessagesEffects,
       NotificationsEffects,
       CategoriesEffects,
-      HomeCategoriesEffects,
+      HomeEffects,
       CoursesEffects,
       HomeCoursesEffects,
       HomeSessionEffects,
@@ -126,14 +135,23 @@ import { QuizResultComponent } from './quizzes/quiz-result/quiz-result.component
     FontAwesomeModule,
     CountUpModule,
     MonacoEditorModule.forRoot(),
-    RatingModule ,
+    RatingModule,
     SharedModule,
     SecurityModule,
     AdminModule,
     MemberModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      }
+    }),
     AppRoutingModule,
   ],
   providers: [
+    // { provide: LOCALE_ID, useClass: DynamicLocaleId},
+    // { provide: LOCALE_ID, useValue: 'fr-FR' },
     { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'fill' } },
     // {
     //   provide: HTTP_INTERCEPTORS,

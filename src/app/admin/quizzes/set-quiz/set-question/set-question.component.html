@@ -17,18 +17,18 @@
     </div>
     <div>
         <button mat-raised-button color="primary" class="mr-3" (click)="onBackToQuestions()">
-            <fa-icon [icon]="faEdit"></fa-icon>
-            Back to questions
+            <fa-icon [icon]="faReply"></fa-icon>
+            {{ 'COMMON.BACK' | translate }}
         </button>
     
         <button mat-raised-button color="accent" (click)="onAddAnswer(question.id)" >
             <fa-icon [icon]="faPlusCircle"></fa-icon>
-            Add Answer
+            {{ 'COMMON.ADD' | translate }}
         </button>
     </div>
     <hr>
 
-    <div *ngIf="loadingAs">Loading...</div>
+    <div *ngIf="loadingAs">{{ 'COMMON.LOADING' | translate }}</div>
     <div *ngIf="!loadingAs">
         <ul>
             <li *ngFor="let answer of answers">
@@ -44,11 +44,11 @@
                         <div>
                             <button class="btn btn-link" (click)="onEditAnswer(answer)">
                                 <fa-icon [icon]="faEdit"></fa-icon>
-                                Edit
+                                {{ 'COMMON.EDIT' | translate }}
                             </button>
                             <button class="btn btn-link text-danger" (click)="onDeleteAnswer(answer.id)">
                                 <fa-icon [icon]="faTrashAlt"></fa-icon>
-                                Delete
+                                {{ 'COMMON.DELETE' | translate }}
                             </button>
                         </div>
                     </dd>

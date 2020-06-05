@@ -1,10 +1,16 @@
 <ul class="breadcrumb" *ngIf="links">
     <li *ngFor="let link of links">
         <a [routerLink]="[link.url]" *ngIf="link.url">
-            <fa-icon [icon]="faHome" *ngIf="link.label === 'Home'"></fa-icon> <span
-                style="text-transform: capitalize;"> {{ link.label }}</span>
+            <fa-icon [icon]="faHome" *ngIf="link.label === 'Home' || link.label === 'Acceuil'"></fa-icon>
+            <span style="text-transform: capitalize;" *ngIf="link.translate">
+                {{ 'BREADCRUMBS.'+ link.label.toUpperCase() | translate}}</span>
+            <span style="text-transform: capitalize;" *ngIf="!link.translate"> {{  link.label }} </span>
         </a>
-        <span *ngIf="!link.url" style="text-transform: capitalize;">
+        <span *ngIf="!link.url && link.translate" style="text-transform: capitalize;">
+            {{ 'BREADCRUMBS.'+ link.label.toUpperCase() | translate}}
+        </span>
+
+        <span *ngIf="!link.url && !link.translate" style="text-transform: capitalize;">
             {{ link.label }}
         </span>
     </li>

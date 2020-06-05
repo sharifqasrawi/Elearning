@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { Title } from '@angular/platform-browser';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Subscription } from 'rxjs';
@@ -30,6 +31,7 @@ export class MainComponent implements OnInit, OnDestroy {
   showSubmenuDirs = false;
   showSubmenuMessages = false;
   showSubmenuTags = false;
+  showSubmenuLanguages = false;
 
   navOpened = true;
 
@@ -44,13 +46,24 @@ export class MainComponent implements OnInit, OnDestroy {
     private snackBar: MatSnackBar,
     private titleService: Title,
     changeDetectorRef: ChangeDetectorRef,
-    media: MediaMatcher
+    media: MediaMatcher,
+    public translate: TranslateService
   ) {
     this.titleService.setTitle('Admin');
 
     this.mobileQuery = media.matchMedia('(max-width: 993px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
+
+    translate.addLangs(['en', 'fr']);
+    translate.setDefaultLang('en');
+
+    if (!localStorage.getItem('lang')) {
+      const browserLang = translate.getBrowserLang();
+      translate.use(browserLang.match(/en|fr/) ? browserLang : 'en');
+    } else {
+      translate.use(localStorage.getItem('lang'));
+    }
   }
 
   private _mobileQueryListener: () => void;
@@ -102,6 +115,11 @@ export class MainComponent implements OnInit, OnDestroy {
     if (!this.isExpanded) {
       this.isShowing = false;
     }
+  }
+
+  onChangeLanguage(lang: string) {
+    this.translate.use(lang);
+    localStorage.setItem('lang', lang);
   }
 
 }

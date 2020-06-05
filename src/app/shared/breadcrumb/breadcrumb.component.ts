@@ -3,6 +3,7 @@ import { faHome } from '@fortawesome/free-solid-svg-icons';
 
 export interface Link {
   url?: string,
+  translate?: boolean,
   label: string,
 }
 

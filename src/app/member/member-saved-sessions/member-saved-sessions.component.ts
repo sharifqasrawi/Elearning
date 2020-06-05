@@ -1,4 +1,3 @@
-import { MatDialog } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { Component, OnInit } from '@angular/core';
 
@@ -7,7 +6,6 @@ import { SavedSession } from './../../models/savedSession.model';
 import * as fromApp from '../../store/app.reducer';
 import * as MemberActions from '../store/member.actions';
 
-import { ErrorDialogComponent } from './../../shared/error-dialog/error-dialog.component';
 
 @Component({
   selector: 'app-member-saved-sessions',
@@ -22,7 +20,6 @@ export class MemberSavedSessionsComponent implements OnInit {
 
   constructor(
     private store: Store<fromApp.AppState>,
-    private dialog: MatDialog,
   ) { }
 
   ngOnInit(): void {
@@ -31,13 +28,6 @@ export class MemberSavedSessionsComponent implements OnInit {
     this.store.select('member').subscribe(state => {
       this.sessions = state.savedSessions;
       this.loading = state.loadingSavedSessions;
-
-      if (state.errors) {
-        this.dialog.open(ErrorDialogComponent, {
-          width: '450px',
-          data: { errors: state.errors }
-        });
-      }
 
     });
   }

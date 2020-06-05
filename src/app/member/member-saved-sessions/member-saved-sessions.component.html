@@ -1,13 +1,13 @@
 <div>
     <h2>
-        My Saved Sessions
+        {{ 'DASHBOARD.SAVED_SESSIONS.SAVED_SESSIONS' | translate }}
     </h2>
     <hr>
 
     
     <div *ngIf="sessions.length === 0 && !loading">
         <div class="alert alert-info text-center">
-            <h2>You have no saved sessions.</h2>
+            <h2>{{ 'DASHBOARD.SAVED_SESSIONS.NO_SAVED_SESSIONS' | translate }}.</h2>
         </div>
     </div>
 
@@ -27,16 +27,16 @@
                 <hr>
                 <mat-card-content>
                     <p>
-                        <strong>Duration: </strong> {{ session.duration }} mins.
+                        <strong>{{ 'COURSE.DURATION' | translate }}: </strong> {{ session.duration }} mins.
                     </p>
                     <p>
-                        <strong>Save Date: </strong> {{ session.saveDateTime | date:'medium' }}
+                        <strong>{{ 'DASHBOARD.SAVED_SESSIONS.SAVE_DATE' | translate }}: </strong> {{ session.saveDateTime | date:'medium' }}
                     </p>
                 </mat-card-content>
                 <mat-card-actions class="actions">
                     <a mat-raised-button color="primary" [routerLink]="[session.sessionUrl]"
-                        [queryParams]="{'check': 'no'}">
-                        GO TO SESSION
+                        [queryParams]="{'check': 'no'}" style="text-transform: uppercase;">
+                        {{ 'DASHBOARD.SAVED_SESSIONS.GO_TO_SESSION' | translate }}
                     </a>
                 </mat-card-actions>
             </mat-card>

@@ -2,32 +2,44 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-3">
-                <p><strong>Created By:</strong></p>
+                <p>
+                    <strong>{{ 'FOOTER.CREATED_BY' | translate }}:</strong>
+                </p>
                 <hr>
                 <p>Sharif Qasrawi</p>
                 <p>
                     <a href="https://sharifqasrawi.com">sharifqasrawi.com</a>
                 </p>
                 <p>
-                    <em>Version: 1.0 Beta.</em>
+                    <em>{{ 'FOOTER.VERSION' | translate }}: 1.0 Beta.</em>
                 </p>
-                <img src="../../assets/images/flag.webp" alt="flag" width="45">
-                <img src="../../assets/images/flag.webp" alt="flag" width="45">
+                <!-- <label>
+                    Language
+                    <select #langSelect (change)="onChangeLanguage(langSelect.value)">
+                        <option *ngFor="let lang of translate.getLangs()" [value]="lang" [selected]="lang === translate.currentLang">
+                            {{ lang }}
+                        </option>
+                    </select>
+                </label> -->
+                <img src="../../assets/images/frFlag.png" class="langBtn"
+                    [class.active]="translate.currentLang === 'fr'" alt="flag" (click)="onChangeLanguage('fr')">
+                <img src="../../assets/images/engflag2.png" class="langBtn"
+                    [class.active]="translate.currentLang === 'en'" alt="flag" (click)="onChangeLanguage('en')">
             </div>
             <div class="col-lg-3">
-                <p><strong>Contact:</strong></p>
+                <p><strong>{{ 'FOOTER.CONTACT' | translate }}:</strong></p>
                 <hr>
                 <p>
                     <a href="mailto:sharif@qasrawi.fr">sharif@qasrawi.fr</a>
                 </p>
                 <p>
                     <a [routerLink]="['/contact-us']">
-                        Contact form.
+                        {{ 'FOOTER.CONTACT_FORM' | translate }}:
                     </a>
                 </p>
                 <p>
                     <a style="cursor: pointer;" (click)="onReportBug()">
-                        Report a bug.
+                        {{ 'FOOTER.REPORT_BUG' | translate }}:.
                     </a>
                 </p>
             </div>
@@ -35,17 +47,18 @@
                 <div class="rating">
                     <div class="row">
                         <div class="col-lg-8">
-                            <p><strong>Rate my website:</strong></p>
+                            <p><strong>{{ 'FOOTER.RATE_WEBSITE' | translate }}:</strong></p>
                             <hr>
-                            <p class="small" *ngIf="!isAuthenticated">Please login to rate this course.</p>
-                            <p class="small" *ngIf="isAuthenticated">Choose 1 - 5 star(s):</p>
+                            <p class="small" *ngIf="!isAuthenticated">{{ 'FOOTER.LOGIN_TO_RATE_WEBSITE' | translate }}.
+                            </p>
+                            <p class="small" *ngIf="isAuthenticated">{{ 'FOOTER.CHOOSE_STARS' | translate }}:</p>
                             <p class="mt-4">
                                 <star-rating [value]="userRating" [totalstars]="5" checkedcolor="gold"
                                     uncheckedcolor="pink" size="60px" [readonly]="!isAuthenticated"
                                     [class.loadingRate]="loadingRate || rating" (rate)="onRate($event)">
                                 </star-rating>
                             </p>
-                            <em class="small" *ngIf="rated">Thank you for your feedback.</em>
+                            <em class="small" *ngIf="rated">{{ 'FOOTER.THANK_FEEDBACK' | translate }}.</em>
                         </div>
                         <div class="col-lg-4 text-center">
                             <div class="total mat-elevation-z4 mt-3" style="margin: 0 auto;"

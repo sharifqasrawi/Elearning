@@ -17,14 +17,14 @@ import { Course } from './../../../models/course.model';
 import * as fromApp from '../../../store/app.reducer';
 import * as CategoriesActions from '../../categories/store/categories.actions';
 import * as CoursesActions from '../store/courses.actions';
-import { CanComponentDeactivate } from './can-deactivate-guard.service';
+// import { CanComponentDeactivate } from './can-deactivate-guard.service';
 
 @Component({
   selector: 'app-new-course',
   templateUrl: './new-course.component.html',
   styleUrls: ['./new-course.component.css'],
 })
-export class NewCourseComponent implements OnInit, OnDestroy, CanComponentDeactivate {
+export class NewCourseComponent implements OnInit, OnDestroy {
 
   public Editor = ClassicEditor;
 
@@ -94,9 +94,6 @@ export class NewCourseComponent implements OnInit, OnDestroy, CanComponentDeacti
 
         if (this.created) {
           this.router.navigate(['/admin', 'courses']);
-          this.snackBar.open('Course Saved', 'Okay', {
-            duration: 2000
-          });
         }
       });
 
@@ -208,13 +205,13 @@ export class NewCourseComponent implements OnInit, OnDestroy, CanComponentDeacti
 
   }
 
-  canDeactivate(): Observable<boolean> | Promise<boolean> | boolean {
-    if (this.form.dirty) {
-      return confirm('Discard all changes and exit ?');
-    } else {
-      return true;
-    }
-  }
+  // canDeactivate(): Observable<boolean> | Promise<boolean> | boolean {
+  //   if (this.form.dirty) {
+  //     return confirm('Discard all changes and exit ?');
+  //   } else {
+  //     return true;
+  //   }
+  // }
 
 
   add(event: MatChipInputEvent): void {

@@ -1,10 +1,11 @@
+import { TranslateService } from '@ngx-translate/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { faQuestionCircle, faPlusCircle, faSearch, faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faQuestionCircle, faPlusCircle, faSearch, faCheck, faTimes, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 import * as fromApp from '../../../store/app.reducer';
 import * as QuizzesActions from '../store/quizzes.actions';
@@ -23,6 +24,8 @@ export class ListQuizzesComponent implements OnInit {
   faSearch = faSearch;
   faCheck = faCheck;
   faTimes = faTimes;
+  faEdit = faEdit;
+  faTrash = faTrash;
 
   quizzes: Quiz[] = null;
   loadingQuizzes = false;
@@ -39,7 +42,8 @@ export class ListQuizzesComponent implements OnInit {
 
   constructor(
     private store: Store<fromApp.AppState>,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private translate:TranslateService
   ) { }
 
   ngOnInit(): void {
@@ -59,9 +63,16 @@ export class ListQuizzesComponent implements OnInit {
 
 
   onTrashQuiz(id: number) {
+    let alertHeader = '';
+    let alertMsg = '';
+
+    this.translate.get(['COMMON.DELETE_CONFIRMATION', 'COMMON.TRASH_MESSAGE']).subscribe(trans => {
+      alertHeader = trans['COMMON.DELETE_CONFIRMATION'];
+      alertMsg = trans['COMMON.TRASH_MESSAGE'];
+    });
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      width: '300px',
-      data: { header: 'Confirmation', message: 'Move this quiz to trash ?' }
+      width: '400px',
+      data: { header: alertHeader, message: alertMsg }
     });
 
     dialogRef.afterClosed().subscribe(result => {

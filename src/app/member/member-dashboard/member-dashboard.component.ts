@@ -1,11 +1,7 @@
-import { DomSanitizer } from '@angular/platform-browser';
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { faSearch, faThumbsUp } from '@fortawesome/free-solid-svg-icons';
 
-import * as MemberActions from '../store/member.actions';
 import * as fromApp from '../../store/app.reducer';
-import { Course } from './../../models/course.model';
 
 @Component({
   selector: 'app-member-dashboard',
@@ -14,12 +10,16 @@ import { Course } from './../../models/course.model';
 })
 export class MemberDashboardComponent implements OnInit {
 
+  errors: string[] = null;
 
   constructor(
+    private store: Store<fromApp.AppState>
   ) { }
 
   ngOnInit(): void {
-
+    this.store.select('member').subscribe(state => {
+      this.errors = state.errors
+    });
   }
 
 

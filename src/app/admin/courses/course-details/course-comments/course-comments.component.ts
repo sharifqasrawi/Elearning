@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { SignalRCommentsService } from './../../../../courses/course-view/course-comments/services/signalr-comments-service.service';
 import { MatDialog } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
@@ -51,6 +52,7 @@ export class CourseCommentsComponent implements OnInit {
     private route: ActivatedRoute,
     private store: Store<fromApp.AppState>,
     private dialog: MatDialog,
+    private tranlate: TranslateService,
     signalRCommentsService: SignalRCommentsService
   ) { }
 
@@ -78,9 +80,17 @@ export class CourseCommentsComponent implements OnInit {
 
 
   onDelete(id: number) {
+    let alertHeader = '';
+    let alertMsg = '';
+
+    this.tranlate.get(['COMMON.DELETE_CONFIRMATION', 'COURSE.DELETE_COMMENT']).subscribe(trans => {
+      alertHeader = trans['COMMON.DELETE_CONFIRMATION'];
+      alertMsg = trans['COURSE.DELETE_COMMENT'];
+    });
+
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      width: '350px',
-      data: { header: 'Delete Confirmation', message: 'Are you sure you wish to delete this comment ?' }
+      width: '400px',
+      data: { header: alertHeader, message: alertMsg }
     });
 
     dialogRef.afterClosed().subscribe(result => {

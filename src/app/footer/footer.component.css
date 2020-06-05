@@ -54,3 +54,19 @@ hr {
 a{
     color: darkgray;
 }
+
+.langBtn{
+    margin-right: 10px;
+    opacity: 0.8;
+    cursor: pointer;
+    width: 30px;
+}
+
+.langBtn:hover{
+    opacity: 1;
+}
+
+.langBtn.active{
+    opacity: 1;
+    cursor: none;
+}

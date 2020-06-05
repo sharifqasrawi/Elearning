@@ -70,6 +70,8 @@ export class CourseSessionComponent implements OnInit {
         this.errors = state.errors;
       });
 
+     
+
       if (this.isAuthenticated) {
         this.store.dispatch(new MemberActions.FetchSavedSessionsStart());
 

@@ -28,12 +28,29 @@ const routes: Routes = [
       //   component: HomeComponent
       // },
       {
+        path: 'courses',
+        children: [
+          {
+            path: 'course/:courseId/:courseSlug',
+            component: CourseViewComponent,
+            children: [
+              {
+                path: 'session/:sessionId/:sessionSlug',
+                component: CourseSessionComponent,
+              },
+              { path: 'comments/:courseId', component: CourseCommentsComponent },
+              { path: '', component: CourseInfoComponent, pathMatch: 'full' }
+            ]
+          },
+          { path: '', component: CoursesComponent, pathMatch: 'full' }
+        ]
+      },
+      {
         path: 'categories/:categoryId/:categorySlug',
         children: [
           {
             path: 'course/:courseId/:courseSlug',
             component: CourseViewComponent,
-            // resolve: [CoursesResolverService],
             children: [
               {
                 path: 'session/:sessionId/:sessionSlug',

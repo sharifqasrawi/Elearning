@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { ConfirmDialogComponent } from './../../shared/confirm-dialog/confirm-dialog.component';
 import { DoneSession } from './../../models/doneSession.model';
 import { Favorite } from './../../models/favorite.model';
@@ -74,7 +75,7 @@ export class CourseViewComponent implements OnInit {
 
   allExpandState = true;
 
-  breadcrumbLinks: { url?: string, label: string }[];
+  breadcrumbLinks: { url?: string, translate?: boolean, label: string }[];
   currentUrl: string = null;
 
   isExpanded = true;
@@ -91,6 +92,7 @@ export class CourseViewComponent implements OnInit {
     private dialog: MatDialog,
     changeDetectorRef: ChangeDetectorRef,
     media: MediaMatcher,
+    private tranlsate: TranslateService,
   ) {
 
     this.mobileQuery = media.matchMedia('(max-width: 993px)');
@@ -111,17 +113,34 @@ export class CourseViewComponent implements OnInit {
 
       this.courseTitle = this.courseSlug.split('-').join(' ');
 
-      this.breadcrumbLinks = [
-        { url: '/home', label: 'Home' },
-        {
-          url: `/categories/${this.categoryId}/${this.categorySlug}`,
-          label: `${this.categorySlug.split('-').join(' ')} `
-        },
-        {
-          url: `/categories/${this.categoryId}/${this.categorySlug}/course/${this.courseId}/${this.courseSlug}`,
-          label: this.courseTitle
-        }
-      ];
+      if (this.categorySlug) {
+        this.breadcrumbLinks = [
+          { url: '/', label: 'Home', translate: true },
+          {
+            url: `/categories/${this.categoryId}/${this.categorySlug}`,
+            label: `${this.categorySlug.split('-').join(' ')} `
+          },
+          {
+            url: `/categories/${this.categoryId}/${this.categorySlug}/course/${this.courseId}/${this.courseSlug}`,
+            label: this.courseTitle
+          }
+        ];
+      }
+      else {
+        this.breadcrumbLinks = [
+          { url: '/', label: 'Home', translate: true },
+          {
+            url: '/courses',
+            label: 'Courses',
+            translate: true
+          },
+          {
+            url: `/courses/course/${this.courseId}/${this.courseSlug}`,
+            label: this.courseTitle
+          }
+        ];
+      }
+
     });
 
     this.route.queryParams.subscribe((params: Params) => {
@@ -150,7 +169,6 @@ export class CourseViewComponent implements OnInit {
         this.like = this.course.likes.find(l => l.courseId === this.courseId && l.userId === this.userId);
         this.isUserLiked = this.like ? true : false;
 
-
         if (this.course.cls.id) {
           this.classId = this.course.cls.id;
           if (this.isAuthenticated) {
@@ -170,9 +188,11 @@ export class CourseViewComponent implements OnInit {
       }
     });
 
-    if (!this.course)
+    if (!this.course && this.categoryId) {
       this.store.dispatch(new HomeCoursesActions.FetchStart({ categoryId: this.categoryId, courseId: this.courseId }));
-
+    } else if (!this.course && !this.categoryId) {
+      this.store.dispatch(new HomeCoursesActions.FetchStart({ courseId: this.courseId }));
+    }
 
 
     if (this.isAuthenticated) {
@@ -199,14 +219,21 @@ export class CourseViewComponent implements OnInit {
         this.addingToFavorite = state.addingToFavorite;
         this.doneSessions = state.doneSessions;
         this.errors = state.errors;
+        this.donePercentageN = state.donePercentage;
 
-        if(state.loadedDoneSessions){
-          this.donePercentageN = state.donePercentage;
-          this.donePercentage = `Progress: ${state.donePercentage.toFixed(0)} %`;
-          if(state.donePercentage == 100){
+        // if (state.loadedDoneSessions) {
+        if (this.donePercentageN) {
+          this.donePercentage = `${this.donePercentageN.toFixed(0)} %`;
+          if (this.donePercentageN === 100) {
             this.donePercentage += ' Congratulations !!';
+          } else if (this.donePercentageN === 0) {
+            this.donePercentage = `0 %`;
           }
         }
+        else {
+          this.donePercentage = `0 %`;
+        }
+        // }
 
         if (state.loadedFavorites) {
           const fav = state.favorites.find(f => f.courseId === this.courseId);
@@ -242,11 +269,17 @@ export class CourseViewComponent implements OnInit {
     if (!this.loadingEnroll) {
 
       if (this.isUserEnrolled) {
+        let headerText = '';
+        let headerMsg = '';
+        this.tranlsate.get(['COURSE.DISENROLL_HEADER', 'COURSE.DISENROLL_MSG']).subscribe(trans => {
+          headerText = trans['COURSE.DISENROLL_HEADER'];
+          headerMsg = trans['COURSE.DISENROLL_MSG'];
+        });
         const dialogRef = this.dialog.open(ConfirmDialogComponent, {
           width: '450px',
           data: {
-            header: 'Are you sure you wish to disenroll from this course ?',
-            message: 'Warning: you will lose all your progress.'
+            header: headerText,
+            message: headerMsg
           }
         });
 
@@ -277,7 +310,9 @@ export class CourseViewComponent implements OnInit {
         sessionId: sessionId
       }));
 
-      this.store.dispatch(new MemberActions.MarkSessionStart(sessionId));
+      const currentSession = this.doneSessions.find(s => s.sessionId === sessionId);
+      if (!currentSession)
+        this.store.dispatch(new MemberActions.MarkSessionStart(sessionId));
     }
   }
 

@@ -1,11 +1,11 @@
+import { TranslateService } from '@ngx-translate/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { faSearch, faPlus } from '@fortawesome/free-solid-svg-icons';
+import { faSearch, faPlus, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { Store } from '@ngrx/store';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 
 import * as fromApp from '../../../store/app.reducer';
@@ -22,6 +22,8 @@ export class ListTagsComponent implements OnInit {
 
   faSearch = faSearch;
   faPlus = faPlus;
+  faEdit = faEdit;
+  faTrash = faTrash;
 
   editMode = false;
   editedTagId: number = null;
@@ -45,7 +47,7 @@ export class ListTagsComponent implements OnInit {
 
   constructor(
     private store: Store<fromApp.AppState>,
-    private snackBar: MatSnackBar,
+    private translate: TranslateService,
     private dialog: MatDialog,
   ) { }
 
@@ -102,9 +104,16 @@ export class ListTagsComponent implements OnInit {
 
 
   onDelete(id: number) {
+    let alertHeader = '';
+    let alertMsg = '';
+
+    this.translate.get(['COMMON.CONFIRM_ACTION', 'COMMON.DELETE_MESSAGE']).subscribe(trans => {
+      alertHeader = trans['COMMON.CONFIRM_ACTION'];
+      alertMsg = trans['COMMON.DELETE_MESSAGE'];
+    });
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      width: '300px',
-      data: { header: 'Confirmation', message: 'Delete this tag ?' }
+      width: '400px',
+      data: { header: alertHeader, message: alertMsg }
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -117,9 +126,7 @@ export class ListTagsComponent implements OnInit {
   onRefresh() {
     this.store.dispatch(new TagsActions.FetchStart());
     this.setTable();
-    this.snackBar.open('Refreshing...', 'OK', {
-      duration: 2000
-    });
+
   }
 
   private setTable() {

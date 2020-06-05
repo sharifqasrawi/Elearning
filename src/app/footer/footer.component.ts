@@ -1,7 +1,8 @@
+import { TranslateService } from '@ngx-translate/core';
 import { MatDialog } from '@angular/material/dialog';
 import { StarRatingComponent } from 'ng-starrating';
 import { Store } from '@ngrx/store';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 
 import * as fromApp from '../store/app.reducer';
 import * as AppSettingActions from '../AppSettings/store/app-settings.actions';
@@ -27,11 +28,23 @@ export class FooterComponent implements OnInit {
   userRating = 0.0;
   totalRatingsCount = 0;
 
+
   constructor(
     private store: Store<fromApp.AppState>,
     private dialog: MatDialog,
-    private signalRAppService: SignalRAppService
-  ) { }
+    private signalRAppService: SignalRAppService,
+    public translate: TranslateService
+  ) {
+    translate.addLangs(['en', 'fr']);
+    translate.setDefaultLang('en');
+
+    if (!localStorage.getItem('lang')) {
+      const browserLang = translate.getBrowserLang();
+      translate.use(browserLang.match(/en|fr/) ? browserLang : 'en');
+    } else {
+      translate.use(localStorage.getItem('lang'));
+    }
+  }
 
   ngOnInit(): void {
     this.store.select('login').subscribe(state => {
@@ -83,5 +96,10 @@ export class FooterComponent implements OnInit {
       width: '550px',
       disableClose: true
     });
+  }
+
+  onChangeLanguage(lang: string) {
+    this.translate.use(lang);
+    localStorage.setItem('lang', lang);
   }
 }

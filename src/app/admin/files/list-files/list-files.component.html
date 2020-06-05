@@ -1,7 +1,7 @@
 <div class="adminPageTop">
   <h1>
     <mat-icon>file_copy</mat-icon>
-    Uploaded Files
+    {{ 'ADMINISTRATION.FILE_MANAGEMENT.FILES' | translate }}
   </h1>
 
   <hr>
@@ -22,21 +22,21 @@
     <div class="col-lg-2 mb-3">
       <a mat-raised-button [routerLink]="['/admin', 'files', 'upload']" color="primary" class="btn-block mt-1">
         <fa-icon [icon]="faUpload"></fa-icon>
-        Upload File
+        {{ 'ADMINISTRATION.FILE_MANAGEMENT.UPLOAD_FILE' | translate }}
       </a>
     </div>
     <div class="col-lg-2 mb-3">
       <button mat-raised-button class="btn-block mt-1" color="accent" (click)="onRefresh()">
-        Refresh
+        {{ 'COMMON.REFRESH' | translate }}
       </button>
     </div>
     <div class="col-lg-8 mb-3">
-      <mat-form-field>
+      <mat-form-field appearance="legacy">
         <mat-label>
           <fa-icon [icon]="faSearch"></fa-icon>
-          Search
+          {{ 'COMMON.SEARCH' | translate }}
         </mat-label>
-        <input matInput (keyup)="applyFilter($event)" placeholder="By: Name, Path">
+        <input matInput (keyup)="applyFilter($event)" [placeholder]=" 'COMMON.BY_ANY_FIELD' | translate">
       </mat-form-field>
     </div>
   </div>
@@ -44,9 +44,9 @@
   <div class="row">
     <div class="col-lg-12 mb-3">
       <mat-form-field style="width: 100%;">
-        <mat-label>Directory</mat-label>
-        <mat-select [(ngModel)]="path" >
-          <mat-option  (click)="onSelectDirectory()">All</mat-option>
+        <mat-label translate>COMMON.DIRECTORY</mat-label>
+        <mat-select [(ngModel)]="path">
+          <mat-option (click)="onSelectDirectory()"> {{ 'COMMON.ALL' | translate }}</mat-option>
           <mat-option *ngFor="let p of listPaths" [value]="p.path" (click)="onSelectDirectory()">
             {{p.path}}
           </mat-option>
@@ -70,43 +70,43 @@
 
           <!-- Id Column -->
           <ng-container matColumnDef="id">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Id </th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ 'COMMON.ID' | translate }} </th>
             <td mat-cell *matCellDef="let row"> {{row.id}} </td>
           </ng-container>
 
           <!-- Image  Column -->
           <ng-container matColumnDef="downloadPath">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Image </th>
-            <td mat-cell *matCellDef="let row" >
-              <img [src]="getImage(row.downloadPath)" *ngIf="isImage(row.fileType)" alt="No Preview"
-                class="filePreview" (click)="onViewImage(row.downloadPath)">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ 'COMMON.IMAGE' | translate }} </th>
+            <td mat-cell *matCellDef="let row">
+              <img [src]="getImage(row.downloadPath)" *ngIf="isImage(row.fileType)" alt="image" class="filePreview"
+                (click)="onViewImage(row.downloadPath)">
 
-              <img src="../../../../assets/images/pdf.png" *ngIf="isPdf(row.fileType)" alt="No Preview"
-                class="filePreview" (click)="onViewPdfFile(row.downloadPath)">
+              <img src="../../../../assets/images/pdf.png" *ngIf="isPdf(row.fileType)" alt="image" class="filePreview"
+                (click)="onViewPdfFile(row.downloadPath)">
             </td>
           </ng-container>
 
           <!-- originalFileName at en Column -->
           <ng-container matColumnDef="originalFileName">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> File Name </th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ 'COMMON.FILE_NAME' | translate }} </th>
             <td mat-cell *matCellDef="let row"> {{row.originalFileName}} </td>
           </ng-container>
 
           <!-- directory  Column -->
           <ng-container matColumnDef="uploadDirectory">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Directory</th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ 'COMMON.DIRECTORY' | translate }}</th>
             <td mat-cell *matCellDef="let row"> {{row.uploadDirectory.path}} </td>
           </ng-container>
 
           <!-- fileType at en Column -->
           <ng-container matColumnDef="fileType">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Type </th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ 'COMMON.TYPE' | translate }} </th>
             <td mat-cell *matCellDef="let row"> {{row.fileType}} </td>
           </ng-container>
 
           <!-- uploadDateTime at en Column -->
           <ng-container matColumnDef="uploadDateTime">
-            <th mat-header-cell *matHeaderCellDef mat-sort-header> Upload Date </th>
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ 'COMMON.DATE_TIME' | translate }} </th>
             <td mat-cell *matCellDef="let row"> {{row.uploadDateTime | date:'medium'}} </td>
           </ng-container>
 
@@ -114,7 +114,7 @@
           <!-- Actions Column -->
           <ng-container matColumnDef="actions">
             <th mat-header-cell *matHeaderCellDef>
-              Actions
+              {{ 'COMMON.ACTIONS' | translate }}
             </th>
             <td mat-cell *matCellDef="let row" class="pl-3">
 
@@ -123,21 +123,12 @@
               </a>
               <mat-menu #menu="matMenu" [overlapTrigger]="false">
                 <a class="dropdown-item" style="cursor: pointer;" [href]="row.downloadPath" target="_blank">
-                  Download
+                  {{ 'COMMON.DOWNLOAD' | translate }}
                 </a>
                 <button type="button" class="dropdown-item" style="cursor: pointer;" (click)="onDelete(row.id);">
-                  Delete
+                  {{ 'COMMON.DELETE' | translate }}
                 </button>
-                <!-- <a class="dropdown-item btn-link"
-            style="cursor: pointer;"
-            (click)="onEditCategory(row.id, true);">
-            Edit
-          </a>
-          <button class="dropdown-item"
-            style="cursor: pointer;"
-            (click)="onTrash(row.id);">
-            Trash
-          </button> -->
+
               </mat-menu>
 
             </td>

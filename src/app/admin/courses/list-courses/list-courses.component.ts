@@ -1,12 +1,13 @@
+import { Subscription } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
 import { ConfirmDialogComponent } from './../../../shared/confirm-dialog/confirm-dialog.component';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { faSearch, faCheck, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faSearch, faCheck, faTimes, faEye, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 import { Course } from './../../../models/course.model';
 import * as fromApp from '../../../store/app.reducer';
@@ -22,6 +23,9 @@ export class ListCoursesComponent implements OnInit {
   faSearch = faSearch;
   faCheck = faCheck;
   faTimes = faTimes;
+  faEye = faEye;
+  faEdit = faEdit;
+  faTrash = faTrash;
 
   courses: Course[] = null;
   errors: string[] = null;
@@ -37,14 +41,14 @@ export class ListCoursesComponent implements OnInit {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
+
   constructor(
     private store: Store<fromApp.AppState>,
-    private snackBar: MatSnackBar,
+    private translate: TranslateService,
     private dialog: MatDialog,
   ) { }
 
   ngOnInit(): void {
-    this.store.dispatch(new CoursesActions.FetchStart());
 
     this.store.select('courses').subscribe(state => {
       this.courses = state.courses;
@@ -57,6 +61,8 @@ export class ListCoursesComponent implements OnInit {
       this.setTable();
     });
 
+    if (!this.courses)
+      this.store.dispatch(new CoursesActions.FetchStart());
   }
 
 
@@ -64,17 +70,20 @@ export class ListCoursesComponent implements OnInit {
   onRefresh() {
     this.store.dispatch(new CoursesActions.FetchStart());
     this.setTable();
-    this.snackBar.open('Refreshing...', 'OK', {
-      duration: 2000
-    });
   }
 
 
   onTrash(id: number) {
+    let alertHeader = '';
+    let alertMsg = '';
+    this.translate.get(['COMMON.CONFIRM_ACTION', 'COMMON.TRASH_MESSAGE']).subscribe(trans => {
+      alertHeader = trans['COMMON.CONFIRM_ACTION'];
+      alertMsg = trans['COMMON.TRASH_MESSAGE'];
+    });
     const dialogRef = this.dialog.open(ConfirmDialogComponent,
       {
-        width: '300px',
-        data: { header: 'Confirmation', message: 'Move this course to trash ?' }
+        width: '400px',
+        data: { header: alertHeader, message: alertMsg }
       });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -98,4 +107,6 @@ export class ListCoursesComponent implements OnInit {
       this.dataSource.paginator.firstPage();
     }
   }
+
+
 }

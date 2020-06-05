@@ -1,0 +1,43 @@
+.resultLoader {
+    opacity: 0.7;
+    animation: resultLoaderAnim 1s ease-in-out infinite;
+}
+
+@keyframes resultLoaderAnim {
+    0% {
+        opacity: 0.3;
+    }
+    50% {
+        opacity: 0.5;
+    }
+    75% {
+        opacity: 0.6;
+    }
+    100% {
+        opacity: 0.3;
+    }
+}
+
+.resultLoader h1 {
+    width: 250px;
+    background-color: rgb(175, 175, 175);
+    border-radius: 5px;
+    margin: 0 auto;
+    margin-bottom: 20px;
+}
+
+.resultLoader h3 {
+    width: 200px;
+    background-color: rgb(175, 175, 175);
+    border-radius: 5px;
+    margin: 0 auto;
+    margin-bottom: 20px;
+}
+
+.resultLoader p {
+    width: 150px;
+    background-color: rgb(175, 175, 175);
+    border-radius: 5px;
+    margin: 0 auto;
+    margin-bottom: 20px;
+}

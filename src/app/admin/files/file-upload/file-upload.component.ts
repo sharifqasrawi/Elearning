@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { HttpRequest, HttpClient, HttpEventType, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Store } from '@ngrx/store';
 import { Router, Params } from '@angular/router';
@@ -36,6 +37,7 @@ export class FileUploadComponent implements OnInit {
     private router: Router,
     private store: Store<fromApp.AppState>,
     private http: HttpClient,
+    private translate: TranslateService
   ) { }
 
   ngOnInit(): void {
@@ -174,9 +176,16 @@ export class FileUploadComponent implements OnInit {
 
   onCancel() {
     if (this.files.length > 0 || this.path !== null) {
+      let alertHeader = '';
+      let alertMsg = '';
+
+      this.translate.get(['COMMON.CONFIRM_ACTION', 'ADMINISTRATION.FILE_MANAGEMENT.EXIT_FILE_UPLOAD']).subscribe(trans => {
+        alertHeader = trans['COMMON.CONFIRM_ACTION'];
+        alertMsg = trans['ADMINISTRATION.FILE_MANAGEMENT.EXIT_FILE_UPLOAD'];
+      });
       const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-        width: '200px',
-        data: { header: 'Confirm Cancel', message: 'Exit file upload ?' }
+        width: '400px',
+        data: { header: alertHeader, message: alertMsg }
       });
 
       dialogRef.afterClosed().subscribe(result => {

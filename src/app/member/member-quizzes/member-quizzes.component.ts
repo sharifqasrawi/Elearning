@@ -3,7 +3,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
-import { faSearch, faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
+import { faSearch, faCheckCircle, faTimesCircle, faEye } from '@fortawesome/free-solid-svg-icons';
 
 import * as fromApp from '../../store/app.reducer';
 import * as MemberActions from '../store/member.actions';
@@ -21,6 +21,7 @@ export class MemberQuizzesComponent implements OnInit {
   faSearch = faSearch;
   faCheckCircle = faCheckCircle;
   faTimesCircle = faTimesCircle;
+  faEye = faEye;
 
   quizzes: UserQuiz[] = null;
   errors: string[] = null;
@@ -60,7 +61,7 @@ export class MemberQuizzesComponent implements OnInit {
   }
 
 
-  generateQuizSlug(title:string): string {
+  generateQuizSlug(title: string): string {
     return title.split(' ').join('-').toLowerCase();
   }
 

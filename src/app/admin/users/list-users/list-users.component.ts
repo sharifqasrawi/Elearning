@@ -1,5 +1,5 @@
+import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
@@ -69,7 +69,7 @@ export class ListUsersComponent implements OnInit, OnDestroy {
   constructor(
     private store: Store<fromApp.AppState>,
     private dialog: MatDialog,
-    private snackBar: MatSnackBar,
+    private translate: TranslateService,
     private router: Router
   ) { }
 
@@ -93,36 +93,9 @@ export class ListUsersComponent implements OnInit, OnDestroy {
     }
   }
 
-  // onSearch(event: KeyboardEvent) {
-  //   const value = (<HTMLInputElement>event.target).value;
-
-  //   // this.store.dispatch(new UsersActions.SearchStart(value));
-
-  //   let usersList = [...this.users];
-  //   this.store.select('users').pipe(
-  //     map(usersState => usersState.users)
-  //   ).subscribe(users => {
-  //     usersList = [...users];
-  //   })
-
-  //   const searchResults = usersList.filter(u => {
-  //     return (u.firstName.toLowerCase().includes(value.toLowerCase())
-  //       || u.lastName.toLowerCase().includes(value.toLowerCase())
-  //       || u.email.toLowerCase().includes(value.toLowerCase())
-  //       || value == '');
-
-  //   });
-
-  //   this.users = searchResults;
-  // }
 
   onRefresh() {
     this.store.dispatch(new UsersActions.FetchStart());
-
-    this.snackBar.open('List refreshed', 'Okay',
-      {
-        duration: 2000
-      });
   }
 
   onChangeStatus(userId: string, option: string) {
@@ -134,10 +107,6 @@ export class ListUsersComponent implements OnInit, OnDestroy {
     else
       message = 'Deactivating User';
 
-    this.snackBar.open(message, 'Okay',
-      {
-        duration: 2000
-      });
   }
 
   onCreate() {
@@ -145,20 +114,21 @@ export class ListUsersComponent implements OnInit, OnDestroy {
   }
 
   onDelete(userId: string) {
+    let alertHeader = '';
+    let alertMsg = '';
 
+    this.translate.get(['COMMON.CONFIRM_ACTION', 'COMMON.DELETE_MESSAGE']).subscribe(trans => {
+      alertHeader = trans['COMMON.CONFIRM_ACTION'];
+      alertMsg = trans['COMMON.DELETE_MESSAGE'];
+    });
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       width: '400px',
-      data: { header: 'Confirm delete', message: 'Are you sure you want to delete this user?' }
+      data: { header: alertHeader, message: alertMsg }
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.store.dispatch(new UsersActions.DeleteStart(userId));
-
-        this.snackBar.open('User deleted successfully', 'Okay',
-          {
-            duration: 2000
-          });
       }
     });
 

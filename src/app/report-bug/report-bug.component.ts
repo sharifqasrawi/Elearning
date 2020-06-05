@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { Store } from '@ngrx/store';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
@@ -27,11 +28,7 @@ export class ReportBugComponent implements OnInit, OnDestroy {
   form: FormGroup;
   wasFormChanged = false;
 
-  listSeverities: { level: number, name: string }[] = [
-    { level: 0, name: 'Low' },
-    { level: 1, name: 'Moderate' },
-    { level: 2, name: 'High' },
-  ];
+  listSeverities: { level: number, name: string }[];
 
   creating = false;
   created = false;
@@ -42,17 +39,27 @@ export class ReportBugComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
     private store: Store<fromApp.AppState>,
     private dialog: MatDialog,
+    private translate: TranslateService
   ) { }
 
 
 
   ngOnInit(): void {
+    this.translate.get(['REPORT_BUG.LOW', 'REPORT_BUG.MODERATE', 'REPORT_BUG.HIGH']).subscribe(trans => {
+      this.listSeverities = [
+        { level: 0, name: trans['REPORT_BUG.LOW'] },
+        { level: 1, name: trans['REPORT_BUG.MODERATE'] },
+        { level: 2, name: trans['REPORT_BUG.HIGH'] },
+      ];
+    });
+
+
     let userFullName = null;
     let userEmail = null;
     this.store.select('login').subscribe(state => {
       this.isAuthenticated = state.isAuthenticated;
-      if(state.isAuthenticated){
-        userFullName = state.user.firstName  + ' ' + state.user.lastName;
+      if (state.isAuthenticated) {
+        userFullName = state.user.firstName + ' ' + state.user.lastName;
         userEmail = state.user.email;
       }
     });

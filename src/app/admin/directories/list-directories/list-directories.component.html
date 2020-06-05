@@ -1,7 +1,7 @@
 <div class="adminPageTop">
   <h1>
     <mat-icon>dynamic_feed</mat-icon>
-    Directories
+    {{ 'ADMINISTRATION.FILE_MANAGEMENT.DIRECTORIES' | translate }}
   </h1>
 
   <hr>
@@ -11,21 +11,21 @@
     <div class="col-lg-2 mb-3">
       <button mat-raised-button class="btn-block mt-1" color="primary" [disabled]="creating"
         (click)="onEditDirectory()">
-        {{ !creating ? 'Create' : 'Creating...' }}
+        {{ !creating ? ('COMMON.CREATE' | translate ) : ('COMMON.LOADING' | translate )  }}
       </button>
     </div>
     <div class="col-lg-2 mb-3">
       <button mat-raised-button class="btn-block mt-1" color="accent" (click)="onRefresh()">
-        Refresh
+        {{ 'COMMON.REFRESH' | translate }}
       </button>
     </div>
     <div class="col-lg-8 mb-3">
       <mat-form-field appearance="legacy">
         <mat-label>
           <fa-icon [icon]="faSearch"></fa-icon>
-          Search
+          {{ 'COMMON.SEARCH' | translate }}
         </mat-label>
-        <input matInput (keyup)="applyFilter($event)" placeholder="By: Name, Path">
+        <input matInput (keyup)="applyFilter($event)" [placeholder]="'COMMON.BY_ANY_FIELD' | translate">
       </mat-form-field>
     </div>
   </div>
@@ -48,25 +48,25 @@
 
         <!-- Id Column -->
         <ng-container matColumnDef="id">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Id </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>  {{ 'COMMON.ID' | translate }} </th>
           <td mat-cell *matCellDef="let row"> {{row.id}} </td>
         </ng-container>
 
         <!-- Name Column -->
         <ng-container matColumnDef="name">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>  {{ 'COMMON.NAME' | translate }} </th>
           <td mat-cell *matCellDef="let row"> {{row.name}} </td>
         </ng-container>
 
         <!-- Path en Column -->
         <ng-container matColumnDef="path">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Path </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>  {{ 'COMMON.PATH' | translate }} </th>
           <td mat-cell *matCellDef="let row"> {{row.path}} </td>
         </ng-container>
 
         <!-- Created at en Column -->
         <ng-container matColumnDef="createdAt">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header> Created At </th>
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ 'COMMON.CREATED_AT' | translate }} </th>
           <td mat-cell *matCellDef="let row"> {{row.createdAt | date:'medium'}} </td>
         </ng-container>
 
@@ -74,7 +74,7 @@
         <!-- Actions Column -->
         <ng-container matColumnDef="actions">
           <th mat-header-cell *matHeaderCellDef>
-            Actions
+            {{ 'COMMON.ACTIONS' | translate }}
           </th>
           <td mat-cell *matCellDef="let row" class="pl-3">
 
@@ -83,10 +83,10 @@
             </a>
             <mat-menu #menu="matMenu" [overlapTrigger]="false">
               <button class="dropdown-item" style="cursor: pointer;" (click)="onFetchPhysical(row.path);">
-                Physical Directories
+                {{ 'ADMINISTRATION.FILE_MANAGEMENT.PHYS_DIRS' | translate }}
               </button>
               <button class="dropdown-item" style="cursor: pointer;" (click)="onDelete(row.id);">
-                Delete
+                {{ 'COMMON.DELETE' | translate }}
               </button>
               <!-- <a class="dropdown-item btn-link"
             style="cursor: pointer;"

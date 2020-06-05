@@ -1,6 +1,5 @@
-import { map } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -17,7 +16,7 @@ import { ErrorDialogComponent } from '../shared/error-dialog/error-dialog.compon
   templateUrl: './courses.component.html',
   styleUrls: ['./courses.component.css']
 })
-export class CoursesComponent implements OnInit {
+export class CoursesComponent implements OnInit, OnDestroy {
 
   faSearch = faSearch;
   faThumbsUp = faThumbsUp;
@@ -45,27 +44,46 @@ export class CoursesComponent implements OnInit {
   orderByOptions: string[] = ['Default', 'A-Z', 'Stars +', 'Stars -'];
   orderBy: string;
 
-  breadcrumbLinks: { url?: string, label: string }[];
+  breadcrumbLinks: { url?: string, translate?: boolean, label: string }[];
+
 
   constructor(
     private store: Store<fromApp.AppState>,
     private route: ActivatedRoute,
     private sanitizer: DomSanitizer,
-    private dialog: MatDialog
+    private dialog: MatDialog,
   ) { }
 
   ngOnInit(): void {
+
+
     this.route.params.subscribe((params: Params) => {
       this.categoryId = +params.categoryId;
 
-      this.categoryTitle = (params.categorySlug as string).split('-').join(' ');
+      if (this.categoryId) {
+        this.store.dispatch(new HomeCoursesActions.FetchStart({ categoryId: this.categoryId }));
+      } else {
+        this.store.dispatch(new HomeCoursesActions.FetchStart());
+      }
 
-      this.breadcrumbLinks = [
-        { url: '/', label: 'Home' },
-        { label: `${this.categoryTitle}` },
-      ];
+
+      if (params.categorySlug) {
+        this.categoryTitle = (params.categorySlug as string).split('-').join(' ');
+
+        this.breadcrumbLinks = [
+          { url: '/', label: 'Home', translate: true },
+          { label: `${this.categoryTitle}` },
+        ];
+      } else {
+        this.breadcrumbLinks = [
+          { url: '/', label: 'Home', translate: true },
+          { label: 'Courses', translate: true },
+        ];
+      }
+
     });
-    this.store.dispatch(new HomeCoursesActions.FetchStart({ categoryId: this.categoryId }));
+
+
 
     this.store.select('login').subscribe(state => {
       this.isAuthenticated = state.isAuthenticated;
@@ -170,5 +188,7 @@ export class CoursesComponent implements OnInit {
     return isUserEnrolled;
   }
 
+  ngOnDestroy() {
+  }
   getSanitizedImage = (imagePath: string) => this.sanitizer.bypassSecurityTrustResourceUrl(imagePath);
 }
