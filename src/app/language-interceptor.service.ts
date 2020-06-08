@@ -7,15 +7,14 @@ import { HttpInterceptor, HttpHandler, HttpRequest, HttpHeaders } from '@angular
 
 @Injectable()
 export class LanguageInterceptorService implements HttpInterceptor {
-    currentLang: string = '';
+    currentLang: string = 'fr';
 
     constructor() {
-        // this.currentLang = translate.currentLang;
-        // console.log(this.currentLang);
      }
 
     intercept(req: HttpRequest<any>, next: HttpHandler) {
-
+        this.currentLang = localStorage.getItem('lang');
+     
         const modifiedReq = req.clone({
             headers: new HttpHeaders().append('language', this.currentLang)
         });
