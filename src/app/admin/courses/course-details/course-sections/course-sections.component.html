@@ -58,14 +58,16 @@
 
                             <!-- Order Column -->
                             <ng-container matColumnDef="order">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'COMMON.ORDER' | translate}}  </th>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'COMMON.ORDER' | translate}}
+                                </th>
                                 <td mat-cell *matCellDef="let row"> {{row.order}} </td>
                             </ng-container>
 
 
                             <!-- name en Column -->
-                            <ng-container matColumnDef="name_EN">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'COMMON.TITLE' | translate}} </th>
+                            <ng-container matColumnDef="name_EN" *ngIf="currentLang === 'en'">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'COMMON.TITLE' | translate}}
+                                </th>
                                 <td mat-cell *matCellDef="let row">
                                     <a class="dropdown-item" style="cursor: pointer;"
                                         [routerLink]="['sessions', row.id]" [queryParams]="{'section': row.name_EN}">
@@ -75,34 +77,52 @@
                             </ng-container>
 
 
+                            <!-- name fr Column -->
+                            <ng-container matColumnDef="name_FR" *ngIf="currentLang === 'fr'">
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'COMMON.TITLE' | translate}}
+                                </th>
+                                <td mat-cell *matCellDef="let row">
+                                    <a class="dropdown-item" style="cursor: pointer;"
+                                        [routerLink]="['sessions', row.id]" [queryParams]="{'section': row.name_FR}">
+                                        {{row.name_FR}}
+                                    </a>
+                                </td>
+                            </ng-container>
+
+
+
                             <!-- Created at Column -->
                             <ng-container matColumnDef="createdAt">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'COMMON.CREATED_AT' | translate}} </th>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    {{'COMMON.CREATED_AT' | translate}} </th>
                                 <td mat-cell *matCellDef="let row"> {{row.createdAt | date:'medium'}} </td>
                             </ng-container>
 
                             <!-- Created by Column -->
                             <ng-container matColumnDef="createdBy">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'COMMON.CREATED_BY' | translate}}  </th>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    {{'COMMON.CREATED_BY' | translate}} </th>
                                 <td mat-cell *matCellDef="let row"> {{row.createdBy}} </td>
                             </ng-container>
 
                             <!-- updated at Column -->
                             <ng-container matColumnDef="updatedAt">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'COMMON.UPDATED_AT' | translate}}  </th>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    {{'COMMON.UPDATED_AT' | translate}} </th>
                                 <td mat-cell *matCellDef="let row"> {{row.updatedAt | date:'medium'}} </td>
                             </ng-container>
 
                             <!-- updated by Column -->
                             <ng-container matColumnDef="updatedBy">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> {{'COMMON.UPDATED_BY' | translate}}  </th>
+                                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                                    {{'COMMON.UPDATED_BY' | translate}} </th>
                                 <td mat-cell *matCellDef="let row"> {{row.updatedBy}} </td>
                             </ng-container>
 
                             <!-- Actions Column -->
                             <ng-container matColumnDef="actions">
                                 <th mat-header-cell *matHeaderCellDef>
-                                    {{'COMMON.ACTIONS' | translate}} 
+                                    {{'COMMON.ACTIONS' | translate}}
                                 </th>
                                 <td mat-cell *matCellDef="let row" class="pl-3">
 
@@ -113,15 +133,15 @@
                                         <a class="dropdown-item" style="cursor: pointer;"
                                             [routerLink]="['sessions', row.id]"
                                             [queryParams]="{'section': row.name_EN}">
-                                            {{'COURSE.SESSIONS' | translate}} 
+                                            {{'COURSE.SESSIONS' | translate}}
                                         </a>
                                         <button class="dropdown-item" style="cursor: pointer;"
-                                            (click)="onEdit(row.id, row.name_EN, row.order);">
-                                            {{'COMMON.EDIT' | translate}} 
+                                            (click)="onEdit(row.id, row.name_EN,row.name_FR, row.order);">
+                                            {{'COMMON.EDIT' | translate}}
                                         </button>
                                         <button class="dropdown-item" style="cursor: pointer;"
                                             (click)="onDelete(row.id);">
-                                            {{'COMMON.DELETE' | translate}} 
+                                            {{'COMMON.DELETE' | translate}}
                                         </button>
                                     </mat-menu>
 

@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Actions, Effect, ofType } from '@ngrx/effects';
@@ -14,6 +15,10 @@ import { environment } from './../../../../environments/environment';
 @Injectable()
 export class FilesEffects {
     token = '';
+    errorAccessDenied: string = '';
+    error404: string = '';
+    errorOccured: string = '';
+
 
     @Effect()
     fetchFiles = this.actions$.pipe(
@@ -29,16 +34,17 @@ export class FilesEffects {
                     }),
                     catchError(errorRes => {
 
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new FilesActions.FetchFail(['Access Denied']));
+                                return of(new FilesActions.FetchFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new FilesActions.FetchFail(['Error 404. Not Found']));
+                                return of(new FilesActions.FetchFail([this.error404]));
                             case 400:
                                 return of(new FilesActions.FetchFail(errorRes.error.errors));
                             default:
-                                return of(new FilesActions.FetchFail(['Oops! An error occured']));
+                                return of(new FilesActions.FetchFail([this.errorOccured]));
                         }
                     })
                 )
@@ -49,7 +55,7 @@ export class FilesEffects {
     deleteFile = this.actions$.pipe(
         ofType(FilesActions.DELETE_START),
         switchMap((fileData: FilesActions.DeleteStart) => {
-            
+
             return this.http.delete<{ deletedFileId: number }>(environment.API_BASE_URL + 'files/delete',
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
@@ -60,16 +66,17 @@ export class FilesEffects {
                         return new FilesActions.DeleteSuccess(resData.deletedFileId);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new FilesActions.DeleteFail(['Access Denied']));
+                                return of(new FilesActions.DeleteFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new FilesActions.DeleteFail(['Error 404. Not Found']));
+                                return of(new FilesActions.DeleteFail([this.error404]));
                             case 400:
                                 return of(new FilesActions.DeleteFail(errorRes.error.errors));
                             default:
-                                return of(new FilesActions.DeleteFail(['Oops! An error occured']));
+                                return of(new FilesActions.DeleteFail([this.errorOccured]));
                         }
                     })
                 )
@@ -80,7 +87,8 @@ export class FilesEffects {
     constructor(
         private actions$: Actions,
         private http: HttpClient,
-        private store: Store<fromApp.AppState>
+        private store: Store<fromApp.AppState>,
+        private translate: TranslateService
     ) {
         this.store.select('login')
             .pipe(
@@ -90,5 +98,14 @@ export class FilesEffects {
                 if (user)
                     this.token = user.token;
             });
+    }
+
+
+    private getErrorsTranslations() {
+        this.translate.get(['ERRORS.ACCESS_DENIED', 'ERRORS.ERROR404', 'ERRORS.OOPS']).subscribe(trans => {
+            this.errorAccessDenied = trans['ERRORS.ACCESS_DENIED'];
+            this.error404 = trans['ERRORS.ERROR404'];
+            this.errorOccured = trans['ERRORS.OOPS'];
+        });
     }
 }

@@ -5,7 +5,9 @@
             <div class="col-lg-10">
                 <h1>
                     <fa-icon [icon]="faEdit"></fa-icon>
-                    Quiz: {{ quiz.title_EN }}
+                    Quiz:
+                    <span *ngIf="currentLang === 'en'">{{ quiz.title_EN }}</span>
+                    <span *ngIf="currentLang === 'fr'">{{ quiz.title_FR }}</span>
                 </h1>
             </div>
             <div class="col-lg-2">
@@ -43,7 +45,8 @@
             <div class="col-lg-4 mb-3">
                 <div class="desc mat-elevation-z4">
                     <strong>{{ 'COURSE.DESCRIPTION' | translate }}:</strong>
-                    <div [innerHTML]="getSanitizedHtml(quiz.description_EN)"></div>
+                    <div [innerHTML]="getSanitizedHtml(quiz.description_EN)" *ngIf="currentLang === 'en'"></div>
+                    <div [innerHTML]="getSanitizedHtml(quiz.description_FR)" *ngIf="currentLang === 'fr'"></div>
                 </div>
             </div>
             <div class="col-lg-4 mb-3">

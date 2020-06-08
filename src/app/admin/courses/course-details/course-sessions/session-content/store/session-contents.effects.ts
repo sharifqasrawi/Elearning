@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Actions, Effect, ofType } from '@ngrx/effects';
@@ -18,6 +19,10 @@ export class SessionContentsEffects {
     userName = '';
     userId = '';
 
+    errorAccessDenied: string = '';
+    error404: string = '';
+    errorOccured: string = '';
+
     @Effect()
     fetchSessionContents = this.actions$.pipe(
         ofType(SessionContentsActions.FETCH_START),
@@ -32,16 +37,17 @@ export class SessionContentsEffects {
                         return new SessionContentsActions.FetchSuccess(resData.contents);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new SessionContentsActions.FetchFail(['Access Denied']));
+                                return of(new SessionContentsActions.FetchFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new SessionContentsActions.FetchFail(['Error 404. Not Found']));
+                                return of(new SessionContentsActions.FetchFail([this.error404]));
                             case 400:
                                 return of(new SessionContentsActions.FetchFail(errorRes.error.errors));
                             default:
-                                return of(new SessionContentsActions.FetchFail(['Oops! An error occured']));
+                                return of(new SessionContentsActions.FetchFail([this.errorOccured]));
                         }
                     })
                 )
@@ -58,6 +64,7 @@ export class SessionContentsEffects {
                     order: sessionData.payload.order,
                     type: sessionData.payload.type,
                     content: sessionData.payload.content,
+                    content_FR: sessionData.payload.content_FR,
                     note: sessionData.payload.note
                 },
                 {
@@ -68,16 +75,17 @@ export class SessionContentsEffects {
                         return new SessionContentsActions.CreateSuccess(resData.createdContent);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new SessionContentsActions.CreateFail(['Access Denied']));
+                                return of(new SessionContentsActions.CreateFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new SessionContentsActions.CreateFail(['Error 404. Not Found']));
+                                return of(new SessionContentsActions.CreateFail([this.error404]));
                             case 400:
                                 return of(new SessionContentsActions.CreateFail(errorRes.error.errors));
                             default:
-                                return of(new SessionContentsActions.CreateFail(['Oops! An error occured']));
+                                return of(new SessionContentsActions.CreateFail([this.errorOccured]));
                         }
                     })
                 )
@@ -95,6 +103,7 @@ export class SessionContentsEffects {
                     order: sessionData.payload.order,
                     type: sessionData.payload.type,
                     content: sessionData.payload.content,
+                    content_FR: sessionData.payload.content_FR,
                     note: sessionData.payload.note
                 },
                 {
@@ -108,16 +117,17 @@ export class SessionContentsEffects {
                         });
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new SessionContentsActions.UpdateFail(['Access Denied']));
+                                return of(new SessionContentsActions.UpdateFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new SessionContentsActions.UpdateFail(['Error 404. Not Found']));
+                                return of(new SessionContentsActions.UpdateFail([this.error404]));
                             case 400:
                                 return of(new SessionContentsActions.UpdateFail(errorRes.error.errors));
                             default:
-                                return of(new SessionContentsActions.UpdateFail(['Oops! An error occured']));
+                                return of(new SessionContentsActions.UpdateFail([this.errorOccured]));
                         }
                     })
                 )
@@ -138,16 +148,17 @@ export class SessionContentsEffects {
                         return new SessionContentsActions.DeleteSuccess(resData.deletedSessionContentId);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new SessionContentsActions.DeleteFail(['Access Denied']));
+                                return of(new SessionContentsActions.DeleteFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new SessionContentsActions.DeleteFail(['Error 404. Not Found']));
+                                return of(new SessionContentsActions.DeleteFail([this.error404]));
                             case 400:
                                 return of(new SessionContentsActions.DeleteFail(errorRes.error.errors));
                             default:
-                                return of(new SessionContentsActions.DeleteFail(['Oops! An error occured']));
+                                return of(new SessionContentsActions.DeleteFail([this.errorOccured]));
                         }
                     })
                 )
@@ -159,7 +170,8 @@ export class SessionContentsEffects {
     constructor(
         private actions$: Actions,
         private http: HttpClient,
-        private store: Store<fromApp.AppState>
+        private store: Store<fromApp.AppState>,
+        private translate: TranslateService
     ) {
 
         this.store.select('login')
@@ -173,5 +185,13 @@ export class SessionContentsEffects {
                     this.userId = user.id;
                 }
             });
+    }
+
+    private getErrorsTranslations() {
+        this.translate.get(['ERRORS.ACCESS_DENIED', 'ERRORS.ERROR404', 'ERRORS.OOPS']).subscribe(trans => {
+            this.errorAccessDenied = trans['ERRORS.ACCESS_DENIED'];
+            this.error404 = trans['ERRORS.ERROR404'];
+            this.errorOccured = trans['ERRORS.OOPS'];
+        });
     }
 }

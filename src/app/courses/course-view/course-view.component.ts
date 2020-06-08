@@ -84,6 +84,8 @@ export class CourseViewComponent implements OnInit {
   navOpened = true;
   @ViewChild('sidenav') sidenav: MatSidenav;
 
+  currentLang: string = null;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -92,7 +94,7 @@ export class CourseViewComponent implements OnInit {
     private dialog: MatDialog,
     changeDetectorRef: ChangeDetectorRef,
     media: MediaMatcher,
-    private tranlsate: TranslateService,
+    private translate: TranslateService,
   ) {
 
     this.mobileQuery = media.matchMedia('(max-width: 993px)');
@@ -103,6 +105,9 @@ export class CourseViewComponent implements OnInit {
   private _mobileQueryListener: () => void;
 
   ngOnInit(): void {
+    this.currentLang = this.translate.currentLang;
+    this.translate.onLangChange.subscribe(() => this.currentLang = this.translate.currentLang);
+
     this.currentUrl = this.router.url;
 
     this.route.params.subscribe((params: Params) => {
@@ -271,7 +276,7 @@ export class CourseViewComponent implements OnInit {
       if (this.isUserEnrolled) {
         let headerText = '';
         let headerMsg = '';
-        this.tranlsate.get(['COURSE.DISENROLL_HEADER', 'COURSE.DISENROLL_MSG']).subscribe(trans => {
+        this.translate.get(['COURSE.DISENROLL_HEADER', 'COURSE.DISENROLL_MSG']).subscribe(trans => {
           headerText = trans['COURSE.DISENROLL_HEADER'];
           headerMsg = trans['COURSE.DISENROLL_MSG'];
         });

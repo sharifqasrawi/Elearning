@@ -1,7 +1,10 @@
 <div class="question mb-5" *ngIf="question">
     <h2>
-        <strong *ngIf="question.text_EN">
+        <strong *ngIf="currentLang === 'en' && question.text_EN">
             <span [innerHTML]="getSanitizedHtml(question.text_EN)"></span>
+        </strong>
+        <strong *ngIf="currentLang === 'fr' && question.text_FR">
+            <span [innerHTML]="getSanitizedHtml(question.text_FR)"></span>
         </strong>
     </h2>
     <div *ngIf="question.imagePath">
@@ -33,8 +36,9 @@
         <ul>
             <li *ngFor="let answer of answers">
                 <dl>
-                    <dt [class.text-success]="answer.isCorrect"> 
-                        <div [innerHTML]="getSanitizedHtml(answer.text_EN)"></div>
+                    <dt [class.text-success]="answer.isCorrect" > 
+                        <div [innerHTML]="getSanitizedHtml(answer.text_EN)" *ngIf="currentLang === 'en'"></div>
+                        <div [innerHTML]="getSanitizedHtml(answer.text_FR)" *ngIf="currentLang === 'fr'"></div>
                     </dt>
                     <dd class="text-muted small" >
                         <div style="display: flex; justify-content: space-between;">

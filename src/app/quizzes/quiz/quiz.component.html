@@ -1,9 +1,10 @@
 <div class="container content0">
     <app-breadcrumb [links]="breadcrumbLinks"></app-breadcrumb>
 
-    <h1>
-        <fa-icon [icon]="faQuestionCircle"></fa-icon>
-        {{ quizTitle }}
+    <h1 *ngIf="!loading">
+        <fa-icon [icon]="faQuestionCircle"></fa-icon>&nbsp;
+        <span *ngIf="currentLang === 'en'">{{ quiz.title_EN }}</span>
+        <span *ngIf="currentLang === 'fr'">{{ quiz.title_FR }}</span>
     </h1>
     <hr>
 
@@ -13,7 +14,8 @@
         </div>
         <div class="col-lg-6">
             <h3><strong translate>COURSE.DESCRIPTION</strong></h3>
-            <div [innerHTML]="getSanitizedHtml(quiz.description_EN)"></div>
+            <div *ngIf="currentLang === 'en'" [innerHTML]="getSanitizedHtml(quiz.description_EN)"></div>
+            <div *ngIf="currentLang === 'fr'" [innerHTML]="getSanitizedHtml(quiz.description_FR)"></div>
 
             <h3><strong translate>COURSE.LANGUAGES</strong></h3>
             <ul>

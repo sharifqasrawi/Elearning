@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { map, max } from 'rxjs/operators';
 import { Location } from '@angular/common';
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
@@ -42,22 +43,41 @@ export class CourseSessionsComponent implements OnInit {
   deleting = false;
   errors: string[] = null;
 
-  displayedColumns: string[] = ['id', 'order', 'title_EN', 'duration', 'createdAt', 'createdBy', 'updatedAt', 'updatedBy', 'actions'];
+  displayedColumns: string[];
   dataSource: MatTableDataSource<Session>;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
+
+  currentLang: string = null;
 
   constructor(
     private store: Store<fromApp.AppState>,
     private dialog: MatDialog,
     private toastr: ToastrService,
     private route: ActivatedRoute,
-    private location: Location
+    private location: Location,
+    private translate: TranslateService
   ) {
   }
 
   ngOnInit() {
+    this.currentLang = this.translate.currentLang;
+    if (this.currentLang === 'en') {
+      this.displayedColumns = ['id', 'order', 'title_EN', 'duration', 'createdAt', 'createdBy', 'updatedAt', 'updatedBy', 'actions'];
+    } else if (this.currentLang === 'fr') {
+      this.displayedColumns = ['id', 'order', 'title_FR', 'duration', 'createdAt', 'createdBy', 'updatedAt', 'updatedBy', 'actions'];
+    }
+
+    this.translate.onLangChange.subscribe(() => {
+      this.currentLang = this.translate.currentLang;
+      if (this.currentLang === 'en') {
+        this.displayedColumns = ['id', 'order', 'title_EN', 'duration', 'createdAt', 'createdBy', 'updatedAt', 'updatedBy', 'actions'];
+      } else if (this.currentLang === 'fr') {
+        this.displayedColumns = ['id', 'order', 'title_FR', 'duration', 'createdAt', 'createdBy', 'updatedAt', 'updatedBy', 'actions'];
+      }
+    });
+
 
     this.route.params.subscribe((params: Params) => {
       this.sectionId = +params.sectionId;
@@ -75,7 +95,7 @@ export class CourseSessionsComponent implements OnInit {
       this.loading = state.loading;
       this.deleting = state.deleting;
       this.updating = state.updating;
-      this.errors= state.errors;
+      this.errors = state.errors;
 
       if (state.created) {
         this.toastr.success('Session created successfully', 'Create');
@@ -120,7 +140,7 @@ export class CourseSessionsComponent implements OnInit {
     });
   }
 
-  onEdit(sessionId: number, title_EN: string, order: number, duration: number) {
+  onEdit(sessionId: number, title_EN: string, title_FR: string, order: number, duration: number) {
     const dialogRef = this.dialog.open(NewSessionComponent,
       {
         width: '650px',
@@ -132,6 +152,7 @@ export class CourseSessionsComponent implements OnInit {
           courseId: this.courseId,
           order: order,
           title_EN: title_EN,
+          title_FR: title_FR,
           duration: duration
         }
       });
@@ -142,10 +163,16 @@ export class CourseSessionsComponent implements OnInit {
   }
 
   onDelete(id: number) {
+    let alertHeader = '';
+    let alertMsg = '';
+    this.translate.get(['COMMON.CONFIRM_ACTION', 'COMMON.DELETE_MESSAGE']).subscribe(trans => {
+      alertHeader = trans['COMMON.CONFIRM_ACTION'];
+      alertMsg = trans['COMMON.DELETE_MESSAGE'];
+    });
     const dialogRef = this.dialog.open(ConfirmDialogComponent,
       {
-        width: '250px',
-        data: { header: 'Confirmation', message: 'Delete this session ?' }
+        width: '400px',
+        data: { header: alertHeader, message: alertMsg }
       });
 
     dialogRef.afterClosed().subscribe(result => {

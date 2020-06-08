@@ -35,20 +35,37 @@ export class ListCoursesComponent implements OnInit {
 
   count = 0;
 
-  displayedColumns: string[] = ['id', 'title_EN', 'category', 'level', 'duration', 'isPublished', 'createdBy', 'createdAt', 'actions'];
+  displayedColumns: string[];
   dataSource: MatTableDataSource<Course>;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
+  currentLang: string = null;
 
   constructor(
     private store: Store<fromApp.AppState>,
     private translate: TranslateService,
-    private dialog: MatDialog,
+    private dialog: MatDialog
   ) { }
 
   ngOnInit(): void {
+    this.currentLang = this.translate.currentLang;
+    if (this.currentLang === 'en') {
+      this.displayedColumns = ['id', 'title_EN', 'category', 'level', 'duration', 'isPublished', 'createdBy', 'createdAt', 'actions'];
+    } else if (this.currentLang === 'fr') {
+      this.displayedColumns = ['id', 'title_FR', 'category', 'level', 'duration', 'isPublished', 'createdBy', 'createdAt', 'actions'];
+    }
+
+    this.translate.onLangChange.subscribe(() => {
+      this.currentLang = this.translate.currentLang;
+      if (this.currentLang === 'en') {
+        this.displayedColumns = ['id', 'title_EN', 'category', 'level', 'duration', 'isPublished', 'createdBy', 'createdAt', 'actions'];
+      } else if (this.currentLang === 'fr') {
+        this.displayedColumns = ['id', 'title_FR', 'category', 'level', 'duration', 'isPublished', 'createdBy', 'createdAt', 'actions'];
+      }
+    });
+
 
     this.store.select('courses').subscribe(state => {
       this.courses = state.courses;

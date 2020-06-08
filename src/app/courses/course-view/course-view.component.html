@@ -14,8 +14,11 @@
             </div>
             <div class="row">
                 <div class="col-lg-10">
-                    <h1>
+                    <h1 *ngIf="currentLang === 'en'">
                         {{ course.title_EN }}
+                    </h1>
+                    <h1 *ngIf="currentLang === 'fr'">
+                        {{ course.title_FR }}
                     </h1>
                 </div>
 
@@ -169,7 +172,10 @@
                         *ngFor="let section of course.sections">
                         <mat-expansion-panel-header>
                             <mat-panel-title>
-                                <strong> {{ section.order }}- {{ section.name_EN }}</strong>
+                                <strong *ngIf="currentLang === 'en'"> {{ section.order }}-
+                                    {{ section.name_EN }}</strong>
+                                <strong *ngIf="currentLang === 'fr'"> {{ section.order }}-
+                                    {{ section.name_FR }}</strong>
                             </mat-panel-title>
                             <mat-panel-description>
                                 <span class="small">{{ section.sessions.length }}
@@ -183,9 +189,14 @@
                                 <mat-checkbox class="mr-1" [checked]="onCheckIsDoneSession(session.id)" color="primary"
                                     (change)="onMarkDoneSession($event, session.id)" *ngIf="isUserEnrolled">
                                 </mat-checkbox>
-                                <a [routerLink]="['session', session.id, session.slug_EN]"
+                                <a *ngIf="currentLang === 'en'" [routerLink]="['session', session.id, session.slug_EN]"
                                     (click)="onSelectSession(session.id)">
                                     {{ session.order }}- {{ session.title_EN }}
+                                    <span class="small text-muted">({{session.duration}} mins.)</span>
+                                </a>
+                                <a *ngIf="currentLang === 'fr'" [routerLink]="['session', session.id, session.slug_FR]"
+                                    (click)="onSelectSession(session.id)">
+                                    {{ session.order }}- {{ session.title_FR }}
                                     <span class="small text-muted">({{session.duration}} mins.)</span>
                                 </a>
                             </li>

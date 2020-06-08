@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { UserQuizAnswer } from './../../models/userQuizAnswer.model';
 import { UserQuiz } from './../../models/userQuiz.model';
 import { Question } from './../../models/question.model';
@@ -18,6 +19,10 @@ import { Quiz } from './../../models/quiz.model';
 export class HomeQuizzesEffects {
     token: string = null;
     userId: string = null;
+  
+    errorAccessDenied: string = '';
+    error404: string = '';
+    errorOccured: string = '';
 
     @Effect()
     fetchQuizzes = this.actions$.pipe(
@@ -29,17 +34,18 @@ export class HomeQuizzesEffects {
                         return new HomeQuizzesActions.FetchQuizzesSuccess(resData.quizzes);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new HomeQuizzesActions.FetchQuizzesFail(['Access Denied']));
+                                return of(new HomeQuizzesActions.FetchQuizzesFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new HomeQuizzesActions.FetchQuizzesFail(['Error 404. Not Found']));
+                                return of(new HomeQuizzesActions.FetchQuizzesFail([this.error404]));
                             case 400:
                                 return of(new HomeQuizzesActions.FetchQuizzesFail(errorRes.error.errors));
 
                             default:
-                                return of(new HomeQuizzesActions.FetchQuizzesFail(['Error Fetching Data']));
+                                return of(new HomeQuizzesActions.FetchQuizzesFail([this.errorOccured]));
                         }
                     })
                 )
@@ -59,17 +65,18 @@ export class HomeQuizzesEffects {
                         return new HomeQuizzesActions.FetchQuestionsSuccess(resData.questions);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new HomeQuizzesActions.FetchQuestionsFail(['Access Denied']));
+                                return of(new HomeQuizzesActions.FetchQuestionsFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new HomeQuizzesActions.FetchQuestionsFail(['Error 404. Not Found']));
+                                return of(new HomeQuizzesActions.FetchQuestionsFail([this.error404]));
                             case 400:
                                 return of(new HomeQuizzesActions.FetchQuestionsFail(errorRes.error.errors));
 
                             default:
-                                return of(new HomeQuizzesActions.FetchQuestionsFail(['Error Fetching Data']));
+                                return of(new HomeQuizzesActions.FetchQuestionsFail([this.errorOccured]));
                         }
                     })
                 )
@@ -93,17 +100,18 @@ export class HomeQuizzesEffects {
                         return new HomeQuizzesActions.StartQuizSuccess(resData.startedQuiz);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new HomeQuizzesActions.StartQuizFail(['Access Denied']));
+                                return of(new HomeQuizzesActions.StartQuizFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new HomeQuizzesActions.StartQuizFail(['Error 404. Not Found']));
+                                return of(new HomeQuizzesActions.StartQuizFail([this.error404]));
                             case 400:
                                 return of(new HomeQuizzesActions.StartQuizFail(errorRes.error.errors));
 
                             default:
-                                return of(new HomeQuizzesActions.StartQuizFail(['Error Fetching Data']));
+                                return of(new HomeQuizzesActions.StartQuizFail([this.errorOccured]));
                         }
                     })
                 )
@@ -128,17 +136,18 @@ export class HomeQuizzesEffects {
                         return new HomeQuizzesActions.ChooseAnswerSuccess(resData.createdUserQuizAnswer);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new HomeQuizzesActions.ChooseAnswerFail(['Access Denied']));
+                                return of(new HomeQuizzesActions.ChooseAnswerFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new HomeQuizzesActions.ChooseAnswerFail(['Error 404. Not Found']));
+                                return of(new HomeQuizzesActions.ChooseAnswerFail([this.error404]));
                             case 400:
                                 return of(new HomeQuizzesActions.ChooseAnswerFail(errorRes.error.errors));
 
                             default:
-                                return of(new HomeQuizzesActions.ChooseAnswerFail(['Error Fetching Data']));
+                                return of(new HomeQuizzesActions.ChooseAnswerFail([this.errorOccured]));
                         }
                     })
                 )
@@ -161,17 +170,18 @@ export class HomeQuizzesEffects {
                         return new HomeQuizzesActions.FetchUserQuizSuccess(resData);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new HomeQuizzesActions.FetchUserQuizFail(['Access Denied']));
+                                return of(new HomeQuizzesActions.FetchUserQuizFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new HomeQuizzesActions.FetchUserQuizFail(['Error 404. Not Found']));
+                                return of(new HomeQuizzesActions.FetchUserQuizFail([this.error404]));
                             case 400:
                                 return of(new HomeQuizzesActions.FetchUserQuizFail(errorRes.error.errors));
 
                             default:
-                                return of(new HomeQuizzesActions.FetchUserQuizFail(['Error Fetching Data']));
+                                return of(new HomeQuizzesActions.FetchUserQuizFail([this.errorOccured]));
                         }
                     })
                 )
@@ -195,17 +205,18 @@ export class HomeQuizzesEffects {
                         return new HomeQuizzesActions.SubmitQuizSuccess(resData);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new HomeQuizzesActions.SubmitQuizFail(['Access Denied']));
+                                return of(new HomeQuizzesActions.SubmitQuizFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new HomeQuizzesActions.SubmitQuizFail(['Error 404. Not Found']));
+                                return of(new HomeQuizzesActions.SubmitQuizFail([this.error404]));
                             case 400:
                                 return of(new HomeQuizzesActions.SubmitQuizFail(errorRes.error.errors));
 
                             default:
-                                return of(new HomeQuizzesActions.SubmitQuizFail(['Error Fetching Data']));
+                                return of(new HomeQuizzesActions.SubmitQuizFail([this.errorOccured]));
                         }
                     })
                 )
@@ -215,7 +226,8 @@ export class HomeQuizzesEffects {
     constructor(
         private actions$: Actions,
         private http: HttpClient,
-        private store: Store<fromApp.AppState>
+        private store: Store<fromApp.AppState>,
+        private translate:TranslateService
     ) {
         this.store.select('login')
             .pipe(
@@ -228,5 +240,11 @@ export class HomeQuizzesEffects {
                 }
             });
     }
-    
+    private getErrorsTranslations() {
+        this.translate.get(['ERRORS.ACCESS_DENIED', 'ERRORS.ERROR404', 'ERRORS.OOPS']).subscribe(trans => {
+            this.errorAccessDenied = trans['ERRORS.ACCESS_DENIED'];
+            this.error404 = trans['ERRORS.ERROR404'];
+            this.errorOccured = trans['ERRORS.OOPS'];
+        });
+    }
 }

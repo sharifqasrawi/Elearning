@@ -10,10 +10,15 @@ import { Tag } from './../../../models/tag.model';
 import * as fromApp from '../../../store/app.reducer';
 import * as TagsActions from '../store/tags.actions';
 import { environment } from './../../../../environments/environment';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable()
 export class TagsEffects {
     token = '';
+
+    errorAccessDenied: string = '';
+    error404: string = '';
+    errorOccured: string = '';
 
     @Effect()
     fetchTags = this.actions$.pipe(
@@ -28,16 +33,17 @@ export class TagsEffects {
                     return new TagsActions.FetchSuccess(resData.tags);
                 }),
                 catchError(errorRes => {
+                    this.getErrorsTranslations();
                     switch (errorRes.status) {
                         case 403:
                         case 401:
-                            return of(new TagsActions.FetchFail(['Access Denied']));
+                            return of(new TagsActions.FetchFail([this.errorAccessDenied]));
                         case 404:
-                            return of(new TagsActions.FetchFail(['Error 404. Not Found']));
+                            return of(new TagsActions.FetchFail([this.error404]));
                         case 400:
                             return of(new TagsActions.FetchFail(errorRes.error.errors));
                         default:
-                            return of(new TagsActions.FetchFail(['Oops! An error occured']));
+                            return of(new TagsActions.FetchFail([this.errorOccured]));
                     }
                 })
             )
@@ -60,16 +66,17 @@ export class TagsEffects {
                     return new TagsActions.CreateSuccess(resData.createdTag);
                 }),
                 catchError(errorRes => {
+                    this.getErrorsTranslations();
                     switch (errorRes.status) {
                         case 403:
                         case 401:
-                            return of(new TagsActions.CreateFail(['Access Denied']));
+                            return of(new TagsActions.CreateFail([this.errorAccessDenied]));
                         case 404:
-                            return of(new TagsActions.CreateFail(['Error 404. Not Found']));
+                            return of(new TagsActions.CreateFail([this.error404]));
                         case 400:
                             return of(new TagsActions.CreateFail(errorRes.error.errors));
                         default:
-                            return of(new TagsActions.CreateFail(['Oops! An error occured']));
+                            return of(new TagsActions.CreateFail([this.errorOccured]));
                     }
                 })
             )
@@ -93,16 +100,17 @@ export class TagsEffects {
                     return new TagsActions.UpdateSuccess(resData.updatedTag);
                 }),
                 catchError(errorRes => {
+                    this.getErrorsTranslations();
                     switch (errorRes.status) {
                         case 403:
                         case 401:
-                            return of(new TagsActions.UpdateFail(['Access Denied']));
+                            return of(new TagsActions.UpdateFail([this.errorAccessDenied]));
                         case 404:
-                            return of(new TagsActions.UpdateFail(['Error 404. Not Found']));
+                            return of(new TagsActions.UpdateFail([this.error404]));
                         case 400:
                             return of(new TagsActions.UpdateFail(errorRes.error.errors));
                         default:
-                            return of(new TagsActions.UpdateFail(['Oops! An error occured']));
+                            return of(new TagsActions.UpdateFail([this.errorOccured]));
                     }
                 })
             )
@@ -124,16 +132,17 @@ export class TagsEffects {
                     return new TagsActions.DeleteSuccess(resData.deletedTagId);
                 }),
                 catchError(errorRes => {
+                    this.getErrorsTranslations();
                     switch (errorRes.status) {
                         case 403:
                         case 401:
-                            return of(new TagsActions.DeleteFail(['Access Denied']));
+                            return of(new TagsActions.DeleteFail([this.errorAccessDenied]));
                         case 404:
-                            return of(new TagsActions.DeleteFail(['Error 404. Not Found']));
+                            return of(new TagsActions.DeleteFail([this.error404]));
                         case 400:
                             return of(new TagsActions.DeleteFail(errorRes.error.errors));
                         default:
-                            return of(new TagsActions.DeleteFail(['Oops! An error occured']));
+                            return of(new TagsActions.DeleteFail([this.errorOccured]));
                     }
                 })
             )
@@ -145,7 +154,8 @@ export class TagsEffects {
     constructor(
         private actions$: Actions,
         private http: HttpClient,
-        private store: Store<fromApp.AppState>
+        private store: Store<fromApp.AppState>,
+        private translate: TranslateService
     ) {
 
         this.store.select('login')
@@ -156,5 +166,13 @@ export class TagsEffects {
                 if (user)
                     this.token = user.token;
             });
+    }
+
+    private getErrorsTranslations() {
+        this.translate.get(['ERRORS.ACCESS_DENIED', 'ERRORS.ERROR404', 'ERRORS.OOPS']).subscribe(trans => {
+            this.errorAccessDenied = trans['ERRORS.ACCESS_DENIED'];
+            this.error404 = trans['ERRORS.ERROR404'];
+            this.errorOccured = trans['ERRORS.OOPS'];
+        });
     }
 }

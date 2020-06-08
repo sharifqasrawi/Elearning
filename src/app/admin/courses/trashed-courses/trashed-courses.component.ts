@@ -34,12 +34,13 @@ export class TrashedCoursesComponent implements OnInit {
 
   count = 0;
 
-  displayedColumns: string[] = ['id', 'title_EN', 'category', 'level', 'duration', 'createdBy', 'deletedAt', 'actions'];
+  displayedColumns: string[];
   dataSource: MatTableDataSource<Course>;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
+  currentLang: string = null;
 
   constructor(
     private store: Store<fromApp.AppState>,
@@ -48,7 +49,21 @@ export class TrashedCoursesComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.currentLang = this.translate.currentLang;
+    if (this.currentLang === 'en') {
+      this.displayedColumns = ['id', 'title_EN', 'category', 'level', 'duration', 'createdBy', 'deletedAt', 'actions'];;
+    } else if (this.currentLang === 'fr') {
+      this.displayedColumns = ['id', 'title_FR', 'category', 'level', 'duration', 'createdBy', 'deletedAt', 'actions'];;
+    }
+    this.translate.onLangChange.subscribe(() => {
+      this.currentLang = this.translate.currentLang;
+      if (this.currentLang === 'en') {
+        this.displayedColumns = ['id', 'title_EN', 'category', 'level', 'duration', 'createdBy', 'deletedAt', 'actions'];;
+      } else if (this.currentLang === 'fr') {
+        this.displayedColumns = ['id', 'title_FR', 'category', 'level', 'duration', 'createdBy', 'deletedAt', 'actions'];;
+      }
 
+    });
 
     this.store.select('courses').subscribe(state => {
       this.courses = state.trashedCourses;

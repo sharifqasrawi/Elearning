@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Actions, Effect, ofType } from '@ngrx/effects';
@@ -18,6 +19,11 @@ export class SectionsEffects {
     userName = '';
     userId = '';
 
+    errorAccessDenied: string = '';
+    error404: string = '';
+    errorOccured: string = '';
+
+
     @Effect()
     fetchSections = this.actions$.pipe(
         ofType(SectionsActions.FETCH_START),
@@ -32,16 +38,17 @@ export class SectionsEffects {
                         return new SectionsActions.FetchSuccess(resData.sections);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new SectionsActions.FetchFail(['Access Denied']));
+                                return of(new SectionsActions.FetchFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new SectionsActions.FetchFail(['Error 404. Not Found']));
+                                return of(new SectionsActions.FetchFail([this.error404]));
                             case 400:
                                 return of(new SectionsActions.FetchFail(errorRes.error.errors));
                             default:
-                                return of(new SectionsActions.FetchFail(['Oops! An error occured']));
+                                return of(new SectionsActions.FetchFail([this.errorOccured]));
                         }
                     })
                 )
@@ -62,6 +69,7 @@ export class SectionsEffects {
                         id: sectionData.payload.course.id
                     },
                     name_EN: sectionData.payload.name_EN,
+                    name_FR: sectionData.payload.name_FR,
                     order: sectionData.payload.order,
                     createdBy: this.userName,
                     updatedBy: this.userName
@@ -74,16 +82,17 @@ export class SectionsEffects {
                         return new SectionsActions.CreateSuccess(resData.createdSection);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new SectionsActions.CreateFail(['Access Denied']));
+                                return of(new SectionsActions.CreateFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new SectionsActions.CreateFail(['Error 404. Not Found']));
+                                return of(new SectionsActions.CreateFail([this.error404]));
                             case 400:
                                 return of(new SectionsActions.CreateFail(errorRes.error.errors));
                             default:
-                                return of(new SectionsActions.CreateFail(['Oops! An error occured']));
+                                return of(new SectionsActions.CreateFail([this.errorOccured]));
                         }
                     })
                 )
@@ -104,16 +113,17 @@ export class SectionsEffects {
                         return new SectionsActions.DeleteSuccess(resData.deletedSectionId);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new SectionsActions.DeleteFail(['Access Denied']));
+                                return of(new SectionsActions.DeleteFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new SectionsActions.DeleteFail(['Error 404. Not Found']));
+                                return of(new SectionsActions.DeleteFail([this.error404]));
                             case 400:
                                 return of(new SectionsActions.DeleteFail(errorRes.error.errors));
                             default:
-                                return of(new SectionsActions.DeleteFail(['Oops! An error occured']));
+                                return of(new SectionsActions.DeleteFail([this.errorOccured]));
                         }
                     })
                 )
@@ -128,6 +138,7 @@ export class SectionsEffects {
                 {
                     id: sectionData.payload.id,
                     name_EN: sectionData.payload.name_EN,
+                    name_FR: sectionData.payload.name_FR,
                     order: sectionData.payload.order,
                     updatedBy: this.userName
                 },
@@ -142,16 +153,17 @@ export class SectionsEffects {
                         });
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new SectionsActions.UpdateFail(['Access Denied']));
+                                return of(new SectionsActions.UpdateFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new SectionsActions.UpdateFail(['Error 404. Not Found']));
+                                return of(new SectionsActions.UpdateFail([this.error404]));
                             case 400:
                                 return of(new SectionsActions.UpdateFail(errorRes.error.errors));
                             default:
-                                return of(new SectionsActions.UpdateFail(['Oops! An error occured']));
+                                return of(new SectionsActions.UpdateFail([this.errorOccured]));
                         }
                     })
                 )
@@ -161,7 +173,8 @@ export class SectionsEffects {
     constructor(
         private actions$: Actions,
         private http: HttpClient,
-        private store: Store<fromApp.AppState>
+        private store: Store<fromApp.AppState>,
+        private translate: TranslateService
     ) {
 
         this.store.select('login')
@@ -175,5 +188,14 @@ export class SectionsEffects {
                     this.userId = user.id;
                 }
             });
+    }
+
+
+    private getErrorsTranslations() {
+        this.translate.get(['ERRORS.ACCESS_DENIED', 'ERRORS.ERROR404', 'ERRORS.OOPS']).subscribe(trans => {
+            this.errorAccessDenied = trans['ERRORS.ACCESS_DENIED'];
+            this.error404 = trans['ERRORS.ERROR404'];
+            this.errorOccured = trans['ERRORS.OOPS'];
+        });
     }
 }

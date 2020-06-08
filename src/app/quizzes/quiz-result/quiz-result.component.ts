@@ -48,6 +48,7 @@ export class QuizResultComponent implements OnInit, OnDestroy {
       if (state.currentQuiz)
         this.isSubmitted = state.currentQuiz.isSubmitted;
 
+
     });
   }
 

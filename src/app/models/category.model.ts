@@ -11,5 +11,7 @@ export class Category {
         public updatedBy?: string,
         public deletedAt?: Date,
         public deletedBy?: string,
+        public title_FR?: string,
+        public slug_FR?: string,
     ) { }
 }

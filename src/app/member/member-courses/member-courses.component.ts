@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Component, OnInit } from '@angular/core';
@@ -31,14 +32,18 @@ export class MemberCoursesComponent implements OnInit {
   loadingMemberCoursesProgress = false;
   loadedMemberCoursesProgress = false;
 
+  currentLang: string = null;
 
   constructor(
     private store: Store<fromApp.AppState>,
     private route: ActivatedRoute,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private translate: TranslateService
   ) { }
 
   ngOnInit(): void {
+    this.currentLang = this.translate.currentLang;
+    this.translate.onLangChange.subscribe(() => this.currentLang = this.translate.currentLang);
 
     this.route.queryParams.subscribe((params: Params) => {
       if (params.fetch === 'favorites') {
@@ -67,7 +72,7 @@ export class MemberCoursesComponent implements OnInit {
   }
 
   getCourseProgress(courseId: number): string {
-    if(this.loadedMemberCoursesProgress){
+    if (this.loadedMemberCoursesProgress) {
       const progress = this.memberCoursesProgress.find(c => c.courseId === courseId).donePercentage.toFixed(0) + ' %';
       return progress;
     }

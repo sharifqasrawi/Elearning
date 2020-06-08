@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { Injectable } from '@angular/core';
 import { Actions, ofType, Effect } from '@ngrx/effects';
 import { switchMap, catchError, map, tap, concatMap, mergeMap } from 'rxjs/operators';
@@ -26,6 +27,11 @@ export interface LoginResponseData {
 
 @Injectable()
 export class LoginEffects {
+
+    errorAccessDenied: string = '';
+    error404: string = '';
+    errorOccured: string = '';
+
     @Effect()
     login = this.actions$.pipe(
         ofType(LoginActions.LOGIN_START),
@@ -62,7 +68,18 @@ export class LoginEffects {
                         });
                     }),
                     catchError(errorRes => {
-                        return of(new LoginActions.LoginFail(errorRes.error.errors));
+                        this.getErrorsTranslations();
+                        switch (errorRes.status) {
+                            case 403:
+                            case 401:
+                                return of(new LoginActions.LoginFail([this.errorAccessDenied]));
+                            case 404:
+                                return of(new LoginActions.LoginFail([this.error404]));
+                            case 400:
+                                return of(new LoginActions.LoginFail(errorRes.error.errors));
+                            default:
+                                return of(new LoginActions.LoginFail([this.errorOccured]));
+                        }
                     })
                 )
         })
@@ -140,78 +157,6 @@ export class LoginEffects {
     );
 
 
-    // @Effect()
-    // autoLogin2 = this.actions$.pipe(
-    //     ofType(LoginActions.AUTO_LOGIN),
-    //     switchMap(() => {
-    //         const userData: {
-    //             username: string;
-    //             id: string;
-    //             token: string;
-    //             expiresIn: string;
-    //         } = JSON.parse(localStorage.getItem('userData'));
-
-    //         if (!userData)
-    //             return of();
-
-    //         return this.http.get(environment.API_BASE_URL + 'users/user',
-    //             {
-    //                 params: new HttpParams().set('id', userData.id)
-    //             })
-    //             .pipe(
-    //                 map((res: {
-    //                     user: {
-    //                         firstName: string,
-    //                         lastName: string,
-    //                         username: string,
-    //                         country: string;
-    //                         gender: string,
-    //                         id: string,
-    //                         isAdmin: boolean,
-    //                         isAuthor: boolean
-    //                     }
-    //                 }) => {
-
-    //                     const loadedUser = new User(
-    //                         res.user.firstName,
-    //                         res.user.lastName,
-    //                         res.user.username,
-    //                         res.user.country,
-    //                         res.user.gender,
-    //                         res.user.isAdmin,
-    //                         res.user.isAuthor,
-    //                         userData.id,
-    //                         userData.token,
-    //                         new Date(userData.expiresIn)
-    //                     );
-
-    //                     if (loadedUser.token) {
-
-    //                         const expirationDate = new Date(userData.expiresIn);
-    //                         const expiresIn = expirationDate.getTime() - (new Date()).getTime();
-    //                         this.authService.setLogoutTimer(expiresIn);
-
-
-    //                         return new LoginActions.LoginSuccess({
-    //                             email: loadedUser.email,
-    //                             userId: loadedUser.id,
-    //                             token: loadedUser.token,
-    //                             expirationDate: new Date(userData.expiresIn),
-    //                             firstName: loadedUser.firstName,
-    //                             lastName: loadedUser.lastName,
-    //                             isAdmin: loadedUser.isAdmin,
-    //                             isAuthor: loadedUser.isAuthor,
-    //                             redirect: false
-    //                         });
-
-    //                     }
-    //                     return { type: 'DUMMY' };
-    //                 })
-    //             )
-    //     }),
-
-    // );
-
     @Effect({ dispatch: false })
     authRedirect = this.actions$.pipe(
         ofType(LoginActions.LOGIN_SUCCESS),
@@ -228,6 +173,15 @@ export class LoginEffects {
         private http: HttpClient,
         private router: Router,
         private route: ActivatedRoute,
-        private authService: AuthService
+        private authService: AuthService,
+        private translate: TranslateService
     ) { }
+
+    private getErrorsTranslations() {
+        this.translate.get(['ERRORS.ACCESS_DENIED', 'ERRORS.ERROR404', 'ERRORS.OOPS']).subscribe(trans => {
+            this.errorAccessDenied = trans['ERRORS.ACCESS_DENIED'];
+            this.error404 = trans['ERRORS.ERROR404'];
+            this.errorOccured = trans['ERRORS.OOPS'];
+        });
+    }
 }

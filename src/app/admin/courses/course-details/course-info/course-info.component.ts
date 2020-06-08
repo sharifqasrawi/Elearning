@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { faSearch, faMale, faFemale } from '@fortawesome/free-solid-svg-icons';
 import { MatTableDataSource } from '@angular/material/table';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -39,14 +40,19 @@ export class CourseInfoComponent implements OnInit, OnDestroy {
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
+  currentLang: string = null;
 
   constructor(
     private route: ActivatedRoute,
     private store: Store<fromApp.AppState>,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private translate: TranslateService
   ) { }
 
   ngOnInit(): void {
+    this.currentLang = this.translate.currentLang;
+    this.translate.onLangChange.subscribe(() => this.currentLang = this.translate.currentLang);
+
     this.route.params.subscribe((params: Params) => {
       this.courseId = +params.courseId;
     });

@@ -96,6 +96,7 @@ export function sessionContentsReducer(state: State = initialState, action: Sess
                 type: action.payload.updatedSessionContent.type,
                 order: action.payload.updatedSessionContent.order,
                 content: action.payload.updatedSessionContent.content,
+                content_FR: action.payload.updatedSessionContent.content_FR,
               
             };
 

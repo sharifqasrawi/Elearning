@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { switchMap, map, catchError } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
@@ -17,6 +18,11 @@ export class ReportsEffects {
     token = null;
     userId = null;
 
+    errorAccessDenied: string = '';
+    error404: string = '';
+    errorOccured: string = '';
+
+
     @Effect()
     fetchReports = this.actions$.pipe(
         ofType(ReportsActions.FETCH_START),
@@ -26,26 +32,30 @@ export class ReportsEffects {
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
                     params: reportData.payload ? new HttpParams().set('type', reportData.payload) : null
-                });
-        }),
-        map(resData => {
-            return new ReportsActions.FetchSuccess(resData.reports);
-        }),
-        catchError(errorRes => {
+                })
+                .pipe(
+                    map(resData => {
+                        return new ReportsActions.FetchSuccess(resData.reports);
+                    }),
+                    catchError(errorRes => {
 
-            switch (errorRes.status) {
-                case 403:
-                case 401:
-                    return of(new ReportsActions.FetchFail(['Access Denied']));
-                case 404:
-                    return of(new ReportsActions.FetchFail(['Error 404. Not Found']));
-                case 400:
-                    return of(new ReportsActions.FetchFail(errorRes.error.errors));
+                        this.getErrorsTranslations();
+                        switch (errorRes.status) {
+                            case 403:
+                            case 401:
+                                return of(new ReportsActions.FetchFail([this.errorAccessDenied]));
+                            case 404:
+                                return of(new ReportsActions.FetchFail([this.error404]));
+                            case 400:
+                                return of(new ReportsActions.FetchFail(errorRes.error.errors));
 
-                default:
-                    return of(new ReportsActions.FetchFail(['Error Fetching Data']));
-            }
-        })
+                            default:
+                                return of(new ReportsActions.FetchFail([this.errorOccured]));
+                        }
+                    })
+                )
+        }),
+
     );
 
     @Effect()
@@ -57,26 +67,30 @@ export class ReportsEffects {
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
                     params: new HttpParams().set('userId', this.userId)
-                });
-        }),
-        map(resData => {
-            return new ReportsActions.FetchSuccess(resData.reports);
-        }),
-        catchError(errorRes => {
+                })
+                .pipe(
+                    map(resData => {
+                        return new ReportsActions.FetchSuccess(resData.reports);
+                    }),
+                    catchError(errorRes => {
 
-            switch (errorRes.status) {
-                case 403:
-                case 401:
-                    return of(new ReportsActions.FetchFail(['Access Denied']));
-                case 404:
-                    return of(new ReportsActions.FetchFail(['Error 404. Not Found']));
-                case 400:
-                    return of(new ReportsActions.FetchFail(errorRes.error.errors));
+                        this.getErrorsTranslations();
+                        switch (errorRes.status) {
+                            case 403:
+                            case 401:
+                                return of(new ReportsActions.FetchFail([this.errorAccessDenied]));
+                            case 404:
+                                return of(new ReportsActions.FetchFail([this.error404]));
+                            case 400:
+                                return of(new ReportsActions.FetchFail(errorRes.error.errors));
 
-                default:
-                    return of(new ReportsActions.FetchFail(['Error Fetching Data']));
-            }
-        })
+                            default:
+                                return of(new ReportsActions.FetchFail([this.errorOccured]));
+                        }
+                    })
+                )
+        }),
+
     );
 
 
@@ -100,16 +114,17 @@ export class ReportsEffects {
                         return new ReportsActions.ReportBugSuccess(resData.createdReport);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new ReportsActions.ReportBugFail(['Access Denied']));
+                                return of(new ReportsActions.ReportBugFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new ReportsActions.ReportBugFail(['Error 404. Not Found']));
+                                return of(new ReportsActions.ReportBugFail([this.error404]));
                             case 400:
                                 return of(new ReportsActions.ReportBugFail(errorRes.error.errors));
                             default:
-                                return of(new ReportsActions.ReportBugFail(['Error Sending Report']));
+                                return of(new ReportsActions.ReportBugFail([this.errorOccured]));
                         }
                     })
                 )
@@ -131,16 +146,17 @@ export class ReportsEffects {
                         return new ReportsActions.MarkReportSuccess(resData.updatedReport);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new ReportsActions.MarkReportFail(['Access Denied']));
+                                return of(new ReportsActions.MarkReportFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new ReportsActions.MarkReportFail(['Error 404. Not Found']));
+                                return of(new ReportsActions.MarkReportFail([this.error404]));
                             case 400:
                                 return of(new ReportsActions.MarkReportFail(errorRes.error.errors));
                             default:
-                                return of(new ReportsActions.MarkReportFail(['Error Sending Report']));
+                                return of(new ReportsActions.MarkReportFail([this.errorOccured]));
                         }
                     })
                 )
@@ -163,16 +179,17 @@ export class ReportsEffects {
                         return new ReportsActions.MarkReplySuccess(resData.updatedReport);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new ReportsActions.MarkReplyFail(['Access Denied']));
+                                return of(new ReportsActions.MarkReplyFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new ReportsActions.MarkReplyFail(['Error 404. Not Found']));
+                                return of(new ReportsActions.MarkReplyFail([this.error404]));
                             case 400:
                                 return of(new ReportsActions.MarkReplyFail(errorRes.error.errors));
                             default:
-                                return of(new ReportsActions.MarkReplyFail(['Error Sending Report']));
+                                return of(new ReportsActions.MarkReplyFail([this.errorOccured]));
                         }
                     })
                 )
@@ -196,16 +213,17 @@ export class ReportsEffects {
                         return new ReportsActions.ReplyReportSuccess(resData.updatedReport);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new ReportsActions.ReplyReportFail(['Access Denied']));
+                                return of(new ReportsActions.ReplyReportFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new ReportsActions.ReplyReportFail(['Error 404. Not Found']));
+                                return of(new ReportsActions.ReplyReportFail([this.error404]));
                             case 400:
                                 return of(new ReportsActions.ReplyReportFail(errorRes.error.errors));
                             default:
-                                return of(new ReportsActions.ReplyReportFail(['Error Sending Report']));
+                                return of(new ReportsActions.ReplyReportFail([this.errorOccured]));
                         }
                     })
                 )
@@ -216,7 +234,8 @@ export class ReportsEffects {
     constructor(
         private actions$: Actions,
         private http: HttpClient,
-        private store: Store<fromApp.AppState>
+        private store: Store<fromApp.AppState>,
+        private translate: TranslateService
     ) {
 
         this.store.select('login')
@@ -229,5 +248,12 @@ export class ReportsEffects {
                     this.token = user.token;
                 }
             });
+    }
+    private getErrorsTranslations() {
+        this.translate.get(['ERRORS.ACCESS_DENIED', 'ERRORS.ERROR404', 'ERRORS.OOPS']).subscribe(trans => {
+            this.errorAccessDenied = trans['ERRORS.ACCESS_DENIED'];
+            this.error404 = trans['ERRORS.ERROR404'];
+            this.errorOccured = trans['ERRORS.OOPS'];
+        });
     }
 }

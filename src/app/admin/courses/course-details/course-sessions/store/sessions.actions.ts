@@ -50,6 +50,7 @@ export class CreateStart implements Action {
         title_EN: string,
         duration: number,
         order: number,
+        title_FR?: string,
     }) { }
 }
 
@@ -76,6 +77,7 @@ export class UpdateStart implements Action {
         title_EN: string,
         duration: number,
         order: number,
+        title_FR?: string,
     }) { }
 }
 

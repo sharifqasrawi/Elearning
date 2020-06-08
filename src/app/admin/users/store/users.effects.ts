@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { switchMap, map, catchError, exhaustMap, withLatestFrom } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
@@ -20,6 +21,10 @@ export class UsersEffects {
     token = '';
     userId: string = null;
 
+    errorAccessDenied: string = '';
+    error404: string = '';
+    errorOccured: string = '';
+
     @Effect()
     fetchUsers = this.actions$.pipe(
         ofType(UsersActions.FETCH_START),
@@ -28,26 +33,30 @@ export class UsersEffects {
             return this.http.get<{ users: User[] }>(environment.API_BASE_URL + 'users',
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
-                });
-        }),
-        map(usersRes => {
-            return new UsersActions.FetchSuccess(usersRes.users);
-        }),
-        catchError(errorRes => {
+                })
+                .pipe(
+                    map(usersRes => {
+                        return new UsersActions.FetchSuccess(usersRes.users);
+                    }),
+                    catchError(errorRes => {
 
-            switch (errorRes.status) {
-                case 403:
-                case 401:
-                    return of(new UsersActions.FetchFail(['Access Denied']));
-                case 404:
-                    return of(new UsersActions.FetchFail(['Error 404. Not Found']));
-                case 400:
-                    return of(new UsersActions.FetchFail(errorRes.error.errors));
+                        this.getErrorsTranslations();
+                        switch (errorRes.status) {
+                            case 403:
+                            case 401:
+                                return of(new UsersActions.FetchFail([this.error404]));
+                            case 404:
+                                return of(new UsersActions.FetchFail([this.error404]));
+                            case 400:
+                                return of(new UsersActions.FetchFail(errorRes.error.errors));
 
-                default:
-                    return of(new UsersActions.FetchFail(['Error Fetching Data']));
-            }
-        })
+                            default:
+                                return of(new UsersActions.FetchFail([this.errorOccured]));
+                        }
+                    })
+                )
+        }),
+
     );
 
     @Effect()
@@ -59,26 +68,30 @@ export class UsersEffects {
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
                     params: new HttpParams().set('id', this.userId)
-                });
-        }),
-        map(usersRes => {
-            return new UsersActions.FetchUserSuccess(usersRes.user);
-        }),
-        catchError(errorRes => {
+                })
+                .pipe(
+                    map(usersRes => {
+                        return new UsersActions.FetchUserSuccess(usersRes.user);
+                    }),
+                    catchError(errorRes => {
 
-            switch (errorRes.status) {
-                case 403:
-                case 401:
-                    return of(new UsersActions.FetchUserFail(['Access Denied']));
-                case 404:
-                    return of(new UsersActions.FetchUserFail(['Error 404. Not Found']));
-                case 400:
-                    return of(new UsersActions.FetchUserFail(errorRes.error.errors));
+                        this.getErrorsTranslations();
+                        switch (errorRes.status) {
+                            case 403:
+                            case 401:
+                                return of(new UsersActions.FetchUserFail([this.errorAccessDenied]));
+                            case 404:
+                                return of(new UsersActions.FetchUserFail([this.error404]));
+                            case 400:
+                                return of(new UsersActions.FetchUserFail(errorRes.error.errors));
 
-                default:
-                    return of(new UsersActions.FetchUserFail(['Error Fetching Data']));
-            }
-        })
+                            default:
+                                return of(new UsersActions.FetchUserFail([this.errorOccured]));
+                        }
+                    })
+                )
+        }),
+
     );
 
     @Effect()
@@ -90,25 +103,29 @@ export class UsersEffects {
                 {
                     headers: new HttpHeaders().append('Authorization', 'Bearer ' + this.token),
                     params: new HttpParams().set('searchKey', searchData.payload)
-                });
+                })
+                .pipe(
+                    map(usersRes => {
+                        return new UsersActions.SearchSuccess(usersRes.users);
+                    }),
+                    catchError(errorRes => {
+            
+                        this.getErrorsTranslations();
+                        switch (errorRes.status) {
+                            case 403:
+                            case 401:
+                                return of(new UsersActions.SearchFail([this.error404]));
+                            case 404:
+                                return of(new UsersActions.SearchFail([this.error404]));
+                            case 400:
+                                return of(new UsersActions.SearchFail(errorRes.error.errors));
+                            default:
+                                return of(new UsersActions.SearchFail([this.errorOccured]));
+                        }
+                    })
+                )
         }),
-        map(usersRes => {
-            return new UsersActions.SearchSuccess(usersRes.users);
-        }),
-        catchError(errorRes => {
-
-            switch (errorRes.status) {
-                case 403:
-                case 401:
-                    return of(new UsersActions.SearchFail(['Access Denied']));
-                case 404:
-                    return of(new UsersActions.SearchFail(['Error 404. Not Found']));
-                case 400:
-                    return of(new UsersActions.SearchFail(errorRes.error.errors));
-                default:
-                    return of(new UsersActions.SearchFail(['Error Fetching Data']));
-            }
-        })
+      
     );
 
 
@@ -138,16 +155,17 @@ export class UsersEffects {
                         return new UsersActions.CreateSuccess(resData.user);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new UsersActions.CreateFail(['Access Denied']));
+                                return of(new UsersActions.CreateFail([this.error404]));
                             case 404:
-                                return of(new UsersActions.CreateFail(['Error 404. Not Found']));
+                                return of(new UsersActions.CreateFail([this.error404]));
                             case 400:
                                 return of(new UsersActions.CreateFail(errorRes.error.errors));
                             default:
-                                return of(new UsersActions.CreateFail(['Error Creating user']));
+                                return of(new UsersActions.CreateFail([this.errorOccured]));
                         }
                     })
                 )
@@ -171,16 +189,17 @@ export class UsersEffects {
                         return new UsersActions.SetActiveDeactiveSuccess(resData);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new UsersActions.SetActiveDeactiveFail(['Access Denied']));
+                                return of(new UsersActions.SetActiveDeactiveFail([this.error404]));
                             case 404:
-                                return of(new UsersActions.SetActiveDeactiveFail(['Error 404. Not Found']));
+                                return of(new UsersActions.SetActiveDeactiveFail([this.error404]));
                             case 400:
                                 return of(new UsersActions.SetActiveDeactiveFail(errorRes.error.errors));
                             default:
-                                return of(new UsersActions.SetActiveDeactiveFail(['Oops! An error occured']));
+                                return of(new UsersActions.SetActiveDeactiveFail([this.errorOccured]));
                         }
                     })
                 )
@@ -212,16 +231,17 @@ export class UsersEffects {
                         return new UsersActions.UpdateSuccess(resData.user);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new UsersActions.UpdateFail(['Access Denied']));
+                                return of(new UsersActions.UpdateFail([this.error404]));
                             case 404:
-                                return of(new UsersActions.UpdateFail(['Error 404. Not Found']));
+                                return of(new UsersActions.UpdateFail([this.error404]));
                             case 400:
                                 return of(new UsersActions.UpdateFail(errorRes.error.errors));
                             default:
-                                return of(new UsersActions.UpdateFail(['Oops! An error occured']));
+                                return of(new UsersActions.UpdateFail([this.errorOccured]));
                         }
                     })
                 )
@@ -250,16 +270,17 @@ export class UsersEffects {
                         return new UsersActions.UpdateProfileSuccess(resData.user);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new UsersActions.UpdateProfileFail(['Access Denied']));
+                                return of(new UsersActions.UpdateProfileFail([this.error404]));
                             case 404:
-                                return of(new UsersActions.UpdateProfileFail(['Error 404. Not Found']));
+                                return of(new UsersActions.UpdateProfileFail([this.error404]));
                             case 400:
                                 return of(new UsersActions.UpdateProfileFail(errorRes.error.errors));
                             default:
-                                return of(new UsersActions.UpdateProfileFail(['Oops! An error occured']));
+                                return of(new UsersActions.UpdateProfileFail([this.errorOccured]));
                         }
                     })
                 )
@@ -286,16 +307,17 @@ export class UsersEffects {
                         return new UsersActions.ChangePasswordSuccess(resData.result);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new UsersActions.ChangePasswordFail(['Access Denied']));
+                                return of(new UsersActions.ChangePasswordFail([this.error404]));
                             case 404:
-                                return of(new UsersActions.ChangePasswordFail(['Error 404. Not Found']));
+                                return of(new UsersActions.ChangePasswordFail([this.error404]));
                             case 400:
                                 return of(new UsersActions.ChangePasswordFail(errorRes.error.errors));
                             default:
-                                return of(new UsersActions.ChangePasswordFail(['Oops! An error occured']));
+                                return of(new UsersActions.ChangePasswordFail([this.errorOccured]));
                         }
                     })
                 )
@@ -316,16 +338,17 @@ export class UsersEffects {
                         return new UsersActions.DeleteSuccess(resData.userId);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new UsersActions.DeleteFail(['Access Denied']));
+                                return of(new UsersActions.DeleteFail([this.error404]));
                             case 404:
-                                return of(new UsersActions.DeleteFail(['Error 404. Not Found']));
+                                return of(new UsersActions.DeleteFail([this.error404]));
                             case 400:
                                 return of(new UsersActions.DeleteFail(errorRes.error.errors));
                             default:
-                                return of(new UsersActions.DeleteFail(['Oops! An error occured']));
+                                return of(new UsersActions.DeleteFail([this.errorOccured]));
                         }
                     })
                 )
@@ -335,7 +358,8 @@ export class UsersEffects {
     constructor(
         private actions$: Actions,
         private http: HttpClient,
-        private store: Store<fromApp.AppState>
+        private store: Store<fromApp.AppState>,
+        private translate: TranslateService
     ) {
 
         this.store.select('login')
@@ -348,5 +372,13 @@ export class UsersEffects {
                     this.token = user.token;
                 }
             });
+    }
+
+    private getErrorsTranslations() {
+        this.translate.get(['ERRORS.ACCESS_DENIED', 'ERRORS.ERROR404', 'ERRORS.OOPS']).subscribe(trans => {
+            this.errorAccessDenied = trans['ERRORS.ACCESS_DENIED'];
+            this.error404 = trans['ERRORS.ERROR404'];
+            this.errorOccured = trans['ERRORS.OOPS'];
+        });
     }
 }

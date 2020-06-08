@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { Store } from '@ngrx/store';
 import { Component, OnInit, Inject, ViewChild, OnDestroy } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef, MatDialog } from '@angular/material/dialog';
@@ -33,19 +34,27 @@ export class NewQuestionComponent implements OnInit, OnDestroy {
 
   loading = false;
 
+  languages = ['en', 'fr'];
+  currentLang: string = null;
+
   constructor(
     public dialogRef: MatDialogRef<NewQuestionComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
     private dialog: MatDialog,
-    private store: Store<fromApp.AppState>
+    private store: Store<fromApp.AppState>,
+    private translate: TranslateService
   ) { }
 
 
   ngOnInit(): void {
+    this.currentLang = this.translate.currentLang;
+
     this.form = new FormGroup({
       text_EN: new FormControl(null, [Validators.required]),
+      text_FR: new FormControl(null),
       imagePath: new FormControl(null),
       duration: new FormControl(null, [Validators.required]),
+      currentLang: new FormControl(this.translate.currentLang)
     });
 
     this.store.select('quizzes').subscribe(state => {
@@ -58,8 +67,10 @@ export class NewQuestionComponent implements OnInit, OnDestroy {
     if (this.data.question && this.data.editMode) {
       this.form.setValue({
         text_EN: this.data.question.text_EN,
+        text_FR: this.data.question.text_FR,
         imagePath: this.data.question.imagePath,
         duration: this.data.question.duration,
+        currentLang: this.translate.currentLang
       });
     }
   }
@@ -77,6 +88,7 @@ export class NewQuestionComponent implements OnInit, OnDestroy {
       this.store.dispatch(new QuizzesActions.CreateQuestionStart({
         quizId: this.data.quizId,
         text_EN: this.form.value.text_EN,
+        text_FR: this.form.value.text_FR,
         imagePath: this.form.value.imagePath,
         duration: this.form.value.duration
       }));
@@ -84,6 +96,7 @@ export class NewQuestionComponent implements OnInit, OnDestroy {
       this.store.dispatch(new QuizzesActions.UpdateQuestionStart({
         id: this.data.question.id,
         text_EN: this.form.value.text_EN,
+        text_FR: this.form.value.text_FR,
         imagePath: this.form.value.imagePath,
         duration: this.form.value.duration
       }));
@@ -109,6 +122,11 @@ export class NewQuestionComponent implements OnInit, OnDestroy {
 
   }
 
+  onChangeLang() {
+    const lang = this.form.value.currentLang;
+
+    this.currentLang = lang;
+  }
 
   ngOnDestroy() {
     this.store.dispatch(new QuizzesActions.ClearErrors());

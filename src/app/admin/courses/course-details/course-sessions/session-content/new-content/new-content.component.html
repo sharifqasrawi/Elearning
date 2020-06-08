@@ -35,12 +35,27 @@
         <div class="row">
             <div class="col-lg-12">
                 <div *ngIf="textType">
-                    <label>{{ 'COURSE.CONTENT' | translate }} *</label>
-                    <ckeditor tagName="textarea" [editor]="Editor" formControlName="content" required></ckeditor>
-                    <span class="small text-danger"
-                        *ngIf="!form.controls.content.valid && form.controls.content.touched">
-                        {{ 'VALIDATION.REQUIRED' | translate }}
-                    </span>
+                    <mat-form-field>
+                        <mat-label translate>COMMON.LANGUAGE</mat-label>
+                        <mat-select formControlName="currentLang" (ngModelChange)="onChangeLang()">
+                            <mat-option *ngFor="let lang of siteLanguages" [value]="lang">
+                                {{lang}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <div *ngIf="currentLang === 'en'">
+                        <label>{{ 'COURSE.CONTENT' | translate }} (en)*</label>
+                        <ckeditor tagName="textarea" [editor]="Editor" formControlName="content" required></ckeditor>
+                        <span class="small text-danger"
+                            *ngIf="!form.controls.content.valid && form.controls.content.touched">
+                            {{ 'VALIDATION.REQUIRED' | translate }}
+                        </span>
+                    </div>
+                    <div *ngIf="currentLang === 'fr'">
+                        <label>{{ 'COURSE.CONTENT' | translate }} (fr)</label>
+                        <ckeditor tagName="textarea" [editor]="Editor" formControlName="content_FR" ></ckeditor>
+                    </div>
                 </div>
 
                 <div *ngIf="codeType">
@@ -70,14 +85,14 @@
 
                     <mat-form-field class="mt-2" appearance="legacy">
                         <mat-label translate>COMMON.IMAGE_PATH</mat-label>
-                        <input readonly type="text" matInput formControlName="content" >
+                        <input readonly type="text" matInput formControlName="content">
                         <mat-error *ngIf="!form.controls.content.valid && form.controls.content.touched">
                             {{ 'VALIDATION.REQUIRED' | translate }}
                         </mat-error>
                     </mat-form-field>
 
                     <button type="button" mat-flat-button color="primary" class="mt-2" (click)="selectImage()">
-                            {{ 'COMMON.CHOOSE_IMAGE' | translate }}
+                        {{ 'COMMON.CHOOSE_IMAGE' | translate }}
                     </button>
 
                 </div>
@@ -86,7 +101,7 @@
 
                     <mat-form-field class="mt-2" appearance="legacy">
                         <mat-label translate>COMMON.RESOURCE_NAME </mat-label>
-                        <input type="text" matInput formControlName="note" >
+                        <input type="text" matInput formControlName="note">
 
                     </mat-form-field>
 
@@ -109,7 +124,8 @@
 
 
     <div mat-dialog-actions class="float-right mt-2">
-        <button type="button" mat-raised-button color="warn" cdkFocusInitial (click)="openDialog()">{{ 'COMMON.CANCEL' | translate }}</button>
+        <button type="button" mat-raised-button color="warn" cdkFocusInitial
+            (click)="openDialog()">{{ 'COMMON.CANCEL' | translate }}</button>
         <button type="submit" mat-raised-button color="accent" [disabled]="!form.valid">
             {{ editMode ? ('COMMON.SAVE' | translate) : ('COMMON.CREATE' | translate) }}
         </button>

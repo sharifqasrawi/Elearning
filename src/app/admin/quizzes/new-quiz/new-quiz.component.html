@@ -14,9 +14,9 @@
         </div>
         <div class="col-lg-2">
             <button mat-raised-button color="primary" class="btn-block mt-1" (click)="f.onSubmit(undefined)"
-                [disabled]="loading || quizCreating || !form.valid">
+                [disabled]="loading || quizCreating || quizUpdating || !form.valid">
                 <fa-icon [icon]="faSave"></fa-icon>
-                {{ loading ? ('COMMON.LOADING' | translate ): ( quizCreating ? ('COMMON.SAVING' | translate ): ('COMMON.SAVE' | translate )) }}
+                {{ loading ? ('COMMON.LOADING' | translate ): ( quizCreating || quizUpdating ? ('COMMON.SAVING' | translate ): ('COMMON.SAVE' | translate )) }}
             </button>
         </div>
     </div>
@@ -26,14 +26,34 @@
 <div class="adminPageBottom">
 
     <form [formGroup]="form" #f="ngForm" (ngSubmit)="onSubmit()">
-        <mat-form-field class="full-width" appearance="legacy">
-            <mat-label translate>COMMON.TITLE </mat-label>
-            <input [readonly]="loading" type="text" matInput formControlName="title_EN"
-                placeholder="Enter quiz title in english">
-            <mat-error *ngIf="!form.controls.title_EN.valid && form.controls.title_EN.touched">
-                {{ 'VALIDATION.REQUIRED' | translate }}
-            </mat-error>
-        </mat-form-field>
+        <div class="row">
+            <div class="col-lg-10">
+                <mat-form-field class="full-width" appearance="legacy" *ngIf="currentLang === 'en'">
+                    <mat-label translate>COMMON.TITLE </mat-label>
+                    <input [readonly]="loading" type="text" matInput formControlName="title_EN"
+                        placeholder="In English">
+                    <mat-error *ngIf="!form.controls.title_EN.valid && form.controls.title_EN.touched">
+                        {{ 'VALIDATION.REQUIRED' | translate }}
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field class="full-width" appearance="legacy" *ngIf="currentLang === 'fr'">
+                    <mat-label translate>COMMON.TITLE </mat-label>
+                    <input [readonly]="loading" type="text" matInput formControlName="title_FR"
+                        placeholder="En Français">
+                </mat-form-field>
+            </div>
+            <div class="col-lg-2">
+                <mat-form-field appearance="legacy">
+                    <mat-label translate>COMMON.LANGUAGE</mat-label>
+                    <mat-select formControlName="currentLang" (ngModelChange)="onChangeLang()">
+                        <mat-option *ngFor="let lang of siteLanguages" [value]="lang">
+                            {{lang}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+
 
         <div class="row">
             <div class="col-lg-6">
@@ -44,9 +64,10 @@
                             {{lang}}
                             <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
                         </mat-chip>
-                        <input [readonly]="loading" [placeholder]="'COURSE.LANGUAGES' | translate" required formControlName="languages"
-                            [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                            [matChipInputAddOnBlur]="addOnBlur" (matChipInputTokenEnd)="add($event)">
+                        <input [readonly]="loading" [placeholder]="'COURSE.LANGUAGES' | translate" required
+                            formControlName="languages" [matChipInputFor]="chipList"
+                            [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur"
+                            (matChipInputTokenEnd)="add($event)">
                         <mat-error *ngIf="!form.controls.languages.valid && form.controls.languages.touched">
                             {{ 'VALIDATION.REQUIRED' | translate }}
                         </mat-error>
@@ -66,13 +87,18 @@
             </div>
         </div>
 
-        <div>
-            <label>{{  'COURSE.DESCRIPTION' | translate }} *</label>
+        <div *ngIf="currentLang === 'en'">
+            <label>{{  'COURSE.DESCRIPTION' | translate }} (en)*</label>
             <ckeditor tagName="textarea" [editor]="Editor" formControlName="description_EN" required></ckeditor>
             <span class="small text-danger"
                 *ngIf="!form.controls.description_EN.valid && form.controls.description_EN.touched">
                 {{ 'VALIDATION.REQUIRED' | translate }}
             </span>
+        </div>
+
+        <div *ngIf="currentLang === 'fr'">
+            <label>{{  'COURSE.DESCRIPTION' | translate }} (fr)</label>
+            <ckeditor tagName="textarea" [editor]="Editor" formControlName="description_FR"></ckeditor>
         </div>
 
         <div class="row mt-3 mb-4">

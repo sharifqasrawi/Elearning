@@ -6,12 +6,26 @@
 
 <form [formGroup]="form" (ngSubmit)="onSubmit()" (change)="formChanged()">
     <div mat-dialog-content>
-        <mat-form-field class="full-width" appearance="legacy">
+        <mat-form-field>
+            <mat-label translate>COMMON.LANGUAGE</mat-label>
+            <mat-select formControlName="currentLang"  (ngModelChange)="onChangeLang()">
+                <mat-option *ngFor="let lang of languages" [value]="lang">
+                    {{lang}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+        <mat-form-field class="full-width" appearance="legacy" *ngIf="currentLang === 'en'">
             <mat-label translate>COMMON.TITLE</mat-label>
-            <input type="text" matInput formControlName="title_EN" placeholder="Enter session title">
+            <input type="text" matInput formControlName="title_EN" placeholder="In English">
             <mat-error *ngIf="!form.controls.title_EN.valid && form.controls.title_EN.touched">
                 {{'VALIDATION.REQUIRED' | translate}}
             </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="full-width" appearance="legacy" *ngIf="currentLang === 'fr'">
+            <mat-label translate>COMMON.TITLE</mat-label>
+            <input type="text" matInput formControlName="title_FR" placeholder="En Français">
         </mat-form-field>
 
         <mat-form-field class="full-width mt-2" appearance="legacy">

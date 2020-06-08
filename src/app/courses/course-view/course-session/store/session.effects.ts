@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Actions, Effect, ofType } from '@ngrx/effects';
@@ -17,6 +18,11 @@ export class HomeSessionEffects {
     token = '';
     userId = '';
 
+    errorAccessDenied: string = '';
+    error404: string = '';
+    errorOccured: string = '';
+
+
     @Effect()
     fetchSession = this.actions$.pipe(
         ofType(HomeSessionActions.FETCH_START),
@@ -31,16 +37,17 @@ export class HomeSessionEffects {
                         return new HomeSessionActions.FetchSuccess(resData.session);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new HomeSessionActions.FetchFail(['Access Denied']));
+                                return of(new HomeSessionActions.FetchFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new HomeSessionActions.FetchFail(['Error 404. Not Found']));
+                                return of(new HomeSessionActions.FetchFail([this.error404]));
                             case 400:
                                 return of(new HomeSessionActions.FetchFail(errorRes.error.errors));
                             default:
-                                return of(new HomeSessionActions.FetchFail(['Oops! An error occured']));
+                                return of(new HomeSessionActions.FetchFail([this.errorOccured]));
                         }
                     })
                 )
@@ -67,16 +74,17 @@ export class HomeSessionEffects {
                         return new HomeSessionActions.SetCurrentSessionSuccess(resData);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new HomeSessionActions.SetCurrentSessionFail(['Access Denied']));
+                                return of(new HomeSessionActions.SetCurrentSessionFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new HomeSessionActions.SetCurrentSessionFail(['Error 404. Not Found']));
+                                return of(new HomeSessionActions.SetCurrentSessionFail([this.error404]));
                             case 400:
                                 return of(new HomeSessionActions.SetCurrentSessionFail(errorRes.error.errors));
                             default:
-                                return of(new HomeSessionActions.SetCurrentSessionFail(['Oops! An error occured']));
+                                return of(new HomeSessionActions.SetCurrentSessionFail([this.errorOccured]));
                         }
                     })
                 )
@@ -86,17 +94,26 @@ export class HomeSessionEffects {
     constructor(
         private actions$: Actions,
         private http: HttpClient,
-        private store: Store<fromApp.AppState>
+        private store: Store<fromApp.AppState>,
+        private translate:TranslateService
     ) {
         this.store.select('login')
-        .pipe(
-            map(authState => authState.user)
-        )
-        .subscribe(user => {
-            if (user) {
-                this.token = user.token;
-                this.userId = user.id;
-            }
+            .pipe(
+                map(authState => authState.user)
+            )
+            .subscribe(user => {
+                if (user) {
+                    this.token = user.token;
+                    this.userId = user.id;
+                }
+            });
+    }
+
+    private getErrorsTranslations() {
+        this.translate.get(['ERRORS.ACCESS_DENIED', 'ERRORS.ERROR404', 'ERRORS.OOPS']).subscribe(trans => {
+            this.errorAccessDenied = trans['ERRORS.ACCESS_DENIED'];
+            this.error404 = trans['ERRORS.ERROR404'];
+            this.errorOccured = trans['ERRORS.OOPS'];
         });
     }
 }

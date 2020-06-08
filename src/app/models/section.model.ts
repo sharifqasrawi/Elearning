@@ -11,6 +11,8 @@ export class Section {
         public updatedBy?: string,
         public deletedAt?: Date,
         public deletedBy?: string,
-        public sessions?: Session[]
+        public sessions?: Session[],
+        public name_FR?: string,
+        public slug_FR?: string,
     ){}
 }

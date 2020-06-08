@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { Question } from './../../models/question.model';
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
@@ -30,22 +31,28 @@ export class QuizComponent implements OnInit {
 
   isAuthenticated = false;
 
+  currentLang: string = null;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private sanitizer: DomSanitizer,
-    private store: Store<fromApp.AppState>
-
+    private store: Store<fromApp.AppState>,
+    private translate: TranslateService
   ) { }
 
   ngOnInit(): void {
+    this.currentLang = this.translate.currentLang;
+    this.translate.onLangChange.subscribe(() => this.currentLang = this.translate.currentLang);
+
     this.route.params.subscribe((params: Params) => {
       this.quizId = +params.quizId;
-      this.quizTitle = (params.quizSlug as string).split('-').join(' ');
+      // this.quizTitle = (params.quizSlug as string).split('-').join(' ');
+
       this.breadcrumbLinks = [
         { url: '/', label: 'Home', translate: true },
         { url: '/quizzes', label: 'Quizzes', translate: true },
-        { label: `${this.quizTitle}` },
+        // { label: `${this.quizTitle}` },
       ];
     });
 
@@ -64,6 +71,13 @@ export class QuizComponent implements OnInit {
 
       this.startingQuiz = state.startingQuiz;
       this.startedQuiz = state.startedQuiz;
+
+      // if (this.quiz) {
+      //   if (this.currentLang === 'en')
+      //     this.quizTitle = this.quiz.title_EN;
+      //   else if (this.currentLang === 'fr')
+      //     this.quizTitle = this.quiz.title_FR;
+      // }
 
       if (this.startedQuiz) {
         this.router.navigate(['start'], { relativeTo: this.route });

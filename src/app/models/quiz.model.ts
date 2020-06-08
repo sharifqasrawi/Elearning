@@ -17,6 +17,9 @@ export class Quiz {
         public updatedBy?: string,
         public deletedAt?: Date,
         public deletedBy?: string,
-        public questions?: Question[]
+        public questions?: Question[],
+        public title_FR?: string,
+        public slug_FR?: string,
+        public description_FR?: string,
     ) { }
 }

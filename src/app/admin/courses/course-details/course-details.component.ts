@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { Component, OnInit } from '@angular/core';
 import { ThemePalette } from '@angular/material/core';
 import { Store } from '@ngrx/store';
@@ -33,6 +34,7 @@ export class CourseDetailsComponent implements OnInit {
   colorPrimary: ThemePalette = 'primary';
   colorAccent: ThemePalette = 'accent';
 
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -41,6 +43,8 @@ export class CourseDetailsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    
+
     this.route.params.subscribe((params: Params) => {
       this.courseId = +params.courseId;
     });
@@ -77,7 +81,8 @@ export class CourseDetailsComponent implements OnInit {
 
   }
 
-  onRefresh(){
+  onRefresh() {
     this.store.dispatch(new CoursesActions.FetchStart());
+    
   }
 }

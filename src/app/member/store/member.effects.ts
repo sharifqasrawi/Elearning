@@ -66,7 +66,7 @@ export class MemberEffects {
 
             return this.http.get<{ courses: Course[] }>(environment.API_BASE_URL + 'favorites/courses',
                 {
-                    // headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
                     params: new HttpParams().set('userId', this.userId)
                 })
                 .pipe(
@@ -488,74 +488,6 @@ export class MemberEffects {
                 )
         })
     );
-
-    // @Effect()
-    // likeCourse = this.actions$.pipe(
-    //     ofType(MemberActions.LIKE_START),
-    //     switchMap((likeData: MemberActions.LikeStart) => {
-    //         return this.http.post<{ course: Course }>(environment.API_BASE_URL + 'likes/like-course',
-    //             {
-    //                 courseId: likeData.payload.courseId,
-    //                 userId: this.userId
-    //             },
-    //             {
-    //                 headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
-    //                 params: new HttpParams().set('action', likeData.payload.action)
-    //             })
-    //             .pipe(
-    //                 map(resData => {
-    //                     return new MemberActions.LikeSuccess(resData.course);
-    //                 }),
-    //                 catchError(errorRes => {
-    //                     switch (errorRes.status) {
-    //                         case 403:
-    //                         case 401:
-    //                             return of(new MemberActions.LikeFail([this.errorAccessDenied]));
-    //                         case 404:
-    //                             return of(new MemberActions.LikeFail([this.error404]));
-    //                         case 400:
-    //                             return of(new MemberActions.LikeFail(errorRes.error.errors));
-    //                         default:
-    //                             return of(new MemberActions.LikeFail([this.errorOccured]));
-    //                     }
-    //                 })
-    //             )
-    //     })
-    // );
-
-    // @Effect()
-    // enrollInCourse = this.actions$.pipe(
-    //     ofType(MemberActions.ENROLL_START),
-    //     switchMap((enrollData: MemberActions.EnrollStart) => {
-    //         return this.http.post<{ course: Course }>(environment.API_BASE_URL + 'classes/enroll',
-    //             {
-    //                 classId: enrollData.payload.classId,
-    //                 userId: this.userId
-    //             },
-    //             {
-    //                 headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
-    //                 params: new HttpParams().set('action', enrollData.payload.action)
-    //             })
-    //             .pipe(
-    //                 map(resData => {
-    //                     return new MemberActions.EnrollSuccess(resData.course);
-    //                 }),
-    //                 catchError(errorRes => {
-    //                     switch (errorRes.status) {
-    //                         case 403:
-    //                         case 401:
-    //                             return of(new MemberActions.EnrollFail([this.errorAccessDenied]));
-    //                         case 404:
-    //                             return of(new MemberActions.EnrollFail([this.error404]));
-    //                         case 400:
-    //                             return of(new MemberActions.EnrollFail(errorRes.error.errors));
-    //                         default:
-    //                             return of(new MemberActions.EnrollFail([this.errorOccured]));
-    //                     }
-    //                 })
-    //             )
-    //     })
-    // );
 
     constructor(
         private actions$: Actions,

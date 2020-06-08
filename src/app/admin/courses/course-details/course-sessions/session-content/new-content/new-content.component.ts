@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
@@ -18,7 +19,8 @@ export interface DialogData {
   type: string,
   content: string,
   id: number,
-  note?: string
+  note?: string,
+  content_FR?: string
 }
 
 @Component({
@@ -58,23 +60,30 @@ export class NewContentComponent implements OnInit, OnDestroy {
   codeType = false;
   resourceType = false;
 
+  siteLanguages = ['en', 'fr'];
+  currentLang: string = null;
+
   constructor(
     private dialog: MatDialog,
     public dialogRef: MatDialogRef<NewContentComponent>,
     private store: Store<fromApp.AppState>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData) { }
+    @Inject(MAT_DIALOG_DATA) public data: DialogData,
+    private translate: TranslateService) { }
 
 
 
   ngOnInit(): void {
     this.editMode = this.data.editMode;
+    this.currentLang = this.translate.currentLang;
 
     if (!this.editMode) {
       this.form = new FormGroup({
         order: new FormControl(this.data.order, [Validators.required]),
         type: new FormControl(null, [Validators.required]),
         content: new FormControl(null, [Validators.required]),
-        note: new FormControl(null)
+        content_FR: new FormControl(null),
+        note: new FormControl(null),
+        currentLang: new FormControl(this.currentLang)
       });
     }
     else {
@@ -82,7 +91,9 @@ export class NewContentComponent implements OnInit, OnDestroy {
         order: new FormControl(this.data.order, [Validators.required]),
         type: new FormControl(this.data.type, [Validators.required]),
         content: new FormControl(this.data.content, [Validators.required]),
-        note: new FormControl(this.data.note)
+        content_FR: new FormControl(this.data.content_FR),
+        note: new FormControl(this.data.note),
+        currentLang: new FormControl(this.currentLang)
       });
       this.onChangeType(this.data.type);
     }
@@ -100,6 +111,7 @@ export class NewContentComponent implements OnInit, OnDestroy {
         sessionId: this.data.editedSessionId,
         type: this.form.value.type,
         content: this.form.value.content,
+        content_FR: this.form.value.content_FR,
         order: this.form.value.order,
         note: this.form.value.note
       }));
@@ -108,6 +120,7 @@ export class NewContentComponent implements OnInit, OnDestroy {
         sessionId: this.data.editedSessionId,
         type: this.form.value.type.toLowerCase(),
         content: this.form.value.content,
+        content_FR: this.form.value.content_FR,
         order: this.form.value.order,
         note: this.form.value.note
       }));
@@ -153,7 +166,7 @@ export class NewContentComponent implements OnInit, OnDestroy {
     }
   }
 
-  onSelectLanguage(){
+  onSelectLanguage() {
     this.codeEditorOptions = {
       ...this.codeEditorOptions,
       language: this.form.value.note
@@ -214,6 +227,13 @@ export class NewContentComponent implements OnInit, OnDestroy {
       this.dialog.closeAll();
     }
   }
+
+  onChangeLang() {
+    const lang = this.form.value.currentLang;
+
+    this.currentLang = lang;
+  }
+
 
   private markAsDirty(group: FormGroup): void {
     group.markAsDirty();

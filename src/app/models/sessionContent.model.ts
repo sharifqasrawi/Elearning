@@ -4,6 +4,8 @@ export class SessionContent {
         public type: string,
         public content: string,
         public order: number,
-        public note?: string
+        public note?: string,
+        public content_FR?: string,
+
     ) { }
 }

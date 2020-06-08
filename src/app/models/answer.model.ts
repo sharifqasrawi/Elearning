@@ -11,5 +11,6 @@ export class Answer {
         public updatedBy?:string,
         public deletedAt?:Date,
         public deletedBy?:string,
-    ) { }
+        public text_FR?: string,
+        ) { }
 }

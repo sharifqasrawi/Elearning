@@ -1,7 +1,7 @@
 <div class="adminPageBottom">
     <h1>
         <mat-icon>help</mat-icon>
-       {{ 'DASHBOARD.MY_QUIZZES.MY_QUIZZES'  | translate}}
+        {{ 'DASHBOARD.MY_QUIZZES.MY_QUIZZES'  | translate}}
     </h1>
 
     <hr>
@@ -47,15 +47,27 @@
                     </td>
                 </ng-container>
 
-                <!-- quizId Column -->
-                <ng-container matColumnDef="quizTitle">
+                <!-- quiz title en Column -->
+                <ng-container matColumnDef="quizTitle_EN" *ngIf="currentLang === 'en'">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> Quiz </th>
                     <td mat-cell *matCellDef="let row">
-                        <a [routerLink]="['/quizzes', row.quizId, generateQuizSlug(row.quizTitle)]">
-                            {{row.quizTitle}}
+                        <a [routerLink]="['/quizzes', row.quizId, generateQuizSlug(row.quizTitle_EN)]">
+                            {{row.quizTitle_EN}}
                         </a>
                     </td>
                 </ng-container>
+
+
+                <!-- quiz title fr Column -->
+                <ng-container matColumnDef="quizTitle_FR" *ngIf="currentLang === 'fr'">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> Quiz </th>
+                    <td mat-cell *matCellDef="let row">
+                        <a [routerLink]="['/quizzes', row.quizId, generateQuizSlug(row.quizTitle_FR)]">
+                            {{row.quizTitle_FR}}
+                        </a>
+                    </td>
+                </ng-container>
+
 
                 <!-- takeDateTime Column -->
                 <ng-container matColumnDef="takeDateTime">
@@ -66,7 +78,8 @@
 
                 <!-- isStarted Column -->
                 <ng-container matColumnDef="isStarted">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ 'DASHBOARD.MY_QUIZZES.STARTED' | translate }} </th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        {{ 'DASHBOARD.MY_QUIZZES.STARTED' | translate }} </th>
                     <td mat-cell *matCellDef="let row">
                         <fa-icon [icon]="faCheckCircle" *ngIf="row.isStarted" class="text-success"></fa-icon>
                         <fa-icon [icon]="faTimesCircle" *ngIf="!row.isStarted" class="text-danger">
@@ -76,7 +89,8 @@
 
                 <!-- isOngoing Column -->
                 <ng-container matColumnDef="isOngoing">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header>  {{ 'DASHBOARD.MY_QUIZZES.ONGOING' | translate }} </th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        {{ 'DASHBOARD.MY_QUIZZES.ONGOING' | translate }} </th>
                     <td mat-cell *matCellDef="let row">
                         <fa-icon [icon]="faCheckCircle" *ngIf="row.isOngoing" class="text-success"></fa-icon>
                         <fa-icon [icon]="faTimesCircle" *ngIf="!row.isOngoing" class="text-danger">
@@ -86,7 +100,8 @@
 
                 <!-- isOngoing Column -->
                 <ng-container matColumnDef="isSubmitted">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header>  {{ 'DASHBOARD.MY_QUIZZES.SUBMITTED' | translate }} </th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        {{ 'DASHBOARD.MY_QUIZZES.SUBMITTED' | translate }} </th>
                     <td mat-cell *matCellDef="let row">
                         <fa-icon [icon]="faCheckCircle" *ngIf="row.isSubmitted" class="text-success"></fa-icon>
                         <fa-icon [icon]="faTimesCircle" *ngIf="!row.isSubmitted" class="text-danger">
@@ -96,10 +111,15 @@
 
                 <!-- result Column -->
                 <ng-container matColumnDef="result">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ 'DASHBOARD.MY_QUIZZES.RESULT' | translate }}</th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        {{ 'DASHBOARD.MY_QUIZZES.RESULT' | translate }}</th>
                     <td mat-cell *matCellDef="let row">
-                        <span class="text-success" *ngIf="row.result >= 70">Passed ({{row.result}} %)</span>
-                        <span class="text-danger" *ngIf="row.result < 70">Failed ({{row.result}} %)</span>
+                        <span class="text-success"
+                            *ngIf="row.result >= 70">{{ 'DASHBOARD.MY_QUIZZES.PASSED' | translate }} ({{row.result}}
+                            %)</span>
+                        <span class="text-danger"
+                            *ngIf="row.result < 70">{{ 'DASHBOARD.MY_QUIZZES.FAILED' | translate }} ({{row.result}}
+                            %)</span>
                     </td>
                 </ng-container>
 

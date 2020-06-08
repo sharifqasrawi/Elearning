@@ -7,6 +7,7 @@ export class UserQuiz {
         public isStarted: boolean,
         public isSubmitted?: boolean,
         public result?: number,
-        public quizTitle?: string
+        public quizTitle_EN?: string,
+        public quizTitle_FR?: string,
     ) { }
 }

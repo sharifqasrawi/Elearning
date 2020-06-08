@@ -34,19 +34,38 @@ export class ListQuizzesComponent implements OnInit {
 
   count = 0;
 
-  displayedColumns: string[] = ['id', 'title_EN', 'isPublished', 'createdBy', 'createdAt', 'actions'];
+  displayedColumns: string[];
   dataSource: MatTableDataSource<Quiz>;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
+  currentLang: string = null;
+
   constructor(
     private store: Store<fromApp.AppState>,
     private dialog: MatDialog,
-    private translate:TranslateService
+    private translate: TranslateService
   ) { }
 
   ngOnInit(): void {
+    this.currentLang = this.translate.currentLang;
+    if (this.currentLang === 'en') {
+      this.displayedColumns = ['id', 'title_EN', 'isPublished', 'createdBy', 'createdAt', 'actions'];
+    } else if (this.currentLang === 'fr') {
+      this.displayedColumns = ['id', 'title_FR', 'isPublished', 'createdBy', 'createdAt', 'actions'];
+    }
+
+    this.translate.onLangChange.subscribe(() => {
+      this.currentLang = this.translate.currentLang;
+      if (this.currentLang === 'en') {
+        this.displayedColumns = ['id', 'title_EN', 'isPublished', 'createdBy', 'createdAt', 'actions'];
+      } else if (this.currentLang === 'fr') {
+        this.displayedColumns = ['id', 'title_FR', 'isPublished', 'createdBy', 'createdAt', 'actions'];
+      }
+    });
+
+
     if (!this.quizzes)
       this.store.dispatch(new QuizzesActions.FetchQuizzesStart());
 

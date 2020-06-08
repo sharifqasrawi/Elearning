@@ -2,7 +2,7 @@
     <h1>
         <mat-icon>airplay</mat-icon>
         {{ 'COURSES.COURSES' | translate }}
-        [ <span [countUp]="count" >0</span> ]
+        [ <span [countUp]="count">0</span> ]
     </h1>
     <hr>
 
@@ -52,26 +52,38 @@
                 </ng-container>
 
                 <!-- title en Column -->
-                <ng-container matColumnDef="title_EN">
+                <ng-container matColumnDef="title_EN" *ngIf="currentLang === 'en'">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ 'COMMON.TITLE' | translate }} </th>
-                    <td mat-cell *matCellDef="let row"> 
+                    <td mat-cell *matCellDef="let row">
                         <a [routerLink]="['/admin', 'courses', row.id ,row.slug_EN]">
                             {{row.title_EN}}
                         </a>
                     </td>
                 </ng-container>
 
-                <!-- category Column -->
-                <ng-container matColumnDef="category">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ 'ADMINISTRATION.CATEGORIES.CATEGORY' | translate }} </th>
-                    <td mat-cell *matCellDef="let row"> {{row.category.title_EN}} </td>
+                <!-- title fr Column -->
+                <ng-container matColumnDef="title_FR" *ngIf="currentLang === 'fr'">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ 'COMMON.TITLE' | translate }} </th>
+                    <td mat-cell *matCellDef="let row">
+                        <a [routerLink]="['/admin', 'courses', row.id ,row.slug_FR]">
+                            {{row.title_FR}}
+                        </a>
+                    </td>
                 </ng-container>
 
+                <!-- category Column -->
+                <ng-container matColumnDef="category">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        {{ 'ADMINISTRATION.CATEGORIES.CATEGORY' | translate }} </th>
+                    <td mat-cell *matCellDef="let row">
+                        {{ currentLang === 'en' ? row.category.title_EN : row.category.title_FR}}
+                    </td>
+                </ng-container>
 
                 <!-- Level Column -->
                 <ng-container matColumnDef="level">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ 'COURSE.LEVEL' | translate }} </th>
-                    <td mat-cell *matCellDef="let row"> {{row.level}} </td>
+                    <td mat-cell *matCellDef="let row">  {{ 'LEVELS.' + row.level.toUpperCase() | translate }} </td>
                 </ng-container>
 
                 <!-- Duration Column -->

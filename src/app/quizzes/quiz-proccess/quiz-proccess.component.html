@@ -30,7 +30,8 @@
         <h3>
             <strong> {{ 'QUIZZES.QUESTION' | translate }} {{ currentQuestionIndex + 1 }}:</strong>
         </h3>
-        <div [innerHTML]="getSanitizedHtml(questions[currentQuestionIndex].text_EN)"></div>
+        <div *ngIf="currentLang === 'en'" [innerHTML]="getSanitizedHtml(questions[currentQuestionIndex].text_EN)"></div>
+        <div *ngIf="currentLang === 'fr'" [innerHTML]="getSanitizedHtml(questions[currentQuestionIndex].text_FR)"></div>
         <img [src]="getSanitizedImage(questions[currentQuestionIndex].imagePath)"
             *ngIf="questions[currentQuestionIndex].imagePath" width="100%">
 
@@ -45,7 +46,8 @@
                 <mat-radio-button class="answers-radio-button" [checked]="onCheckIfChoiceSelected(answer.id)"
                     *ngFor="let answer of questions[currentQuestionIndex].answers" [value]="answer.id"
                     [disabled]="isSubmitted">
-                    <span [innerHTML]="getSanitizedHtml(answer.text_EN)"></span>
+                    <span *ngIf="currentLang === 'en'" [innerHTML]="getSanitizedHtml(answer.text_EN)"></span>
+                    <span *ngIf="currentLang === 'fr'" [innerHTML]="getSanitizedHtml(answer.text_FR)"></span>
                     <img [src]="getSanitizedImage(answer.imagePath)" *ngIf="answer.imagePath" width="100%">
                 </mat-radio-button>
             </mat-radio-group>

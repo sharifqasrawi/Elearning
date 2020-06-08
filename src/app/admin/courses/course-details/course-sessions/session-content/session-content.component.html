@@ -4,7 +4,7 @@
             <div class="col-lg-7">
                 <h2>
                     <fa-icon [icon]="faEdit"></fa-icon>
-                    {{ loadingSession ? ( 'COMMON.LOADING' | translate ):  editedSession.title_EN }}
+                    {{ loadingSession ? ( 'COMMON.LOADING' | translate ):  (currentLang === 'en' ? editedSession.title_EN  : editedSession.title_FR) }}
                 </h2>
             </div>
             <div class="col-lg-1">
@@ -46,7 +46,7 @@
 
                             <div class="editButton">
                                 <button class="btn btn-warning btn-sm"
-                                    (click)="onEditContent(content.id, content.order, content.type, content.content, content.note)">
+                                    (click)="onEditContent(content.id, content.order, content.type, content.content, content.content_FR, content.note)">
                                     <fa-icon [icon]="faEdit" style="color: white; font-size: 10px;"></fa-icon>
                                 </button>
                             </div>
@@ -57,7 +57,11 @@
                                 </button>
                             </div>
 
-                            <div [innerHTML]="getSanitizedHtml( content.content )" *ngIf="content.type === 'text'">
+                            <div *ngIf="content.type === 'text'">
+                                <div [innerHTML]="getSanitizedHtml( content.content )" *ngIf="currentLang === 'en'">
+                                </div>
+                                <div [innerHTML]="getSanitizedHtml( content.content_FR )" *ngIf="currentLang === 'fr'">
+                                </div>
                             </div>
 
                             <div *ngIf="content.type === 'code'">
@@ -84,7 +88,7 @@
 
                             <div class="editButton">
                                 <button class="btn btn-warning btn-sm"
-                                    (click)="onEditContent(content.id, content.order, content.type, content.content, content.note)">
+                                    (click)="onEditContent(content.id, content.order, content.type, content.content,content.content_FR, content.note)">
                                     <fa-icon [icon]="faEdit" style="color: white; font-size: 10px;"></fa-icon>
                                 </button>
                             </div>

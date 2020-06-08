@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
@@ -38,13 +39,19 @@ export class SetQuizComponent implements OnInit, OnDestroy {
   publishing = false;
   errors: string[] = null;
 
+  currentLang: string = null;
+
   constructor(
     private store: Store<fromApp.AppState>,
     private route: ActivatedRoute,
     private sanitizer: DomSanitizer,
+    private translate: TranslateService
   ) { }
 
   ngOnInit(): void {
+    this.currentLang = this.translate.currentLang;
+    this.translate.onLangChange.subscribe(() => this.currentLang = this.translate.currentLang);
+
     this.store.dispatch(new QuizzesActions.FetchQuizzesStart());
 
     this.route.params.subscribe((params: Params) => {

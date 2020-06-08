@@ -12,6 +12,8 @@ export class Session {
         public updatedBy?: string,
         public sectionId?: number,
         public courseId?: number,
-        public contents?: SessionContent[]
+        public contents?: SessionContent[],
+        public title_FR?: string,
+        public slug_FR?: string,
     ){}
 }

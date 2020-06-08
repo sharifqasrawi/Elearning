@@ -56,7 +56,7 @@
                 <!-- Severity Column -->
                 <ng-container matColumnDef="severity">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ 'REPORT_BUG.SEVERITY' | translate }} </th>
-                    <td mat-cell *matCellDef="let row"> {{row.severity}} </td>
+                    <td mat-cell *matCellDef="let row"> {{ 'REPORT_BUG.' + row.severity.toUpperCase() | translate}}</td>
                 </ng-container>
 
 

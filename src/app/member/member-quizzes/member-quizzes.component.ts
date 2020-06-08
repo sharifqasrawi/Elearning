@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { Store } from '@ngrx/store';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
@@ -29,18 +30,36 @@ export class MemberQuizzesComponent implements OnInit {
 
   count = 0;
 
-  displayedColumns: string[] = ['id', 'quizTitle', 'takeDateTime', 'isStarted', 'isOngoing', 'isSubmitted', 'result', 'actions'];
+  displayedColumns: string[];
   dataSource: MatTableDataSource<UserQuiz>;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
+  currentLang: string = null;
 
   constructor(
     private store: Store<fromApp.AppState>,
+    private translate: TranslateService
   ) { }
 
   ngOnInit(): void {
+    this.currentLang = this.translate.currentLang;
+    if (this.currentLang === 'en') {
+      this.displayedColumns = ['id', 'quizTitle_EN', 'takeDateTime', 'isStarted', 'isOngoing', 'isSubmitted', 'result', 'actions'];
+    } else if (this.currentLang === 'fr') {
+      this.displayedColumns = ['id', 'quizTitle_FR', 'takeDateTime', 'isStarted', 'isOngoing', 'isSubmitted', 'result', 'actions'];
+    }
+
+    this.translate.onLangChange.subscribe(() => {
+      this.currentLang = this.translate.currentLang;
+      if (this.currentLang === 'en') {
+        this.displayedColumns = ['id', 'quizTitle_EN', 'takeDateTime', 'isStarted', 'isOngoing', 'isSubmitted', 'result', 'actions'];
+      } else if (this.currentLang === 'fr') {
+        this.displayedColumns = ['id', 'quizTitle_FR', 'takeDateTime', 'isStarted', 'isOngoing', 'isSubmitted', 'result', 'actions'];
+      }
+    });
+
     this.store.dispatch(new MemberActions.FetchUserQuizzesStart());
 
     this.store.select('member').subscribe(state => {

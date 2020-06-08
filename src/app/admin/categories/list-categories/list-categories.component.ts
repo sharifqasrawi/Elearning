@@ -38,12 +38,13 @@ export class ListCategoriesComponent implements OnInit {
 
   count = 0;
 
-  displayedColumns: string[] = ['id', 'imagePath', 'title_EN', 'slug', 'createdAt', 'createdBy', 'updatedAt', 'updatedBy', 'actions'];
+  displayedColumns: string[] = null;
   dataSource: MatTableDataSource<Category>;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
+  currentLang: string = null;
 
   constructor(
     private store: Store<fromApp.AppState>,
@@ -53,6 +54,22 @@ export class ListCategoriesComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.currentLang = this.translate.currentLang;
+    if (this.currentLang === 'en') {
+      this.displayedColumns = ['id', 'imagePath', 'title_EN', 'slug', 'createdAt', 'createdBy', 'updatedAt', 'updatedBy', 'actions'];
+    } else if (this.currentLang === 'fr') {
+      this.displayedColumns = ['id', 'imagePath', 'title_FR', 'slug_FR', 'createdAt', 'createdBy', 'updatedAt', 'updatedBy', 'actions'];
+    }
+
+    this.translate.onLangChange.subscribe(() => {
+      this.currentLang = this.translate.currentLang;
+      if (this.currentLang === 'en') {
+        this.displayedColumns = ['id', 'imagePath', 'title_EN', 'slug', 'createdAt', 'createdBy', 'updatedAt', 'updatedBy', 'actions'];
+      } else if (this.currentLang === 'fr') {
+        this.displayedColumns = ['id', 'imagePath', 'title_FR', 'slug_FR', 'createdAt', 'createdBy', 'updatedAt', 'updatedBy', 'actions'];
+      }
+    });
+
     this.store.dispatch(new CategoriesActions.FetchStart());
 
     this.store.select('categories').subscribe(catState => {
@@ -94,7 +111,7 @@ export class ListCategoriesComponent implements OnInit {
   onTrash(id: number) {
     let alertHeader = '';
     let alertMsg = '';
-   this.translate.get(['COMMON.CONFIRM_ACTION', 'COMMON.TRASH_MESSAGE']).subscribe(trans => {
+    this.translate.get(['COMMON.CONFIRM_ACTION', 'COMMON.TRASH_MESSAGE']).subscribe(trans => {
       alertHeader = trans['COMMON.CONFIRM_ACTION'];
       alertMsg = trans['COMMON.TRASH_MESSAGE'];
     });

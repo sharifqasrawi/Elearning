@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { ErrorDialogComponent } from './../../../shared/error-dialog/error-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { StarRatingComponent } from 'ng-starrating';
@@ -47,16 +48,22 @@ export class CourseInfoComponent implements OnInit {
   isAuthenticated = false;
   currentUrl: string = null;
 
+  currentLang: string = null;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private store: Store<fromApp.AppState>,
     private sanitizer: DomSanitizer,
     private dialog: MatDialog,
+    private translate:TranslateService
     // private signalRCoursesService: SignalRCoursesService
   ) { }
 
   ngOnInit(): void {
+    this.currentLang = this.translate.currentLang;
+    this.translate.onLangChange.subscribe(() => this.currentLang = this.translate.currentLang);
+
     this.route.params.subscribe((params: Params) => {
       this.categoryId = +params.categoryId;
       this.categorySlug = params.categorySlug;

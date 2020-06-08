@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { Component, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { FormGroup, FormControl } from '@angular/forms';
@@ -29,16 +30,22 @@ export class QuizzesComponent implements OnInit {
 
   breadcrumbLinks: { url?: string, translate?: boolean, label: string }[];
 
+  currentLang: string = null;
+
   constructor(
     private store: Store<fromApp.AppState>,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private translate: TranslateService
   ) { }
 
   ngOnInit(): void {
+    this.currentLang = this.translate.currentLang;
+    this.translate.onLangChange.subscribe(() => this.currentLang = this.translate.currentLang);
+
     this.store.dispatch(new HomeQuizzesActions.FetchQuizzesStart());
 
     this.searchForm = new FormGroup({
-      title_EN: new FormControl(null)
+      title: new FormControl(null)
     });
 
 
@@ -62,12 +69,15 @@ export class QuizzesComponent implements OnInit {
   }
 
   onSearch() {
-    const searchKey: string = this.searchForm.value.title_EN;
+    const searchKey: string = this.searchForm.value.title;
 
     if (searchKey == '' || searchKey === null) {
       this.quizzes = this.storeQuizzes;
     } else {
-      this.quizzes = this.quizzes.filter(c => c.title_EN.toLowerCase().includes(searchKey.toLowerCase()));
+      if (this.currentLang === 'en')
+        this.quizzes = this.quizzes.filter(c => c.title_EN.toLowerCase().includes(searchKey.toLowerCase()));
+      else if (this.currentLang === 'fr')
+        this.quizzes = this.quizzes.filter(c => c.title_FR.toLowerCase().includes(searchKey.toLowerCase()));
     }
   }
 

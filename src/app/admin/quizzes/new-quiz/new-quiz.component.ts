@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { MatDialog } from '@angular/material/dialog';
@@ -45,22 +46,33 @@ export class NewQuizComponent implements OnInit, OnDestroy {
   loading = false;
   quizCreating = false;
   quizCreated = false;
+  quizUpdating = false;
+  quizUpdated = false;
+
+  siteLanguages = ['en', 'fr'];
+  currentLang: string = null;
 
   constructor(
     private store: Store<fromApp.AppState>,
     private dialog: MatDialog,
     private router: Router,
     private route: ActivatedRoute,
+    private translate: TranslateService
   ) { }
 
 
   ngOnInit(): void {
+    this.currentLang = this.translate.currentLang;
+
     this.form = new FormGroup({
       title_EN: new FormControl(null, [Validators.required]),
       description_EN: new FormControl(null, [Validators.required]),
+      title_FR: new FormControl(null),
+      description_FR: new FormControl(null),
       languages: new FormControl(null, [Validators.required]),
       duration: new FormControl(null, [Validators.required]),
-      imagePath: new FormControl(null, [Validators.required])
+      imagePath: new FormControl(null, [Validators.required]),
+      currentLang: new FormControl(this.translate.currentLang)
     });
 
     this.route.params.subscribe((params: Params) => {
@@ -77,21 +89,26 @@ export class NewQuizComponent implements OnInit, OnDestroy {
 
       this.quizCreating = state.quizCreating;
       this.quizCreated = state.quizCreated;
+      this.quizUpdating = state.quizUpdating;
+      this.quizUpdated = state.quizUpdated;
       this.loading = state.loadingQuizzes;
 
       if (this.quiz) {
         this.form.setValue({
           title_EN: this.quiz.title_EN,
           description_EN: this.quiz.description_EN,
+          title_FR: this.quiz.title_FR,
+          description_FR: this.quiz.description_FR,
           languages: this.quiz.languages,
           duration: this.quiz.duration,
           imagePath: this.quiz.imagePath,
+          currentLang: this.translate.currentLang
         });
 
         this.languages = this.quiz.languages.split('-');
       }
 
-      if (this.quizCreated) {
+      if (this.quizCreated || this.quizUpdated) {
         this.router.navigate(['/admin', 'quizzes']);
       }
     });
@@ -109,6 +126,8 @@ export class NewQuizComponent implements OnInit, OnDestroy {
       this.store.dispatch(new QuizzesActions.CreateQuizStart({
         title_EN: this.form.value.title_EN,
         description_EN: this.form.value.description_EN,
+        title_FR: this.form.value.title_FR,
+        description_FR: this.form.value.description_FR,
         duration: this.form.value.duration,
         imagePath: this.form.value.imagePath,
         languages: this.languages.join('-')
@@ -119,6 +138,8 @@ export class NewQuizComponent implements OnInit, OnDestroy {
         id: this.quizId,
         title_EN: this.form.value.title_EN,
         description_EN: this.form.value.description_EN,
+        title_FR: this.form.value.title_FR,
+        description_FR: this.form.value.description_FR,
         duration: this.form.value.duration,
         imagePath: this.form.value.imagePath,
         languages: this.languages.join('-')
@@ -146,6 +167,13 @@ export class NewQuizComponent implements OnInit, OnDestroy {
       }
     });
 
+  }
+
+
+  onChangeLang() {
+    const lang = this.form.value.currentLang;
+
+    this.currentLang = lang;
   }
 
   add(event: MatChipInputEvent): void {

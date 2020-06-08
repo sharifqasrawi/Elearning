@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Actions, Effect, ofType } from '@ngrx/effects';
@@ -19,6 +20,10 @@ export class AppSettingsEffects {
     userName = '';
     userId = '';
 
+    errorAccessDenied: string = '';
+    error404: string = '';
+    errorOccured: string = '';
+
     @Effect()
     rateApp = this.actions$.pipe(
         ofType(AppSettionsActions.RATE_START),
@@ -36,16 +41,17 @@ export class AppSettingsEffects {
                         return new AppSettionsActions.RateSuccess(resData);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new AppSettionsActions.RateFail(['Access Denied']));
+                                return of(new AppSettionsActions.RateFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new AppSettionsActions.RateFail(['Error 404. Not Found']));
+                                return of(new AppSettionsActions.RateFail([this.error404]));
                             case 400:
                                 return of(new AppSettionsActions.RateFail(errorRes.error.errors));
                             default:
-                                return of(new AppSettionsActions.RateFail(['Oops! An error occured']));
+                                return of(new AppSettionsActions.RateFail([this.errorOccured]));
                         }
                     })
                 )
@@ -65,16 +71,17 @@ export class AppSettingsEffects {
                         return new AppSettionsActions.FetchRateSuccess(resData);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new AppSettionsActions.FetchRateFail(['Access Denied']));
+                                return of(new AppSettionsActions.FetchRateFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new AppSettionsActions.FetchRateFail(['Error 404. Not Found']));
+                                return of(new AppSettionsActions.FetchRateFail([this.error404]));
                             case 400:
                                 return of(new AppSettionsActions.FetchRateFail(errorRes.error.errors));
                             default:
-                                return of(new AppSettionsActions.FetchRateFail(['Oops! An error occured']));
+                                return of(new AppSettionsActions.FetchRateFail([this.errorOccured]));
                         }
                     })
                 )
@@ -84,7 +91,8 @@ export class AppSettingsEffects {
     constructor(
         private actions$: Actions,
         private http: HttpClient,
-        private store: Store<fromApp.AppState>
+        private store: Store<fromApp.AppState>,
+        private translate: TranslateService
     ) {
 
         this.store.select('login')
@@ -98,5 +106,13 @@ export class AppSettingsEffects {
                     this.userId = user.id;
                 }
             });
+    }
+
+    private getErrorsTranslations() {
+        this.translate.get(['ERRORS.ACCESS_DENIED', 'ERRORS.ERROR404', 'ERRORS.OOPS']).subscribe(trans => {
+            this.errorAccessDenied = trans['ERRORS.ACCESS_DENIED'];
+            this.error404 = trans['ERRORS.ERROR404'];
+            this.errorOccured = trans['ERRORS.OOPS'];
+        });
     }
 }

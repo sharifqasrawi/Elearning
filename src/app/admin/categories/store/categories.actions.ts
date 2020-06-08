@@ -38,7 +38,7 @@ export const CLEAR_STATUS = '[Categories] Clear Status';
 export class CreateStart implements Action {
     readonly type = CREATE_START;
 
-    constructor(public payload: { title_En: string, imagePath: string }) { }
+    constructor(public payload: { title_En: string, imagePath: string, title_FR?: string }) { }
 }
 
 export class CreateSuccess implements Action {
@@ -58,7 +58,7 @@ export class CreateFail implements Action {
 export class UpdateStart implements Action {
     readonly type = UPDATE_START;
 
-    constructor(public payload: { id: number, title_En: string, imagePath: string }) { }
+    constructor(public payload: { id: number, title_En: string, imagePath: string, title_FR?: string }) { }
 }
 
 export class UpdateSuccess implements Action {

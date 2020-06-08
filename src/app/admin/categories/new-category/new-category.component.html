@@ -10,17 +10,31 @@
         </div>
 
         <div>
-            <mat-form-field class="full-width" appearance="legacy">
-                <mat-label>Title </mat-label>
-                <input type="text" matInput formControlName="title_EN" >
+            <mat-form-field>
+                <mat-label translate>COMMON.LANGUAGE</mat-label>
+                <mat-select formControlName="currentLang"  (ngModelChange)="onChangeLang()">
+                    <mat-option *ngFor="let lang of languages" [value]="lang">
+                        {{lang}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+
+            <mat-form-field class="full-width" appearance="legacy" *ngIf="currentLang === 'en'">
+                <mat-label translate>COMMON.TITLE </mat-label>
+                <input type="text" matInput formControlName="title_EN" placeholder="In English">
                 <mat-error *ngIf="!form.controls.title_EN.valid && form.controls.title_EN.touched" translate>
-                   VALIDATION.REQUIRED
+                    VALIDATION.REQUIRED
                 </mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="full-width" appearance="legacy" *ngIf="currentLang === 'fr'">
+                <mat-label translate>COMMON.TITLE </mat-label>
+                <input type="text" matInput formControlName="title_FR" placeholder="En Français">
             </mat-form-field>
 
 
             <mat-form-field class="full-width mt-3" appearance="legacy">
-                <mat-label>Image Path </mat-label>
+                <mat-label translate>COMMON.IMAGE_PATH </mat-label>
                 <input readonly type="text" matInput formControlName="imagePath">
                 <mat-error *ngIf="!form.controls.imagePath.valid && form.controls.imagePath.touched" translate>
                     VALIDATION.REQUIRED
@@ -35,7 +49,8 @@
     </div>
 
     <div mat-dialog-actions class="mt-3 float-right">
-        <button type="button" mat-raised-button color="warn" cdkFocusInitial (click)="openDialog()">{{ 'COMMON.CANCEL' | translate }}</button>
+        <button type="button" mat-raised-button color="warn" cdkFocusInitial
+            (click)="openDialog()">{{ 'COMMON.CANCEL' | translate }}</button>
         <button type="submit" mat-raised-button color="accent" [disabled]="!form.valid">
             {{ editMode ? ('COMMON.SAVE' | translate ): ('COMMON.CREATE' | translate ) }}
         </button>

@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { Class } from './../../../models/class.model';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
@@ -20,6 +21,10 @@ export class CoursesEffects {
     userName = '';
     userId = '';
 
+    errorAccessDenied: string = '';
+    error404: string = '';
+    errorOccured: string = '';
+
     @Effect()
     fetchCourses = this.actions$.pipe(
         ofType(CoursesActions.FETCH_START),
@@ -39,17 +44,17 @@ export class CoursesEffects {
                         return new CoursesActions.FetchSuccess(resData.courses);
                     }),
                     catchError(errorRes => {
-
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new CoursesActions.FetchFail(['Access Denied']));
+                                return of(new CoursesActions.FetchFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new CoursesActions.FetchFail(['Error 404. Not Found']));
+                                return of(new CoursesActions.FetchFail([this.error404]));
                             case 400:
                                 return of(new CoursesActions.FetchFail(errorRes.error.errors));
                             default:
-                                return of(new CoursesActions.FetchFail(['Oops! An error occured']));
+                                return of(new CoursesActions.FetchFail([this.errorOccured]));
                         }
                     })
                 )
@@ -69,16 +74,17 @@ export class CoursesEffects {
                         return new CoursesActions.FetchDeletedSuccess(resData.courses);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new CoursesActions.FetchDeletedFail(['Access Denied']));
+                                return of(new CoursesActions.FetchDeletedFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new CoursesActions.FetchDeletedFail(['Error 404. Not Found']));
+                                return of(new CoursesActions.FetchDeletedFail([this.error404]));
                             case 400:
                                 return of(new CoursesActions.FetchDeletedFail(errorRes.error.errors));
                             default:
-                                return of(new CoursesActions.FetchDeletedFail(['Oops! An error occured']));
+                                return of(new CoursesActions.FetchDeletedFail([this.errorOccured]));
                         }
                     })
                 )
@@ -89,11 +95,14 @@ export class CoursesEffects {
     createCourse = this.actions$.pipe(
         ofType(CoursesActions.CREATE_START),
         switchMap((courseData: CoursesActions.CreateStart) => {
-            return this.http.post<{ course: Course }>(environment.API_BASE_URL + 'courses/create-course',
+            return this.http.post<{ createdCourse: Course }>(environment.API_BASE_URL + 'courses/create-course',
                 {
                     Title_EN: courseData.payload.title_EN,
+                    Title_FR: courseData.payload.title_FR,
                     Description_EN: courseData.payload.description_EN,
+                    Description_FR: courseData.payload.description_FR,
                     Prerequisites_EN: courseData.payload.prerequisites_EN,
+                    Prerequisites_FR: courseData.payload.prerequisites_FR,
                     Languages: courseData.payload.languages,
                     Level: courseData.payload.level,
                     Duration: courseData.payload.duration,
@@ -115,19 +124,20 @@ export class CoursesEffects {
                 })
                 .pipe(
                     map(resData => {
-                        return new CoursesActions.CreateSuccess(resData.course);
+                        return new CoursesActions.CreateSuccess(resData.createdCourse);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new CoursesActions.CreateFail(['Access Denied']));
+                                return of(new CoursesActions.CreateFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new CoursesActions.CreateFail(['Error 404. Not Found']));
+                                return of(new CoursesActions.CreateFail([this.error404]));
                             case 400:
                                 return of(new CoursesActions.CreateFail(errorRes.error.errors));
                             default:
-                                return of(new CoursesActions.CreateFail(['Oops! An error occured']));
+                                return of(new CoursesActions.CreateFail([this.errorOccured]));
                         }
                     })
                 )
@@ -152,16 +162,17 @@ export class CoursesEffects {
                         return new CoursesActions.CreateClassSuccess(resData.course);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new CoursesActions.CreateClassFail(['Access Denied']));
+                                return of(new CoursesActions.CreateClassFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new CoursesActions.CreateClassFail(['Error 404. Not Found']));
+                                return of(new CoursesActions.CreateClassFail([this.error404]));
                             case 400:
                                 return of(new CoursesActions.CreateClassFail(errorRes.error.errors));
                             default:
-                                return of(new CoursesActions.CreateClassFail(['Oops! An error occured']));
+                                return of(new CoursesActions.CreateClassFail([this.errorOccured]));
                         }
                     })
                 )
@@ -182,17 +193,17 @@ export class CoursesEffects {
                         return new CoursesActions.FetchNonClassMembersSuccess(resData.nonMembers);
                     }),
                     catchError(errorRes => {
-
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new CoursesActions.FetchNonClassMembersFail(['Access Denied']));
+                                return of(new CoursesActions.FetchNonClassMembersFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new CoursesActions.FetchNonClassMembersFail(['Error 404. Not Found']));
+                                return of(new CoursesActions.FetchNonClassMembersFail([this.error404]));
                             case 400:
                                 return of(new CoursesActions.FetchNonClassMembersFail(errorRes.error.errors));
                             default:
-                                return of(new CoursesActions.FetchNonClassMembersFail(['Oops! An error occured']));
+                                return of(new CoursesActions.FetchNonClassMembersFail([this.errorOccured]));
                         }
                     })
                 )
@@ -208,8 +219,11 @@ export class CoursesEffects {
                 {
                     Id: courseData.payload.id,
                     Title_EN: courseData.payload.title_EN,
+                    Title_FR: courseData.payload.title_FR,
                     Description_EN: courseData.payload.description_EN,
+                    Description_FR: courseData.payload.description_FR,
                     Prerequisites_EN: courseData.payload.prerequisites_EN,
+                    Prerequisites_FR: courseData.payload.prerequisites_FR,
                     Languages: courseData.payload.languages,
                     Level: courseData.payload.level,
                     Duration: courseData.payload.duration,
@@ -233,16 +247,17 @@ export class CoursesEffects {
                         return new CoursesActions.UpdateSuccess(resData.updatedCourse);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new CoursesActions.UpdateFail(['Access Denied']));
+                                return of(new CoursesActions.UpdateFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new CoursesActions.UpdateFail(['Error 404. Not Found']));
+                                return of(new CoursesActions.UpdateFail([this.error404]));
                             case 400:
                                 return of(new CoursesActions.UpdateFail(errorRes.error.errors));
                             default:
-                                return of(new CoursesActions.UpdateFail(['Oops! An error occured']));
+                                return of(new CoursesActions.UpdateFail([this.errorOccured]));
                         }
                     })
                 )
@@ -266,16 +281,17 @@ export class CoursesEffects {
                         return new CoursesActions.PublishUnpublishSuccess(resData.updatedCourse);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new CoursesActions.PublishUnpublishFail(['Access Denied']));
+                                return of(new CoursesActions.PublishUnpublishFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new CoursesActions.PublishUnpublishFail(['Error 404. Not Found']));
+                                return of(new CoursesActions.PublishUnpublishFail([this.error404]));
                             case 400:
                                 return of(new CoursesActions.PublishUnpublishFail(errorRes.error.errors));
                             default:
-                                return of(new CoursesActions.PublishUnpublishFail(['Oops! An error occured']));
+                                return of(new CoursesActions.PublishUnpublishFail([this.errorOccured]));
                         }
                     })
                 )
@@ -300,16 +316,17 @@ export class CoursesEffects {
                         return new CoursesActions.AddRemoveTagSuccess(resData.updatedCourse);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new CoursesActions.AddRemoveTagFail(['Access Denied']));
+                                return of(new CoursesActions.AddRemoveTagFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new CoursesActions.AddRemoveTagFail(['Error 404. Not Found']));
+                                return of(new CoursesActions.AddRemoveTagFail([this.error404]));
                             case 400:
                                 return of(new CoursesActions.AddRemoveTagFail(errorRes.error.errors));
                             default:
-                                return of(new CoursesActions.AddRemoveTagFail(['Oops! An error occured']));
+                                return of(new CoursesActions.AddRemoveTagFail([this.errorOccured]));
                         }
                     })
                 )
@@ -338,16 +355,17 @@ export class CoursesEffects {
                             return new CoursesActions.RestoreSuccess(resData.updatedCourse);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new CoursesActions.TrashRestoreFail(['Access Denied']));
+                                return of(new CoursesActions.TrashRestoreFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new CoursesActions.TrashRestoreFail(['Error 404. Not Found']));
+                                return of(new CoursesActions.TrashRestoreFail([this.error404]));
                             case 400:
                                 return of(new CoursesActions.TrashRestoreFail(errorRes.error.errors));
                             default:
-                                return of(new CoursesActions.TrashRestoreFail(['Oops! An error occured']));
+                                return of(new CoursesActions.TrashRestoreFail([this.errorOccured]));
                         }
                     })
                 )
@@ -370,16 +388,17 @@ export class CoursesEffects {
                         return new CoursesActions.DeleteCommentSuccess(resData.deletedComment);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new CoursesActions.DeleteCommentFail(['Access Denied']));
+                                return of(new CoursesActions.DeleteCommentFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new CoursesActions.DeleteCommentFail(['Error 404. Not Found']));
+                                return of(new CoursesActions.DeleteCommentFail([this.error404]));
                             case 400:
                                 return of(new CoursesActions.DeleteCommentFail(errorRes.error.errors));
                             default:
-                                return of(new CoursesActions.DeleteCommentFail(['Oops! An error occured']));
+                                return of(new CoursesActions.DeleteCommentFail([this.errorOccured]));
                         }
                     })
                 )
@@ -405,16 +424,17 @@ export class CoursesEffects {
                         return new CoursesActions.EnrollUserSuccess(resData.updatedClass);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new CoursesActions.EnrollUserFail(['Access Denied']));
+                                return of(new CoursesActions.EnrollUserFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new CoursesActions.EnrollUserFail(['Error 404. Not Found']));
+                                return of(new CoursesActions.EnrollUserFail([this.error404]));
                             case 400:
                                 return of(new CoursesActions.EnrollUserFail(errorRes.error.errors));
                             default:
-                                return of(new CoursesActions.EnrollUserFail(['Oops! An error occured']));
+                                return of(new CoursesActions.EnrollUserFail([this.errorOccured]));
                         }
                     })
                 )
@@ -424,7 +444,8 @@ export class CoursesEffects {
     constructor(
         private actions$: Actions,
         private http: HttpClient,
-        private store: Store<fromApp.AppState>
+        private store: Store<fromApp.AppState>,
+        private translate: TranslateService
     ) {
 
         this.store.select('login')
@@ -438,5 +459,12 @@ export class CoursesEffects {
                     this.userId = user.id;
                 }
             });
+    }
+    private getErrorsTranslations() {
+        this.translate.get(['ERRORS.ACCESS_DENIED', 'ERRORS.ERROR404', 'ERRORS.OOPS']).subscribe(trans => {
+            this.errorAccessDenied = trans['ERRORS.ACCESS_DENIED'];
+            this.error404 = trans['ERRORS.ERROR404'];
+            this.errorOccured = trans['ERRORS.OOPS'];
+        });
     }
 }

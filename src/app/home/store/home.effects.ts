@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { Course } from './../../models/course.model';
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
@@ -19,6 +20,10 @@ export class HomeEffects {
     token = '';
     userName = '';
 
+    errorAccessDenied: string = '';
+    error404: string = '';
+    errorOccured: string = '';
+
     @Effect()
     fetchCategories = this.actions$.pipe(
         ofType(HomeActions.FETCH_START),
@@ -29,16 +34,17 @@ export class HomeEffects {
                         return new HomeActions.FetchSuccess(resData.categories);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new HomeActions.FetchFail(['Access Denied']));
+                                return of(new HomeActions.FetchFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new HomeActions.FetchFail(['Error 404. Not Found']));
+                                return of(new HomeActions.FetchFail([this.error404]));
                             case 400:
                                 return of(new HomeActions.FetchFail(errorRes.error.errors));
                             default:
-                                return of(new HomeActions.FetchFail(['Oops! An error occured']));
+                                return of(new HomeActions.FetchFail([this.errorOccured]));
                         }
                     })
                 )
@@ -55,16 +61,17 @@ export class HomeEffects {
                         return new HomeActions.FetchLatestCoursesSuccess(resData.courses);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new HomeActions.FetchLatestCoursesFail(['Access Denied']));
+                                return of(new HomeActions.FetchLatestCoursesFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new HomeActions.FetchLatestCoursesFail(['Error 404. Not Found']));
+                                return of(new HomeActions.FetchLatestCoursesFail([this.error404]));
                             case 400:
                                 return of(new HomeActions.FetchLatestCoursesFail(errorRes.error.errors));
                             default:
-                                return of(new HomeActions.FetchLatestCoursesFail(['Oops! An error occured']));
+                                return of(new HomeActions.FetchLatestCoursesFail([this.errorOccured]));
                         }
                     })
                 )
@@ -74,7 +81,8 @@ export class HomeEffects {
     constructor(
         private actions$: Actions,
         private http: HttpClient,
-        private store: Store<fromApp.AppState>
+        private store: Store<fromApp.AppState>,
+        private translate: TranslateService
     ) {
 
         this.store.select('login')
@@ -87,5 +95,13 @@ export class HomeEffects {
                     this.userName = user.firstName + ' ' + user.lastName;
                 }
             });
+    }
+
+    private getErrorsTranslations() {
+        this.translate.get(['ERRORS.ACCESS_DENIED', 'ERRORS.ERROR404', 'ERRORS.OOPS']).subscribe(trans => {
+            this.errorAccessDenied = trans['ERRORS.ACCESS_DENIED'];
+            this.error404 = trans['ERRORS.ERROR404'];
+            this.errorOccured = trans['ERRORS.OOPS'];
+        });
     }
 }

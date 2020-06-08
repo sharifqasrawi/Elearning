@@ -14,6 +14,8 @@ export class Question {
         public updatedBy?: string,
         public deletedAt?: Date,
         public deletedBy?: string,
-        public answers?: Answer[]
+        public answers?: Answer[],
+        public text_FR?: string,
+        public slug_FR?: string,
     ) { }
 }

@@ -39,11 +39,13 @@ export class CourseSectionsComponent implements OnInit {
 
   count = 0;
 
-  displayedColumns: string[] = ['id', 'order', 'name_EN', 'createdAt', 'createdBy', 'updatedAt', 'updatedBy', 'actions'];
+  displayedColumns: string[];
   dataSource: MatTableDataSource<Section>;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
+
+  currentLang: string = null;
 
   constructor(
     private dialog: MatDialog,
@@ -54,6 +56,21 @@ export class CourseSectionsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.currentLang = this.translate.currentLang;
+    if (this.currentLang === 'en') {
+      this.displayedColumns = ['id', 'order', 'name_EN', 'createdAt', 'createdBy', 'updatedAt', 'updatedBy', 'actions'];
+    } else if (this.currentLang === 'fr') {
+      this.displayedColumns = ['id', 'order', 'name_FR', 'createdAt', 'createdBy', 'updatedAt', 'updatedBy', 'actions'];
+    }
+
+    this.translate.onLangChange.subscribe(() => {
+      this.currentLang = this.translate.currentLang;
+      if (this.currentLang === 'en') {
+        this.displayedColumns = ['id', 'order', 'name_EN', 'createdAt', 'createdBy', 'updatedAt', 'updatedBy', 'actions'];
+      } else if (this.currentLang === 'fr') {
+        this.displayedColumns = ['id', 'order', 'name_FR', 'createdAt', 'createdBy', 'updatedAt', 'updatedBy', 'actions'];
+      }
+    });
 
     this.route.params.subscribe((params: Params) => {
       this.courseId = +params.courseId;
@@ -68,7 +85,6 @@ export class CourseSectionsComponent implements OnInit {
       this.creating = state.creating;
       this.deleting = state.deleting;
       this.errors = state.errors;
-
 
       if (state.created) {
         this.toastr.success('Saved', 'Section created successfully');
@@ -127,7 +143,7 @@ export class CourseSectionsComponent implements OnInit {
     });
   }
 
-  onEdit(sectionId: number, name_EN: string, order: number) {
+  onEdit(sectionId: number, name_EN: string, name_FR: string, order: number) {
     const dialogRef = this.dialog.open(NewSectionComponent,
       {
         width: '650px',
@@ -136,6 +152,7 @@ export class CourseSectionsComponent implements OnInit {
           courseId: this.courseId,
           sectionId: sectionId,
           name_EN: name_EN,
+          name_FR: name_FR,
           order: order,
           editMode: true
 
@@ -150,7 +167,7 @@ export class CourseSectionsComponent implements OnInit {
   onRefresh() {
     this.store.dispatch(new SectionsActions.FetchStart(this.courseId));
     this.setTable();
-   
+
   }
 
 

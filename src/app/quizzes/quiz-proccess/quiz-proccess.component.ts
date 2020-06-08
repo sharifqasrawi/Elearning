@@ -43,6 +43,8 @@ export class QuizProccessComponent implements OnInit {
   firstQuestionIndex: number = null;
   lastQuestionIndex: number = null;
 
+  currentLang: string = null;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -53,6 +55,9 @@ export class QuizProccessComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.currentLang = this.translate.currentLang;
+    this.translate.onLangChange.subscribe(() => this.currentLang = this.translate.currentLang);
+
     this.route.params.subscribe((params: Params) => {
       this.quizId = +params.quizId;
       this.quizSlug = params.quizSlug;
@@ -72,16 +77,18 @@ export class QuizProccessComponent implements OnInit {
       this.choosing = state.choosingAnswer;
       this.firstQuestionIndex = 0;
 
-      if (state.currentQuiz)
+
+      if (state.currentQuiz) {
         this.isSubmitted = state.currentQuiz.isSubmitted;
+      }
       this.lastQuestionIndex = state.questions.length - 1;
     });
 
   }
 
   onSubmitQuiz() {
-    let alertHeader ='';
-    let alertMsg ='';
+    let alertHeader = '';
+    let alertMsg = '';
 
     this.translate.get(['QUIZZES.SUBMIT_QUIZ', 'QUIZZES.SUBMIT_QUIZ_MSG']).subscribe(trans => {
       alertHeader = trans['QUIZZES.SUBMIT_QUIZ'];

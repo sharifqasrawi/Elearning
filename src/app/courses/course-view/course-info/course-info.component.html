@@ -42,7 +42,7 @@
     <div class="row mt-2">
         <div class="col-lg-6">
             <h3>
-                <strong translate> COURSE.LEVEL </strong>: {{ course.level }}
+                <strong translate> COURSE.LEVEL </strong>:  {{ 'LEVELS.' + course.level.toUpperCase() | translate }}
             </h3>
         </div>
         <div class="col-lg-6">
@@ -63,12 +63,14 @@
 
     <div>
         <h3 class="alert alert-info"><strong translate>COURSE.PREREQUISITES</strong></h3>
-        <div [innerHtml]="getSanitizedHtml(course.prerequisites_EN)" style="padding-left: 23px;"></div>
+        <div *ngIf="currentLang === 'en'" [innerHtml]="getSanitizedHtml(course.prerequisites_EN)" style="padding-left: 23px;"></div>
+        <div *ngIf="currentLang === 'fr'" [innerHtml]="getSanitizedHtml(course.prerequisites_FR)" style="padding-left: 23px;"></div>
     </div>
 
     <div>
         <h3 class="alert alert-info"><strong translate>COURSE.DESCRIPTION</strong></h3>
-        <div [innerHtml]="getSanitizedHtml(course.description_EN)" style="padding-left: 23px;"></div>
+        <div *ngIf="currentLang === 'en'" [innerHtml]="getSanitizedHtml(course.description_EN)" style="padding-left: 23px;"></div>
+        <div *ngIf="currentLang === 'fr'" [innerHtml]="getSanitizedHtml(course.description_FR)" style="padding-left: 23px;"></div>
     </div>
 </div>
 

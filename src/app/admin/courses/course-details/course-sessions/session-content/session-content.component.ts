@@ -44,6 +44,8 @@ export class SessionContentComponent implements OnInit, OnDestroy {
   loadingSession = false;
   loadingContents = false;
 
+  currentLang: string = null;
+
   constructor(
     private store: Store<fromApp.AppState>,
     private route: ActivatedRoute,
@@ -55,6 +57,10 @@ export class SessionContentComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
+    this.currentLang = this.translate.currentLang;
+    this.translate.onLangChange.subscribe(() => {
+      this.currentLang = this.translate.currentLang;
+    });
 
     this.route.params.subscribe((params: Params) => {
       this.editedSessionId = +params.id;
@@ -105,7 +111,7 @@ export class SessionContentComponent implements OnInit, OnDestroy {
   }
 
 
-  onEditContent(contentId: number, contentOrder: number, contentType: string, content: string, note: string) {
+  onEditContent(contentId: number, contentOrder: number, contentType: string, content: string, content_FR: string, note: string) {
 
     this.dialog.open(NewContentComponent, {
       width: '750px',
@@ -116,6 +122,7 @@ export class SessionContentComponent implements OnInit, OnDestroy {
         order: contentOrder,
         type: contentType,
         content: content,
+        content_FR: content_FR,
         id: contentId,
         note: note
       }

@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { ErrorDialogComponent } from './../../../shared/error-dialog/error-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { map } from 'rxjs/operators';
@@ -45,15 +46,21 @@ export class CourseSessionComponent implements OnInit {
 
   saveChecked = false;
 
+  currentLang: string = null;
+
   constructor(
     private store: Store<fromApp.AppState>,
     private route: ActivatedRoute,
     private router: Router,
     private sanitizer: DomSanitizer,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private translate: TranslateService
   ) { }
 
   ngOnInit(): void {
+    this.currentLang = this.translate.currentLang;
+    this.translate.onLangChange.subscribe(() => this.currentLang = this.translate.currentLang);
+    
     this.store.select('login')
       .pipe(map(state => state.isAuthenticated))
       .subscribe(isAuth => this.isAuthenticated = isAuth);
@@ -70,7 +77,7 @@ export class CourseSessionComponent implements OnInit {
         this.errors = state.errors;
       });
 
-     
+
 
       if (this.isAuthenticated) {
         this.store.dispatch(new MemberActions.FetchSavedSessionsStart());

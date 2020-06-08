@@ -34,19 +34,36 @@ export class TrashedQuizzesComponent implements OnInit {
 
   count = 0;
 
-  displayedColumns: string[] = ['id', 'title_EN', 'isPublished', 'deletedBy', 'deletedAt', 'actions'];
+  displayedColumns: string[];
   dataSource: MatTableDataSource<Quiz>;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
+  currentLang: string = null;
+
   constructor(
     private store: Store<fromApp.AppState>,
     private dialog: MatDialog,
-    private translate:TranslateService
+    private translate: TranslateService
   ) { }
 
   ngOnInit(): void {
+    this.currentLang = this.translate.currentLang;
+    if (this.currentLang === 'en') {
+      this.displayedColumns = ['id', 'title_EN', 'isPublished', 'deletedBy', 'deletedAt', 'actions'];
+    } else if (this.currentLang === 'fr') {
+      this.displayedColumns = ['id', 'title_FR', 'isPublished', 'deletedBy', 'deletedAt', 'actions'];
+    }
+    this.translate.onLangChange.subscribe(() => {
+      this.currentLang = this.translate.currentLang;
+      if (this.currentLang === 'en') {
+        this.displayedColumns = ['id', 'title_EN', 'isPublished', 'deletedBy', 'deletedAt', 'actions'];
+      } else if (this.currentLang === 'fr') {
+        this.displayedColumns = ['id', 'title_FR', 'isPublished', 'deletedBy', 'deletedAt', 'actions'];
+      }
+    });
+
     this.store.dispatch(new QuizzesActions.FetchTrashedQuizzesStart());
 
     this.store.select('quizzes').subscribe(state => {

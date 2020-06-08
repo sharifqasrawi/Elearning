@@ -71,6 +71,8 @@ export function categoriesReducer(state: State = initialState, action: Categorie
                 ...categoryToUpdate,
                 title_EN: action.payload.title_EN,
                 slug: action.payload.slug,
+                title_FR: action.payload.title_FR,
+                slug_FR: action.payload.slug_FR,
                 imagePath: action.payload.imagePath,
                 updatedAt: action.payload.updatedAt,
                 updatedBy: action.payload.updatedBy

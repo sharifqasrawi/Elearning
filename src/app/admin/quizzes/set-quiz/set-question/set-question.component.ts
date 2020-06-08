@@ -34,6 +34,8 @@ export class SetQuestionComponent implements OnInit, OnDestroy {
   answers: Answer[] = null;
   loadingAs = false;
 
+  currentLang: string = null;
+
   constructor(
     private route: ActivatedRoute,
     private translate: TranslateService,
@@ -44,6 +46,9 @@ export class SetQuestionComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
+    this.currentLang = this.translate.currentLang;
+    this.translate.onLangChange.subscribe(() => this.currentLang = this.translate.currentLang);
+
     this.route.params.subscribe((params: Params) => {
       this.questionId = +params.questionId;
       this.quizId = +params.quizId;

@@ -72,15 +72,27 @@
           </ng-container>
         
           <!-- title en Column -->
-          <ng-container matColumnDef="title_EN">
+          <ng-container matColumnDef="title_EN" *ngIf="currentLang === 'en'">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ 'COMMON.TITLE' | translate }}  </th>
             <td mat-cell *matCellDef="let row"> {{row.title_EN}} </td>
           </ng-container>
 
+          <!-- title fr Column -->
+          <ng-container matColumnDef="title_FR" *ngIf="currentLang === 'fr'">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ 'COMMON.TITLE' | translate }}  </th>
+            <td mat-cell *matCellDef="let row"> {{row.title_FR}} </td>
+          </ng-container>
+
           <!-- slug en Column -->
-          <ng-container matColumnDef="slug">
+          <ng-container matColumnDef="slug" *ngIf="currentLang === 'en'">
             <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ 'COMMON.SLUG' | translate }}  </th>
             <td mat-cell *matCellDef="let row"> {{row.slug}} </td>
+          </ng-container>
+
+           <!-- slug fr Column -->
+           <ng-container matColumnDef="slug_FR" *ngIf="currentLang === 'fr'">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ 'COMMON.SLUG' | translate }}  </th>
+            <td mat-cell *matCellDef="let row"> {{row.slug_FR}} </td>
           </ng-container>
       
           <!-- created at Column -->

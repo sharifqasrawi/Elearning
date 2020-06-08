@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Store } from '@ngrx/store';
@@ -18,6 +19,11 @@ export class CategoriesEffects {
     token = '';
     userName = '';
 
+    errorAccessDenied: string = '';
+    error404: string = '';
+    errorOccured: string = '';
+
+
     @Effect()
     fetchCategories = this.actions$.pipe(
         ofType(CategoriesActions.FETCH_START),
@@ -31,16 +37,17 @@ export class CategoriesEffects {
                         return new CategoriesActions.FetchSuccess(resData.categories);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new CategoriesActions.FetchFail(['Access Denied']));
+                                return of(new CategoriesActions.FetchFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new CategoriesActions.FetchFail(['Error 404. Not Found']));
+                                return of(new CategoriesActions.FetchFail([this.error404]));
                             case 400:
                                 return of(new CategoriesActions.FetchFail(errorRes.error.errors));
                             default:
-                                return of(new CategoriesActions.FetchFail(['Oops! An error occured']));
+                                return of(new CategoriesActions.FetchFail([this.errorOccured]));
                         }
                     })
                 )
@@ -60,16 +67,17 @@ export class CategoriesEffects {
                         return new CategoriesActions.FetchDeletedSuccess(resData.categories);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new CategoriesActions.FetchDeletedFail(['Access Denied']));
+                                return of(new CategoriesActions.FetchDeletedFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new CategoriesActions.FetchDeletedFail(['Error 404. Not Found']));
+                                return of(new CategoriesActions.FetchDeletedFail([this.error404]));
                             case 400:
                                 return of(new CategoriesActions.FetchDeletedFail(errorRes.error.errors));
                             default:
-                                return of(new CategoriesActions.FetchDeletedFail(['Oops! An error occured']));
+                                return of(new CategoriesActions.FetchDeletedFail([this.errorOccured]));
                         }
                     })
                 )
@@ -84,6 +92,7 @@ export class CategoriesEffects {
             return this.http.post<{ category: Category }>(environment.API_BASE_URL + 'categories/new',
                 {
                     title_EN: catData.payload.title_En,
+                    title_FR: catData.payload.title_FR ?? null,
                     imagePath: catData.payload.imagePath,
                     createdBy: this.userName
                 },
@@ -95,16 +104,17 @@ export class CategoriesEffects {
                         return new CategoriesActions.CreateSuccess(resData.category);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new CategoriesActions.CreateFail(['Access Denied']));
+                                return of(new CategoriesActions.CreateFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new CategoriesActions.CreateFail(['Error 404. Not Found']));
+                                return of(new CategoriesActions.CreateFail([this.error404]));
                             case 400:
                                 return of(new CategoriesActions.CreateFail(errorRes.error.errors));
                             default:
-                                return of(new CategoriesActions.CreateFail(['Oops! An error occured']));
+                                return of(new CategoriesActions.CreateFail([this.errorOccured]));
                         }
                     })
                 )
@@ -119,6 +129,7 @@ export class CategoriesEffects {
                 {
                     id: catData.payload.id,
                     title_EN: catData.payload.title_En,
+                    title_FR: catData.payload.title_FR ?? null,
                     imagePath: catData.payload.imagePath,
                     updatedBy: this.userName
                 },
@@ -130,16 +141,17 @@ export class CategoriesEffects {
                         return new CategoriesActions.UpdateSuccess(resData.updatedCategory);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new CategoriesActions.UpdateFail(['Access Denied']));
+                                return of(new CategoriesActions.UpdateFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new CategoriesActions.UpdateFail(['Error 404. Not Found']));
+                                return of(new CategoriesActions.UpdateFail([this.error404]));
                             case 400:
                                 return of(new CategoriesActions.UpdateFail(errorRes.error.errors));
                             default:
-                                return of(new CategoriesActions.UpdateFail(['Oops! An error occured']));
+                                return of(new CategoriesActions.UpdateFail([this.errorOccured]));
                         }
                     })
                 )
@@ -163,16 +175,17 @@ export class CategoriesEffects {
                         return new CategoriesActions.TrashSuccess(resData.category);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new CategoriesActions.TrashFail(['Access Denied']));
+                                return of(new CategoriesActions.TrashFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new CategoriesActions.TrashFail(['Error 404. Not Found']));
+                                return of(new CategoriesActions.TrashFail([this.error404]));
                             case 400:
                                 return of(new CategoriesActions.TrashFail(errorRes.error.errors));
                             default:
-                                return of(new CategoriesActions.TrashFail(['Oops! An error occured']));
+                                return of(new CategoriesActions.TrashFail([this.errorOccured]));
                         }
                     })
                 )
@@ -195,16 +208,17 @@ export class CategoriesEffects {
                         return new CategoriesActions.RestoreSuccess(resData.category);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new CategoriesActions.RestoreFail(['Access Denied']));
+                                return of(new CategoriesActions.RestoreFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new CategoriesActions.RestoreFail(['Error 404. Not Found']));
+                                return of(new CategoriesActions.RestoreFail([this.error404]));
                             case 400:
                                 return of(new CategoriesActions.RestoreFail(errorRes.error.errors));
                             default:
-                                return of(new CategoriesActions.RestoreFail(['Oops! An error occured']));
+                                return of(new CategoriesActions.RestoreFail([this.errorOccured]));
                         }
                     })
                 )
@@ -225,27 +239,29 @@ export class CategoriesEffects {
                         return new CategoriesActions.DeleteSuccess(resData.categoryId);
                     }),
                     catchError(errorRes => {
-                        console.log(errorRes);
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new CategoriesActions.DeleteFail(['Access Denied']));
+                                return of(new CategoriesActions.DeleteFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new CategoriesActions.DeleteFail(['Error 404. Not Found']));
+                                return of(new CategoriesActions.DeleteFail([this.error404]));
                             case 400:
                                 return of(new CategoriesActions.DeleteFail(errorRes.error.errors));
                             default:
-                                return of(new CategoriesActions.DeleteFail(['Oops! An error occured']));
+                                return of(new CategoriesActions.DeleteFail([this.errorOccured]));
                         }
                     })
                 )
         })
     );
+   
 
     constructor(
         private actions$: Actions,
         private http: HttpClient,
-        private store: Store<fromApp.AppState>
+        private store: Store<fromApp.AppState>,
+        private translate: TranslateService
     ) {
 
         this.store.select('login')
@@ -258,5 +274,13 @@ export class CategoriesEffects {
                     this.userName = user.firstName + ' ' + user.lastName;
                 }
             });
+    }
+
+    private getErrorsTranslations() {
+        this.translate.get(['ERRORS.ACCESS_DENIED', 'ERRORS.ERROR404', 'ERRORS.OOPS']).subscribe(trans => {
+            this.errorAccessDenied = trans['ERRORS.ACCESS_DENIED'];
+            this.error404 = trans['ERRORS.ERROR404'];
+            this.errorOccured = trans['ERRORS.OOPS'];
+        });
     }
 }

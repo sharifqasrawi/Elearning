@@ -14,7 +14,7 @@
                         <mat-label>
                             <fa-icon [icon]="faSearch"></fa-icon> {{ 'COMMON.SEARCH' | translate }}
                         </mat-label>
-                        <input type="text" #searchKey matInput formControlName="title_EN"
+                        <input type="text" #searchKey matInput formControlName="title"
                             [placeholder]="'QUIZZES.SEARCH_BY' | translate" (input)="onSearch()">
                         <button mat-button *ngIf="searchKey.value" matSuffix mat-icon-button aria-label="Clear"
                             (click)="onClearSearch()">
@@ -40,7 +40,10 @@
                             <img mat-card-image [src]="getSanitizedImage(quiz.imagePath)" [alt]="quiz.title_EN">
                             <mat-card-header>
                                 <div mat-card-avatar class="quiz-header-image"></div>
-                                <mat-card-title class="title">{{ quiz.title_EN }}</mat-card-title>
+                                <mat-card-title class="title">
+                                    <span *ngIf="currentLang === 'en'">{{ quiz.title_EN }}</span>
+                                    <span *ngIf="currentLang === 'fr'">{{ quiz.title_FR }}</span>
+                                </mat-card-title>
                                 <mat-card-subtitle class="mt-2 small">
                                     <strong translate>COURSE.DURATION </strong> {{ quiz.duration }} mins.
                                 </mat-card-subtitle>

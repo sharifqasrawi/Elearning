@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { Answer } from './../../../models/answer.model';
 import { Question } from './../../../models/question.model';
 import { Quiz } from './../../../models/quiz.model';
@@ -19,6 +20,11 @@ export class QuizzesEffects {
     userId: string = null;
     userFullName: string = null;
 
+    errorAccessDenied: string = '';
+    error404: string = '';
+    errorOccured: string = '';
+
+
     @Effect()
     fetchQuizzes = this.actions$.pipe(
         ofType(QuizzesActions.FETCH_QUIZZES_START),
@@ -34,17 +40,18 @@ export class QuizzesEffects {
                     }),
                     catchError(errorRes => {
 
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new QuizzesActions.FetchQuizzesFail(['Access Denied']));
+                                return of(new QuizzesActions.FetchQuizzesFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new QuizzesActions.FetchQuizzesFail(['Error 404. Not Found']));
+                                return of(new QuizzesActions.FetchQuizzesFail([this.error404]));
                             case 400:
                                 return of(new QuizzesActions.FetchQuizzesFail(errorRes.error.errors));
 
                             default:
-                                return of(new QuizzesActions.FetchQuizzesFail(['Error Fetching Data']));
+                                return of(new QuizzesActions.FetchQuizzesFail([this.errorOccured]));
                         }
                     })
                 )
@@ -67,17 +74,18 @@ export class QuizzesEffects {
                     }),
                     catchError(errorRes => {
 
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new QuizzesActions.FetchQuizzesFail(['Access Denied']));
+                                return of(new QuizzesActions.FetchQuizzesFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new QuizzesActions.FetchQuizzesFail(['Error 404. Not Found']));
+                                return of(new QuizzesActions.FetchQuizzesFail([this.error404]));
                             case 400:
                                 return of(new QuizzesActions.FetchQuizzesFail(errorRes.error.errors));
 
                             default:
-                                return of(new QuizzesActions.FetchQuizzesFail(['Error Fetching Data']));
+                                return of(new QuizzesActions.FetchQuizzesFail([this.errorOccured]));
                         }
                     })
                 )
@@ -92,6 +100,8 @@ export class QuizzesEffects {
             const data = {
                 title_EN: quizData.payload.title_EN,
                 description_EN: quizData.payload.description_EN,
+                title_FR: quizData.payload.title_FR,
+                description_FR: quizData.payload.description_FR,
                 imagePath: quizData.payload.imagePath,
                 duration: quizData.payload.duration,
                 languages: quizData.payload.languages,
@@ -108,17 +118,18 @@ export class QuizzesEffects {
                         return new QuizzesActions.CreateQuizSuccess(resData.createdQuiz);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new QuizzesActions.CreateQuizFail(['Access Denied']));
+                                return of(new QuizzesActions.CreateQuizFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new QuizzesActions.CreateQuizFail(['Error 404. Not Found']));
+                                return of(new QuizzesActions.CreateQuizFail([this.error404]));
                             case 400:
                                 return of(new QuizzesActions.CreateQuizFail(errorRes.error.errors));
 
                             default:
-                                return of(new QuizzesActions.CreateQuizFail(['Error Fetching Data']));
+                                return of(new QuizzesActions.CreateQuizFail([this.errorOccured]));
                         }
                     })
                 )
@@ -134,6 +145,8 @@ export class QuizzesEffects {
                 id: quizData.payload.id,
                 title_EN: quizData.payload.title_EN,
                 description_EN: quizData.payload.description_EN,
+                title_FR: quizData.payload.title_FR,
+                description_FR: quizData.payload.description_FR,
                 imagePath: quizData.payload.imagePath,
                 duration: quizData.payload.duration,
                 languages: quizData.payload.languages,
@@ -150,17 +163,18 @@ export class QuizzesEffects {
                         return new QuizzesActions.UpdateQuizSuccess(resData.updatedQuiz);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new QuizzesActions.UpdateQuizFail(['Access Denied']));
+                                return of(new QuizzesActions.UpdateQuizFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new QuizzesActions.UpdateQuizFail(['Error 404. Not Found']));
+                                return of(new QuizzesActions.UpdateQuizFail([this.error404]));
                             case 400:
                                 return of(new QuizzesActions.UpdateQuizFail(errorRes.error.errors));
 
                             default:
-                                return of(new QuizzesActions.UpdateQuizFail(['Error Fetching Data']));
+                                return of(new QuizzesActions.UpdateQuizFail([this.errorOccured]));
                         }
                     })
                 )
@@ -189,16 +203,17 @@ export class QuizzesEffects {
                             return new QuizzesActions.RestoreQuizSuccess(resData.updatedQuiz);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new QuizzesActions.TrashRestoreQuizFail(['Access Denied']));
+                                return of(new QuizzesActions.TrashRestoreQuizFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new QuizzesActions.TrashRestoreQuizFail(['Error 404. Not Found']));
+                                return of(new QuizzesActions.TrashRestoreQuizFail([this.error404]));
                             case 400:
                                 return of(new QuizzesActions.TrashRestoreQuizFail(errorRes.error.errors));
                             default:
-                                return of(new QuizzesActions.TrashRestoreQuizFail(['Oops! An error occured']));
+                                return of(new QuizzesActions.TrashRestoreQuizFail([this.errorOccured]));
                         }
                     })
                 )
@@ -221,17 +236,18 @@ export class QuizzesEffects {
                     }),
                     catchError(errorRes => {
 
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new QuizzesActions.DeleteQuizFail(['Access Denied']));
+                                return of(new QuizzesActions.DeleteQuizFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new QuizzesActions.DeleteQuizFail(['Error 404. Not Found']));
+                                return of(new QuizzesActions.DeleteQuizFail([this.error404]));
                             case 400:
                                 return of(new QuizzesActions.DeleteQuizFail(errorRes.error.errors));
 
                             default:
-                                return of(new QuizzesActions.DeleteQuizFail(['Error Fetching Data']));
+                                return of(new QuizzesActions.DeleteQuizFail([this.errorOccured]));
                         }
                     })
                 )
@@ -256,16 +272,17 @@ export class QuizzesEffects {
                         return new QuizzesActions.PublishUnpublishSuccess(resData.updatedQuiz);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new QuizzesActions.PublishUnpublishFail(['Access Denied']));
+                                return of(new QuizzesActions.PublishUnpublishFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new QuizzesActions.PublishUnpublishFail(['Error 404. Not Found']));
+                                return of(new QuizzesActions.PublishUnpublishFail([this.error404]));
                             case 400:
                                 return of(new QuizzesActions.PublishUnpublishFail(errorRes.error.errors));
                             default:
-                                return of(new QuizzesActions.PublishUnpublishFail(['Oops! An error occured']));
+                                return of(new QuizzesActions.PublishUnpublishFail([this.errorOccured]));
                         }
                     })
                 )
@@ -289,17 +306,18 @@ export class QuizzesEffects {
                     }),
                     catchError(errorRes => {
 
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new QuizzesActions.FetchQuestionsFail(['Access Denied']));
+                                return of(new QuizzesActions.FetchQuestionsFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new QuizzesActions.FetchQuestionsFail(['Error 404. Not Found']));
+                                return of(new QuizzesActions.FetchQuestionsFail([this.error404]));
                             case 400:
                                 return of(new QuizzesActions.FetchQuestionsFail(errorRes.error.errors));
 
                             default:
-                                return of(new QuizzesActions.FetchQuestionsFail(['Error Fetching Data']));
+                                return of(new QuizzesActions.FetchQuestionsFail([this.errorOccured]));
                         }
                     })
                 )
@@ -314,6 +332,7 @@ export class QuizzesEffects {
             const data = {
                 quizId: questionData.payload.quizId,
                 text_EN: questionData.payload.text_EN,
+                text_FR: questionData.payload.text_FR,
                 imagePath: questionData.payload.imagePath,
                 duration: questionData.payload.duration,
                 createdBy: this.userFullName
@@ -329,17 +348,18 @@ export class QuizzesEffects {
                         return new QuizzesActions.CreateQuestionSuccess(resData.createdQuestion);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new QuizzesActions.CreateQuestionFail(['Access Denied']));
+                                return of(new QuizzesActions.CreateQuestionFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new QuizzesActions.CreateQuestionFail(['Error 404. Not Found']));
+                                return of(new QuizzesActions.CreateQuestionFail([this.error404]));
                             case 400:
                                 return of(new QuizzesActions.CreateQuestionFail(errorRes.error.errors));
 
                             default:
-                                return of(new QuizzesActions.CreateQuestionFail(['Error Fetching Data']));
+                                return of(new QuizzesActions.CreateQuestionFail([this.errorOccured]));
                         }
                     })
                 );
@@ -353,6 +373,7 @@ export class QuizzesEffects {
             const data = {
                 id: questionData.payload.id,
                 text_EN: questionData.payload.text_EN,
+                text_FR: questionData.payload.text_FR,
                 imagePath: questionData.payload.imagePath,
                 duration: questionData.payload.duration,
                 updatedBy: this.userFullName
@@ -368,17 +389,18 @@ export class QuizzesEffects {
                         return new QuizzesActions.UpdateQuestionSuccess(resData.updatedQuestion);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new QuizzesActions.UpdateQuestionFail(['Access Denied']));
+                                return of(new QuizzesActions.UpdateQuestionFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new QuizzesActions.UpdateQuestionFail(['Error 404. Not Found']));
+                                return of(new QuizzesActions.UpdateQuestionFail([this.error404]));
                             case 400:
                                 return of(new QuizzesActions.UpdateQuestionFail(errorRes.error.errors));
 
                             default:
-                                return of(new QuizzesActions.UpdateQuestionFail(['Error Fetching Data']));
+                                return of(new QuizzesActions.UpdateQuestionFail([this.errorOccured]));
                         }
                     }))
         }),
@@ -403,16 +425,17 @@ export class QuizzesEffects {
                         return new QuizzesActions.TrashRestoreQuestionSuccess(resData.updatedQuestion);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new QuizzesActions.TrashRestoreQuestionFail(['Access Denied']));
+                                return of(new QuizzesActions.TrashRestoreQuestionFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new QuizzesActions.TrashRestoreQuestionFail(['Error 404. Not Found']));
+                                return of(new QuizzesActions.TrashRestoreQuestionFail([this.error404]));
                             case 400:
                                 return of(new QuizzesActions.TrashRestoreQuestionFail(errorRes.error.errors));
                             default:
-                                return of(new QuizzesActions.TrashRestoreQuestionFail(['Oops! An error occured']));
+                                return of(new QuizzesActions.TrashRestoreQuestionFail([this.errorOccured]));
                         }
                     })
                 )
@@ -436,17 +459,18 @@ export class QuizzesEffects {
                     }),
                     catchError(errorRes => {
 
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new QuizzesActions.DeleteQuestionFail(['Access Denied']));
+                                return of(new QuizzesActions.DeleteQuestionFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new QuizzesActions.DeleteQuestionFail(['Error 404. Not Found']));
+                                return of(new QuizzesActions.DeleteQuestionFail([this.error404]));
                             case 400:
                                 return of(new QuizzesActions.DeleteQuestionFail(errorRes.error.errors));
 
                             default:
-                                return of(new QuizzesActions.DeleteQuestionFail(['Error Fetching Data']));
+                                return of(new QuizzesActions.DeleteQuestionFail([this.errorOccured]));
                         }
                     })
                 )
@@ -469,17 +493,18 @@ export class QuizzesEffects {
                         return new QuizzesActions.FetchAnswersSuccess(resData.answers);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new QuizzesActions.FetchAnswersFail(['Access Denied']));
+                                return of(new QuizzesActions.FetchAnswersFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new QuizzesActions.FetchAnswersFail(['Error 404. Not Found']));
+                                return of(new QuizzesActions.FetchAnswersFail([this.error404]));
                             case 400:
                                 return of(new QuizzesActions.FetchAnswersFail(errorRes.error.errors));
 
                             default:
-                                return of(new QuizzesActions.FetchAnswersFail(['Error Fetching Data']));
+                                return of(new QuizzesActions.FetchAnswersFail([this.errorOccured]));
                         }
                     })
                 )
@@ -494,6 +519,7 @@ export class QuizzesEffects {
             const data = {
                 questionId: answernData.payload.questionId,
                 text_EN: answernData.payload.text_EN,
+                text_FR: answernData.payload.text_FR,
                 imagePath: answernData.payload.imagePath,
                 isCorrect: answernData.payload.isCorrect,
                 createdBy: this.userFullName
@@ -509,17 +535,18 @@ export class QuizzesEffects {
                         return new QuizzesActions.CreateAnswerSuccess(resData.createdAnswer);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new QuizzesActions.CreateAnswerFail(['Access Denied']));
+                                return of(new QuizzesActions.CreateAnswerFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new QuizzesActions.CreateAnswerFail(['Error 404. Not Found']));
+                                return of(new QuizzesActions.CreateAnswerFail([this.error404]));
                             case 400:
                                 return of(new QuizzesActions.CreateAnswerFail(errorRes.error.errors));
 
                             default:
-                                return of(new QuizzesActions.CreateAnswerFail(['Error creating answer']));
+                                return of(new QuizzesActions.CreateAnswerFail([this.errorOccured]));
                         }
                     })
                 );
@@ -535,6 +562,7 @@ export class QuizzesEffects {
                 id: answernData.payload.id,
                 questionId: answernData.payload.questionId,
                 text_EN: answernData.payload.text_EN,
+                text_FR: answernData.payload.text_FR,
                 imagePath: answernData.payload.imagePath,
                 isCorrect: answernData.payload.isCorrect,
                 updatedBy: this.userFullName
@@ -550,24 +578,25 @@ export class QuizzesEffects {
                         return new QuizzesActions.UpdateAnswerSuccess(resData.updatedAnswer);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new QuizzesActions.UpdateAnswerFail(['Access Denied']));
+                                return of(new QuizzesActions.UpdateAnswerFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new QuizzesActions.UpdateAnswerFail(['Error 404. Not Found']));
+                                return of(new QuizzesActions.UpdateAnswerFail([this.error404]));
                             case 400:
                                 return of(new QuizzesActions.UpdateAnswerFail(errorRes.error.errors));
 
                             default:
-                                return of(new QuizzesActions.UpdateAnswerFail(['Error updating answer']));
+                                return of(new QuizzesActions.UpdateAnswerFail([this.errorOccured]));
                         }
                     }))
         }),
 
     );
 
-    
+
     @Effect()
     deleteAnswer = this.actions$.pipe(
         ofType(QuizzesActions.DELETE_ANSWER_START),
@@ -584,17 +613,18 @@ export class QuizzesEffects {
                     }),
                     catchError(errorRes => {
 
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new QuizzesActions.DeleteAnswerFail(['Access Denied']));
+                                return of(new QuizzesActions.DeleteAnswerFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new QuizzesActions.DeleteAnswerFail(['Error 404. Not Found']));
+                                return of(new QuizzesActions.DeleteAnswerFail([this.error404]));
                             case 400:
                                 return of(new QuizzesActions.DeleteAnswerFail(errorRes.error.errors));
 
                             default:
-                                return of(new QuizzesActions.DeleteAnswerFail(['Error deleting answer']));
+                                return of(new QuizzesActions.DeleteAnswerFail([this.errorOccured]));
                         }
                     })
                 )
@@ -606,7 +636,8 @@ export class QuizzesEffects {
     constructor(
         private actions$: Actions,
         private http: HttpClient,
-        private store: Store<fromApp.AppState>
+        private store: Store<fromApp.AppState>,
+        private translate: TranslateService
     ) {
 
         this.store.select('login')
@@ -620,5 +651,13 @@ export class QuizzesEffects {
                     this.userFullName = `${user.firstName} ${user.lastName}`
                 }
             });
+    }
+
+    private getErrorsTranslations() {
+        this.translate.get(['ERRORS.ACCESS_DENIED', 'ERRORS.ERROR404', 'ERRORS.OOPS']).subscribe(trans => {
+            this.errorAccessDenied = trans['ERRORS.ACCESS_DENIED'];
+            this.error404 = trans['ERRORS.ERROR404'];
+            this.errorOccured = trans['ERRORS.OOPS'];
+        });
     }
 }

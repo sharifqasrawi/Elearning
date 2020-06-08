@@ -48,12 +48,13 @@ export class QuestionsLandingPageComponent implements OnInit {
 
   count = 0;
 
-  displayedColumns: string[] = ['id', 'text_EN', 'createdAt', 'createdBy', 'updatedAt', 'updatedBy', 'deletedAt', 'deletedBy', 'actions'];
+  displayedColumns: string[];
   dataSource: MatTableDataSource<Question>;
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
+  currentLang: string = null;
 
   constructor(
     private store: Store<fromApp.AppState>,
@@ -64,6 +65,23 @@ export class QuestionsLandingPageComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.currentLang = this.translate.currentLang;
+    if (this.currentLang === 'en') {
+      this.displayedColumns = ['id', 'text_EN', 'createdAt', 'createdBy', 'updatedAt', 'updatedBy', 'deletedAt', 'deletedBy', 'actions'];
+    } else if (this.currentLang === 'fr') {
+      this.displayedColumns = ['id', 'text_FR', 'createdAt', 'createdBy', 'updatedAt', 'updatedBy', 'deletedAt', 'deletedBy', 'actions'];
+    }
+
+    this.translate.onLangChange.subscribe(() => {
+      this.currentLang = this.translate.currentLang
+      if (this.currentLang === 'en') {
+        this.displayedColumns = ['id', 'text_EN', 'createdAt', 'createdBy', 'updatedAt', 'updatedBy', 'deletedAt', 'deletedBy', 'actions'];
+      } else if (this.currentLang === 'fr') {
+        this.displayedColumns = ['id', 'text_FR', 'createdAt', 'createdBy', 'updatedAt', 'updatedBy', 'deletedAt', 'deletedBy', 'actions'];
+      }
+    });
+
+
     this.route.params.subscribe((params: Params) => {
       this.quizId = +params.quizId;
     });
@@ -84,7 +102,7 @@ export class QuestionsLandingPageComponent implements OnInit {
 
   onAddQuestion() {
     this.dialog.open(NewQuestionComponent, {
-      width: '650px',
+      width: '700px',
       disableClose: true,
       data: { quizId: this.quizId, editMode: false, question: null }
     });

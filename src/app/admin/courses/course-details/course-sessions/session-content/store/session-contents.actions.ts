@@ -50,7 +50,8 @@ export class CreateStart implements Action {
         type: string,
         content: string,
         order: number,
-        note?: string
+        note?: string,
+        content_FR?: string,
     }) { }
 }
 
@@ -78,6 +79,7 @@ export class UpdateStart implements Action {
         content: string,
         order: number,
         note?: string
+        content_FR?: string,
     }) { }
 }
 

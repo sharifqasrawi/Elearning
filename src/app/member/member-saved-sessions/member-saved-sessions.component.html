@@ -4,7 +4,7 @@
     </h2>
     <hr>
 
-    
+
     <div *ngIf="sessions.length === 0 && !loading">
         <div class="alert alert-info text-center">
             <h2>{{ 'DASHBOARD.SAVED_SESSIONS.NO_SAVED_SESSIONS' | translate }}.</h2>
@@ -18,7 +18,9 @@
                 <mat-card-header class="header">
                     <div mat-card-avatar class="session-header-image"></div>
                     <mat-card-title>
-                        {{ session.order}}- {{ session.title_EN }}
+                        {{ session.order}}-
+                        <span *ngIf="currentLang === 'en'">{{ session.title_EN }}</span>
+                        <span *ngIf="currentLang === 'fr'">{{ session.title_FR }}</span>
                     </mat-card-title>
                     <mat-card-subtitle>
                         {{ session.courseTitle_EN }}
@@ -30,7 +32,8 @@
                         <strong>{{ 'COURSE.DURATION' | translate }}: </strong> {{ session.duration }} mins.
                     </p>
                     <p>
-                        <strong>{{ 'DASHBOARD.SAVED_SESSIONS.SAVE_DATE' | translate }}: </strong> {{ session.saveDateTime | date:'medium' }}
+                        <strong>{{ 'DASHBOARD.SAVED_SESSIONS.SAVE_DATE' | translate }}: </strong>
+                        {{ session.saveDateTime | date:'medium' }}
                     </p>
                 </mat-card-content>
                 <mat-card-actions class="actions">

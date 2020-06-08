@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { Store } from '@ngrx/store';
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
@@ -14,6 +15,7 @@ export interface DialogData {
   editMode: boolean,
   sectionId?: number,
   name_EN?: string,
+  name_FR?: string,
   order?: number
 }
 
@@ -33,11 +35,16 @@ export class NewSectionComponent implements OnInit, OnDestroy {
   form: FormGroup;
   wasFormChanged = false;
 
+  languages = ['en', 'fr'];
+  currentLang: string = null;
+
   constructor(
     private dialog: MatDialog,
     public dialogRef: MatDialogRef<NewSectionComponent>,
     private store: Store<fromApp.AppState>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData) { }
+    @Inject(MAT_DIALOG_DATA) public data: DialogData,
+    private translate: TranslateService
+  ) { }
 
 
   ngOnDestroy(): void {
@@ -47,17 +54,22 @@ export class NewSectionComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.editMode = this.data.editMode;
-   
+    this.currentLang = this.translate.currentLang;
+
     if (!this.editMode) {
       this.form = new FormGroup({
         name_EN: new FormControl(null, [Validators.required]),
-        order: new FormControl(this.data.order, [Validators.required])
+        name_FR: new FormControl(null),
+        order: new FormControl(this.data.order, [Validators.required]),
+        currentLang: new FormControl(this.currentLang)
       });
     }
     else {
       this.form = new FormGroup({
         name_EN: new FormControl(this.data.name_EN, [Validators.required]),
-        order: new FormControl(this.data.order, [Validators.required])
+        name_FR: new FormControl(this.data.name_FR),
+        order: new FormControl(this.data.order, [Validators.required]),
+        currentLang: new FormControl(this.currentLang)
       });
     }
   }
@@ -73,6 +85,7 @@ export class NewSectionComponent implements OnInit, OnDestroy {
       this.store.dispatch(new SectionsActions.UpdateStart({
         id: this.data.sectionId,
         name_EN: this.form.value.name_EN,
+        name_FR: this.form.value.name_FR,
         order: this.form.value.order,
       }));
 
@@ -82,6 +95,7 @@ export class NewSectionComponent implements OnInit, OnDestroy {
           id: this.data.courseId
         },
         name_EN: this.form.value.name_EN,
+        name_FR: this.form.value.name_FR,
         order: this.form.value.order,
       }));
     }
@@ -94,6 +108,12 @@ export class NewSectionComponent implements OnInit, OnDestroy {
 
   formChanged() {
     this.wasFormChanged = true;
+  }
+
+  onChangeLang() {
+    const lang = this.form.value.currentLang;
+
+    this.currentLang = lang;
   }
 
   openDialog(): void {

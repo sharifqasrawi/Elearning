@@ -48,14 +48,20 @@
                 </ng-container>
 
                 <!-- Title en Column -->
-                <ng-container matColumnDef="title_EN">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header>  {{ 'COMMON.TITLE' | translate }} </th>
+                <ng-container matColumnDef="title_EN" *ngIf="currentLang === 'en'">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ 'COMMON.TITLE' | translate }} </th>
                     <td mat-cell *matCellDef="let row"> {{row.title_EN}} </td>
+                </ng-container>
+
+                <!-- Title fr Column -->
+                <ng-container matColumnDef="title_FR" *ngIf="currentLang === 'fr'">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ 'COMMON.TITLE' | translate }} </th>
+                    <td mat-cell *matCellDef="let row"> {{row.title_FR}} </td>
                 </ng-container>
 
                 <!-- Is Published Column -->
                 <ng-container matColumnDef="isPublished">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header>  {{ 'COMMON.PUBLISHED' | translate }}  </th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ 'COMMON.PUBLISHED' | translate }} </th>
                     <td mat-cell *matCellDef="let row">
                         <span class="text-success" *ngIf="row.isPublished">
                             <fa-icon [icon]="faCheck"></fa-icon>
@@ -74,7 +80,7 @@
 
                 <!-- Deteted at  Column -->
                 <ng-container matColumnDef="deletedAt">
-                    <th mat-header-cell *matHeaderCellDef mat-sort-header>  {{ 'COMMON.DELETED_AT' | translate }} </th>
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ 'COMMON.DELETED_AT' | translate }} </th>
                     <td mat-cell *matCellDef="let row"> {{row.deletedAt | date:'medium'}} </td>
                 </ng-container>
 
@@ -82,7 +88,7 @@
                 <!-- Actions Column -->
                 <ng-container matColumnDef="actions">
                     <th mat-header-cell *matHeaderCellDef>
-                        {{ 'COMMON.ACTIONS' | translate }} 
+                        {{ 'COMMON.ACTIONS' | translate }}
                     </th>
                     <td mat-cell *matCellDef="let row" class="pl-3">
 
@@ -91,12 +97,12 @@
                         </a>
                         <mat-menu #menu="matMenu" [overlapTrigger]="false">
                             <button class="dropdown-item" style="cursor: pointer;" (click)="onRestoreQuiz(row.id);">
-                               <fa-icon [icon]="faReply"></fa-icon>
-                                {{ 'COMMON.RESTORE' | translate }} 
+                                <fa-icon [icon]="faReply"></fa-icon>
+                                {{ 'COMMON.RESTORE' | translate }}
                             </button>
                             <button class="dropdown-item" style="cursor: pointer;" (click)="onDeleteQuiz(row.id);">
                                 <fa-icon [icon]="faTimes"></fa-icon>
-                                {{ 'COMMON.DELETE' | translate }} 
+                                {{ 'COMMON.DELETE' | translate }}
                             </button>
                         </mat-menu>
                     </td>

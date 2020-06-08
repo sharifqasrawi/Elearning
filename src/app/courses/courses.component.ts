@@ -1,3 +1,5 @@
+import { TranslateService } from '@ngx-translate/core';
+import { map } from 'rxjs/operators';
 import { MatDialog } from '@angular/material/dialog';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
@@ -46,29 +48,23 @@ export class CoursesComponent implements OnInit, OnDestroy {
 
   breadcrumbLinks: { url?: string, translate?: boolean, label: string }[];
 
+  currentLang: string = null;
 
   constructor(
     private store: Store<fromApp.AppState>,
     private route: ActivatedRoute,
     private sanitizer: DomSanitizer,
     private dialog: MatDialog,
+    private translate: TranslateService
   ) { }
 
   ngOnInit(): void {
+    this.currentLang = this.translate.currentLang;
+    this.translate.onLangChange.subscribe(() => this.currentLang = this.translate.currentLang);
 
-
-    this.route.params.subscribe((params: Params) => {
-      this.categoryId = +params.categoryId;
-
-      if (this.categoryId) {
-        this.store.dispatch(new HomeCoursesActions.FetchStart({ categoryId: this.categoryId }));
-      } else {
-        this.store.dispatch(new HomeCoursesActions.FetchStart());
-      }
-
-
-      if (params.categorySlug) {
-        this.categoryTitle = (params.categorySlug as string).split('-').join(' ');
+    this.route.queryParams.subscribe((params: Params) => {
+      if (params.categoryTitle) {
+        this.categoryTitle = (params.categoryTitle as string).split('-').join(' ');
 
         this.breadcrumbLinks = [
           { url: '/', label: 'Home', translate: true },
@@ -80,7 +76,16 @@ export class CoursesComponent implements OnInit, OnDestroy {
           { label: 'Courses', translate: true },
         ];
       }
+    });
 
+    this.route.params.subscribe((params: Params) => {
+      this.categoryId = +params.categoryId;
+
+      if (this.categoryId) {
+        this.store.dispatch(new HomeCoursesActions.FetchStart({ categoryId: this.categoryId }));
+      } else {
+        this.store.dispatch(new HomeCoursesActions.FetchStart());
+      }
     });
 
 
@@ -113,7 +118,7 @@ export class CoursesComponent implements OnInit, OnDestroy {
 
 
     this.searchForm = new FormGroup({
-      title_EN: new FormControl(null)
+      title: new FormControl(null)
     });
 
 
@@ -129,12 +134,16 @@ export class CoursesComponent implements OnInit, OnDestroy {
 
 
   onSearch() {
-    const searchKey: string = this.searchForm.value.title_EN;
+    const searchKey: string = this.searchForm.value.title;
 
     if (searchKey == '' || searchKey === null) {
       this.courses = this.storeCourses;
     } else {
-      this.courses = this.storeCourses.filter(c => c.title_EN.toLowerCase().includes(searchKey.toLowerCase()));
+      if (this.currentLang === 'en')
+        this.courses = this.storeCourses.filter(c => c.title_EN.toLowerCase().includes(searchKey.toLowerCase()));
+      else if (this.currentLang === 'fr')
+        this.courses = this.storeCourses.filter(c => c.title_FR.toLowerCase().includes(searchKey.toLowerCase()));
+
     }
   }
 
@@ -162,11 +171,14 @@ export class CoursesComponent implements OnInit, OnDestroy {
   onOrderBy() {
     if (this.orderBy === 'Stars +') {
       this.courses = this.courses.slice().sort((a, b) => (a.ratings.totalRating < b.ratings.totalRating) ? 1 : ((b.ratings.totalRating < a.ratings.totalRating) ? -1 : 0));
-    } else if (this.orderBy === 'Stars +') {
+    } else if (this.orderBy === 'Stars -') {
       this.courses = this.courses.slice().sort((a, b) => (a.ratings.totalRating > b.ratings.totalRating) ? 1 : ((b.ratings.totalRating > a.ratings.totalRating) ? -1 : 0));
     }
     else if (this.orderBy === 'A-Z') {
-      this.courses = this.courses.slice().sort((a, b) => (a.title_EN > b.title_EN) ? 1 : ((b.title_EN > a.title_EN) ? -1 : 0));
+      if (this.currentLang === 'en')
+        this.courses = this.courses.slice().sort((a, b) => (a.title_EN > b.title_EN) ? 1 : ((b.title_EN > a.title_EN) ? -1 : 0));
+      else if (this.currentLang === 'fr')
+        this.courses = this.courses.slice().sort((a, b) => (a.title_FR > b.title_FR) ? 1 : ((b.title_FR > a.title_FR) ? -1 : 0));
     }
     else {
       this.courses = this.storeCourses;

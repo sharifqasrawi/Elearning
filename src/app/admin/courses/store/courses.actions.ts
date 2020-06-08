@@ -110,7 +110,10 @@ export class CreateStart implements Action {
         languages: string,
         level: string,
         description_EN: string,
-        prerequisites_EN: string
+        prerequisites_EN: string,
+        title_FR?: string,
+        description_FR?: string,
+        prerequisites_FR?: string,
     }) { }
 }
 
@@ -187,7 +190,10 @@ export class UpdateStart implements Action {
         languages: string,
         level: string,
         description_EN: string,
-        prerequisites_EN: string
+        prerequisites_EN: string,
+        title_FR?: string,
+        description_FR?: string,
+        prerequisites_FR?: string,
     }) { }
 }
 

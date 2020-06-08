@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Store } from '@ngrx/store';
@@ -16,6 +17,9 @@ import { environment } from './../../../../environments/environment';
 export class MessagesEffects {
 
     token = '';
+    errorAccessDenied: string = '';
+    error404: string = '';
+    errorOccured: string = '';
 
     @Effect()
     fetchMessages = this.actions$.pipe(
@@ -30,16 +34,17 @@ export class MessagesEffects {
                         return new MessagesActions.FetchSuccess(resData.messages)
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new MessagesActions.FetchFail(['Access Denied']));
+                                return of(new MessagesActions.FetchFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new MessagesActions.FetchFail(['Error 404. Not Found']));
+                                return of(new MessagesActions.FetchFail([this.error404]));
                             case 400:
                                 return of(new MessagesActions.FetchFail(errorRes.error.errors));
                             default:
-                                return of(new MessagesActions.FetchFail(['Error fetching messages']));
+                                return of(new MessagesActions.FetchFail([this.errorOccured]));
                         }
                     })
                 )
@@ -59,16 +64,17 @@ export class MessagesEffects {
                         return new MessagesActions.FetchEmailsSuccess(resData.emailMessages)
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new MessagesActions.FetchEmailsFail(['Access Denied']));
+                                return of(new MessagesActions.FetchEmailsFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new MessagesActions.FetchEmailsFail(['Error 404. Not Found']));
+                                return of(new MessagesActions.FetchEmailsFail([this.error404]));
                             case 400:
                                 return of(new MessagesActions.FetchEmailsFail(errorRes.error.errors));
                             default:
-                                return of(new MessagesActions.FetchEmailsFail(['Error fetching emails']));
+                                return of(new MessagesActions.FetchEmailsFail([this.errorOccured]));
                         }
                     })
                 )
@@ -91,16 +97,17 @@ export class MessagesEffects {
                         return new MessagesActions.SendSuccess(resData);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new MessagesActions.SendFail(['Access Denied']));
+                                return of(new MessagesActions.SendFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new MessagesActions.SendFail(['Error 404. Not Found']));
+                                return of(new MessagesActions.SendFail([this.error404]));
                             case 400:
                                 return of(new MessagesActions.SendFail(errorRes.error.errors));
                             default:
-                                return of(new MessagesActions.SendFail(['Error sending message']));
+                                return of(new MessagesActions.SendFail([this.errorOccured]));
                         }
                     })
                 )
@@ -111,7 +118,7 @@ export class MessagesEffects {
     sendEmail = this.actions$.pipe(
         ofType(MessagesActions.SEND_EMAIL_START),
         switchMap((messageData: MessagesActions.SendEmailStart) => {
-            return this.http.post<{emailMessage: EmailMessage}>(environment.API_BASE_URL + 'messages/send-email',
+            return this.http.post<{ emailMessage: EmailMessage }>(environment.API_BASE_URL + 'messages/send-email',
                 {
                     emails: messageData.payload.emails,
                     subject: messageData.payload.subject,
@@ -125,17 +132,17 @@ export class MessagesEffects {
                         return new MessagesActions.SendEmailSuccess(resData.emailMessage);
                     }),
                     catchError(errorRes => {
-                        console.log(errorRes);
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new MessagesActions.SendEmailFail(['Access Denied']));
+                                return of(new MessagesActions.SendEmailFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new MessagesActions.SendEmailFail(['Error 404. Not Found']));
+                                return of(new MessagesActions.SendEmailFail([this.error404]));
                             case 400:
                                 return of(new MessagesActions.SendEmailFail(errorRes.error.errors));
                             default:
-                                return of(new MessagesActions.SendEmailFail(['Error sending email']));
+                                return of(new MessagesActions.SendEmailFail([this.errorOccured]));
                         }
                     })
                 )
@@ -156,16 +163,17 @@ export class MessagesEffects {
                         return new MessagesActions.DeleteSuccess(resData.deletedMsgId);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new MessagesActions.DeleteFail(['Access Denied']));
+                                return of(new MessagesActions.DeleteFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new MessagesActions.DeleteFail(['Error 404. Not Found']));
+                                return of(new MessagesActions.DeleteFail([this.error404]));
                             case 400:
                                 return of(new MessagesActions.DeleteFail(errorRes.error.errors));
                             default:
-                                return of(new MessagesActions.DeleteFail(['Error deleting message']));
+                                return of(new MessagesActions.DeleteFail([this.errorOccured]));
                         }
                     })
                 )
@@ -186,16 +194,17 @@ export class MessagesEffects {
                         return new MessagesActions.ChangeSeenSuccess(resData.updatedMessage);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new MessagesActions.ChangeSeenFail(['Access Denied']));
+                                return of(new MessagesActions.ChangeSeenFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new MessagesActions.ChangeSeenFail(['Error 404. Not Found']));
+                                return of(new MessagesActions.ChangeSeenFail([this.error404]));
                             case 400:
                                 return of(new MessagesActions.ChangeSeenFail(errorRes.error.errors));
                             default:
-                                return of(new MessagesActions.ChangeSeenFail(['Error changing message status']));
+                                return of(new MessagesActions.ChangeSeenFail([this.errorOccured]));
                         }
                     })
                 )
@@ -206,7 +215,8 @@ export class MessagesEffects {
     constructor(
         private actions$: Actions,
         private http: HttpClient,
-        private store: Store<fromApp.AppState>
+        private store: Store<fromApp.AppState>,
+        private translate: TranslateService
     ) {
         this.store.select('login')
             .pipe(
@@ -216,5 +226,12 @@ export class MessagesEffects {
                 if (user)
                     this.token = user.token;
             });
+    }
+    private getErrorsTranslations() {
+        this.translate.get(['ERRORS.ACCESS_DENIED', 'ERRORS.ERROR404', 'ERRORS.OOPS']).subscribe(trans => {
+            this.errorAccessDenied = trans['ERRORS.ACCESS_DENIED'];
+            this.error404 = trans['ERRORS.ERROR404'];
+            this.errorOccured = trans['ERRORS.OOPS'];
+        });
     }
 }

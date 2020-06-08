@@ -35,6 +35,10 @@ export class Course {
         public likes?: Like[],
         public comments?: Comment[],
         public cls?: Class,
-        public ratings?: { totalRating: number, ratings: CourseRating[] }
+        public ratings?: { totalRating: number, ratings: CourseRating[] },
+        public title_FR?: string,
+        public slug_FR?: string,
+        public description_FR?: string,
+        public prerequisites_FR?: string,
     ) { }
 }

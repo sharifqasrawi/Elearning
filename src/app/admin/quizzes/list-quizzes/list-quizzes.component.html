@@ -55,10 +55,18 @@
                 </ng-container>
 
                 <!-- Title en Column -->
-                <ng-container matColumnDef="title_EN">
+                <ng-container matColumnDef="title_EN" *ngIf="currentLang === 'en'">
                     <th mat-header-cell *matHeaderCellDef mat-sort-header>  {{ 'COMMON.TITLE' | translate }} </th>
                     <td mat-cell *matCellDef="let row">
                         <a [routerLink]="[row.id, row.slug_EN]">{{row.title_EN}}</a>
+                    </td>
+                </ng-container>
+
+                 <!-- Title fr Column -->
+                 <ng-container matColumnDef="title_FR" *ngIf="currentLang === 'fr'">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>  {{ 'COMMON.TITLE' | translate }} </th>
+                    <td mat-cell *matCellDef="let row">
+                        <a [routerLink]="[row.id, row.slug_FR]">{{row.title_FR}}</a>
                     </td>
                 </ng-container>
 

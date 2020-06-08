@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
@@ -15,6 +16,10 @@ import * as NotificationsActions from './notifications.actions';
 export class NotificationsEffects {
 
     token = '';
+    
+    errorAccessDenied: string = '';
+    error404: string = '';
+    errorOccured: string = '';
 
     @Effect()
     fetchNotifications = this.actions$.pipe(
@@ -29,16 +34,17 @@ export class NotificationsEffects {
                         return new NotificationsActions.FetchSuccess(resData.notifications);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new NotificationsActions.FetchFail(['Access Denied']));
+                                return of(new NotificationsActions.FetchFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new NotificationsActions.FetchFail(['Error 404. Not Found']));
+                                return of(new NotificationsActions.FetchFail([this.error404]));
                             case 400:
                                 return of(new NotificationsActions.FetchFail(errorRes.error.errors));
                             default:
-                                return of(new NotificationsActions.FetchFail(['Oops! An error occured']));
+                                return of(new NotificationsActions.FetchFail([this.errorOccured]));
                         }
                     })
                 )
@@ -49,7 +55,8 @@ export class NotificationsEffects {
     constructor(
         private actions$: Actions,
         private http: HttpClient,
-        private store: Store<fromApp.AppState>
+        private store: Store<fromApp.AppState>,
+        private translate: TranslateService
     ) {
 
         this.store.select('login')
@@ -60,5 +67,13 @@ export class NotificationsEffects {
                 if (user)
                     this.token = user.token;
             });
+    }
+
+    private getErrorsTranslations() {
+        this.translate.get(['ERRORS.ACCESS_DENIED', 'ERRORS.ERROR404', 'ERRORS.OOPS']).subscribe(trans => {
+            this.errorAccessDenied = trans['ERRORS.ACCESS_DENIED'];
+            this.error404 = trans['ERRORS.ERROR404'];
+            this.errorOccured = trans['ERRORS.OOPS'];
+        });
     }
 }

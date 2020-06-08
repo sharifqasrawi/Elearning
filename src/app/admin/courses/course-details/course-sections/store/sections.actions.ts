@@ -51,6 +51,7 @@ export class CreateStart implements Action {
         course: { id: number },
         name_EN: string,
         order: number,
+        name_FR?: string
     }) { }
 }
 
@@ -75,6 +76,7 @@ export class UpdateStart implements Action {
         id: number,
         name_EN: string,
         order: number,
+        name_FR?: string
     }) { }
 }
 
@@ -94,7 +96,7 @@ export class UpdateFail implements Action {
 export class DeleteStart implements Action {
     readonly type = DELETE_START;
 
-    constructor(public payload: number ) { }
+    constructor(public payload: number) { }
 }
 
 

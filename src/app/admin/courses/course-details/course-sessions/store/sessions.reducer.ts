@@ -95,6 +95,8 @@ export function sessionsReducer(state: State = initialState, action: SessionsAct
                 ...sessionToUpdate,
                 title_EN: action.payload.updatedSession.title_EN,
                 slug_EN: action.payload.updatedSession.slug_EN,
+                title_FR: action.payload.updatedSession.title_FR,
+                slug_FR: action.payload.updatedSession.slug_FR,
                 order: action.payload.updatedSession.order,
                 duration: action.payload.updatedSession.duration,
                 updatedAt: action.payload.updatedSession.updatedAt,

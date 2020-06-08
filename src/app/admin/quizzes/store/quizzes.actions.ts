@@ -113,7 +113,9 @@ export class CreateQuizStart implements Action {
         description_EN: string,
         imagePath: string,
         languages: string,
-        duration: number
+        duration: number,
+        title_FR?: string,
+        description_FR?: string,
     }) { }
 }
 
@@ -141,7 +143,9 @@ export class UpdateQuizStart implements Action {
         description_EN: string,
         imagePath: string,
         languages: string,
-        duration: number
+        duration: number,
+        title_FR?: string,
+        description_FR?: string,
     }) { }
 }
 
@@ -255,7 +259,8 @@ export class CreateQuestionStart implements Action {
         quizId: number,
         text_EN: string,
         imagePath: string,
-        duration: number
+        duration: number,
+        text_FR?: string,
     }) { }
 }
 
@@ -280,7 +285,8 @@ export class UpdateQuestionStart implements Action {
         id: number,
         text_EN: string,
         imagePath: string,
-        duration: number
+        duration: number,
+        text_FR?: string,
     }) { }
 }
 
@@ -370,7 +376,8 @@ export class CreateAnswerStart implements Action {
         questionId: number,
         text_EN: string,
         imagePath: string,
-        isCorrect: boolean
+        isCorrect: boolean,
+        text_FR?: string,
     }) { }
 }
 
@@ -396,7 +403,8 @@ export class UpdateAnswerStart implements Action {
         questionId: number,
         text_EN: string,
         imagePath: string,
-        isCorrect: boolean
+        isCorrect: boolean,
+        text_FR?: string,
     }) { }
 }
 

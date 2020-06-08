@@ -5,12 +5,27 @@
 <hr>
 <div mat-dialog-content>
     <form [formGroup]="form" #f="ngForm" (ngSubmit)="onSubmit()">
-        <div>
-            <label translate>COMMON.TEXT</label>
-            <ckeditor tagName="textarea" [editor]="Editor" formControlName="text_EN"></ckeditor>
+        <mat-form-field>
+            <mat-label translate>COMMON.LANGUAGE</mat-label>
+            <mat-select formControlName="currentLang"  (ngModelChange)="onChangeLang()">
+                <mat-option *ngFor="let lang of languages" [value]="lang">
+                    {{lang}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+
+
+        <div *ngIf="currentLang === 'en'">
+            <label >{{ 'COMMON.TEXT' | translate }} (en)*</label>
+            <ckeditor tagName="textarea" [editor]="Editor" formControlName="text_EN" required></ckeditor>
             <mat-error class="small" *ngIf="!form.controls.text_EN.valid && form.controls.text_EN.touched">
                 {{ 'VALIDATION.REQUIRED' | translate }}
             </mat-error>
+        </div>
+
+        <div *ngIf="currentLang === 'fr'">
+            <label >{{ 'COMMON.TEXT' | translate }} (fr)</label>
+            <ckeditor tagName="textarea" [editor]="Editor" formControlName="text_FR"></ckeditor>
         </div>
 
         <div class="row mt-3 mb-4">

@@ -96,6 +96,8 @@ export function sectionsReducer(state: State = initialState, action: SectionsAct
                 ...sectionToUpdate,
                 name_EN: action.payload.updatedSection.name_EN,
                 slug_EN: action.payload.updatedSection.slug_EN,
+                name_FR: action.payload.updatedSection.name_FR,
+                slug_FR: action.payload.updatedSection.slug_FR,
                 order: action.payload.updatedSection.order,
                 updatedAt: action.payload.updatedSection.updatedAt,
                 updatedBy: action.payload.updatedSection.updatedBy,

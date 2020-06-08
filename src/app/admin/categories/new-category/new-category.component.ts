@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
@@ -27,16 +28,22 @@ export class NewCategoryComponent implements OnInit, OnDestroy {
 
   category: Category = null;
 
+  languages = ['en', 'fr'];
+  currentLang: string = null;
+
 
   constructor(
     private store: Store<fromApp.AppState>,
     public dialogRef: MatDialogRef<NewCategoryComponent>,
     private dialog: MatDialog,
-    @Inject(MAT_DIALOG_DATA) public data: { id: number, editMode: boolean }) { }
+    @Inject(MAT_DIALOG_DATA) public data: { id: number, editMode: boolean },
+    private translate:TranslateService
+  ) { }
 
 
   ngOnInit(): void {
     this.editMode = this.data.editMode;
+    this.currentLang = this.translate.currentLang;
 
     this.store.select('categories').subscribe(catState => {
       this.creating = catState.saving;
@@ -50,15 +57,20 @@ export class NewCategoryComponent implements OnInit, OnDestroy {
     if (this.editMode) {
       this.form = new FormGroup({
         title_EN: new FormControl(this.category.title_EN, [Validators.required]),
+        title_FR: new FormControl(this.category.title_FR),
         imagePath: new FormControl(this.category.imagePath, [Validators.required]),
+        currentLang: new FormControl(this.currentLang)
       });
     }
     else {
       this.form = new FormGroup({
         title_EN: new FormControl(null, [Validators.required]),
+        title_FR: new FormControl(null),
         imagePath: new FormControl(null, [Validators.required]),
+        currentLang: new FormControl(this.currentLang)
       });
     }
+
   }
 
   onSubmit() {
@@ -71,13 +83,15 @@ export class NewCategoryComponent implements OnInit, OnDestroy {
       this.store.dispatch(new CategoriesActions.UpdateStart({
         id: this.category.id,
         title_En: this.form.value.title_EN,
-        imagePath: this.form.value.imagePath
+        imagePath: this.form.value.imagePath,
+        title_FR: this.form.value.title_FR
       }));
 
     } else {
       this.store.dispatch(new CategoriesActions.CreateStart({
         title_En: this.form.value.title_EN,
-        imagePath: this.form.value.imagePath
+        imagePath: this.form.value.imagePath,
+        title_FR: this.form.value.title_FR
       }));
     }
 
@@ -120,6 +134,11 @@ export class NewCategoryComponent implements OnInit, OnDestroy {
   }
 
 
+  onChangeLang() {
+    const lang = this.form.value.currentLang;
+
+    this.currentLang = lang;
+  }
 
   private markAsDirty(group: FormGroup): void {
     group.markAsDirty();

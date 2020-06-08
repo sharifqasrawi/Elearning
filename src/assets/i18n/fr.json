@@ -44,7 +44,9 @@
             "STARTED": "Commencé",
             "ONGOING": "En cours",
             "SUBMITTED": "Soumis",
-            "RESULT": "Résultat"
+            "RESULT": "Résultat",
+            "PASSED": "Réussi(e)",
+            "FAILED": "Échoué(e)"
         },
         "REPORTS": {
             "REPORTS": "Rapports",
@@ -363,5 +365,10 @@
         "COURSES": "Cours",
         "QUIZZES": "Quiz"
 
+    },
+    "LEVELS": {
+        "BASIC": "Fondamental",
+        "MEDIUM": "Moyen",
+        "ADVANCED": "Avancé"
     }
 }

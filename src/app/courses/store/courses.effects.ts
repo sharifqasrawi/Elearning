@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { Like } from './../../models/like.model';
 import { Class } from './../../models/class.model';
 import { Injectable } from '@angular/core';
@@ -20,6 +21,10 @@ export class HomeCoursesEffects {
     userName = '';
     userId = '';
 
+    errorAccessDenied: string = '';
+    error404: string = '';
+    errorOccured: string = '';
+
     @Effect()
     fetchCourses = this.actions$.pipe(
         ofType(HomeCoursesActions.FETCH_START),
@@ -38,16 +43,17 @@ export class HomeCoursesEffects {
                         return new HomeCoursesActions.FetchSuccess(resData.courses);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new HomeCoursesActions.FetchFail(['Access Denied']));
+                                return of(new HomeCoursesActions.FetchFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new HomeCoursesActions.FetchFail(['Error 404. Not Found']));
+                                return of(new HomeCoursesActions.FetchFail([this.error404]));
                             case 400:
                                 return of(new HomeCoursesActions.FetchFail(errorRes.error.errors));
                             default:
-                                return of(new HomeCoursesActions.FetchFail(['Oops! An error occured']));
+                                return of(new HomeCoursesActions.FetchFail([this.errorOccured]));
                         }
                     })
                 )
@@ -72,16 +78,17 @@ export class HomeCoursesEffects {
                         return new HomeCoursesActions.LikeSuccess(resData);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new HomeCoursesActions.LikeFail(['Access Denied']));
+                                return of(new HomeCoursesActions.LikeFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new HomeCoursesActions.LikeFail(['Error 404. Not Found']));
+                                return of(new HomeCoursesActions.LikeFail([this.error404]));
                             case 400:
                                 return of(new HomeCoursesActions.LikeFail(errorRes.error.errors));
                             default:
-                                return of(new HomeCoursesActions.LikeFail(['Oops! An error occured']));
+                                return of(new HomeCoursesActions.LikeFail([this.errorOccured]));
                         }
                     })
                 )
@@ -106,16 +113,17 @@ export class HomeCoursesEffects {
                         return new HomeCoursesActions.EnrollSuccess(resData.updatedClass);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new HomeCoursesActions.EnrollFail(['Access Denied']));
+                                return of(new HomeCoursesActions.EnrollFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new HomeCoursesActions.EnrollFail(['Error 404. Not Found']));
+                                return of(new HomeCoursesActions.EnrollFail([this.error404]));
                             case 400:
                                 return of(new HomeCoursesActions.EnrollFail(errorRes.error.errors));
                             default:
-                                return of(new HomeCoursesActions.EnrollFail(['Oops! An error occured']));
+                                return of(new HomeCoursesActions.EnrollFail([this.errorOccured]));
                         }
                     })
                 )
@@ -140,16 +148,17 @@ export class HomeCoursesEffects {
                         return new HomeCoursesActions.RateSuccess(resData.course);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new HomeCoursesActions.RateFail(['Access Denied']));
+                                return of(new HomeCoursesActions.RateFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new HomeCoursesActions.RateFail(['Error 404. Not Found']));
+                                return of(new HomeCoursesActions.RateFail([this.error404]));
                             case 400:
                                 return of(new HomeCoursesActions.RateFail(errorRes.error.errors));
                             default:
-                                return of(new HomeCoursesActions.RateFail(['Oops! An error occured']));
+                                return of(new HomeCoursesActions.RateFail([this.errorOccured]));
                         }
                     })
                 )
@@ -159,7 +168,8 @@ export class HomeCoursesEffects {
     constructor(
         private actions$: Actions,
         private http: HttpClient,
-        private store: Store<fromApp.AppState>
+        private store: Store<fromApp.AppState>,
+        private translate: TranslateService
     ) {
 
         this.store.select('login')
@@ -173,5 +183,13 @@ export class HomeCoursesEffects {
                     this.userId = user.id;
                 }
             });
+    }
+
+    private getErrorsTranslations() {
+        this.translate.get(['ERRORS.ACCESS_DENIED', 'ERRORS.ERROR404', 'ERRORS.OOPS']).subscribe(trans => {
+            this.errorAccessDenied = trans['ERRORS.ACCESS_DENIED'];
+            this.error404 = trans['ERRORS.ERROR404'];
+            this.errorOccured = trans['ERRORS.OOPS'];
+        });
     }
 }

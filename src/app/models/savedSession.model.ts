@@ -8,6 +8,7 @@ export class SavedSession {
         public order?: number,
         public title_EN?: string,
         public duration?: number,
-        public courseTitle_EN?: string
+        public courseTitle_EN?: string,
+        public courseTitle_FR?: string
     ) { }
 }

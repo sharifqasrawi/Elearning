@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { faSearch, faThumbsUp } from '@fortawesome/free-solid-svg-icons';
 import { FormGroup, FormControl } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -32,12 +33,18 @@ export class HomeComponent implements OnInit {
 
   searchForm: FormGroup;
 
+  currentLang: string = null;
+
   constructor(
     private store: Store<fromApp.AppState>,
     private sanitizer: DomSanitizer,
+    private translate: TranslateService
   ) { }
 
   ngOnInit(): void {
+    this.currentLang = this.translate.currentLang;
+    this.translate.onLangChange.subscribe(() => this.currentLang = this.translate.currentLang);
+
     this.store.dispatch(new HomeActions.FetchStart());
     this.store.dispatch(new HomeActions.FetchLatestCoursesStart());
 

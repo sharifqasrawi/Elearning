@@ -44,7 +44,9 @@
             "STARTED": "Started",
             "ONGOING": "Ongoing",
             "SUBMITTED": "Submitted",
-            "RESULT": "Result"
+            "RESULT": "Result",
+            "PASSED": "Passed",
+            "FAILED": "Failed"
         },
         "REPORTS": {
             "REPORTS": "Reports",
@@ -365,5 +367,10 @@
         "COURSES": "Courses",
         "QUIZZES": "Quizzes"
 
+    },
+    "LEVELS": {
+        "BASIC": "Basic",
+        "MEDIUM": "Medium",
+        "ADVANCED": "Advanced"
     }
 }

@@ -6,6 +6,7 @@
 
     <div *ngIf="!errors && loading">
         <app-loader-home-course [count]='4'></app-loader-home-course>
+        <div class="clearfix"></div>
     </div>
 
     <div *ngIf="courses.length === 0 && (loaded || loadedFavorites)">
@@ -30,7 +31,10 @@
                 </div>
                 <mat-card-header>
                     <div mat-card-avatar class="course-header-image"></div>
-                    <mat-card-title>{{ course.title_EN }}</mat-card-title>
+                    <mat-card-title>
+                        <span *ngIf="currentLang === 'en'">{{ course.title_EN }}</span>
+                        <span *ngIf="currentLang === 'fr'">{{ course.title_FR }}</span>
+                    </mat-card-title>
                     <mat-card-subtitle>
                         {{ course.createdBy }} - {{ course.publishedAt | date:'short' }}
                     </mat-card-subtitle>
@@ -40,7 +44,7 @@
                         <div class="col-lg-6">
                             <p> <strong>{{ 'COURSE.LEVEL' | translate }} </strong></p>
                             <div class="levelDiv bg-warning mat-elevation-z4">
-                                {{ course.level }}
+                                {{ 'LEVELS.' + course.level.toUpperCase() | translate }}
                             </div>
                         </div>
                         <div class="col-lg-6">
@@ -57,11 +61,14 @@
                 </mat-card-content>
                 <mat-card-actions class="actions">
                     <div>
-                        <a mat-button style="text-transform: uppercase;"
+                        <a mat-button style="text-transform: uppercase;" *ngIf="currentLang === 'en'"
                             [routerLink]="[ '/categories', course.category.id, course.category.slug ,'course', course.id, course.slug_EN]">
                             {{ 'COURSES.VIEW_COURSE' | translate }}
                         </a>
-
+                        <a mat-button style="text-transform: uppercase;" *ngIf="currentLang === 'fr'"
+                            [routerLink]="[ '/categories', course.category.id, course.category.slug_FR ,'course', course.id, course.slug_FR]">
+                            {{ 'COURSES.VIEW_COURSE' | translate }}
+                        </a>
                     </div>
                     <div>
                         <fa-icon [icon]="faThumbsUp"></fa-icon> {{ course.likes.length }}
@@ -70,6 +77,7 @@
 
             </mat-card>
         </div>
+        <div class="clearfix"></div>
     </div>
 </div>
 

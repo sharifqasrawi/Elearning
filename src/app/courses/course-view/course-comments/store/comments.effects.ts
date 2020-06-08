@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { Course } from './../../../../models/course.model';
 import { Injectable } from "@angular/core";
 import { Actions, Effect, ofType } from '@ngrx/effects';
@@ -21,6 +22,10 @@ export class HomeCommentsEffects {
     userName = '';
     userId = '';
 
+    errorAccessDenied: string = '';
+    error404: string = '';
+    errorOccured: string = '';
+
     @Effect()
     fetchComments = this.actions$.pipe(
         ofType(HomeCommentsActions.FETCH_START),
@@ -36,16 +41,17 @@ export class HomeCommentsEffects {
                     }),
                     catchError(errorRes => {
                         // console.log(errorRes);
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new HomeCommentsActions.FetchFail(['Access Denied']));
+                                return of(new HomeCommentsActions.FetchFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new HomeCommentsActions.FetchFail(['Error 404. Not Found']));
+                                return of(new HomeCommentsActions.FetchFail([this.error404]));
                             case 400:
                                 return of(new HomeCommentsActions.FetchFail(errorRes.error.errors));
                             default:
-                                return of(new HomeCommentsActions.FetchFail(['Oops! An error occured']));
+                                return of(new HomeCommentsActions.FetchFail([this.errorOccured]));
                         }
                     })
                 )
@@ -72,16 +78,17 @@ export class HomeCommentsEffects {
                         return new HomeCommentsActions.CreateSuccess(resData.createdComment);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new HomeCommentsActions.CreateFail(['Access Denied']));
+                                return of(new HomeCommentsActions.CreateFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new HomeCommentsActions.CreateFail(['Error 404. Not Found']));
+                                return of(new HomeCommentsActions.CreateFail([this.error404]));
                             case 400:
                                 return of(new HomeCommentsActions.CreateFail(errorRes.error.errors));
                             default:
-                                return of(new HomeCommentsActions.CreateFail(['Oops! An error occured']));
+                                return of(new HomeCommentsActions.CreateFail([this.errorOccured]));
                         }
                     })
                 )
@@ -105,16 +112,17 @@ export class HomeCommentsEffects {
                         return new HomeCommentsActions.UpdateSuccess(resData.updatedComment);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new HomeCommentsActions.UpdateFail(['Access Denied']));
+                                return of(new HomeCommentsActions.UpdateFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new HomeCommentsActions.UpdateFail(['Error 404. Not Found']));
+                                return of(new HomeCommentsActions.UpdateFail([this.error404]));
                             case 400:
                                 return of(new HomeCommentsActions.UpdateFail(errorRes.error.errors));
                             default:
-                                return of(new HomeCommentsActions.UpdateFail(['Oops! An error occured']));
+                                return of(new HomeCommentsActions.UpdateFail([this.errorOccured]));
                         }
                     })
                 )
@@ -136,16 +144,17 @@ export class HomeCommentsEffects {
                         return new HomeCommentsActions.DeleteSuccess(resData.deletedComment);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new HomeCommentsActions.DeleteFail(['Access Denied']));
+                                return of(new HomeCommentsActions.DeleteFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new HomeCommentsActions.DeleteFail(['Error 404. Not Found']));
+                                return of(new HomeCommentsActions.DeleteFail([this.error404]));
                             case 400:
                                 return of(new HomeCommentsActions.DeleteFail(errorRes.error.errors));
                             default:
-                                return of(new HomeCommentsActions.DeleteFail(['Oops! An error occured']));
+                                return of(new HomeCommentsActions.DeleteFail([this.errorOccured]));
                         }
                     })
                 )
@@ -170,16 +179,17 @@ export class HomeCommentsEffects {
                         return new HomeCommentsActions.LikeSuccess(resData.comment);
                     }),
                     catchError(errorRes => {
+                        this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new HomeCommentsActions.LikeFail(['Access Denied']));
+                                return of(new HomeCommentsActions.LikeFail([this.errorAccessDenied]));
                             case 404:
-                                return of(new HomeCommentsActions.LikeFail(['Error 404. Not Found']));
+                                return of(new HomeCommentsActions.LikeFail([this.error404]));
                             case 400:
                                 return of(new HomeCommentsActions.LikeFail(errorRes.error.errors));
                             default:
-                                return of(new HomeCommentsActions.LikeFail(['Oops! An error occured']));
+                                return of(new HomeCommentsActions.LikeFail([this.errorOccured]));
                         }
                     })
                 )
@@ -187,12 +197,13 @@ export class HomeCommentsEffects {
     );
 
 
- 
+
 
     constructor(
         private actions$: Actions,
         private http: HttpClient,
         private store: Store<fromApp.AppState>,
+        private translate: TranslateService
     ) {
 
         this.store.select('login')
@@ -207,5 +218,12 @@ export class HomeCommentsEffects {
                 }
             });
 
+    }
+    private getErrorsTranslations() {
+        this.translate.get(['ERRORS.ACCESS_DENIED', 'ERRORS.ERROR404', 'ERRORS.OOPS']).subscribe(trans => {
+            this.errorAccessDenied = trans['ERRORS.ACCESS_DENIED'];
+            this.error404 = trans['ERRORS.ERROR404'];
+            this.errorOccured = trans['ERRORS.OOPS'];
+        });
     }
 }
