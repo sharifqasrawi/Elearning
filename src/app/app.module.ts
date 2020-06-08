@@ -1,6 +1,7 @@
+import { LanguageInterceptorService } from './language-interceptor.service';
 import { NgModule, LOCALE_ID } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { StoreModule } from '@ngrx/store';
@@ -144,7 +145,7 @@ export function HttpLoaderFactory(http: HttpClient) {
       loader: {
         provide: TranslateLoader,
         useFactory: HttpLoaderFactory,
-        deps: [HttpClient]
+       deps: [HttpClient]
       }
     }),
     AppRoutingModule,
@@ -153,11 +154,11 @@ export function HttpLoaderFactory(http: HttpClient) {
     // { provide: LOCALE_ID, useClass: DynamicLocaleId},
     // { provide: LOCALE_ID, useValue: 'fr-FR' },
     { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'fill' } },
-    // {
-    //   provide: HTTP_INTERCEPTORS,
-    //   useClass: AuthInterceptorService,
-    //   multi: true
-    // },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: LanguageInterceptorService,
+      multi: true
+    },
     CanDeactivateGuard
   ],
   bootstrap: [AppComponent]
