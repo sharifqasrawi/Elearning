@@ -43,7 +43,7 @@ export class SessionsEffects {
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new SessionsActions.FetchFail([this.errorAccessDenied]]));
+                                return of(new SessionsActions.FetchFail([this.errorAccessDenied]));
                             case 404:
                                 return of(new SessionsActions.FetchFail([this.error404]));
                             case 400:
@@ -87,7 +87,7 @@ export class SessionsEffects {
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new SessionsActions.CreateFail([this.errorAccessDenied]]));
+                                return of(new SessionsActions.CreateFail([this.errorAccessDenied]));
                             case 404:
                                 return of(new SessionsActions.CreateFail([this.error404]));
                             case 400:
@@ -135,7 +135,7 @@ export class SessionsEffects {
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new SessionsActions.UpdateFail([this.errorAccessDenied]]));
+                                return of(new SessionsActions.UpdateFail([this.errorAccessDenied]));
                             case 404:
                                 return of(new SessionsActions.UpdateFail([this.error404]));
                             case 400:
@@ -166,7 +166,7 @@ export class SessionsEffects {
                         switch (errorRes.status) {
                             case 403:
                             case 401:
-                                return of(new SessionsActions.DeleteFail([this.errorAccessDenied]]));
+                                return of(new SessionsActions.DeleteFail([this.errorAccessDenied]));
                             case 404:
                                 return of(new SessionsActions.DeleteFail([this.error404]));
                             case 400:
