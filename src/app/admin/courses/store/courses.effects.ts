@@ -36,7 +36,8 @@ export class CoursesEffects {
 
             return this.http.get<{ courses: Course[] }>(environment.API_BASE_URL + 'courses',
                 {
-                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang),
                     params: params
                 })
                 .pipe(
@@ -68,6 +69,7 @@ export class CoursesEffects {
             return this.http.get<{ courses: Course[] }>(environment.API_BASE_URL + 'courses/deleted',
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang)
                 })
                 .pipe(
                     map(resData => {
@@ -121,6 +123,7 @@ export class CoursesEffects {
                 },
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang)
                 })
                 .pipe(
                     map(resData => {
@@ -156,6 +159,7 @@ export class CoursesEffects {
                 },
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang)
                 })
                 .pipe(
                     map(resData => {
@@ -185,7 +189,8 @@ export class CoursesEffects {
         switchMap((classData: CoursesActions.FetchNonClassMembersStart) => {
             return this.http.get<{ nonMembers: { id: string, fullName: string }[] }>(environment.API_BASE_URL + 'classes/non-members',
                 {
-                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang),
                     params: new HttpParams().set('classId', classData.payload)
                 })
                 .pipe(
@@ -241,6 +246,7 @@ export class CoursesEffects {
                 },
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang)
                 })
                 .pipe(
                     map(resData => {
@@ -273,7 +279,8 @@ export class CoursesEffects {
                     Id: courseData.payload.id,
                 },
                 {
-                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang),
                     params: new HttpParams().set('action', courseData.payload.action)
                 })
                 .pipe(
@@ -308,7 +315,8 @@ export class CoursesEffects {
                     tagId: courseData.payload.tagId
                 },
                 {
-                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang),
                     params: new HttpParams().set('action', courseData.payload.action)
                 })
                 .pipe(
@@ -344,7 +352,8 @@ export class CoursesEffects {
                     deletedBy: this.userName,
                 },
                 {
-                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang),
                     params: new HttpParams().set('action', courseData.payload.action)
                 })
                 .pipe(
@@ -380,7 +389,8 @@ export class CoursesEffects {
 
             return this.http.delete<{ deletedComment: Comment }>(environment.API_BASE_URL + 'comments',
                 {
-                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang),
                     params: new HttpParams().set('id', commentData.payload.toString())
                 })
                 .pipe(
@@ -415,7 +425,8 @@ export class CoursesEffects {
                     userId: enrollData.payload.userId
                 },
                 {
-                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang),
                     params: new HttpParams().append('action', enrollData.payload.action)
                         .append('userId', this.userId)
                 })

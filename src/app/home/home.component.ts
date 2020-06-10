@@ -80,6 +80,10 @@ export class HomeComponent implements OnInit {
     this.onSearch();
   }
 
+
+  scroll(el: HTMLElement) {
+    el.scrollIntoView({ behavior: "smooth", block: "start", inline: "nearest" });
+  }
   getSanitizedImage = (imagePath: string) => this.sanitizer.bypassSecurityTrustResourceUrl(imagePath);
 
 }

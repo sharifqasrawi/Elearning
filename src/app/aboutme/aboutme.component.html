@@ -1,4 +1,41 @@
 <div class="container content0">
-    <h1>About me</h1>
+    <h1>
+        <fa-icon [icon]="faInfoCircle"></fa-icon>
+        {{ 'ABOUT_ME.ABOUT_ME' | translate }}
+    </h1>
+    <hr>
 
+    <div *ngIf="!loading && about" class="aboutBox mat-elevation-z4 p-5">
+        <div class="row">
+
+            <div class="col-lg-8">
+                <h1 class="name">{{ about.name }}</h1>
+                <p class="small text-muted" *ngIf="currentLang === 'en'">{{ about.title }}</p>
+                <p class="small text-muted" *ngIf="currentLang === 'fr'">{{ about.title_FR }}</p>
+                <hr>
+                <div [innerHTML]="getSanitizedHtml(about.info)" *ngIf="currentLang === 'en'"></div>
+                <div [innerHTML]="getSanitizedHtml(about.info_FR)" *ngIf="currentLang === 'fr'"></div>
+            </div>
+            <div class="col-lg-4">
+                <div class="imageBox text-center ">
+                    <img [src]="getSanitizedImage(about.imagePath)" alt="image" class="mat-elevation-z4">
+                    <p class="mt-3 text-muted">
+                        <a [href]="'mailto:'+ about.email1 ">
+                            {{ about.email1 }}
+                        </a>
+                    </p>
+                    <p class="text-muted" *ngIf="about.email2">
+                        <a [href]="'mailto:'+ about.email2 ">
+                            {{ about.email2 }}
+                        </a>
+                    </p>
+                    <p class="text-muted" *ngIf="about.website">
+                        <a [href]="about.website" target="_blank" >
+                            {{ about.website }}
+                        </a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

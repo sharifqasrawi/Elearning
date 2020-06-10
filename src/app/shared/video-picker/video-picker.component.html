@@ -1,0 +1,34 @@
+<h3 mat-dialog-title>
+    {{ 'COMMON.CHOOSE_VIDEO' | translate }}:
+</h3>
+<hr>
+<div mat-dialog-content>
+    <mat-form-field style="width: 100%;" appearance="legacy">
+        <mat-label translate>COMMON.DIRECTORY</mat-label>
+        <mat-select [(ngModel)]="path">
+            <mat-option (click)="onSelectDirectory()">{{ 'COMMON.ALL' | translate }}</mat-option>
+            <mat-option *ngFor="let d of directories" [value]="d.path" (click)="onSelectDirectory()">
+                {{d.path}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <div class="imagesBox">
+        <div *ngFor="let file of files">
+            <div class="float-left  image" *ngIf="isVideo(file.fileType)">
+                <img src="../../../assets/images/imagePlaceholder.jpg" alt="no preview"
+                    style="cursor: pointer;" (click)="onSelectImage(file.downloadPath)"
+                    [class.selected]="selectedFile === file.downloadPath">
+
+                <p  class="small text-muted text-center">{{file.originalFileName}}</p>
+            </div>
+        </div>
+    </div>
+</div>
+<div mat-dialog-actions class="float-right mt-2">
+    <button mat-raised-button color="accent" (click)="onClear()">{{ 'COMMON.CLEAR_SELECTION' | translate }}</button>
+    <button mat-raised-button color="warn" cdkFocusInitial
+        (click)="onNoClick()">{{ 'COMMON.CANCEL' | translate }}</button>
+    <button mat-raised-button color="primary" [disabled]="!selectedFile"
+        (click)="onChoose()">{{ 'COMMON.CHOOSE' | translate }}</button>
+</div>

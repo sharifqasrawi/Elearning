@@ -22,11 +22,11 @@ import { CanDeactivateGuard } from './quizzes/quiz-proccess/can-deactivate-guard
 
 const routes: Routes = [
   {
+    path: 'admin',
+    loadChildren: () => import('./admin/admin.module').then(module => module.AdminModule)
+  },
+  {
     path: '', component: LayoutComponent, children: [
-      // {
-      //   path: 'home',
-      //   component: HomeComponent
-      // },
       {
         path: 'courses',
         children: [

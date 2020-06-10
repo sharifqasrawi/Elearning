@@ -27,6 +27,7 @@ export class FilesEffects {
             return this.http.get<{ uploadedFiles: UploadedFile[] }>(environment.API_BASE_URL + 'files',
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang)
                 })
                 .pipe(
                     map(resData => {
@@ -58,7 +59,8 @@ export class FilesEffects {
 
             return this.http.delete<{ deletedFileId: number }>(environment.API_BASE_URL + 'files/delete',
                 {
-                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang),
                     params: new HttpParams().set('fileId', fileData.payload.toString())
                 })
                 .pipe(

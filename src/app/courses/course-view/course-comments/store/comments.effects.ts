@@ -33,6 +33,7 @@ export class HomeCommentsEffects {
 
             return this.http.get<{ comments: Comment[] }>(environment.API_BASE_URL + 'comments',
                 {
+                    headers: new HttpHeaders().append('language', this.translate.currentLang),
                     params: new HttpParams().set('courseId', commentData.payload.toString())
                 })
                 .pipe(
@@ -70,7 +71,8 @@ export class HomeCommentsEffects {
                     commentId: commentData.payload.commentId
                 },
                 {
-                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang),
                     params: new HttpParams().set('courseId', commentData.payload.toString())
                 })
                 .pipe(
@@ -105,7 +107,8 @@ export class HomeCommentsEffects {
                     text: commentData.payload.text,
                 },
                 {
-                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang),
                 })
                 .pipe(
                     map(resData => {
@@ -136,7 +139,8 @@ export class HomeCommentsEffects {
 
             return this.http.delete<{ deletedComment: Comment }>(environment.API_BASE_URL + 'comments',
                 {
-                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang),
                     params: new HttpParams().set('id', commentData.payload.toString())
                 })
                 .pipe(
@@ -171,7 +175,8 @@ export class HomeCommentsEffects {
                     userId: this.userId
                 },
                 {
-                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang),
                     params: new HttpParams().set('action', likeData.payload.action)
                 })
                 .pipe(

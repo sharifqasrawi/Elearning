@@ -28,6 +28,7 @@ export class MessagesEffects {
             return this.http.get<{ messages: Message[] }>(environment.API_BASE_URL + 'messages',
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang)
                 })
                 .pipe(
                     map(resData => {
@@ -58,6 +59,7 @@ export class MessagesEffects {
             return this.http.get<{ emailMessages: EmailMessage[] }>(environment.API_BASE_URL + 'messages/sent-emails',
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang)
                 })
                 .pipe(
                     map(resData => {
@@ -91,6 +93,9 @@ export class MessagesEffects {
                     email: messageData.payload.email,
                     subject: messageData.payload.subject,
                     text: messageData.payload.text
+                },
+                {
+                    headers: new HttpHeaders().append('language', this.translate.currentLang)
                 })
                 .pipe(
                     map(resData => {
@@ -126,6 +131,7 @@ export class MessagesEffects {
                 },
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang)
                 })
                 .pipe(
                     map(resData => {
@@ -155,7 +161,8 @@ export class MessagesEffects {
         switchMap((messageData: MessagesActions.DeleteStart) => {
             return this.http.delete<{ deletedMsgId: number }>(environment.API_BASE_URL + 'messages/delete',
                 {
-                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang),
                     params: new HttpParams().set('msgId', messageData.payload.toString())
                 })
                 .pipe(
@@ -186,7 +193,8 @@ export class MessagesEffects {
         switchMap((messageData: MessagesActions.ChangeSeenStart) => {
             return this.http.put<{ updatedMessage: Message }>(environment.API_BASE_URL + 'messages/change-seen', null,
                 {
-                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang),
                     params: new HttpParams().set('msgId', messageData.payload.toString())
                 })
                 .pipe(

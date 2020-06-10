@@ -6,9 +6,9 @@
                     <strong>{{ 'FOOTER.CREATED_BY' | translate }}:</strong>
                 </p>
                 <hr>
-                <p>Sharif Qasrawi</p>
+                <p>{{ name }}</p>
                 <p>
-                    <a href="https://sharifqasrawi.com">sharifqasrawi.com</a>
+                    <a [href]="website" target="_blank">{{ website }}</a>
                 </p>
                 <p>
                     <em>{{ 'FOOTER.VERSION' | translate }}: 1.0 Beta.</em>
@@ -30,16 +30,16 @@
                 <p><strong>{{ 'FOOTER.CONTACT' | translate }}:</strong></p>
                 <hr>
                 <p>
-                    <a href="mailto:sharif@qasrawi.fr">sharif@qasrawi.fr</a>
+                    <a [href]="'mailto:' + email">{{ email }}</a>
                 </p>
                 <p>
                     <a [routerLink]="['/contact-us']">
-                        {{ 'FOOTER.CONTACT_FORM' | translate }}:
+                        {{ 'FOOTER.CONTACT_FORM' | translate }}.
                     </a>
                 </p>
                 <p>
                     <a style="cursor: pointer;" (click)="onReportBug()">
-                        {{ 'FOOTER.REPORT_BUG' | translate }}:.
+                        {{ 'FOOTER.REPORT_BUG' | translate }}.
                     </a>
                 </p>
             </div>

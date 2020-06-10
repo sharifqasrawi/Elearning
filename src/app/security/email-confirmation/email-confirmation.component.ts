@@ -1,3 +1,4 @@
+import { TranslateService } from '@ngx-translate/core';
 import { environment } from './../../../environments/environment';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
@@ -14,7 +15,8 @@ export class EmailConfirmationComponent implements OnInit {
   errors: string[] = null;
 
   constructor(private route: ActivatedRoute,
-    private http: HttpClient
+    private http: HttpClient,
+    private translate: TranslateService
   ) { }
 
   ngOnInit(): void {
@@ -30,7 +32,10 @@ export class EmailConfirmationComponent implements OnInit {
       this.http.post(environment.API_BASE_URL + 'account/confirm-email',
         {
           userId: userId,
-          token: token.replace(/\s/g, '+') 
+          token: token.replace(/\s/g, '+')
+        },
+        {
+          headers: new HttpHeaders().append('language', this.translate.currentLang)
         }
       )
         .subscribe(

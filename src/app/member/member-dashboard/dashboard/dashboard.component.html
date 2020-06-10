@@ -1,0 +1,63 @@
+<div>
+    <div class="alert alert-secondary">
+        <div class="row">
+            <div class="col-lg-8">
+                <h1>
+                    <em>{{ 'COMMON.HELLO' | translate }}: {{ fullName }} </em>
+                </h1>
+            </div>
+            <div class="col-lg-2">
+                <a mat-raised-button color="primary" class="btn-block" [routerLink]="['/member', 'edit-profile']">
+                    <fa-icon [icon]="faUserEdit"></fa-icon>
+                    {{ 'EDIT_PROFILE.EDIT_PROFILE' | translate }}
+                </a>
+
+            </div>
+            <div class="col-lg-2">
+                <a mat-raised-button color="accent" class="btn-block" [routerLink]="['/member', 'change-password']">
+                    <fa-icon [icon]="faEye"></fa-icon>
+                    {{ 'CHANGE_PASSWORD.CHANGE_PASSWORD' | translate }}
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card-counter coral">
+                <mat-icon class="icon">airplay</mat-icon>
+                <span [countUp]="coursesCount" class="count-numbers" >0</span>
+                <mat-spinner [diameter]="20" *ngIf="loading"></mat-spinner>
+                <span class="count-name" translate>DASHBOARD.ENROLLED_COURSES</span>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card-counter info">
+                <mat-icon class="icon">thumb_up</mat-icon>
+                <span [countUp]="favoritesCount" class="count-numbers" >0</span>
+                <mat-spinner [diameter]="20" *ngIf="loading"></mat-spinner>
+                <span class="count-name" translate>DASHBOARD.FAVORITE_COURSES</span>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card-counter success">
+                <mat-icon class="icon">save</mat-icon>
+                <span [countUp]="savedSessionsCount" class="count-numbers" >0</span>
+                <mat-spinner [diameter]="20" *ngIf="loading"></mat-spinner>
+                <span class="count-name" translate>DASHBOARD.SAVED_SESSIONS.SAVED_SESSIONS</span>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card-counter darkcyan">
+                <mat-icon class="icon">help</mat-icon>
+                <span [countUp]="userQuizzesCount" class="count-numbers" >0</span>
+                <mat-spinner [diameter]="20" *ngIf="loading"></mat-spinner>
+                <span class="count-name" translate>DASHBOARD.MY_QUIZZES.MY_QUIZZES</span>
+            </div>
+        </div>
+
+    </div>
+</div>

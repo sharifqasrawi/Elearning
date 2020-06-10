@@ -62,6 +62,10 @@ export const FETCH_USER_QUIZZES_START = '[Member] Fetch User Quizzes Start';
 export const FETCH_USER_QUIZZES_SUCCESS = '[Member] Fetch User Quizzes Success';
 export const FETCH_USER_QUIZZES_FAIL = '[Member] Fetch User Quizzes Fail';
 
+export const FETCH_DASHBOARD_INFO_START = '[Member] Fetch Dashboard Info Start';
+export const FETCH_DASHBOARD_INFO_SUCCESS = '[Member] Fetch Dashboard Info Success';
+export const FETCH_DASHBOARD_INFO_FAIL = '[Member] Fetch Dashboard Info Fail';
+
 
 export const CLEAR_ERRORS = '[Member] Clear Errors';
 export const CLEAR_STATUS = '[Member] Clear Status';
@@ -81,6 +85,26 @@ export class FetchCoursesSuccess implements Action {
 
 export class FetchCoursesFail implements Action {
     readonly type = FETCH_COURSES_FAIL;
+
+    constructor(public payload: string[]) { }
+}
+
+/////////////////////
+
+
+export class FetchDashboardInfoStart implements Action {
+    readonly type = FETCH_DASHBOARD_INFO_START;
+}
+
+
+export class FetchDashboardInfoSuccess implements Action {
+    readonly type = FETCH_DASHBOARD_INFO_SUCCESS;
+
+    constructor(public payload: { coursesCount: number, favoritesCount: number, savedSessionsCount: number, userQuizzesCount: number }) { }
+}
+
+export class FetchDashboardInfoFail implements Action {
+    readonly type = FETCH_DASHBOARD_INFO_FAIL;
 
     constructor(public payload: string[]) { }
 }
@@ -380,6 +404,9 @@ export type MemberActions =
     | FetchUserQuizzesStart
     | FetchUserQuizzesSuccess
     | FetchUserQuizzesFail
+    | FetchDashboardInfoStart
+    | FetchDashboardInfoSuccess
+    | FetchDashboardInfoFail
     | ClearErrors
     | ClearStatus
     ;

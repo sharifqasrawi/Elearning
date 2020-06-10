@@ -1,9 +1,7 @@
 import { TranslateService } from '@ngx-translate/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { map } from 'rxjs/operators';
-import { Observable } from 'rxjs/internal/Observable';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';

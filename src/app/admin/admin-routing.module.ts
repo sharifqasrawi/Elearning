@@ -1,3 +1,4 @@
+import { AboutComponent } from './about/about.component';
 import { QuestionsLandingPageComponent } from './quizzes/set-quiz/set-question/questions-landing-page/questions-landing-page.component';
 import { SetQuestionComponent } from './quizzes/set-quiz/set-question/set-question.component';
 import { NgModule } from '@angular/core';
@@ -50,6 +51,7 @@ const routes: Routes = [
   {
     path: 'admin', component: MainComponent, children: [
       { path: 'dashboard', component: DashboardComponent },
+      { path: 'about', component: AboutComponent },
       { path: 'reports', component: BugReportsComponent },
       {
         path: 'users', children: [

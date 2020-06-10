@@ -28,6 +28,7 @@ export class DirectoriesEffects {
             return this.http.get<{ directories: Directory[] }>(environment.API_BASE_URL + 'directories',
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang)
                 })
                 .pipe(
                     map(resData => {
@@ -57,7 +58,8 @@ export class DirectoriesEffects {
         switchMap((dirData: DirectoriesActions.FetchPhysicalStart) => {
             return this.http.get<{ physical_directories: Directory[] }>(environment.API_BASE_URL + 'directories/physical',
                 {
-                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang),
                     params: new HttpParams().set('path', dirData.payload)
                 })
                 .pipe(
@@ -93,6 +95,7 @@ export class DirectoriesEffects {
                 },
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang)
                 })
                 .pipe(
                     map(resData => {
@@ -123,7 +126,8 @@ export class DirectoriesEffects {
         switchMap((dirData: DirectoriesActions.DeleteStart) => {
             return this.http.delete<{ deletedDirId: number }>(environment.API_BASE_URL + 'directories/delete',
                 {
-                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang),
                     params: new HttpParams().set('dirId', dirData.payload.toString())
                 })
                 .pipe(

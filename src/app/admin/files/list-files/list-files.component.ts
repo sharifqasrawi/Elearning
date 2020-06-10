@@ -1,7 +1,6 @@
 import { TranslateService } from '@ngx-translate/core';
 import { PdfViewerModalComponent } from './../../../shared/pdf-viewer-modal/pdf-viewer-modal.component';
 import { ImgViewerComponent } from './../../../shared/img-viewer/img-viewer.component';
-import { ConfirmDialogComponent } from 'src/app/shared/confirm-dialog/confirm-dialog.component';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { MatDialog } from '@angular/material/dialog';
@@ -16,6 +15,7 @@ import { UploadedFile } from './../../../models/uploadedFile.model';
 
 import * as fromApp from '../../../store/app.reducer';
 import * as FilesActions from '../store/files.actions';
+import { ConfirmDialogComponent } from '../../../shared/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-list-files',

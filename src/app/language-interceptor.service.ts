@@ -16,7 +16,7 @@ export class LanguageInterceptorService implements HttpInterceptor {
         this.currentLang = localStorage.getItem('lang');
      
         const modifiedReq = req.clone({
-            headers: new HttpHeaders().append('language', this.currentLang)
+            // headers: new HttpHeaders().append('language', this.currentLang)
         });
 
         return next.handle(modifiedReq);

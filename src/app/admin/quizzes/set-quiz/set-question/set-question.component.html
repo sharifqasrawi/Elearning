@@ -39,6 +39,10 @@
                     <dt [class.text-success]="answer.isCorrect" > 
                         <div [innerHTML]="getSanitizedHtml(answer.text_EN)" *ngIf="currentLang === 'en'"></div>
                         <div [innerHTML]="getSanitizedHtml(answer.text_FR)" *ngIf="currentLang === 'fr'"></div>
+
+                        <div *ngIf="answer.imagePath">
+                            <img [src]="getSanitizedImage(answer.imagePath)" alt="no preview" width="100%" height="200">
+                        </div>
                     </dt>
                     <dd class="text-muted small" >
                         <div style="display: flex; justify-content: space-between;">

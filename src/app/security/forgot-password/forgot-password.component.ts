@@ -1,6 +1,7 @@
+import { TranslateService } from '@ngx-translate/core';
 import { map, catchError } from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { faQuestionCircle, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
@@ -21,7 +22,7 @@ export class ForgotPasswordComponent implements OnInit {
   sending = false;
   errors: string[] = null;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private translate: TranslateService) { }
 
   ngOnInit(): void {
     this.resetPwdForm = new FormGroup({
@@ -37,6 +38,9 @@ export class ForgotPasswordComponent implements OnInit {
     this.http.post(environment.API_BASE_URL + 'account/forgot-password',
       {
         email: this.resetPwdForm.value.email
+      },
+      {
+        headers: new HttpHeaders().append('language', this.translate.currentLang)
       }
     ).pipe(
       map(resData => {

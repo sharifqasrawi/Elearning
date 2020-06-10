@@ -33,6 +33,7 @@ export class QuizzesEffects {
             return this.http.get<{ quizzes: Quiz[] }>(environment.API_BASE_URL + 'quizzesAdmin',
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang)
                 })
                 .pipe(
                     map(resData => {
@@ -67,6 +68,7 @@ export class QuizzesEffects {
             return this.http.get<{ quizzes: Quiz[] }>(environment.API_BASE_URL + 'quizzesAdmin/trashed',
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang)
                 })
                 .pipe(
                     map(resData => {
@@ -112,6 +114,7 @@ export class QuizzesEffects {
                 data,
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang)
                 })
                 .pipe(
                     map(resData => {
@@ -157,6 +160,7 @@ export class QuizzesEffects {
                 data,
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang)
                 })
                 .pipe(
                     map(resData => {
@@ -192,7 +196,8 @@ export class QuizzesEffects {
                     deletedBy: this.userFullName,
                 },
                 {
-                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang),
                     params: new HttpParams().set('action', quizData.payload.action)
                 })
                 .pipe(
@@ -227,7 +232,8 @@ export class QuizzesEffects {
 
             return this.http.delete<{ deletedQuizId: number }>(environment.API_BASE_URL + 'quizzesAdmin/delete-quiz',
                 {
-                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang),
                     params: new HttpParams().set('quizId', quizData.payload.toString())
                 })
                 .pipe(
@@ -264,7 +270,8 @@ export class QuizzesEffects {
                     id: quizData.payload.id,
                 },
                 {
-                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang),
                     params: new HttpParams().set('action', quizData.payload.action)
                 })
                 .pipe(
@@ -297,7 +304,8 @@ export class QuizzesEffects {
 
             return this.http.get<{ questions: Question[] }>(environment.API_BASE_URL + 'quizzesAdmin/questions',
                 {
-                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang),
                     params: new HttpParams().set('quizId', questionData.payload.toString())
                 })
                 .pipe(
@@ -342,6 +350,7 @@ export class QuizzesEffects {
                 data,
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang)
                 })
                 .pipe(
                     map(resData => {
@@ -383,6 +392,7 @@ export class QuizzesEffects {
                 data,
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang)
                 })
                 .pipe(
                     map(resData => {
@@ -417,7 +427,8 @@ export class QuizzesEffects {
                     deletedBy: this.userFullName,
                 },
                 {
-                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang),
                     params: new HttpParams().set('action', questionData.payload.action)
                 })
                 .pipe(
@@ -450,7 +461,8 @@ export class QuizzesEffects {
 
             return this.http.delete<{ deletedQuestionId: number }>(environment.API_BASE_URL + 'quizzesAdmin/delete-question',
                 {
-                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang),
                     params: new HttpParams().set('questionId', questionData.payload.toString())
                 })
                 .pipe(
@@ -485,7 +497,8 @@ export class QuizzesEffects {
 
             return this.http.get<{ answers: Answer[] }>(environment.API_BASE_URL + 'quizzesAdmin/answers',
                 {
-                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang),
                     params: new HttpParams().set('questionId', questionData.payload.toString())
                 })
                 .pipe(
@@ -529,6 +542,7 @@ export class QuizzesEffects {
                 data,
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang)
                 })
                 .pipe(
                     map(resData => {
@@ -572,6 +586,7 @@ export class QuizzesEffects {
                 data,
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang)
                 })
                 .pipe(
                     map(resData => {
@@ -604,7 +619,8 @@ export class QuizzesEffects {
 
             return this.http.delete<{ deletedAnswerId: number }>(environment.API_BASE_URL + 'quizzesAdmin/delete-answer',
                 {
-                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang),
                     params: new HttpParams().set('answerId', answerData.payload.toString())
                 })
                 .pipe(

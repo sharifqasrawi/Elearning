@@ -25,6 +25,7 @@ import { LoaderCourseInfoComponent } from './loader-course-info/loader-course-in
 import { FilePickerComponent } from './file-picker/file-picker.component';
 import { LoaderCourseCommentsComponent } from './loader-course-comments/loader-course-comments.component';
 import { ErrorDialogComponent } from './error-dialog/error-dialog.component';
+import { VideoPickerComponent } from './video-picker/video-picker.component';
 
 @NgModule({
     declarations: [
@@ -42,9 +43,10 @@ import { ErrorDialogComponent } from './error-dialog/error-dialog.component';
         FilePickerComponent,
         LoaderCourseCommentsComponent,
         ErrorDialogComponent,
+        VideoPickerComponent,
     ],
     imports: [
-        BrowserModule,
+        // BrowserModule,
         CommonModule,
         MaterialModule,
         FormsModule,

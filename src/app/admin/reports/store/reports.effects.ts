@@ -30,7 +30,8 @@ export class ReportsEffects {
 
             return this.http.get<{ reports: Report[] }>(environment.API_BASE_URL + 'reports',
                 {
-                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang),
                     params: reportData.payload ? new HttpParams().set('type', reportData.payload) : null
                 })
                 .pipe(
@@ -65,7 +66,8 @@ export class ReportsEffects {
 
             return this.http.get<{ reports: Report[] }>(environment.API_BASE_URL + 'reports/by-user',
                 {
-                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang),
                     params: new HttpParams().set('userId', this.userId)
                 })
                 .pipe(
@@ -108,7 +110,10 @@ export class ReportsEffects {
                 userId: this.userId
             };
 
-            return this.http.post<{ createdReport: Report }>(environment.API_BASE_URL + 'reports/report-bug', data)
+            return this.http.post<{ createdReport: Report }>(environment.API_BASE_URL + 'reports/report-bug', data, {
+                headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                    .append('language', this.translate.currentLang)
+            })
                 .pipe(
                     map((resData) => {
                         return new ReportsActions.ReportBugSuccess(resData.createdReport);
@@ -140,7 +145,11 @@ export class ReportsEffects {
                 isSeen: reportData.payload.isSeen
             };
 
-            return this.http.put<{ updatedReport: Report }>(environment.API_BASE_URL + 'reports/mark-report-seen', data)
+            return this.http.put<{ updatedReport: Report }>(environment.API_BASE_URL + 'reports/mark-report-seen', data,
+                {
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang)
+                })
                 .pipe(
                     map((resData) => {
                         return new ReportsActions.MarkReportSuccess(resData.updatedReport);
@@ -173,7 +182,10 @@ export class ReportsEffects {
                 userId: this.userId
             };
 
-            return this.http.put<{ updatedReport: Report }>(environment.API_BASE_URL + 'reports/mark-reply-seen', data)
+            return this.http.put<{ updatedReport: Report }>(environment.API_BASE_URL + 'reports/mark-reply-seen', data, {
+                headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                    .append('language', this.translate.currentLang)
+            })
                 .pipe(
                     map((resData) => {
                         return new ReportsActions.MarkReplySuccess(resData.updatedReport);
@@ -207,7 +219,11 @@ export class ReportsEffects {
                 replyMessage: reportData.payload.replyMessage
             };
 
-            return this.http.put<{ updatedReport: Report }>(environment.API_BASE_URL + 'reports/reply-report', data)
+            return this.http.put<{ updatedReport: Report }>(environment.API_BASE_URL + 'reports/reply-report', data,
+                {
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang)
+                })
                 .pipe(
                     map((resData) => {
                         return new ReportsActions.ReplyReportSuccess(resData.updatedReport);

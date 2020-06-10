@@ -37,6 +37,11 @@
                     {{ 'DASHBOARD.DASHBOARD' | translate }}
                 </a>
 
+                <a mat-list-item [routerLink]="['/admin', 'about']">
+                    <mat-icon mat-list-icon>info</mat-icon>
+                    {{ 'ADMINISTRATION.ABOUT.ABOUT' | translate }}
+                </a>
+
                 <mat-list-item (click)="showSubmenuCategories = !showSubmenuCategories" class="parent">
                     <span class="full-width" translate>ADMINISTRATION.CATEGORIES.CATEGORIES</span>
                     <mat-icon mat-list-icon class="adminNavColor">view_quilt</mat-icon>

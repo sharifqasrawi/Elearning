@@ -5,7 +5,8 @@
         "LATEST_COURSES": "Latest courses",
         "All_COURSES": "All courses",
         "SEARCH_BY_CATEGORY": "Search by category title",
-        "GO_TO_COURSES": "Go to courses"
+        "GO_TO_COURSES": "Go to courses",
+        "INFO": "Free online courses for everyone"
     },
     "QUIZZES": {
         "QUIZZES": "Quizzes",
@@ -75,6 +76,9 @@
             "ADMINISTRATION": "Administration",
             "NOTIFICATIONS": "Notifications",
             "WEBSITE_RATINGS": "Website ratings"
+        },
+        "ABOUT": {
+            "ABOUT": "About"
         },
         "CATEGORIES": {
             "CATEGORIES": "Categories",
@@ -306,6 +310,7 @@
         "CONFIRM_CANCEL": "Confirm cancellation",
         "CANCEL_MESSAGE": "Are you sure you wish to discard all changes and quit ?",
         "CHOOSE_IMAGE": "Choose image",
+        "CHOOSE_VIDEO": "Choose video",
         "TRASH_BIN": "Trash bin",
         "DETAILS": "Details",
         "REFRESH": "Refresh",
@@ -339,7 +344,10 @@
         "PATH": "Path",
         "DISCARD": "Discard",
         "CHOOSE": "Choose",
-        "CLEAR_SELECTION": "Clear selection"
+        "CLEAR_SELECTION": "Clear selection",
+        "PHONE_NUMBER": "Phone number",
+        "WEBSITE": "Website",
+        "HELLO": "Hello"
     },
     "REPORT_BUG": {
         "REPORT_BUG": "Report a bug",

@@ -11,7 +11,7 @@ import { environment } from '../../../environments/environment';
 import * as fromApp from '../../store/app.reducer';
 
 import * as AppSettionsActions from './app-settings.actions';
-import { AppRating } from 'src/app/models/appRating.model';
+import { AppRating } from '../../models/appRating.model';
 
 @Injectable()
 export class AppSettingsEffects {
@@ -34,7 +34,8 @@ export class AppSettingsEffects {
                     value: rateData.payload
                 },
                 {
-                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang),
                 })
                 .pipe(
                     map(resData => {
@@ -64,6 +65,7 @@ export class AppSettingsEffects {
         switchMap(() => {
             return this.http.get<{ ratings: { total: number, ratings: AppRating[] } }>(environment.API_BASE_URL + 'AppRatings',
                 {
+                    headers: new HttpHeaders().append('language', this.translate.currentLang),
                     params: this.userId ? new HttpParams().set('userId', this.userId) : null,
                 })
                 .pipe(

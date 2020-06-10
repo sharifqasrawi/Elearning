@@ -79,7 +79,7 @@
                 <div *ngIf="imageType">
                     <mat-form-field class="mt-2" appearance="legacy">
                         <mat-label translate>COMMON.CAPTION </mat-label>
-                        <input type="text" matInput formControlName="note" placeholder="Enter image caption">
+                        <input type="text" matInput formControlName="note" >
 
                     </mat-form-field>
 
@@ -93,6 +93,27 @@
 
                     <button type="button" mat-flat-button color="primary" class="mt-2" (click)="selectImage()">
                         {{ 'COMMON.CHOOSE_IMAGE' | translate }}
+                    </button>
+
+                </div>
+
+                <div *ngIf="videoType">
+                    <mat-form-field class="mt-2" appearance="legacy">
+                        <mat-label translate>COMMON.CAPTION </mat-label>
+                        <input type="text" matInput formControlName="note" >
+
+                    </mat-form-field>
+
+                    <mat-form-field class="mt-2" appearance="legacy">
+                        <mat-label translate>COMMON.IMAGE_PATH</mat-label>
+                        <input readonly type="text" matInput formControlName="content">
+                        <mat-error *ngIf="!form.controls.content.valid && form.controls.content.touched">
+                            {{ 'VALIDATION.REQUIRED' | translate }}
+                        </mat-error>
+                    </mat-form-field>
+
+                    <button type="button" mat-flat-button color="primary" class="mt-2" (click)="selectVideo()">
+                        {{ 'COMMON.CHOOSE_VIDEO' | translate }}
                     </button>
 
                 </div>

@@ -5,7 +5,8 @@
         "LATEST_COURSES": "Dernières cours",
         "All_COURSES": "Tous les cours",
         "SEARCH_BY_CATEGORY": "Rechercher par titre de catégorie",
-        "GO_TO_COURSES": "Aller aux cours"
+        "GO_TO_COURSES": "Aller aux cours",
+        "INFO": "Cours en ligne gratuits pour tous"
     },
     "QUIZZES": {
         "QUIZZES": "Quiz",
@@ -75,6 +76,9 @@
             "ADMINISTRATION": "Administration",
             "NOTIFICATIONS": "Notifications",
             "WEBSITE_RATINGS": "Évaluations du site Web"
+        },
+        "ABOUT": {
+            "ABOUT": "À propos"
         },
         "CATEGORIES": {
             "CATEGORIES": "Les catégories",
@@ -305,6 +309,7 @@
         "CONFIRM_CANCEL": "Confirmer l'annulation",
         "CANCEL_MESSAGE": "Êtes-vous sûr de vouloir annuler toutes les modifications et quitter ?",
         "CHOOSE_IMAGE": "Choisir l'image",
+        "CHOOSE_VIDEO": "Choisir la vidéo",
         "TRASH_BIN": "Corbeille",
         "DETAILS": "Détails",
         "REFRESH": "Actualiser",
@@ -337,7 +342,10 @@
         "PATH": "Chemin",
         "DISCARD": "Annuler les modifications",
         "CHOOSE": "Choisir",
-        "CLEAR_SELECTION": "Effacer la sélection"
+        "CLEAR_SELECTION": "Effacer la sélection",
+        "PHONE_NUMBER": "Numéro de téléphone",
+        "WEBSITE": "Site web",
+        "HELLO": "Bonjour"
     },
     "REPORT_BUG": {
         "REPORT_BUG": "Signaler un bug",

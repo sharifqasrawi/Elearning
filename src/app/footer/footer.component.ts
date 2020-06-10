@@ -6,6 +6,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 
 import * as fromApp from '../store/app.reducer';
 import * as AppSettingActions from '../AppSettings/store/app-settings.actions';
+import * as AboutActions from '../admin/about/store/about.actions';
 import { ReportBugComponent } from './../report-bug/report-bug.component';
 import { SignalRAppService } from './../AppSettings/services/signalr-app-service.service';
 import { ErrorDialogComponent } from './../shared/error-dialog/error-dialog.component';
@@ -28,6 +29,9 @@ export class FooterComponent implements OnInit {
   userRating = 0.0;
   totalRatingsCount = 0;
 
+  name: string = null;
+  email: string = null;
+  website: string = null;
 
   constructor(
     private store: Store<fromApp.AppState>,
@@ -77,6 +81,16 @@ export class FooterComponent implements OnInit {
         }
       });
     });
+
+    this.store.dispatch(new AboutActions.FetchStart());
+    this.store.select('about').subscribe(state => {
+      if(state.loaded && state.about){
+        this.name = state.about.name;
+        this.email = state.about.email1;
+        this.website = state.about.website;
+      }
+    });
+
   }
 
 

@@ -30,7 +30,8 @@ export class SectionsEffects {
         switchMap((sectionData: SectionsActions.FetchStart) => {
             return this.http.get<{ sections: Section[] }>(environment.API_BASE_URL + 'sections',
                 {
-                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang),
                     params: new HttpParams().set('courseId', sectionData.payload.toString())
                 })
                 .pipe(
@@ -75,7 +76,8 @@ export class SectionsEffects {
                     updatedBy: this.userName
                 },
                 {
-                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang),
                 })
                 .pipe(
                     map(resData => {
@@ -105,7 +107,8 @@ export class SectionsEffects {
         switchMap((sectionData: SectionsActions.DeleteStart) => {
             return this.http.delete<{ deletedSectionId: number }>(environment.API_BASE_URL + 'sections/delete-section',
                 {
-                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang),
                     params: new HttpParams().set('sectionId', sectionData.payload.toString())
                 })
                 .pipe(
@@ -143,7 +146,8 @@ export class SectionsEffects {
                     updatedBy: this.userName
                 },
                 {
-                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang),
                 })
                 .pipe(
                     map(resData => {

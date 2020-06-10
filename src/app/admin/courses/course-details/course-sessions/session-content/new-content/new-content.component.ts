@@ -1,3 +1,4 @@
+import { VideoPickerComponent } from './../../../../../../shared/video-picker/video-picker.component';
 import { TranslateService } from '@ngx-translate/core';
 import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
@@ -54,8 +55,9 @@ export class NewContentComponent implements OnInit, OnDestroy {
   form: FormGroup;
   wasFormChanged = false;
 
-  contentTypes = ['Text', 'Code', 'Image', 'Resource'];
+  contentTypes = ['Text', 'Code', 'Image', 'Video',  'Resource'];
   imageType = false;
+  videoType = false;
   textType = false;
   codeType = false;
   resourceType = false;
@@ -135,24 +137,35 @@ export class NewContentComponent implements OnInit, OnDestroy {
     switch (type.toLowerCase()) {
       case 'text':
         this.imageType = false;
+        this.videoType = false;
         this.codeType = false;
         this.resourceType = false;
         this.textType = true;
         break;
       case 'code':
         this.imageType = false;
+        this.videoType = false;
         this.codeType = true;
         this.resourceType = false;
         this.textType = false;
         break;
       case 'image':
         this.imageType = true;
+        this.videoType = false;
         this.textType = false;
         this.codeType = false;
         this.resourceType = false;
         break;
+        case 'video':
+          this.imageType = false;
+          this.videoType = true;
+          this.textType = false;
+          this.codeType = false;
+          this.resourceType = false;
+          break;
       case 'resource':
         this.imageType = false;
+        this.videoType = false;
         this.textType = false;
         this.codeType = false;
         this.resourceType = true;
@@ -160,6 +173,7 @@ export class NewContentComponent implements OnInit, OnDestroy {
 
       default:
         this.imageType = false;
+        this.videoType = false;
         this.resourceType = false;
         this.textType = true;
         this.codeType = false;
@@ -193,6 +207,24 @@ export class NewContentComponent implements OnInit, OnDestroy {
 
   selectFile() {
     var dialogRef = this.dialog.open(FilePickerComponent,
+      {
+        width: '650px',
+        height: '500px',
+        disableClose: true
+      });
+
+    dialogRef.afterClosed().subscribe((data: { filePath: string }) => {
+      if (data) {
+        this.form.patchValue({
+          content: data.filePath
+        });
+      }
+    });
+
+  }
+
+  selectVideo() {
+    var dialogRef = this.dialog.open(VideoPickerComponent,
       {
         width: '650px',
         height: '500px',

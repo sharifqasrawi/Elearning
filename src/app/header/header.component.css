@@ -1,10 +1,10 @@
-
 nav {
     height: 70px;
     background-color: purple;
     font-size: 16px;
     box-shadow: 0 2px 4px 4px rgb(58, 0, 58);
 }
+
 
 nav a {
     margin-right: 20px;
@@ -22,13 +22,12 @@ nav a {
     background-color: rgba(24, 0, 88, .9);
     padding: 15px;
     z-index: 99999;
-
 }
 
 .admin-container .admin-sidenav a, .admin-container .admin-sidenav span, .adminNavColor {
     color: lightgrey;
     font-size: 18px;
-   text-align: center;
+    text-align: center;
 }
 
 .menu-button {
@@ -69,7 +68,6 @@ nav a {
          `<body>` to be our scrolling element for mobile layouts. */
     flex: 1 0 auto;
 }
-
 
 .hidden {
     display: none;

@@ -1,5 +1,5 @@
-import { LanguageInterceptorService } from './language-interceptor.service';
-import { NgModule, LOCALE_ID } from '@angular/core';
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -17,10 +17,12 @@ import { registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { MatVideoModule } from 'mat-video';
 
 import * as fromApp from './store/app.reducer';
 
 import { ReportsEffects } from './admin/reports/store/reports.effects';
+import { AboutEffects } from './admin/about/store/about.effects';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
@@ -58,7 +60,6 @@ import { NotificationsEffects } from './admin/notifications/store/notifications.
 import { CoursePickupDialogComponent } from './courses/course-view/course-pickup-dialog/course-pickup-dialog.component';
 import { MemberEffects } from './member/store/member.effects';
 import { MemberModule } from './member/member.module';
-import { CommonModule } from '@angular/common';
 import { AppSettingsEffects } from './AppSettings/store/app-settings.effects';
 import { CommentLikesComponent } from './courses/course-view/course-comments/comment-likes/comment-likes.component';
 import { ReportBugComponent } from './report-bug/report-bug.component';
@@ -69,7 +70,7 @@ import { QuizComponent } from './quizzes/quiz/quiz.component';
 import { QuizProccessComponent } from './quizzes/quiz-proccess/quiz-proccess.component';
 import { CanDeactivateGuard } from './quizzes/quiz-proccess/can-deactivate-guard.service';
 import { QuizResultComponent } from './quizzes/quiz-result/quiz-result.component';
-import { DynamicLocaleId } from './internationalization/DynamicLocaleId';
+import { CountriesEffects } from './admin/countries/store/countries.effects';
 
 registerLocaleData(localeFr, 'fr');
 export function HttpLoaderFactory(http: HttpClient) {
@@ -99,6 +100,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     QuizResultComponent,
   ],
   imports: [
+    // BrowserModule.withServerTransition({"appId": "my-elearning-app"}),
     BrowserModule,
     CommonModule,
     TimeagoModule.forRoot(),
@@ -126,13 +128,16 @@ export function HttpLoaderFactory(http: HttpClient) {
       AppSettingsEffects,
       ReportsEffects,
       QuizzesEffects,
-      HomeQuizzesEffects
+      HomeQuizzesEffects,
+      CountriesEffects,
+      AboutEffects
     ]),
     MaterialModule,
     MatNativeDateModule,
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
+    MatVideoModule,
     FontAwesomeModule,
     CountUpModule,
     MonacoEditorModule.forRoot(),
@@ -154,11 +159,11 @@ export function HttpLoaderFactory(http: HttpClient) {
     // { provide: LOCALE_ID, useClass: DynamicLocaleId},
     // { provide: LOCALE_ID, useValue: 'fr-FR' },
     { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'fill' } },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: LanguageInterceptorService,
-      multi: true
-    },
+    // {
+    //   provide: HTTP_INTERCEPTORS,
+    //   useClass: LanguageInterceptorService,
+    //   multi: true
+    // },
     CanDeactivateGuard
   ],
   bootstrap: [AppComponent]

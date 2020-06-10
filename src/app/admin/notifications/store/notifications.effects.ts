@@ -16,7 +16,7 @@ import * as NotificationsActions from './notifications.actions';
 export class NotificationsEffects {
 
     token = '';
-    
+
     errorAccessDenied: string = '';
     error404: string = '';
     errorOccured: string = '';
@@ -28,6 +28,7 @@ export class NotificationsEffects {
             return this.http.get<{ notifications: Notification[] }>(environment.API_BASE_URL + 'notifications',
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang)
                 })
                 .pipe(
                     map(resData => {

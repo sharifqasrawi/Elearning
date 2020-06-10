@@ -1,5 +1,5 @@
 <div class="dialog">
-    <div class="severity"><span [class]="badgeClass">{{data.report.severity}}</span></div>
+    <div class="severity"><span [class]="badgeClass">{{ 'REPORT_BUG.' +data.report.severity.toUpperCase() | translate}}</span></div>
     <div mat-dialog-title>
         <h2 class="text-danger">
             <fa-icon [icon]="faBug" *ngIf="data.report.type === 'bug'"></fa-icon>

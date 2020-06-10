@@ -31,6 +31,7 @@ export class CategoriesEffects {
             return this.http.get<{ categories: Category[] }>(environment.API_BASE_URL + 'categories',
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang)
                 })
                 .pipe(
                     map(resData => {
@@ -61,6 +62,7 @@ export class CategoriesEffects {
             return this.http.get<{ categories: Category[] }>(environment.API_BASE_URL + 'categories/deleted',
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang)
                 })
                 .pipe(
                     map(resData => {
@@ -98,6 +100,7 @@ export class CategoriesEffects {
                 },
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang)
                 })
                 .pipe(
                     map(resData => {
@@ -135,6 +138,7 @@ export class CategoriesEffects {
                 },
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang)
                 })
                 .pipe(
                     map(resData => {
@@ -169,6 +173,7 @@ export class CategoriesEffects {
                 },
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang)
                 })
                 .pipe(
                     map(resData => {
@@ -202,6 +207,7 @@ export class CategoriesEffects {
                 },
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang)
                 })
                 .pipe(
                     map(resData => {
@@ -231,7 +237,8 @@ export class CategoriesEffects {
         switchMap((catData: CategoriesActions.DeleteStart) => {
             return this.http.delete<{ categoryId: number }>(environment.API_BASE_URL + 'categories/delete',
                 {
-                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang),
                     params: new HttpParams().set('id', catData.payload.toString())
                 })
                 .pipe(
@@ -255,7 +262,7 @@ export class CategoriesEffects {
                 )
         })
     );
-   
+
 
     constructor(
         private actions$: Actions,

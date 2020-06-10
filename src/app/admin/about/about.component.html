@@ -1,0 +1,141 @@
+<div class="adminPageTop">
+    <div class="row">
+        <div class="col-lg-6">
+            <h1>
+                <fa-icon [icon]="faInfoCircle"></fa-icon>
+                {{ 'ADMINISTRATION.ABOUT.ABOUT' | translate }}
+            </h1>
+        </div>
+        <div class="col-lg-2">
+            <mat-form-field appearance="legacy">
+                <mat-label translate>COMMON.LANGUAGE</mat-label>
+                <mat-select [(ngModel)]="editLang">
+                    <mat-option *ngFor="let lang of languages" [value]="lang">
+                        {{lang}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="col-lg-2">
+            <a [routerLink]="['/admin', 'dashboard']" mat-raised-button color="warn" class="btn-block">
+                {{ 'COMMON.CANCEL' | translate }}
+            </a>
+        </div>
+        <div class="col-lg-2">
+            <button type="submit" mat-raised-button color="primary" class="btn-block"
+                [disabled]="saving || loading || !form.valid" (click)="f.onSubmit(undefined)">
+                {{ saving || loading ? ('COMMON.LOADING' | translate) : ('COMMON.SAVE' | translate) }}
+            </button>
+        </div>
+    </div>
+    <hr>
+</div>
+
+<div class="adminPageBottom mb-5">
+    <form [formGroup]="form" #f="ngForm" (ngSubmit)="onSubmit()">
+        <div class="row">
+            <div class="col-lg-8">
+                <mat-form-field class="full-width mt-3" appearance="legacy">
+                    <mat-label translate>COMMON.IMAGE_PATH </mat-label>
+                    <input readonly type="text" matInput formControlName="imagePath">
+                    <mat-error *ngIf="!form.controls.imagePath.valid && form.controls.imagePath.touched" translate>
+                        VALIDATION.REQUIRED
+                    </mat-error>
+                </mat-form-field>
+
+                <button type="button" mat-raised-button color="primary" class="btn-block mt-3" (click)="selectImage()">
+                    {{ 'COMMON.CHOOSE_IMAGE' | translate }}
+                </button>
+            </div>
+            <div class="col-lg-4">
+                <div class="imageBox">
+                    <img [src]="form.value.imagePath" alt="image">
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row mt-3">
+            <div class="col-lg-4">
+                <mat-form-field class="full-width" appearance="legacy">
+                    <mat-label translate>COMMON.NAME </mat-label>
+                    <input [readonly]="loading" type="text" matInput formControlName="name">
+                    <mat-error *ngIf="!form.controls.name.valid && form.controls.name.touched" translate>
+                        VALIDATION.REQUIRED
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-lg-4">
+                <mat-form-field class="full-width" appearance="legacy" *ngIf="editLang === 'en'">
+                    <mat-label>{{ 'COMMON.TITLE' | translate }} (en)* </mat-label>
+                    <input [readonly]="loading" type="text" matInput formControlName="title">
+                    <mat-error *ngIf="!form.controls.title.valid && form.controls.title.touched" translate>
+                        VALIDATION.REQUIRED
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field class="full-width" appearance="legacy" *ngIf="editLang === 'fr'">
+                    <mat-label>{{ 'COMMON.TITLE' | translate }} (fr) </mat-label>
+                    <input [readonly]="loading" type="text" matInput formControlName="title_FR">
+                </mat-form-field>
+            </div>
+            <div class="col-lg-4">
+                <mat-form-field class="full-width" appearance="legacy">
+                    <mat-label translate>COMMON.PHONE_NUMBER </mat-label>
+                    <input type="text" matInput formControlName="phoneNumber">
+                    <mat-error *ngIf="!form.controls.phoneNumber.valid && form.controls.phoneNumber.touched" translate>
+                        VALIDATION.REQUIRED
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-lg-4">
+                <mat-form-field class="full-width" appearance="legacy">
+                    <mat-label translate>COMMON.EMAIL </mat-label>
+                    <input [readonly]="loading" type="text" matInput formControlName="email1" placeholder="#1">
+                    <mat-error *ngIf="!form.controls.email1.valid && form.controls.email1.touched" translate>
+                        VALIDATION.REQUIRED
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-lg-4">
+                <mat-form-field class="full-width" appearance="legacy">
+                    <mat-label translate>COMMON.EMAIL </mat-label>
+                    <input [readonly]="loading" type="text" matInput formControlName="email2" placeholder="#2">
+                    <mat-error *ngIf="!form.controls.email2.valid && form.controls.email2.touched" translate>
+                        VALIDATION.REQUIRED
+                    </mat-error>
+                </mat-form-field>
+            </div>
+            <div class="col-lg-4">
+                <mat-form-field class="full-width" appearance="legacy">
+                    <mat-label translate>COMMON.WEBSITE </mat-label>
+                    <input [readonly]="loading" type="text" matInput formControlName="website">
+                    <mat-error *ngIf="!form.controls.website.valid && form.controls.website.touched" translate>
+                        VALIDATION.REQUIRED
+                    </mat-error>
+                </mat-form-field>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class="col-lg-12">
+                <div *ngIf="editLang === 'en'">
+                    <label>{{ 'COURSE.INFO' | translate }} (en)*</label>
+                    <ckeditor tagName="textarea" [editor]="Editor" formControlName="info" required>
+                    </ckeditor>
+                    <span class="small text-danger" *ngIf="!form.controls.info.valid && form.controls.info.touched">
+                        {{ 'VALIDATION.REQUIRED' | translate }}
+                    </span>
+                </div>
+
+                <div *ngIf="editLang === 'fr'">
+                    <label>{{ 'COURSE.INFO' | translate }} (fr)</label>
+                    <ckeditor tagName="textarea" [editor]="Editor" formControlName="info_FR">
+                    </ckeditor>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

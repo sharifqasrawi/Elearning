@@ -25,28 +25,29 @@ export class TagsEffects {
         ofType(TagsActions.FETCH_START),
         switchMap(() => {
             return this.http.get<{ tags: Tag[] }>(environment.API_BASE_URL + 'tags',
-            {
-                headers: new HttpHeaders().set('Authorization', 'Bearer '+ this.token)
-            })
-            .pipe(
-                map(resData => {
-                    return new TagsActions.FetchSuccess(resData.tags);
-                }),
-                catchError(errorRes => {
-                    this.getErrorsTranslations();
-                    switch (errorRes.status) {
-                        case 403:
-                        case 401:
-                            return of(new TagsActions.FetchFail([this.errorAccessDenied]));
-                        case 404:
-                            return of(new TagsActions.FetchFail([this.error404]));
-                        case 400:
-                            return of(new TagsActions.FetchFail(errorRes.error.errors));
-                        default:
-                            return of(new TagsActions.FetchFail([this.errorOccured]));
-                    }
+                {
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang)
                 })
-            )
+                .pipe(
+                    map(resData => {
+                        return new TagsActions.FetchSuccess(resData.tags);
+                    }),
+                    catchError(errorRes => {
+                        this.getErrorsTranslations();
+                        switch (errorRes.status) {
+                            case 403:
+                            case 401:
+                                return of(new TagsActions.FetchFail([this.errorAccessDenied]));
+                            case 404:
+                                return of(new TagsActions.FetchFail([this.error404]));
+                            case 400:
+                                return of(new TagsActions.FetchFail(errorRes.error.errors));
+                            default:
+                                return of(new TagsActions.FetchFail([this.errorOccured]));
+                        }
+                    })
+                )
         })
     );
 
@@ -55,31 +56,32 @@ export class TagsEffects {
         ofType(TagsActions.CREATE_START),
         switchMap((tagData: TagsActions.CreateStart) => {
             return this.http.post<{ createdTag: Tag }>(environment.API_BASE_URL + 'tags/create',
-            {
-                name: tagData.payload
-            },  
-            {
-                headers: new HttpHeaders().set('Authorization', 'Bearer '+ this.token)
-            })
-            .pipe(
-                map(resData => {
-                    return new TagsActions.CreateSuccess(resData.createdTag);
-                }),
-                catchError(errorRes => {
-                    this.getErrorsTranslations();
-                    switch (errorRes.status) {
-                        case 403:
-                        case 401:
-                            return of(new TagsActions.CreateFail([this.errorAccessDenied]));
-                        case 404:
-                            return of(new TagsActions.CreateFail([this.error404]));
-                        case 400:
-                            return of(new TagsActions.CreateFail(errorRes.error.errors));
-                        default:
-                            return of(new TagsActions.CreateFail([this.errorOccured]));
-                    }
+                {
+                    name: tagData.payload
+                },
+                {
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang)
                 })
-            )
+                .pipe(
+                    map(resData => {
+                        return new TagsActions.CreateSuccess(resData.createdTag);
+                    }),
+                    catchError(errorRes => {
+                        this.getErrorsTranslations();
+                        switch (errorRes.status) {
+                            case 403:
+                            case 401:
+                                return of(new TagsActions.CreateFail([this.errorAccessDenied]));
+                            case 404:
+                                return of(new TagsActions.CreateFail([this.error404]));
+                            case 400:
+                                return of(new TagsActions.CreateFail(errorRes.error.errors));
+                            default:
+                                return of(new TagsActions.CreateFail([this.errorOccured]));
+                        }
+                    })
+                )
         })
     );
 
@@ -88,64 +90,66 @@ export class TagsEffects {
         ofType(TagsActions.UPDATE_START),
         switchMap((tagData: TagsActions.UpdateStart) => {
             return this.http.put<{ updatedTag: Tag }>(environment.API_BASE_URL + 'tags/update',
-            {
-                id: tagData.payload.id,
-                name: tagData.payload.name
-            },  
-            {
-                headers: new HttpHeaders().set('Authorization', 'Bearer '+ this.token)
-            })
-            .pipe(
-                map(resData => {
-                    return new TagsActions.UpdateSuccess(resData.updatedTag);
-                }),
-                catchError(errorRes => {
-                    this.getErrorsTranslations();
-                    switch (errorRes.status) {
-                        case 403:
-                        case 401:
-                            return of(new TagsActions.UpdateFail([this.errorAccessDenied]));
-                        case 404:
-                            return of(new TagsActions.UpdateFail([this.error404]));
-                        case 400:
-                            return of(new TagsActions.UpdateFail(errorRes.error.errors));
-                        default:
-                            return of(new TagsActions.UpdateFail([this.errorOccured]));
-                    }
+                {
+                    id: tagData.payload.id,
+                    name: tagData.payload.name
+                },
+                {
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang)
                 })
-            )
+                .pipe(
+                    map(resData => {
+                        return new TagsActions.UpdateSuccess(resData.updatedTag);
+                    }),
+                    catchError(errorRes => {
+                        this.getErrorsTranslations();
+                        switch (errorRes.status) {
+                            case 403:
+                            case 401:
+                                return of(new TagsActions.UpdateFail([this.errorAccessDenied]));
+                            case 404:
+                                return of(new TagsActions.UpdateFail([this.error404]));
+                            case 400:
+                                return of(new TagsActions.UpdateFail(errorRes.error.errors));
+                            default:
+                                return of(new TagsActions.UpdateFail([this.errorOccured]));
+                        }
+                    })
+                )
         })
     );
 
-    
+
     @Effect()
     deleteTag = this.actions$.pipe(
         ofType(TagsActions.DELETE_START),
         switchMap((tagData: TagsActions.DeleteStart) => {
             return this.http.delete<{ deletedTagId: number }>(environment.API_BASE_URL + 'tags/delete',
-            {
-                headers: new HttpHeaders().set('Authorization', 'Bearer '+ this.token),
-                params: new HttpParams().set('id', tagData.payload.toString())
-            })
-            .pipe(
-                map(resData => {
-                    return new TagsActions.DeleteSuccess(resData.deletedTagId);
-                }),
-                catchError(errorRes => {
-                    this.getErrorsTranslations();
-                    switch (errorRes.status) {
-                        case 403:
-                        case 401:
-                            return of(new TagsActions.DeleteFail([this.errorAccessDenied]));
-                        case 404:
-                            return of(new TagsActions.DeleteFail([this.error404]));
-                        case 400:
-                            return of(new TagsActions.DeleteFail(errorRes.error.errors));
-                        default:
-                            return of(new TagsActions.DeleteFail([this.errorOccured]));
-                    }
+                {
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang),
+                    params: new HttpParams().set('id', tagData.payload.toString())
                 })
-            )
+                .pipe(
+                    map(resData => {
+                        return new TagsActions.DeleteSuccess(resData.deletedTagId);
+                    }),
+                    catchError(errorRes => {
+                        this.getErrorsTranslations();
+                        switch (errorRes.status) {
+                            case 403:
+                            case 401:
+                                return of(new TagsActions.DeleteFail([this.errorAccessDenied]));
+                            case 404:
+                                return of(new TagsActions.DeleteFail([this.error404]));
+                            case 400:
+                                return of(new TagsActions.DeleteFail(errorRes.error.errors));
+                            default:
+                                return of(new TagsActions.DeleteFail([this.errorOccured]));
+                        }
+                    })
+                )
         })
     );
 

@@ -1,0 +1,27 @@
+.imageBox {
+    width: 100%;
+}
+
+.imageBox img {
+    width: 250px;
+    height: 250px;
+    border-radius: 100%;
+}
+
+.name {
+    font-style: italic;
+    font-size: xx-large;
+}
+
+.aboutBox {
+    animation: aboutBoxAnim .4s ease-in forwards;
+}
+
+@keyframes aboutBoxAnim {
+    0% {
+        transform: translateY(100%);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}

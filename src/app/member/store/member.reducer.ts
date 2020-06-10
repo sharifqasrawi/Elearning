@@ -38,8 +38,14 @@ export interface State {
     loadingUserQuizzes: boolean,
     loadedUserQuizzes: boolean,
 
-    // loadingLike: boolean,
-    // loadingEnroll: boolean,
+
+    coursesCount: number,
+    favoritesCount: number,
+    savedSessionsCount: number,
+    userQuizzesCount: number,
+    loadingDashboard: boolean,
+
+
     errors: string[],
 };
 
@@ -74,8 +80,12 @@ const initialState: State = {
     loadingUserQuizzes: false,
     loadedUserQuizzes: false,
 
-    // loadingLike: false,
-    // loadingEnroll:false,
+    coursesCount: null,
+    favoritesCount: null,
+    savedSessionsCount: null,
+    userQuizzesCount: null,
+    loadingDashboard: false,
+
     errors: null,
 };
 
@@ -370,76 +380,30 @@ export function memberReducer(state: State = initialState, action: MemberActions
                 errors: [...action.payload]
             };
 
-
         /////////////////////
 
-        // case MemberActions.LIKE_START:
-        //     return {
-        //         ...state,
-        //         loadingLike: true,
-        //         errors: null
-        //     };
-        // case MemberActions.LIKE_SUCCESS:
-        //     const courseToLikeIndex = state.courses.findIndex(c => c.id === action.payload.id);
-        //     const courseToLike = state.courses.find(c => c.id === action.payload.id);
-        //     const coursesAfterLike = [...state.courses];
-
-        //     const courseAfterLike = {
-        //         ...courseToLike,
-        //         likes: [...action.payload.likes]
-        //     };
-
-        //     coursesAfterLike[courseToLikeIndex] = courseAfterLike;
-
-        //     return {
-        //         ...state,
-        //         loadingLike: false,
-        //         courses: coursesAfterLike
-        //     };
-        // case MemberActions.LIKE_FAIL:
-        //     return {
-        //         ...state,
-        //         loadingLike: false,
-        //         errors: [...action.payload]
-        //     };
-
-        // /////////////////////
-
-        // case MemberActions.ENROLL_START:
-        //     return {
-        //         ...state,
-        //         loadingEnroll: true,
-        //         errors: null
-        //     };
-        // case MemberActions.ENROLL_SUCCESS:
-        //     const courseToEnrollIndex = state.courses.findIndex(c => c.id === action.payload.id);
-        //     const courseToEnroll = state.courses.find(c => c.id === action.payload.id);
-        //     const coursesAfterEnroll = [...state.courses];
-
-        //     const courseAfterEnroll = {
-        //         ...courseToEnroll,
-        //         cls: {
-        //             ...action.payload.cls,
-        //             members: [
-        //                 ...action.payload.cls.members
-        //             ]
-        //         }
-        //     };
-
-        //     coursesAfterEnroll[courseToEnrollIndex] = courseAfterEnroll;
-
-        //     return {
-        //         ...state,
-        //         loadingEnroll: false,
-        //         courses: coursesAfterEnroll
-        //     };
-        // case MemberActions.ENROLL_FAIL:
-        //     return {
-        //         ...state,
-        //         loadingEnroll: false,
-        //         errors: [...action.payload]
-        //     };
-
+        case MemberActions.FETCH_DASHBOARD_INFO_START:
+            return {
+                ...state,
+                loadingDashboard: true,
+                errors: null
+            };
+        case MemberActions.FETCH_DASHBOARD_INFO_SUCCESS:
+            return {
+                ...state,
+                loadingDashboard: false,
+                coursesCount: action.payload.coursesCount,
+                favoritesCount: action.payload.favoritesCount,
+                savedSessionsCount: action.payload.savedSessionsCount,
+                userQuizzesCount: action.payload.userQuizzesCount,
+                
+            };
+        case MemberActions.FETCH_DASHBOARD_INFO_FAIL:
+            return {
+                ...state,
+                loadingDashboard: false,
+                errors: [...action.payload]
+            };
 
 
         /////////////////////

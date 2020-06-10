@@ -1,6 +1,7 @@
+import { TranslateService } from '@ngx-translate/core';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
 
@@ -21,7 +22,7 @@ export class ResetPasswordComponent implements OnInit {
   token: string = null;
   errors: string[] = null;
 
-  constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router) { }
+  constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router, private translate: TranslateService) { }
 
   ngOnInit(): void {
 
@@ -55,6 +56,9 @@ export class ResetPasswordComponent implements OnInit {
         ConfirmPassword: this.resetPwdForm.value.passwordGroup.cpassword,
         Token: this.token.replace(/\s/g, '+')
 
+      },
+      {
+        headers: new HttpHeaders().append('language', this.translate.currentLang)
       }).subscribe(() => {
         this.loading = false;
         this.resetted = true;

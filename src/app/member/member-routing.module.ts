@@ -1,3 +1,4 @@
+import { DashboardComponent } from './member-dashboard/dashboard/dashboard.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
@@ -26,6 +27,7 @@ const routes: Routes = [
                     { path: 'saved-sessions', component: MemberSavedSessionsComponent },
                     { path: 'quizzes', component: MemberQuizzesComponent },
                     { path: 'reports', component: ReportsComponent },
+                    { path: '', component: DashboardComponent, pathMatch: 'full' },
                 ]
             },
             { path: 'edit-profile', component: EditProfileComponent },

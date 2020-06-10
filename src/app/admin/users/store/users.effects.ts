@@ -33,6 +33,7 @@ export class UsersEffects {
             return this.http.get<{ users: User[] }>(environment.API_BASE_URL + 'users',
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang)
                 })
                 .pipe(
                     map(usersRes => {
@@ -66,7 +67,8 @@ export class UsersEffects {
 
             return this.http.get<{ user: User }>(environment.API_BASE_URL + 'users/user',
                 {
-                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang),
                     params: new HttpParams().set('id', this.userId)
                 })
                 .pipe(
@@ -101,7 +103,8 @@ export class UsersEffects {
 
             return this.http.get<{ users: User[] }>(environment.API_BASE_URL + 'users/search',
                 {
-                    headers: new HttpHeaders().append('Authorization', 'Bearer ' + this.token),
+                    headers: new HttpHeaders().append('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang),
                     params: new HttpParams().set('searchKey', searchData.payload)
                 })
                 .pipe(
@@ -109,7 +112,7 @@ export class UsersEffects {
                         return new UsersActions.SearchSuccess(usersRes.users);
                     }),
                     catchError(errorRes => {
-            
+
                         this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:
@@ -125,7 +128,7 @@ export class UsersEffects {
                     })
                 )
         }),
-      
+
     );
 
 
@@ -149,6 +152,7 @@ export class UsersEffects {
             return this.http.post<RegisterResponseData>(environment.API_BASE_URL + 'users/create-user', userData,
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang)
                 })
                 .pipe(
                     map((resData) => {
@@ -183,6 +187,7 @@ export class UsersEffects {
                 },
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang)
                 })
                 .pipe(
                     map((resData) => {
@@ -225,6 +230,7 @@ export class UsersEffects {
                 user,
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang)
                 })
                 .pipe(
                     map(resData => {
@@ -264,6 +270,7 @@ export class UsersEffects {
                 user,
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang)
                 })
                 .pipe(
                     map(resData => {
@@ -301,6 +308,7 @@ export class UsersEffects {
                 },
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang)
                 })
                 .pipe(
                     map(resData => {
@@ -330,7 +338,8 @@ export class UsersEffects {
         switchMap((userData: UsersActions.DeleteStart) => {
             return this.http.delete<{ userId: string }>(environment.API_BASE_URL + 'users/delete-user',
                 {
-                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang),
                     params: new HttpParams().set('userId', userData.payload)
                 })
                 .pipe(

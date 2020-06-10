@@ -1,3 +1,7 @@
+<div *ngIf="loading">
+    <app-loader-course-comments></app-loader-course-comments>
+
+</div>
 
 <div *ngIf="!loading">
     <h2>
@@ -6,7 +10,7 @@
     </h2>
     <hr>
 
-    <h3 *ngIf="loadedComments.length === 0" class="alert alert-info text-center">
+    <h3 *ngIf="loadedComments.length === 0 && !loading" class="alert alert-info text-center">
         {{ 'COURSE.NO_COMMENTS_YET' | translate }}.
     </h3>
 
@@ -211,11 +215,5 @@
             <li *ngFor="let error of errors">{{error}}</li>
         </ul>
     </div>
-
-</div>
-
-
-<div *ngIf="loading">
-    <app-loader-course-comments></app-loader-course-comments>
 
 </div>

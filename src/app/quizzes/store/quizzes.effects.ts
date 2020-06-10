@@ -19,7 +19,7 @@ import { Quiz } from './../../models/quiz.model';
 export class HomeQuizzesEffects {
     token: string = null;
     userId: string = null;
-  
+
     errorAccessDenied: string = '';
     error404: string = '';
     errorOccured: string = '';
@@ -28,7 +28,10 @@ export class HomeQuizzesEffects {
     fetchQuizzes = this.actions$.pipe(
         ofType(HomeQuizzesActions.FETCH_QUIZZES_START),
         switchMap(() => {
-            return this.http.get<{ quizzes: Quiz[] }>(environment.API_BASE_URL + 'quizzesClient')
+            return this.http.get<{ quizzes: Quiz[] }>(environment.API_BASE_URL + 'quizzesClient',
+                {
+                    headers: new HttpHeaders().append('language', this.translate.currentLang)
+                })
                 .pipe(
                     map(resData => {
                         return new HomeQuizzesActions.FetchQuizzesSuccess(resData.quizzes);
@@ -57,7 +60,8 @@ export class HomeQuizzesEffects {
         ofType(HomeQuizzesActions.FETCH_QUESTIONS_START),
         switchMap((quizData: HomeQuizzesActions.FetchQuestionsStart) => {
             return this.http.get<{ questions: Question[] }>(environment.API_BASE_URL + 'quizzesClient/questions', {
-                headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                    .append('language', this.translate.currentLang),
                 params: new HttpParams().set('quizId', quizData.payload.toString())
             })
                 .pipe(
@@ -94,6 +98,7 @@ export class HomeQuizzesEffects {
                 },
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang)
                 })
                 .pipe(
                     map(resData => {
@@ -130,6 +135,7 @@ export class HomeQuizzesEffects {
                 },
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang)
                 })
                 .pipe(
                     map(resData => {
@@ -161,7 +167,8 @@ export class HomeQuizzesEffects {
         switchMap((quizData: HomeQuizzesActions.FetchUserQuizStart) => {
             return this.http.get<{ userQuiz: UserQuiz, userQuizAnswers: UserQuizAnswer[] }>(environment.API_BASE_URL + 'UserQuizzes/get-user-quiz',
                 {
-                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang),
                     params: new HttpParams().set('quizId', quizData.payload.toString())
                         .append('userId', this.userId)
                 })
@@ -199,6 +206,7 @@ export class HomeQuizzesEffects {
                 },
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang)
                 })
                 .pipe(
                     map(resData => {
@@ -227,7 +235,7 @@ export class HomeQuizzesEffects {
         private actions$: Actions,
         private http: HttpClient,
         private store: Store<fromApp.AppState>,
-        private translate:TranslateService
+        private translate: TranslateService
     ) {
         this.store.select('login')
             .pipe(

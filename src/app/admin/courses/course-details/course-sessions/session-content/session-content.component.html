@@ -74,6 +74,13 @@
                                 <img [src]="content.content" width="350">
                                 <p class="text-muted small mt-2"> {{ content.note }} </p>
                             </div>
+
+                            <div *ngIf="content.type === 'video'" class="text-center">
+                                <mat-video [src]="content.content" [title]="content.note" [autoplay]="false"
+                                    [preload]="true" [fullscreen]="true"  color="accent"
+                                    spinner="spin" showFrameByFrame="true">
+                                </mat-video>
+                            </div>
                         </div>
                     </div>
 

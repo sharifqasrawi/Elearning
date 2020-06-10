@@ -1,3 +1,4 @@
+import { MatVideoModule } from 'mat-video';
 import { TranslateModule } from '@ngx-translate/core';
 import { MaterialModule } from './../material-module';
 import { NgModule } from '@angular/core';
@@ -61,6 +62,9 @@ import { SetQuestionComponent } from './quizzes/set-quiz/set-question/set-questi
 import { NewQuestionComponent } from './quizzes/set-quiz/set-question/new-question/new-question.component';
 import { QuestionsLandingPageComponent } from './quizzes/set-quiz/set-question/questions-landing-page/questions-landing-page.component';
 import { NewAnswerComponent } from './quizzes/set-quiz/set-question/new-answer/new-answer.component';
+import { ListCountriesComponent } from './countries/list-countries/list-countries.component';
+import { AboutComponent } from './about/about.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
     declarations: [
@@ -111,6 +115,8 @@ import { NewAnswerComponent } from './quizzes/set-quiz/set-question/new-answer/n
         NewQuestionComponent,
         QuestionsLandingPageComponent,
         NewAnswerComponent,
+        ListCountriesComponent,
+        AboutComponent,
         
     ],
     imports: [
@@ -128,6 +134,8 @@ import { NewAnswerComponent } from './quizzes/set-quiz/set-question/new-answer/n
         MonacoEditorModule.forRoot(),
         TimeagoModule.forRoot(),
         TranslateModule,
+        BrowserAnimationsModule,
+        MatVideoModule,
         AdminRoutingModule,
         SharedModule,
     ],

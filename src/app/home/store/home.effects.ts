@@ -28,7 +28,10 @@ export class HomeEffects {
     fetchCategories = this.actions$.pipe(
         ofType(HomeActions.FETCH_START),
         switchMap(() => {
-            return this.http.get<{ categories: Category[] }>(environment.API_BASE_URL + 'home/categories')
+            return this.http.get<{ categories: Category[] }>(environment.API_BASE_URL + 'home/categories',
+                {
+                    headers: new HttpHeaders().append('language', this.translate.currentLang)
+                })
                 .pipe(
                     map(resData => {
                         return new HomeActions.FetchSuccess(resData.categories);
@@ -55,7 +58,10 @@ export class HomeEffects {
     fetchLatestCourses = this.actions$.pipe(
         ofType(HomeActions.FETCH_LATEST_COURSES_START),
         switchMap(() => {
-            return this.http.get<{ courses: Course[] }>(environment.API_BASE_URL + 'home/latest-courses')
+            return this.http.get<{ courses: Course[] }>(environment.API_BASE_URL + 'home/latest-courses',
+                {
+                    headers: new HttpHeaders().append('language', this.translate.currentLang)
+                })
                 .pipe(
                     map(resData => {
                         return new HomeActions.FetchLatestCoursesSuccess(resData.courses);

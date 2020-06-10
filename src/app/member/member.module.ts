@@ -20,6 +20,7 @@ import { ReportsComponent } from './reports/reports.component';
 import { ViewReportComponent } from './reports/view-report/view-report.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { MemberQuizzesComponent } from './member-quizzes/member-quizzes.component';
+import { DashboardComponent } from './member-dashboard/dashboard/dashboard.component';
 
 @NgModule({
     declarations: [
@@ -31,6 +32,7 @@ import { MemberQuizzesComponent } from './member-quizzes/member-quizzes.componen
         ViewReportComponent,
         ChangePasswordComponent,
         MemberQuizzesComponent,
+        DashboardComponent,
     ],
     imports: [
         BrowserModule,

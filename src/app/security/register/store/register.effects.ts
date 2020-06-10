@@ -1,8 +1,9 @@
+import { TranslateService } from '@ngx-translate/core';
 
 import { Injectable } from '@angular/core';
 import { Actions, ofType, Effect } from '@ngrx/effects';
 import { switchMap, catchError, map, tap } from 'rxjs/operators';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { of } from 'rxjs';
 
 import { environment } from './../../../../environments/environment';
@@ -28,6 +29,9 @@ export class RegisterEffects {
                     LastName: regData.payload.lastName,
                     Country: regData.payload.country,
                     Gender: regData.payload.gender
+                },
+                {
+                    headers: new HttpHeaders().append('language', this.translate.currentLang)
                 })
                 .pipe(
                     map(resData => {
@@ -46,5 +50,6 @@ export class RegisterEffects {
     constructor(
         private actions$: Actions,
         private http: HttpClient,
+        private translate: TranslateService
     ) { }
 }

@@ -31,7 +31,8 @@ export class SessionsEffects {
         switchMap((sectionData: SessionsActions.FetchStart) => {
             return this.http.get<{ sessions: Session[] }>(environment.API_BASE_URL + 'sessions',
                 {
-                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang),
                     params: new HttpParams().set('sectionId', sectionData.payload.toString())
                 })
                 .pipe(
@@ -76,7 +77,8 @@ export class SessionsEffects {
                     updatedBy: this.userName
                 },
                 {
-                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang),
                 })
                 .pipe(
                     map(resData => {
@@ -121,7 +123,8 @@ export class SessionsEffects {
                     updatedBy: this.userName
                 },
                 {
-                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang),
                 })
                 .pipe(
                     map(resData => {
@@ -154,7 +157,8 @@ export class SessionsEffects {
         switchMap((sessionData: SessionsActions.DeleteStart) => {
             return this.http.delete<{ deletedSessionId: number }>(environment.API_BASE_URL + 'sessions/delete-session',
                 {
-                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang),
                     params: new HttpParams().set('sessionId', sessionData.payload.toString())
                 })
                 .pipe(

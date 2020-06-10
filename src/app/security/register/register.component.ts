@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { FormGroup, FormControl, FormArray, Validators, FormBuilder, AbstractControl } from '@angular/forms';
@@ -35,7 +35,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
 
   ngOnInit(): void {
-    this.http.get('https://restcountries.eu/rest/v2/all').subscribe((resData: any[]) => {
+    this.http.get('https://restcountries.eu/rest/v2/all'
+    ).subscribe((resData: any[]) => {
       this.listCountries = resData;
     })
 

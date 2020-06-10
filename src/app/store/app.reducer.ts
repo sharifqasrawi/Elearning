@@ -23,7 +23,8 @@ import * as fromMember from '../member/store/member.reducer';
 import * as fromAppSettings from '../AppSettings/store/app-settings.reducer';
 import * as fromQuizzes from '../admin/quizzes/store/quizzes.reducer';
 import * as fromHomeQuizzes from '../quizzes/store/quizzes.reducer';
-
+import * as fromCountries from '../admin/countries/store/countries.reducer';
+import * as fromAbout from '../admin/about/store/about.reducer';
 
 export interface AppState {
     login: fromLogin.State
@@ -48,6 +49,8 @@ export interface AppState {
     reports: fromReports.State,
     quizzes: fromQuizzes.State,
     homeQuizzes: fromHomeQuizzes.State,
+    countries: fromCountries.State,
+    about: fromAbout.State,
 }
 
 export const appReducer: ActionReducerMap<AppState> = {
@@ -72,5 +75,7 @@ export const appReducer: ActionReducerMap<AppState> = {
     appSettings: fromAppSettings.appSettingsReducer,
     reports: fromReports.reportsReducer,
     quizzes: fromQuizzes.quizzesReducer,
-    homeQuizzes:fromHomeQuizzes.homeQuizzesReducer,
+    homeQuizzes: fromHomeQuizzes.homeQuizzesReducer,
+    countries: fromCountries.countriesReducer,
+    about: fromAbout.aboutReducer,
 };

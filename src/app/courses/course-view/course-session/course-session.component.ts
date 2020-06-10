@@ -1,3 +1,4 @@
+import { ImgViewerComponent } from './../../../shared/img-viewer/img-viewer.component';
 import { TranslateService } from '@ngx-translate/core';
 import { ErrorDialogComponent } from './../../../shared/error-dialog/error-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -60,7 +61,7 @@ export class CourseSessionComponent implements OnInit {
   ngOnInit(): void {
     this.currentLang = this.translate.currentLang;
     this.translate.onLangChange.subscribe(() => this.currentLang = this.translate.currentLang);
-    
+
     this.store.select('login')
       .pipe(map(state => state.isAuthenticated))
       .subscribe(isAuth => this.isAuthenticated = isAuth);
@@ -114,6 +115,16 @@ export class CourseSessionComponent implements OnInit {
 
     // this.saveChecked = !this.saveChecked;
   }
+
+  onViewImage(content: string) {
+    const dialogRef = this.dialog.open(ImgViewerComponent, {
+      data: { path: content },
+      panelClass: ['no-padding', 'no-scrolls'],
+      backdropClass: 'backdropBg',
+    });
+  }
+
+
 
   getSanitizedImage = (imagePath: string) => this.sanitizer.bypassSecurityTrustResourceUrl(imagePath);
   getSanitizedHtml = (html: string) => this.sanitizer.bypassSecurityTrustHtml(html);

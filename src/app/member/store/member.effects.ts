@@ -34,7 +34,8 @@ export class MemberEffects {
 
             return this.http.get<{ courses: Course[] }>(environment.API_BASE_URL + 'member/courses',
                 {
-                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang),
                     params: new HttpParams().set('userId', this.userId)
                 })
                 .pipe(
@@ -66,7 +67,8 @@ export class MemberEffects {
 
             return this.http.get<{ courses: Course[] }>(environment.API_BASE_URL + 'favorites/courses',
                 {
-                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang),
                     params: new HttpParams().set('userId', this.userId)
                 })
                 .pipe(
@@ -98,7 +100,8 @@ export class MemberEffects {
 
             return this.http.get<{ favorites: Favorite[] }>(environment.API_BASE_URL + 'favorites',
                 {
-                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang),
                     params: new HttpParams().set('userId', this.userId)
                 })
                 .pipe(
@@ -134,7 +137,8 @@ export class MemberEffects {
                     courseId: favData.payload
                 },
                 {
-                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang),
                 })
                 .pipe(
                     map(resData => {
@@ -165,7 +169,8 @@ export class MemberEffects {
 
             return this.http.delete<{ deletedFavoriteId: number }>(environment.API_BASE_URL + 'favorites/remove-course',
                 {
-                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang),
                     params: new HttpParams().set('id', favData.payload.toString())
                 })
                 .pipe(
@@ -197,7 +202,8 @@ export class MemberEffects {
 
             return this.http.get<{ savedSessions: SavedSession[] }>(environment.API_BASE_URL + 'SavedSessions',
                 {
-                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang),
                     params: new HttpParams().set('userId', this.userId)
                 })
                 .pipe(
@@ -229,7 +235,8 @@ export class MemberEffects {
 
             return this.http.get<{ sessions: SavedSession[] }>(environment.API_BASE_URL + 'SavedSessions/sessions',
                 {
-                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang),
                     params: new HttpParams().set('userId', this.userId)
                 })
                 .pipe(
@@ -266,7 +273,8 @@ export class MemberEffects {
                     sessionUrl: sessionData.payload.sessionUrl
                 },
                 {
-                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang),
                 })
                 .pipe(
                     map(resData => {
@@ -297,7 +305,8 @@ export class MemberEffects {
 
             return this.http.delete<{ deletedSessionId: number }>(environment.API_BASE_URL + 'SavedSessions',
                 {
-                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang),
                     params: new HttpParams().set('id', sessionData.payload.toString())
                 })
                 .pipe(
@@ -334,7 +343,8 @@ export class MemberEffects {
                     sessionId: sessionData.payload,
                 },
                 {
-                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang),
                 })
                 .pipe(
                     map(resData => {
@@ -365,7 +375,8 @@ export class MemberEffects {
 
             return this.http.delete<{ deletedDoneSessionId: number, donePercentage: number }>(environment.API_BASE_URL + 'sessions/unmark-session',
                 {
-                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang),
                     params: new HttpParams().set('sessionId', sessionData.payload.toString())
                         .append('userId', this.userId)
                 })
@@ -399,7 +410,8 @@ export class MemberEffects {
 
             return this.http.get<{ doneSessions: DoneSession[], donePercentage: number }>(environment.API_BASE_URL + 'sessions/done',
                 {
-                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang),
                     params: new HttpParams().set('userId', this.userId)
                         .append('courseId', sessionData.payload.toString())
                 })
@@ -432,7 +444,8 @@ export class MemberEffects {
 
             return this.http.get<{ memberCoursesProgress: { courseId: number, donePercentage: number }[] }>(environment.API_BASE_URL + 'sessions/courses-progress',
                 {
-                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang),
                     params: new HttpParams().set('userId', this.userId)
                 })
                 .pipe(
@@ -464,7 +477,8 @@ export class MemberEffects {
 
             return this.http.get<{ userQuizzes: UserQuiz[] }>(environment.API_BASE_URL + 'member/get-user-quizzes',
                 {
-                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token),
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang),
                     params: new HttpParams().set('userId', this.userId)
                 })
                 .pipe(
@@ -488,6 +502,41 @@ export class MemberEffects {
                 )
         })
     );
+
+
+    @Effect()
+    fetchDashboardInfo = this.actions$.pipe(
+        ofType(MemberActions.FETCH_DASHBOARD_INFO_START),
+        switchMap(() => {
+
+            return this.http.get<{ coursesCount: number, favoritesCount: number, savedSessionsCount: number, userQuizzesCount: number }>(environment.API_BASE_URL + 'member/dashboard',
+                {
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang),
+                    params: new HttpParams().set('userId', this.userId)
+                })
+                .pipe(
+                    map(resData => {
+                        return new MemberActions.FetchDashboardInfoSuccess(resData);
+                    }),
+                    catchError(errorRes => {
+                        this.getErrorsTranslations();
+                        switch (errorRes.status) {
+                            case 403:
+                            case 401:
+                                return of(new MemberActions.FetchDashboardInfoFail([this.errorAccessDenied]));
+                            case 404:
+                                return of(new MemberActions.FetchDashboardInfoFail([this.error404]));
+                            case 400:
+                                return of(new MemberActions.FetchDashboardInfoFail(errorRes.error.errors));
+                            default:
+                                return of(new MemberActions.FetchDashboardInfoFail([this.errorOccured]));
+                        }
+                    })
+                )
+        })
+    );
+
 
     constructor(
         private actions$: Actions,

@@ -1,9 +1,15 @@
 <div class="home">
     <div class="backdrop">
         <div class="homeContent">
+            <img src="../../assets/images/Q.webp" alt="logo" width="200" class="mb-4">
             <h1>
                 E-Learning
             </h1>
+            <h4 class="mt-5">{{ 'HOME.INFO' | translate }}</h4>
+
+            <a class="btnScroll" (click)="scroll(target)">
+                <img src="../../assets/images/btnarrowdown.png" width="150" alt="arrow">
+            </a>
         </div>
     </div>
 </div>
@@ -16,7 +22,7 @@
         </div>
     </div>
 
-    <div class="row">
+    <div class="row" #target>
         <div class="col-lg-8">
             <h1>
                 {{ 'HOME.CATEGORIES' | translate }}:

@@ -43,7 +43,12 @@ export class CourseTagsComponent implements OnInit {
       this.courseId = +params.courseId;
     });
 
+    this.store.select('tags').subscribe(state => {
+      this.allTags = state.tags;
 
+      if (this.allTags)
+        this.otherTags = this.allTags.filter(this.comparer(this.tags));
+    });
 
     this.store.select('courses').subscribe(state => {
       this.updating = state.updating;
@@ -55,12 +60,7 @@ export class CourseTagsComponent implements OnInit {
 
     });
 
-    this.store.select('tags').subscribe(state => {
-      this.allTags = state.tags;
-
-      if (this.allTags)
-        this.otherTags = this.allTags.filter(this.comparer(this.tags));
-    });
+  
 
   }
 

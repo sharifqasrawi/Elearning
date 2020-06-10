@@ -1,5 +1,4 @@
 import { TranslateService } from '@ngx-translate/core';
-import { ConfirmDialogComponent } from 'src/app/shared/confirm-dialog/confirm-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { UserQuizAnswer } from './../../models/userQuizAnswer.model';
 import { Component, OnInit } from '@angular/core';
@@ -7,13 +6,13 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { Store } from '@ngrx/store';
 import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { Observable } from 'rxjs/internal/Observable';
 
 import { CanComponentDeactivate } from './can-deactivate-guard.service';
 import * as fromApp from '../../store/app.reducer';
 import * as HomeQuizzesActions from '../store/quizzes.actions';
 import { Question } from './../../models/question.model';
 import { UserQuiz } from './../../models/userQuiz.model';
+import { ConfirmDialogComponent } from '../../shared/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-quiz-proccess',
