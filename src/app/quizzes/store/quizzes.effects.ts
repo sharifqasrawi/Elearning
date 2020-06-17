@@ -30,7 +30,8 @@ export class HomeQuizzesEffects {
         switchMap(() => {
             return this.http.get<{ quizzes: Quiz[] }>(environment.API_BASE_URL + 'quizzesClient',
                 {
-                    headers: new HttpHeaders().append('language', this.translate.currentLang)
+                    headers: new HttpHeaders().append('language', this.translate.currentLang),
+                    withCredentials: true,
                 })
                 .pipe(
                     map(resData => {
@@ -62,6 +63,7 @@ export class HomeQuizzesEffects {
             return this.http.get<{ questions: Question[] }>(environment.API_BASE_URL + 'quizzesClient/questions', {
                 headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
                     .append('language', this.translate.currentLang),
+                withCredentials: true,
                 params: new HttpParams().set('quizId', quizData.payload.toString())
             })
                 .pipe(
@@ -98,7 +100,8 @@ export class HomeQuizzesEffects {
                 },
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
-                        .append('language', this.translate.currentLang)
+                        .append('language', this.translate.currentLang),
+                    withCredentials: true,
                 })
                 .pipe(
                     map(resData => {
@@ -135,7 +138,8 @@ export class HomeQuizzesEffects {
                 },
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
-                        .append('language', this.translate.currentLang)
+                        .append('language', this.translate.currentLang),
+                    withCredentials: true,
                 })
                 .pipe(
                     map(resData => {
@@ -169,6 +173,7 @@ export class HomeQuizzesEffects {
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
                         .append('language', this.translate.currentLang),
+                    withCredentials: true,
                     params: new HttpParams().set('quizId', quizData.payload.toString())
                         .append('userId', this.userId)
                 })
@@ -206,7 +211,8 @@ export class HomeQuizzesEffects {
                 },
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
-                        .append('language', this.translate.currentLang)
+                        .append('language', this.translate.currentLang),
+                    withCredentials: true,
                 })
                 .pipe(
                     map(resData => {

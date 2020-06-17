@@ -1,3 +1,4 @@
+import { PrivacyPolicyComponent } from './../privacy-policy/privacy-policy.component';
 import { TranslateService } from '@ngx-translate/core';
 import { MatDialog } from '@angular/material/dialog';
 import { StarRatingComponent } from 'ng-starrating';
@@ -9,7 +10,6 @@ import * as AppSettingActions from '../AppSettings/store/app-settings.actions';
 import * as AboutActions from '../admin/about/store/about.actions';
 import { ReportBugComponent } from './../report-bug/report-bug.component';
 import { SignalRAppService } from './../AppSettings/services/signalr-app-service.service';
-import { ErrorDialogComponent } from './../shared/error-dialog/error-dialog.component';
 
 @Component({
   selector: 'app-footer',
@@ -29,9 +29,15 @@ export class FooterComponent implements OnInit {
   userRating = 0.0;
   totalRatingsCount = 0;
 
+  totalVisits: number = null;
+  loadingVisits = false;
+
   name: string = null;
   email: string = null;
   website: string = null;
+  errors: string[] = null;
+
+  currentYear: number = null;
 
   constructor(
     private store: Store<fromApp.AppState>,
@@ -51,12 +57,14 @@ export class FooterComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.currentYear = new Date().getFullYear();
     this.store.select('login').subscribe(state => {
       this.isAuthenticated = state.isAuthenticated;
       this.userId = state.user ? state.user.id : null;
 
 
       this.store.dispatch(new AppSettingActions.FetchRateStart());
+      this.store.dispatch(new AppSettingActions.FetchVisitsClientStart());
 
       this.store.select('appSettings').subscribe(state => {
         this.totalRatingsN = state.total;
@@ -66,13 +74,8 @@ export class FooterComponent implements OnInit {
         this.rating = state.rating;
         this.rated = state.rated;
 
-        // if (state.errors) {
-        //   this.dialog.open(ErrorDialogComponent, {
-        //     width: '450px',
-        //     data: { errors: state.errors }
-        //   });
-        // }
-
+        this.totalVisits = state.totalVisits;
+        this.loadingVisits = state.loadingVisits;
 
         if (this.isAuthenticated && state.ratings.length > 0) {
           const rating = state.ratings.find(r => r.userId === this.userId);
@@ -84,7 +87,7 @@ export class FooterComponent implements OnInit {
 
     this.store.dispatch(new AboutActions.FetchStart());
     this.store.select('about').subscribe(state => {
-      if(state.loaded && state.about){
+      if (state.loaded && state.about) {
         this.name = state.about.name;
         this.email = state.about.email1;
         this.website = state.about.website;
@@ -108,6 +111,13 @@ export class FooterComponent implements OnInit {
   onReportBug() {
     const dialogRef = this.dialog.open(ReportBugComponent, {
       width: '550px',
+      disableClose: true
+    });
+  }
+
+  onOpenPrivacyPolicy() {
+    const dialogRef = this.dialog.open(PrivacyPolicyComponent, {
+      width: '650px',
       disableClose: true
     });
   }

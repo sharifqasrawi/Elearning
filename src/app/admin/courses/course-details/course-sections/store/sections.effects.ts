@@ -32,6 +32,7 @@ export class SectionsEffects {
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
                         .append('language', this.translate.currentLang),
+                    withCredentials: true,
                     params: new HttpParams().set('courseId', sectionData.payload.toString())
                 })
                 .pipe(
@@ -78,6 +79,7 @@ export class SectionsEffects {
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
                         .append('language', this.translate.currentLang),
+                    withCredentials: true,
                 })
                 .pipe(
                     map(resData => {
@@ -109,6 +111,7 @@ export class SectionsEffects {
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
                         .append('language', this.translate.currentLang),
+                    withCredentials: true,
                     params: new HttpParams().set('sectionId', sectionData.payload.toString())
                 })
                 .pipe(
@@ -148,6 +151,7 @@ export class SectionsEffects {
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
                         .append('language', this.translate.currentLang),
+                    withCredentials: true,
                 })
                 .pipe(
                     map(resData => {

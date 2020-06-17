@@ -92,6 +92,19 @@
 }
 
 
+.card-counter.darksalmon {
+  background-color: darksalmon;
+  color: #FFF;
+}
+
+.card-counter.deepskyblue {
+  background-color: deepskyblue;
+  color: #FFF;
+}
+
+
+
+
 
 .card-counter i {
   font-size: 5em;
@@ -115,4 +128,8 @@
   opacity: 0.5;
   display: block;
   font-size: 18px;
+}
+
+.stretched-tabs {
+  min-height: 600px;
 }

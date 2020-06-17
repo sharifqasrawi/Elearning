@@ -28,7 +28,8 @@ export class MessagesEffects {
             return this.http.get<{ messages: Message[] }>(environment.API_BASE_URL + 'messages',
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
-                        .append('language', this.translate.currentLang)
+                        .append('language', this.translate.currentLang),
+                    withCredentials: true
                 })
                 .pipe(
                     map(resData => {
@@ -59,7 +60,8 @@ export class MessagesEffects {
             return this.http.get<{ emailMessages: EmailMessage[] }>(environment.API_BASE_URL + 'messages/sent-emails',
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
-                        .append('language', this.translate.currentLang)
+                        .append('language', this.translate.currentLang),
+                    withCredentials: true
                 })
                 .pipe(
                     map(resData => {
@@ -131,7 +133,8 @@ export class MessagesEffects {
                 },
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
-                        .append('language', this.translate.currentLang)
+                        .append('language', this.translate.currentLang),
+                    withCredentials: true
                 })
                 .pipe(
                     map(resData => {
@@ -163,6 +166,7 @@ export class MessagesEffects {
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
                         .append('language', this.translate.currentLang),
+                    withCredentials: true,
                     params: new HttpParams().set('msgId', messageData.payload.toString())
                 })
                 .pipe(
@@ -195,6 +199,7 @@ export class MessagesEffects {
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
                         .append('language', this.translate.currentLang),
+                    withCredentials: true,
                     params: new HttpParams().set('msgId', messageData.payload.toString())
                 })
                 .pipe(

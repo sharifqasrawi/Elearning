@@ -1,3 +1,5 @@
+import { Title } from '@angular/platform-browser';
+import { TranslateService } from '@ngx-translate/core';
 import { ViewReportComponent } from './view-report/view-report.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Component, OnInit, ViewChild } from '@angular/core';
@@ -39,10 +41,22 @@ export class BugReportsComponent implements OnInit {
 
   constructor(
     private store: Store<fromApp.AppState>,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private translate:TranslateService,
+    private titleService:Title
   ) { }
 
   ngOnInit(): void {
+    this.translate.get(['ADMINISTRATION.REPORTS.REPORTS']).subscribe(trans => {
+      this.titleService.setTitle(`Admin - ${trans['ADMINISTRATION.REPORTS.REPORTS']}`);
+    });
+    this.translate.onLangChange.subscribe(() => {
+      this.translate.get(['ADMINISTRATION.REPORTS.REPORTS']).subscribe(trans => {
+        this.titleService.setTitle(`Admin - ${trans['ADMINISTRATION.REPORTS.REPORTS']}`);
+      });
+    });
+
+
     this.store.dispatch(new ReportsActions.FetchStart());
 
     this.store.select('reports').subscribe(state => {

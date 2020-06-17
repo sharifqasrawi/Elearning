@@ -1,3 +1,4 @@
+import { Title } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
 import { Store } from '@ngrx/store';
 import { Component, OnInit } from '@angular/core';
@@ -22,12 +23,22 @@ export class MemberSavedSessionsComponent implements OnInit {
 
   constructor(
     private store: Store<fromApp.AppState>,
-    private translate:TranslateService
+    private translate:TranslateService,
+    private titleService: Title
   ) { }
 
   ngOnInit(): void {
     this.currentLang = this.translate.currentLang;
-    this.translate.onLangChange.subscribe(() => this.currentLang = this.translate.currentLang);
+    this.translate.get(['DASHBOARD.SAVED_SESSIONS.SAVED_SESSIONS']).subscribe(trans => {
+      this.titleService.setTitle(`Q E-Learning - ${trans['DASHBOARD.SAVED_SESSIONS.SAVED_SESSIONS']}`);
+    });
+    this.translate.onLangChange.subscribe(() => {
+      this.currentLang = this.translate.currentLang;
+      this.translate.get(['DASHBOARD.SAVED_SESSIONS.SAVED_SESSIONS']).subscribe(trans => {
+        this.titleService.setTitle(`Q E-Learning - ${trans['DASHBOARD.SAVED_SESSIONS.SAVED_SESSIONS']}`);
+      });
+    });
+
     
     this.store.dispatch(new MemberActions.FetchUserSavedSessionsStart());
 

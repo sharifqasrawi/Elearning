@@ -1,3 +1,4 @@
+import { Title } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
@@ -22,9 +23,22 @@ export class ResetPasswordComponent implements OnInit {
   token: string = null;
   errors: string[] = null;
 
-  constructor(private http: HttpClient, private route: ActivatedRoute, private router: Router, private translate: TranslateService) { }
+  constructor(private http: HttpClient,
+    private route: ActivatedRoute,
+    private router: Router,
+    private translate: TranslateService,
+    private titleService: Title
+  ) { }
 
   ngOnInit(): void {
+    this.translate.get(['LOGIN.RESET_PASSWORD']).subscribe(trans => {
+      this.titleService.setTitle(`Q E-Learning - ${trans['LOGIN.RESET_PASSWORD']}`);
+    });
+    this.translate.onLangChange.subscribe(() => {
+      this.translate.get(['LOGIN.RESET_PASSWORD']).subscribe(trans => {
+        this.titleService.setTitle(`Q E-Learning - ${trans['LOGIN.RESET_PASSWORD']}`);
+      });
+    });
 
     this.route.queryParams.subscribe((params: Params) => {
       this.email = params.email;
@@ -58,7 +72,8 @@ export class ResetPasswordComponent implements OnInit {
 
       },
       {
-        headers: new HttpHeaders().append('language', this.translate.currentLang)
+        headers: new HttpHeaders().append('language', this.translate.currentLang),
+        withCredentials: true,
       }).subscribe(() => {
         this.loading = false;
         this.resetted = true;

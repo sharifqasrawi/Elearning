@@ -1,12 +1,11 @@
+import { Title } from '@angular/platform-browser';
+import { TranslateService } from '@ngx-translate/core';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Router } from '@angular/router';
 import { faEnvelope, faSearch } from '@fortawesome/free-solid-svg-icons';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatDialog } from '@angular/material/dialog';
 
 import * as fromApp from '../../../store/app.reducer';
 import * as MessagesActions from './../store/messages.actions';
@@ -36,14 +35,23 @@ export class ListEmailsComponent implements OnInit {
 
   constructor(
     private store: Store<fromApp.AppState>,
-    private snachBar: MatSnackBar,
-    private dialog: MatDialog,
-    private router: Router,
+    private translate: TranslateService,
+    private titleService: Title
   ) {
 
   }
 
   ngOnInit(): void {
+
+    this.translate.get(['ADMINISTRATION.MESSAGING.SENT_EMAILS']).subscribe(trans => {
+      this.titleService.setTitle(`Admin - ${trans['ADMINISTRATION.MESSAGING.SENT_EMAILS']}`);
+    });
+    this.translate.onLangChange.subscribe(() => {
+
+      this.translate.get(['ADMINISTRATION.MESSAGING.SENT_EMAILS']).subscribe(trans => {
+        this.titleService.setTitle(`Admin - ${trans['ADMINISTRATION.MESSAGING.SENT_EMAILS']}`);
+      });
+    });
 
     this.store.dispatch(new MessagesActions.FetchEmailsStart());
 
@@ -62,9 +70,7 @@ export class ListEmailsComponent implements OnInit {
     this.store.dispatch(new MessagesActions.FetchEmailsStart());
 
     this.setTable();
-    this.snachBar.open('Refreshing...', 'OK', {
-      duration: 2000
-    });
+
   }
 
   private setTable() {

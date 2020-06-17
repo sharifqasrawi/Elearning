@@ -30,7 +30,8 @@ export class AboutEffects {
             return this.http.get<{ about: About }>(environment.API_BASE_URL + 'about',
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
-                        .append('language', this.translate.currentLang)
+                        .append('language', this.translate.currentLang),
+                         withCredentials: true
                 })
                 .pipe(
                     map(resData => {
@@ -73,7 +74,8 @@ export class AboutEffects {
                 },
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
-                        .append('language', this.translate.currentLang)
+                        .append('language', this.translate.currentLang),
+                         withCredentials: true
                 })
                 .pipe(
                     map(resData => {

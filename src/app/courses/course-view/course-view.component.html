@@ -165,7 +165,7 @@
                     ({{ allExpandState ? ('COURSE.COLLASPE_ALL' | translate) : ('COURSE.EXPAND_ALL' | translate) }})
                 </button>
             </div>
-            <div class="contentBox-body">
+            <div class="contentBox-body" >
                 <div *ngIf="!loading">
 
                     <mat-expansion-panel class="exp-panel" [expanded]="allExpandState"
@@ -260,8 +260,21 @@
                         <ul class="list-group">
                             <li routerLinkActive="active" class="list-group-item full-width"
                                 *ngFor="let session of section.sessions">
-                                <a [routerLink]="['session', session.id, session.slug_EN]" (click)="sidenav.toggle()">
+                                <mat-checkbox class="mr-1" [checked]="onCheckIsDoneSession(session.id)" color="primary"
+                                    (change)="onMarkDoneSession($event, session.id)" *ngIf="isUserEnrolled">
+                                </mat-checkbox>
+                                <!-- <a [routerLink]="['session', session.id, session.slug_EN]" (click)="sidenav.toggle()">
                                     {{ session.order }}- {{ session.title_EN }}
+                                    <span class="small text-muted">({{session.duration}} mins.)</span>
+                                </a> -->
+                                <a *ngIf="currentLang === 'en'" [routerLink]="['session', session.id, session.slug_EN]"
+                                    (click)="onSelectSession(session.id); sidenav.toggle();">
+                                    {{ session.order }}- {{ session.title_EN }}
+                                    <span class="small text-muted">({{session.duration}} mins.)</span>
+                                </a>
+                                <a *ngIf="currentLang === 'fr'" [routerLink]="['session', session.id, session.slug_FR]"
+                                    (click)="onSelectSession(session.id); sidenav.toggle();">
+                                    {{ session.order }}- {{ session.title_FR }}
                                     <span class="small text-muted">({{session.duration}} mins.)</span>
                                 </a>
                             </li>

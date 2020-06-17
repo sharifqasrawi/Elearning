@@ -33,14 +33,14 @@
                         <mat-form-field class="full-width" appearance="legacy">
                             <mat-label translate>REGISTER.FIRSTNAME</mat-label>
                             <input matInput formControlName="firstName" required>
-                            <mat-error translate>VALIDATION.REQUIRED</mat-error>
+                            <mat-error>{{ 'VALIDATION.REQUIRED' | translate }}</mat-error>
                         </mat-form-field>
                     </div>
                     <div class="col-lg-6">
                         <mat-form-field class="full-width" appearance="legacy">
                             <mat-label translate>REGISTER.LASTNAME</mat-label>
                             <input matInput formControlName="lastName" required>
-                            <mat-error translate>VALIDATION.REQUIRED</mat-error>
+                            <mat-error>{{ 'VALIDATION.REQUIRED' | translate }}</mat-error>
                         </mat-form-field>
                     </div>
                 </div>
@@ -78,7 +78,7 @@
                         </mat-option>
                     </mat-select>
 
-                    <mat-error translate>VALIDATION.REQUIRED.</mat-error>
+                    <mat-error>{{ 'VALIDATION.REQUIRED' | translate }}</mat-error>
                 </mat-form-field>
                 <div>
                     <button mat-button matStepperPrevious>{{ 'COMMON.BACK' | translate }} </button>
@@ -106,7 +106,7 @@
 
 
             <mat-step formGroupName="4" [stepControl]="formArray?.get([4])">
-                <ng-template matStepLabel >
+                <ng-template matStepLabel>
                     <div translate>REGISTER.CHOOSE_PASSWORD</div>
                 </ng-template>
                 <div class="row">
@@ -138,12 +138,30 @@
 
                 </div>
                 <div>
-                    <!-- <re-captcha formControlName="captcha" required
-                        siteKey="ghtBHreVgsfZRgsQSD578dh5HTUtyjTYJUIuyotuiytOyt864uRNryjtUOYTUO">
-                    </re-captcha> -->
                     <button mat-button matStepperPrevious>{{ 'COMMON.BACK' | translate }} </button>
-                 
-                    <button mat-raised-button color="accent" matStepperNext [disabled]="!regForm.valid || loading">
+                    <button mat-button matStepperNext>{{ 'COMMON.NEXT' | translate }}</button>
+
+                </div>
+            </mat-step>
+
+            <mat-step formGroupName="5" [stepControl]="formArray?.get([5])">
+                <ng-template matStepLabel>
+                    <div translate>REGISTER.TERMS</div>
+                </ng-template>
+                <div>
+                    <mat-slide-toggle [color]="colorPrimary" formControlName="terms">
+                    </mat-slide-toggle>
+                    {{ 'REGISTER.ACCEPT_TERMS' | translate }}
+                    <a style="cursor: pointer; color:blue;" (click)="onOpenTerms()">
+                        {{ 'REGISTER.TERMS' | translate }}
+                    </a>
+
+                </div>
+                <div>
+                    <button mat-button matStepperPrevious>{{ 'COMMON.BACK' | translate }} </button>
+
+                    <button mat-raised-button color="accent" matStepperNext
+                        [disabled]="!regForm.valid || loading || regForm.value.formArray[5].terms === false">
                         {{ !loading ? ('REGISTER.REGISTER' | translate) : ('COMMON.LOADING' | translate) }}
                     </button>
                 </div>

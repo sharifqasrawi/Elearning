@@ -1,3 +1,4 @@
+import { Title } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
 import { Store } from '@ngrx/store';
 import { Component, OnInit, ViewChild } from '@angular/core';
@@ -40,7 +41,8 @@ export class MemberQuizzesComponent implements OnInit {
 
   constructor(
     private store: Store<fromApp.AppState>,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private titleService: Title
   ) { }
 
   ngOnInit(): void {
@@ -51,6 +53,10 @@ export class MemberQuizzesComponent implements OnInit {
       this.displayedColumns = ['id', 'quizTitle_FR', 'takeDateTime', 'isStarted', 'isOngoing', 'isSubmitted', 'result', 'actions'];
     }
 
+    this.translate.get(['DASHBOARD.MY_QUIZZES.MY_QUIZZES']).subscribe(trans => {
+      this.titleService.setTitle(`Q E-Learning - ${trans['DASHBOARD.MY_QUIZZES.MY_QUIZZES']}`);
+    });
+
     this.translate.onLangChange.subscribe(() => {
       this.currentLang = this.translate.currentLang;
       if (this.currentLang === 'en') {
@@ -58,6 +64,10 @@ export class MemberQuizzesComponent implements OnInit {
       } else if (this.currentLang === 'fr') {
         this.displayedColumns = ['id', 'quizTitle_FR', 'takeDateTime', 'isStarted', 'isOngoing', 'isSubmitted', 'result', 'actions'];
       }
+
+      this.translate.get(['DASHBOARD.MY_QUIZZES.MY_QUIZZES']).subscribe(trans => {
+        this.titleService.setTitle(`Q E-Learning - ${trans['DASHBOARD.MY_QUIZZES.MY_QUIZZES']}`);
+      });
     });
 
     this.store.dispatch(new MemberActions.FetchUserQuizzesStart());

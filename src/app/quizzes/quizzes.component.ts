@@ -1,6 +1,6 @@
 import { TranslateService } from '@ngx-translate/core';
 import { Component, OnInit } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer, Title } from '@angular/platform-browser';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { faQuestionCircle, faSearch } from '@fortawesome/free-solid-svg-icons';
@@ -35,12 +35,21 @@ export class QuizzesComponent implements OnInit {
   constructor(
     private store: Store<fromApp.AppState>,
     private sanitizer: DomSanitizer,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private titleService: Title
   ) { }
 
   ngOnInit(): void {
     this.currentLang = this.translate.currentLang;
-    this.translate.onLangChange.subscribe(() => this.currentLang = this.translate.currentLang);
+    this.translate.get(['QUIZZES.QUIZZES']).subscribe(trans => {
+      this.titleService.setTitle(`Q E-Learning - ${trans['QUIZZES.QUIZZES']}`);
+    });
+    this.translate.onLangChange.subscribe(() => {
+      this.currentLang = this.translate.currentLang;
+      this.translate.get(['QUIZZES.QUIZZES']).subscribe(trans => {
+        this.titleService.setTitle(`Q E-Learning - ${trans['QUIZZES.QUIZZES']}`);
+      });
+    });
 
     this.store.dispatch(new HomeQuizzesActions.FetchQuizzesStart());
 

@@ -1,4 +1,4 @@
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer, Title } from '@angular/platform-browser';
 import { faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import { TranslateService } from '@ngx-translate/core';
 import { About } from './../models/about.model';
@@ -25,12 +25,23 @@ export class AboutmeComponent implements OnInit {
   constructor(
     private store: Store<fromApp.AppState>,
     private sanitizer: DomSanitizer,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private titleService: Title
   ) { }
 
   ngOnInit(): void {
     this.currentLang = this.translate.currentLang;
-    this.translate.onLangChange.subscribe(() => this.currentLang = this.translate.currentLang);
+    this.translate.get(['ABOUT_ME.ABOUT_ME']).subscribe(trans => {
+      this.titleService.setTitle(`Q E-Learning - ${trans['ABOUT_ME.ABOUT_ME']}`);
+    });
+    this.translate.onLangChange.subscribe(() => {
+      this.currentLang = this.translate.currentLang;
+
+      this.translate.get(['ABOUT_ME.ABOUT_ME']).subscribe(trans => {
+        this.titleService.setTitle(`Q E-Learning - ${trans['ABOUT_ME.ABOUT_ME']}`);
+      });
+    });
+
 
     this.store.dispatch(new AboutActions.FetchStart());
 

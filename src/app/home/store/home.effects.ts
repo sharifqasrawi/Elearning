@@ -30,7 +30,8 @@ export class HomeEffects {
         switchMap(() => {
             return this.http.get<{ categories: Category[] }>(environment.API_BASE_URL + 'home/categories',
                 {
-                    headers: new HttpHeaders().append('language', this.translate.currentLang)
+                    headers: new HttpHeaders().append('language', this.translate.currentLang),
+                    withCredentials: true
                 })
                 .pipe(
                     map(resData => {
@@ -60,7 +61,8 @@ export class HomeEffects {
         switchMap(() => {
             return this.http.get<{ courses: Course[] }>(environment.API_BASE_URL + 'home/latest-courses',
                 {
-                    headers: new HttpHeaders().append('language', this.translate.currentLang)
+                    headers: new HttpHeaders().append('language', this.translate.currentLang),
+                    withCredentials: true
                 })
                 .pipe(
                     map(resData => {

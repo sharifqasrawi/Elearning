@@ -1,3 +1,4 @@
+import { Title } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
@@ -45,7 +46,8 @@ export class ListQuizzesComponent implements OnInit {
   constructor(
     private store: Store<fromApp.AppState>,
     private dialog: MatDialog,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private titleService: Title
   ) { }
 
   ngOnInit(): void {
@@ -56,6 +58,10 @@ export class ListQuizzesComponent implements OnInit {
       this.displayedColumns = ['id', 'title_FR', 'isPublished', 'createdBy', 'createdAt', 'actions'];
     }
 
+    this.translate.get(['QUIZZES.QUIZZES']).subscribe(trans => {
+      this.titleService.setTitle(`Admin - ${trans['QUIZZES.QUIZZES']}`);
+    });
+
     this.translate.onLangChange.subscribe(() => {
       this.currentLang = this.translate.currentLang;
       if (this.currentLang === 'en') {
@@ -63,6 +69,10 @@ export class ListQuizzesComponent implements OnInit {
       } else if (this.currentLang === 'fr') {
         this.displayedColumns = ['id', 'title_FR', 'isPublished', 'createdBy', 'createdAt', 'actions'];
       }
+
+      this.translate.get(['QUIZZES.QUIZZES']).subscribe(trans => {
+        this.titleService.setTitle(`Admin - ${trans['QUIZZES.QUIZZES']}`);
+      });
     });
 
 

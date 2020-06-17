@@ -107,7 +107,6 @@
             "BROWSE_FILES": "Browse for files",
             "NO_FILES_CHOSEN": "No files chosen",
             "EXIT_FILE_UPLOAD": "Exit file upload ?",
-
             "DIRECTORIES": "Directories",
             "PHYS_DIRS": "Physical directories"
         },
@@ -126,6 +125,22 @@
         "REPORTS": {
             "REPORTS": "Reports",
             "REPORT_DETAILS": "Report"
+        },
+        "VISITS": {
+            "VISITS": "Website Visits",
+            "IPADDRESS": "IP Address",
+            "CONTINENT_NAME": "Continent name",
+            "COUNTRY_NAME": "Country name",
+            "COUNTRY_CODE": "Country code",
+            "CONTINENT_CODE": "Continent code",
+            "REGION_CODE": "Region code",
+            "REGION_NAME": "Region name",
+            "BROWSER_INFO": "Browser info",
+            "ZIP": "ZIP",
+            "LATITUDE": "Latitude",
+            "LONGITUDE": "Longitude",
+            "CITY": "City",
+            "DAY_VISITS_COUNT": "Visits in 24H"
         }
     },
     "EDIT_PROFILE": {
@@ -175,7 +190,9 @@
         "ALREADY_HAVE_ACCOUNT": "Already have an account? Login now",
         "THANK_REGISTER": "Thank you for signing up",
         "CONFIRMATION_EMAIL_SENT": "A confirmation email was sent to your email. Please confirm your email in order to sign in",
-        "EMAIL_CONFIRMED_MESSAGE": "Thank you for confirming your email address. You can now login to your account."
+        "EMAIL_CONFIRMED_MESSAGE": "Thank you for confirming your email address. You can now login to your account.",
+        "TERMS": "Terms and Conditions",
+        "ACCEPT_TERMS": "I have read and accept the "
     },
     "LOGOUT": {
         "LOGOUT": "Logout"
@@ -243,7 +260,8 @@
         "RATE_WEBSITE": "Rate my website",
         "CHOOSE_STARS": "Choose 1 - 5 star(s)",
         "THANK_FEEDBACK": "Thank you for your feedback",
-        "LOGIN_TO_RATE_WEBSITE": "Please login to rate this website"
+        "LOGIN_TO_RATE_WEBSITE": "Please login to rate this website",
+        "PRIVACY_POLICY": "Privacy Policy"
     },
     "COMMON": {
         "SEARCH": "Search",
@@ -275,7 +293,7 @@
         "RESET": "Reset",
         "ID": "Id",
         "DATE": "Date",
-        "ACTIONS": "Actions",
+        "ACTIONS": "Settings",
         "TYPE": "Type",
         "REPLY_DATE": "Reply Date",
         "SEEN": "Seen",
@@ -347,7 +365,10 @@
         "CLEAR_SELECTION": "Clear selection",
         "PHONE_NUMBER": "Phone number",
         "WEBSITE": "Website",
-        "HELLO": "Hello"
+        "HELLO": "Hello",
+        "AUTHENTICATION": "Authentication",
+        "EMAIL_CONFIRMATION": "Email Confirmation",
+        "VISITS": "Visits"
     },
     "REPORT_BUG": {
         "REPORT_BUG": "Report a bug",
@@ -357,7 +378,10 @@
         "SENT_MESSAGE": "Your report will be handled as soon as possible",
         "LOW": "Low",
         "MODERATE": "Moderate",
-        "HIGH": "High"
+        "HIGH": "High",
+        "FAIBLE": "Low",
+        "MODÉRÉE": "Moderate",
+        "ÉLEVÉ": "High"
     },
     "VALIDATION": {
         "REQUIRED": "This field is required.",
@@ -370,13 +394,13 @@
         "ERROR404": "Error 404. Not Found",
         "OOPS": "Oops! An error occured"
     },
-    "BREADCRUMBS":{
+    "BREADCRUMBS": {
         "HOME": "Home",
         "COURSES": "Courses",
         "QUIZZES": "Quizzes"
-
     },
     "LEVELS": {
+        "ALL": "All",
         "BASIC": "Basic",
         "MEDIUM": "Medium",
         "ADVANCED": "Advanced"

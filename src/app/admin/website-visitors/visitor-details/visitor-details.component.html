@@ -1,0 +1,67 @@
+<div class="text-center">
+    <dl>
+        <dt>
+            {{ 'ADMINISTRATION.VISITS.IPADDRESS' | translate }}
+        </dt>
+        <dd>
+            {{ data.visit.ipAddress }}
+        </dd>
+
+        <dt>
+            {{ 'ADMINISTRATION.VISITS.CONTINENT_NAME' | translate }}
+        </dt>
+        <dd>
+            {{ data.visit.continent_Code }} - {{ data.visit.continent_Name }}
+        </dd>
+
+        <dt>
+            {{ 'ADMINISTRATION.VISITS.COUNTRY_NAME' | translate }}
+        </dt>
+        <dd>
+            {{ data.visit.country_Code }} - {{ data.visit.country_Name }}
+        </dd>
+
+        <dt>
+            {{ 'ADMINISTRATION.VISITS.REGION_NAME' | translate }}
+        </dt>
+        <dd>
+            {{ data.visit.region_Code }} - {{ data.visit.region_Name }}
+        </dd>
+
+        <dt>
+            {{ 'ADMINISTRATION.VISITS.ZIP' | translate }} - {{ 'ADMINISTRATION.VISITS.CITY' | translate }}
+        </dt>
+        <dd>
+            {{ data.visit.zip }} - {{ data.visit.city }}
+        </dd>
+
+        <dt>
+            {{ 'ADMINISTRATION.VISITS.LATITUDE' | translate }} / {{ 'ADMINISTRATION.VISITS.LONGITUDE' | translate }}
+        </dt>
+        <dd>
+            {{ data.visit.latitude }} / {{ data.visit.longitude }}
+        </dd>
+
+        <dt>
+            {{ 'COMMON.DATE' | translate }}
+        </dt>
+        <dd>
+            {{ data.visit.dateTime | date:'medium' }}
+        </dd>
+
+        <dt>
+            {{ 'ADMINISTRATION.VISITS.DAY_VISITS_COUNT' | translate }}
+        </dt>
+        <dd>
+             {{ data.visit.dayVisitsCount }}
+        </dd>
+
+        <dt>
+            {{ 'ADMINISTRATION.VISITS.BROWSER_INFO' | translate }}
+        </dt>
+        <dd>
+             {{ data.visit.browserInfo }}
+        </dd>
+
+    </dl>
+</div>

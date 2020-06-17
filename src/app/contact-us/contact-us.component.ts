@@ -1,3 +1,5 @@
+import { Title } from '@angular/platform-browser';
+import { TranslateService } from '@ngx-translate/core';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormControl, FormGroupDirective, NgForm, Validators, FormGroup, FormBuilder, AbstractControl } from '@angular/forms';
 import { faEnvelopeOpenText, faEdit } from '@fortawesome/free-solid-svg-icons';
@@ -30,10 +32,20 @@ export class ContactUsComponent implements OnInit, OnDestroy {
   constructor(
     private store: Store<fromApp.AppState>,
     private _formBuilder: FormBuilder,
+    private translate: TranslateService,
+    private titleService: Title
   ) { }
 
 
   ngOnInit(): void {
+    this.translate.get(['CONTACT_ME.CONTACT_ME']).subscribe(trans => {
+      this.titleService.setTitle(`Q E-Learning - ${trans['CONTACT_ME.CONTACT_ME']}`);
+    });
+    this.translate.onLangChange.subscribe(() => {
+      this.translate.get(['CONTACT_ME.CONTACT_ME']).subscribe(trans => {
+        this.titleService.setTitle(`Q E-Learning - ${trans['CONTACT_ME.CONTACT_ME']}`);
+      });
+    });
 
     this.store.select('messages').subscribe(messagesState => {
       this.sending = messagesState.sending;

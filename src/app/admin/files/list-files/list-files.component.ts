@@ -4,7 +4,7 @@ import { ImgViewerComponent } from './../../../shared/img-viewer/img-viewer.comp
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { MatDialog } from '@angular/material/dialog';
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer, Title } from '@angular/platform-browser';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -49,10 +49,22 @@ export class ListFilesComponent implements OnInit {
     private store: Store<fromApp.AppState>,
     private sanitizer: DomSanitizer,
     private dialog: MatDialog,
-    private translate:TranslateService
+    private translate:TranslateService,
+    private titleService: Title
   ) { }
 
   ngOnInit(): void {
+    
+    this.translate.get(['ADMINISTRATION.FILE_MANAGEMENT.FILES']).subscribe(trans => {
+      this.titleService.setTitle(`Admin - ${trans['ADMINISTRATION.FILE_MANAGEMENT.FILES']}`);
+    });
+    this.translate.onLangChange.subscribe(() => {
+
+      this.translate.get(['ADMINISTRATION.FILE_MANAGEMENT.FILES']).subscribe(trans => {
+        this.titleService.setTitle(`Admin - ${trans['ADMINISTRATION.FILE_MANAGEMENT.FILES']}`);
+      });
+    });
+
     this.store.dispatch(new FilesActions.FetchStart());
 
     this.store.select('directories').subscribe(dirState => {

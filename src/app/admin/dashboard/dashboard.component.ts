@@ -1,3 +1,5 @@
+import { TranslateService } from '@ngx-translate/core';
+import { Title } from '@angular/platform-browser';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
@@ -15,6 +17,8 @@ import * as FilesActions from '../files/store/files.actions';
 import * as TagsActions from '../tags/store/tags.actions';
 import * as ReportsActions from '../reports/store/reports.action';
 import * as QuizzesActions from '../quizzes/store/quizzes.actions';
+import * as AppSettingsActions from '../../AppSettings/store/app-settings.actions';
+import * as NotificationsActions from '../notifications/store/notifications.actions';
 
 @Component({
   selector: 'app-dashboard',
@@ -37,13 +41,25 @@ export class DashboardComponent implements OnInit {
   likesCount = 0;
   reportsCount = 0;
   quizzesCount = 0;
+  visitsCount = 0;
+  notificationsCount = 0;
 
   constructor(
     private store: Store<fromApp.AppState>,
-    private http: HttpClient
+    private http: HttpClient,
+    private titleService: Title,
+    private translate: TranslateService
   ) { }
 
   ngOnInit(): void {
+    this.translate.get(['DASHBOARD.DASHBOARD']).subscribe(trans => {
+      this.titleService.setTitle(`Admin - ${trans['DASHBOARD.DASHBOARD']}`);
+    });
+    this.translate.onLangChange.subscribe(() => {
+      this.translate.get(['DASHBOARD.DASHBOARD']).subscribe(trans => {
+        this.titleService.setTitle(`Admin - ${trans['DASHBOARD.DASHBOARD']}`);
+      });
+    });
 
     this.getData();
 
@@ -58,10 +74,14 @@ export class DashboardComponent implements OnInit {
     this.store.select('files').pipe(map(state => state.files.length)).subscribe(count => this.filesCount = count);
 
     this.store.select('tags').pipe(map(state => state.tags.length)).subscribe(count => this.tagsCount = count);
-   
+
     this.store.select('reports').pipe(map(state => state.reports.length)).subscribe(count => this.reportsCount = count);
 
     this.store.select('quizzes').pipe(map(state => state.quizzes.length)).subscribe(count => this.quizzesCount = count);
+
+    this.store.select('appSettings').pipe(map(state => state.visits.length)).subscribe(count => this.visitsCount = count);
+
+    this.store.select('notifications').pipe(map(state => state.notifications.length)).subscribe(count => this.notificationsCount = count);
 
     this.store.select('messages').subscribe(state => {
       this.messagesCount = state.messages.length; this.sentEmailsCount = state.emailMessages.length;
@@ -93,6 +113,9 @@ export class DashboardComponent implements OnInit {
     this.store.dispatch(new TagsActions.FetchStart());
     this.store.dispatch(new ReportsActions.FetchStart());
     this.store.dispatch(new QuizzesActions.FetchQuizzesStart());
+    this.store.dispatch(new AppSettingsActions.FetchVisitsClientStart());
+    this.store.dispatch(new NotificationsActions.FetchStart());
+
 
     this.http.get<{ count: number }>(environment.API_BASE_URL + 'comments/count', {
       headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)

@@ -6,7 +6,7 @@ import { Store } from '@ngrx/store';
 import { map, switchMap, catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 
-import { environment } from './../../../../environments/environment.prod';
+import { environment } from './../../../../environments/environment';
 
 import { Notification } from './../../../models/notification.model';
 import * as fromApp from '../../../store/app.reducer';
@@ -28,7 +28,8 @@ export class NotificationsEffects {
             return this.http.get<{ notifications: Notification[] }>(environment.API_BASE_URL + 'notifications',
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
-                        .append('language', this.translate.currentLang)
+                        .append('language', this.translate.currentLang),
+                    withCredentials: true
                 })
                 .pipe(
                     map(resData => {

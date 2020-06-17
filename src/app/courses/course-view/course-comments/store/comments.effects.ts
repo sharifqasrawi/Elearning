@@ -34,6 +34,7 @@ export class HomeCommentsEffects {
             return this.http.get<{ comments: Comment[] }>(environment.API_BASE_URL + 'comments',
                 {
                     headers: new HttpHeaders().append('language', this.translate.currentLang),
+                    withCredentials: true,
                     params: new HttpParams().set('courseId', commentData.payload.toString())
                 })
                 .pipe(
@@ -73,6 +74,7 @@ export class HomeCommentsEffects {
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
                         .append('language', this.translate.currentLang),
+                    withCredentials: true,
                     params: new HttpParams().set('courseId', commentData.payload.toString())
                 })
                 .pipe(
@@ -109,6 +111,7 @@ export class HomeCommentsEffects {
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
                         .append('language', this.translate.currentLang),
+                    withCredentials: true,
                 })
                 .pipe(
                     map(resData => {
@@ -141,6 +144,7 @@ export class HomeCommentsEffects {
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
                         .append('language', this.translate.currentLang),
+                    withCredentials: true,
                     params: new HttpParams().set('id', commentData.payload.toString())
                 })
                 .pipe(
@@ -177,6 +181,7 @@ export class HomeCommentsEffects {
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
                         .append('language', this.translate.currentLang),
+                    withCredentials: true,
                     params: new HttpParams().set('action', likeData.payload.action)
                 })
                 .pipe(

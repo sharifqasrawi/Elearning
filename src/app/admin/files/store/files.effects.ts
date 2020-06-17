@@ -27,7 +27,8 @@ export class FilesEffects {
             return this.http.get<{ uploadedFiles: UploadedFile[] }>(environment.API_BASE_URL + 'files',
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
-                        .append('language', this.translate.currentLang)
+                        .append('language', this.translate.currentLang),
+                    withCredentials: true
                 })
                 .pipe(
                     map(resData => {
@@ -61,6 +62,7 @@ export class FilesEffects {
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
                         .append('language', this.translate.currentLang),
+                    withCredentials: true,
                     params: new HttpParams().set('fileId', fileData.payload.toString())
                 })
                 .pipe(

@@ -1,3 +1,5 @@
+import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
+import { TermsComponent } from './terms/terms.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
@@ -98,6 +100,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     QuizComponent,
     QuizProccessComponent,
     QuizResultComponent,
+    TermsComponent,
+    PrivacyPolicyComponent
   ],
   imports: [
     // BrowserModule.withServerTransition({"appId": "my-elearning-app"}),

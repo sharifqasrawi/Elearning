@@ -1,3 +1,4 @@
+import { Title } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
@@ -43,9 +44,21 @@ export class ListDirectoriesComponent implements OnInit {
     private store: Store<fromApp.AppState>,
     private translate: TranslateService,
     private dialog: MatDialog,
+    private titleService:Title
   ) { }
 
   ngOnInit(): void {
+
+    this.translate.get(['ADMINISTRATION.FILE_MANAGEMENT.DIRECTORIES']).subscribe(trans => {
+      this.titleService.setTitle(`Admin - ${trans['ADMINISTRATION.FILE_MANAGEMENT.DIRECTORIES']}`);
+    });
+    this.translate.onLangChange.subscribe(() => {
+
+      this.translate.get(['ADMINISTRATION.FILE_MANAGEMENT.DIRECTORIES']).subscribe(trans => {
+        this.titleService.setTitle(`Admin - ${trans['ADMINISTRATION.FILE_MANAGEMENT.DIRECTORIES']}`);
+      });
+    });
+
     this.store.dispatch(new DirectoriesActions.FetchStart());
 
     this.store.select('directories').subscribe(dirState => {

@@ -1,5 +1,5 @@
 import { TranslateService } from '@ngx-translate/core';
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer, Title } from '@angular/platform-browser';
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { MatTableDataSource } from '@angular/material/table';
@@ -50,7 +50,8 @@ export class ListCategoriesComponent implements OnInit {
     private store: Store<fromApp.AppState>,
     private dialog: MatDialog,
     private sanitizer: DomSanitizer,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private titleService:Title
   ) { }
 
   ngOnInit(): void {
@@ -61,6 +62,10 @@ export class ListCategoriesComponent implements OnInit {
       this.displayedColumns = ['id', 'imagePath', 'title_FR', 'slug_FR', 'createdAt', 'createdBy', 'updatedAt', 'updatedBy', 'actions'];
     }
 
+    this.translate.get(['ADMINISTRATION.CATEGORIES.CATEGORIES']).subscribe(trans => {
+      this.titleService.setTitle(`Admin - ${trans['ADMINISTRATION.CATEGORIES.CATEGORIES']}`);
+    });
+
     this.translate.onLangChange.subscribe(() => {
       this.currentLang = this.translate.currentLang;
       if (this.currentLang === 'en') {
@@ -68,6 +73,10 @@ export class ListCategoriesComponent implements OnInit {
       } else if (this.currentLang === 'fr') {
         this.displayedColumns = ['id', 'imagePath', 'title_FR', 'slug_FR', 'createdAt', 'createdBy', 'updatedAt', 'updatedBy', 'actions'];
       }
+
+      this.translate.get(['ADMINISTRATION.CATEGORIES.CATEGORIES']).subscribe(trans => {
+        this.titleService.setTitle(`Admin - ${trans['ADMINISTRATION.CATEGORIES.CATEGORIES']}`);
+      });
     });
 
     this.store.dispatch(new CategoriesActions.FetchStart());

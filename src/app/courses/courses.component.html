@@ -27,7 +27,7 @@
                 <mat-label>{{ 'COURSES.FILTER_LEVEL' | translate }}</mat-label>
                 <mat-select [(ngModel)]="level" (ngModelChange)="onFilterByLevel()">
                     <mat-option *ngFor="let level of levels" [value]="level">
-                        {{ level }}
+                        {{ 'LEVELS.' + level.toUpperCase() | translate }}
                     </mat-option>
                 </mat-select>
             </mat-form-field>

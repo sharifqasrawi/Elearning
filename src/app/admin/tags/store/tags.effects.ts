@@ -27,7 +27,8 @@ export class TagsEffects {
             return this.http.get<{ tags: Tag[] }>(environment.API_BASE_URL + 'tags',
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
-                        .append('language', this.translate.currentLang)
+                        .append('language', this.translate.currentLang),
+                    withCredentials: true
                 })
                 .pipe(
                     map(resData => {
@@ -61,7 +62,8 @@ export class TagsEffects {
                 },
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
-                        .append('language', this.translate.currentLang)
+                        .append('language', this.translate.currentLang),
+                    withCredentials: true
                 })
                 .pipe(
                     map(resData => {
@@ -96,7 +98,8 @@ export class TagsEffects {
                 },
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
-                        .append('language', this.translate.currentLang)
+                        .append('language', this.translate.currentLang),
+                    withCredentials: true
                 })
                 .pipe(
                     map(resData => {
@@ -129,6 +132,7 @@ export class TagsEffects {
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
                         .append('language', this.translate.currentLang),
+                    withCredentials: true,
                     params: new HttpParams().set('id', tagData.payload.toString())
                 })
                 .pipe(

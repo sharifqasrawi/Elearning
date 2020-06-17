@@ -1,3 +1,5 @@
+import { TermsComponent } from './../../terms/terms.component';
+import { MatDialog } from '@angular/material/dialog';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Store } from '@ngrx/store';
@@ -8,6 +10,7 @@ import { faUserEdit } from '@fortawesome/free-solid-svg-icons';
 
 import * as fromApp from '../../store/app.reducer';
 import * as RegisterActions from './store/register.actions';
+import { ThemePalette } from '@angular/material/core';
 
 @Component({
   selector: 'app-register',
@@ -25,12 +28,16 @@ export class RegisterComponent implements OnInit, OnDestroy {
   hidePwd = true;
   hideCpwd = true;
 
+  colorPrimary: ThemePalette = 'primary';
+  checked = false;
+
   /** Returns a FormArray with the name 'formArray'. */
   get formArray(): AbstractControl | null { return this.regForm.get('formArray'); }
 
   constructor(private http: HttpClient,
     private store: Store<fromApp.AppState>,
-    private _formBuilder: FormBuilder
+    private _formBuilder: FormBuilder,
+    private dialog: MatDialog
   ) { }
 
 
@@ -59,9 +66,9 @@ export class RegisterComponent implements OnInit, OnDestroy {
           password: new FormControl(null, [Validators.required, Validators.minLength(8)]),
           cpassword: new FormControl(null, [Validators.required, Validators.minLength(8)]),
         }, { validators: this.checkPasswords }),
-        // this._formBuilder.group({
-        //   captcha: new FormControl(null, [Validators.required]),
-        // }),
+        this._formBuilder.group({
+          terms: new FormControl(null, [Validators.required]),
+        }),
       ])
     });
 
@@ -72,23 +79,11 @@ export class RegisterComponent implements OnInit, OnDestroy {
       this.registerd = regState.registerd;
     });
 
-    // this.regForm = new FormGroup({
-    //   firstName: new FormControl(null, [Validators.required]),
-    //   lastName: new FormControl(null, [Validators.required]),
-    //   email: new FormControl(null, [Validators.required, Validators.email]),
-    //   country: new FormControl(null, [Validators.required]),
-    //   gender: new FormControl(null, [Validators.required]),
-    //   password: new FormGroup({
-    //     password: new FormControl(null, [Validators.required, Validators.minLength(8)]),
-    //     cpassword: new FormControl(null, [Validators.required, Validators.minLength(8)]),
-    //   },
-    //     [this.checkPasswords])
-    // });
 
   }
 
   onSubmit() {
-    if (!this.regForm.valid)
+    if (!this.regForm.valid || this.regForm.value.formArray[5].terms === false)
       return;
 
     this.store.dispatch(new RegisterActions.RegisterStart({
@@ -103,6 +98,12 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   }
 
+  onOpenTerms() {
+    const dialogRef = this.dialog.open(TermsComponent, {
+      width: '650px',
+      disableClose: true
+    });
+  }
 
   checkPasswords(group: FormGroup) {
     const password = group.get('password').value;

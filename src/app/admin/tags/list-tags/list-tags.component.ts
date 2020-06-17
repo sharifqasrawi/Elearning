@@ -1,3 +1,4 @@
+import { Title } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Component, OnInit, ViewChild } from '@angular/core';
@@ -49,9 +50,21 @@ export class ListTagsComponent implements OnInit {
     private store: Store<fromApp.AppState>,
     private translate: TranslateService,
     private dialog: MatDialog,
+    private titleService: Title
   ) { }
 
   ngOnInit(): void {
+
+    this.translate.get(['ADMINISTRATION.TAGS_MANAGEMENT.TAGS']).subscribe(trans => {
+      this.titleService.setTitle(`Admin - ${trans['ADMINISTRATION.TAGS_MANAGEMENT.TAGS']}`);
+    });
+    this.translate.onLangChange.subscribe(() => {
+      this.translate.get(['ADMINISTRATION.TAGS_MANAGEMENT.TAGS']).subscribe(trans => {
+        this.titleService.setTitle(`Admin - ${trans['ADMINISTRATION.TAGS_MANAGEMENT.TAGS']}`);
+      });
+    });
+
+
     this.store.dispatch(new TagsActions.FetchStart());
 
     this.store.select('tags').subscribe(state => {

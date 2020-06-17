@@ -1,3 +1,5 @@
+import { Title } from '@angular/platform-browser';
+import { TranslateService } from '@ngx-translate/core';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -29,10 +31,21 @@ export class QuizResultComponent implements OnInit, OnDestroy {
 
   constructor(
     private store: Store<fromApp.AppState>,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private translate: TranslateService,
+    private titleService: Title
   ) { }
 
   ngOnInit(): void {
+    this.translate.get(['QUIZZES.QUIZZES']).subscribe(trans => {
+      this.titleService.setTitle(`Q E-Learning - ${trans['QUIZZES.QUIZZES']}`);
+    });
+    this.translate.onLangChange.subscribe(() => {
+      this.translate.get(['QUIZZES.QUIZZES']).subscribe(trans => {
+        this.titleService.setTitle(`Q E-Learning - ${trans['QUIZZES.QUIZZES']}`);
+      });
+    });
+
     this.route.params.subscribe((params: Params) => {
       this.quizId = +params.quizId;
       this.quizSlug = params.quizSlug;

@@ -28,7 +28,8 @@ export class DirectoriesEffects {
             return this.http.get<{ directories: Directory[] }>(environment.API_BASE_URL + 'directories',
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
-                        .append('language', this.translate.currentLang)
+                        .append('language', this.translate.currentLang),
+                    withCredentials: true
                 })
                 .pipe(
                     map(resData => {
@@ -60,6 +61,7 @@ export class DirectoriesEffects {
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
                         .append('language', this.translate.currentLang),
+                    withCredentials: true,
                     params: new HttpParams().set('path', dirData.payload)
                 })
                 .pipe(
@@ -95,7 +97,8 @@ export class DirectoriesEffects {
                 },
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
-                        .append('language', this.translate.currentLang)
+                        .append('language', this.translate.currentLang),
+                    withCredentials: true
                 })
                 .pipe(
                     map(resData => {
@@ -128,6 +131,7 @@ export class DirectoriesEffects {
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
                         .append('language', this.translate.currentLang),
+                    withCredentials: true,
                     params: new HttpParams().set('dirId', dirData.payload.toString())
                 })
                 .pipe(

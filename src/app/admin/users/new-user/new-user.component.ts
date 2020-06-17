@@ -1,3 +1,4 @@
+import { Title } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -50,9 +51,19 @@ export class NewUserComponent implements OnInit, OnDestroy {
     private router: Router,
     private translate: TranslateService,
     private dialog: MatDialog,
+    private titleService: Title
   ) { }
 
   ngOnInit(): void {
+    this.translate.get(['ADMINISTRATION.USERS.LIST_USERS']).subscribe(trans => {
+      this.titleService.setTitle(`Admin - ${trans['ADMINISTRATION.USERS.LIST_USERS']}`);
+    });
+    this.translate.onLangChange.subscribe(() => {
+      this.translate.get(['ADMINISTRATION.USERS.LIST_USERS']).subscribe(trans => {
+        this.titleService.setTitle(`Admin - ${trans['ADMINISTRATION.USERS.LIST_USERS']}`);
+      });
+    });
+
     this.route.queryParams.subscribe((params: Params) => {
       this.userId = params.userId;
       this.editMode = params.editMode;

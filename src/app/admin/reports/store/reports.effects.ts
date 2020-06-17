@@ -32,6 +32,7 @@ export class ReportsEffects {
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
                         .append('language', this.translate.currentLang),
+                    withCredentials: true,
                     params: reportData.payload ? new HttpParams().set('type', reportData.payload) : null
                 })
                 .pipe(
@@ -68,6 +69,7 @@ export class ReportsEffects {
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
                         .append('language', this.translate.currentLang),
+                    withCredentials: true,
                     params: new HttpParams().set('userId', this.userId)
                 })
                 .pipe(
@@ -148,7 +150,8 @@ export class ReportsEffects {
             return this.http.put<{ updatedReport: Report }>(environment.API_BASE_URL + 'reports/mark-report-seen', data,
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
-                        .append('language', this.translate.currentLang)
+                        .append('language', this.translate.currentLang),
+                    withCredentials: true
                 })
                 .pipe(
                     map((resData) => {
@@ -222,7 +225,8 @@ export class ReportsEffects {
             return this.http.put<{ updatedReport: Report }>(environment.API_BASE_URL + 'reports/reply-report', data,
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
-                        .append('language', this.translate.currentLang)
+                        .append('language', this.translate.currentLang),
+                    withCredentials: true
                 })
                 .pipe(
                     map((resData) => {

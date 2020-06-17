@@ -2,7 +2,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { MatDialog } from '@angular/material/dialog';
 import { UserQuizAnswer } from './../../models/userQuizAnswer.model';
 import { Component, OnInit } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer, Title } from '@angular/platform-browser';
 import { Store } from '@ngrx/store';
 import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 import { ActivatedRoute, Params, Router } from '@angular/router';
@@ -50,12 +50,21 @@ export class QuizProccessComponent implements OnInit {
     private store: Store<fromApp.AppState>,
     private sanitizer: DomSanitizer,
     private dialog: MatDialog,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private titleService: Title
   ) { }
 
   ngOnInit(): void {
     this.currentLang = this.translate.currentLang;
-    this.translate.onLangChange.subscribe(() => this.currentLang = this.translate.currentLang);
+    this.translate.get(['QUIZZES.QUIZZES']).subscribe(trans => {
+      this.titleService.setTitle(`Q E-Learning - ${trans['QUIZZES.QUIZZES']}`);
+    });
+    this.translate.onLangChange.subscribe(() => {
+      this.currentLang = this.translate.currentLang;
+      this.translate.get(['QUIZZES.QUIZZES']).subscribe(trans => {
+        this.titleService.setTitle(`Q E-Learning - ${trans['QUIZZES.QUIZZES']}`);
+      });
+    });
 
     this.route.params.subscribe((params: Params) => {
       this.quizId = +params.quizId;

@@ -37,6 +37,7 @@ export class HomeCoursesEffects {
             return this.http.get<{ courses: Course[] }>(environment.API_BASE_URL + 'home/courses',
                 {
                     headers: new HttpHeaders().append('language', this.translate.currentLang),
+                    withCredentials: true,
                     params: params
                 })
                 .pipe(
@@ -73,6 +74,7 @@ export class HomeCoursesEffects {
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
                         .append('language', this.translate.currentLang),
+                    withCredentials: true,
                     params: new HttpParams().set('action', likeData.payload.action)
                 })
                 .pipe(
@@ -109,6 +111,7 @@ export class HomeCoursesEffects {
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
                         .append('language', this.translate.currentLang),
+                    withCredentials: true,
                     params: new HttpParams().set('action', enrollData.payload.action)
                 })
                 .pipe(
@@ -146,6 +149,7 @@ export class HomeCoursesEffects {
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
                         .append('language', this.translate.currentLang),
+                    withCredentials: true,
                 })
                 .pipe(
                     map(resData => {

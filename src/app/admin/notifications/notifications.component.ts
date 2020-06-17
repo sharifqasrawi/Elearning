@@ -37,7 +37,7 @@ export class NotificationsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.store.dispatch(new NotificationsActions.FetchStart());
+
 
     this.store.select('notifications').subscribe(state => {
       this.notifications = state.notifications;
@@ -46,6 +46,9 @@ export class NotificationsComponent implements OnInit {
 
       this.setTable();
     });
+
+    if (!this.notifications)
+      this.store.dispatch(new NotificationsActions.FetchStart());
   }
 
 

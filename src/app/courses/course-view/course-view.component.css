@@ -93,7 +93,14 @@
 
 .exp-panel {
     background-color: #e2d6e2;
-    color: lightgrey
+    color: lightgrey;
+
+
+}
+
+.contentBox-body{
+    max-height: 900px;
+    overflow-y: auto;
 }
 
 .contentBox {

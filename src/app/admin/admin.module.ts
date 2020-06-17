@@ -33,7 +33,6 @@ import { ListEmailsComponent } from './messages/list-emails/list-emails.componen
 import { ListCoursesComponent } from './courses/list-courses/list-courses.component';
 import { NewCourseComponent } from './courses/new-course/new-course.component';
 import { ListTagsComponent } from './tags/list-tags/list-tags.component';
-import { NewTagComponent } from './tags/new-tag/new-tag.component';
 import { TrashedCoursesComponent } from './courses/trashed-courses/trashed-courses.component';
 import { CanDeactivateGuard } from './courses/new-course/can-deactivate-guard.service';
 import { CourseDetailsComponent } from './courses/course-details/course-details.component';
@@ -65,6 +64,8 @@ import { NewAnswerComponent } from './quizzes/set-quiz/set-question/new-answer/n
 import { ListCountriesComponent } from './countries/list-countries/list-countries.component';
 import { AboutComponent } from './about/about.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { WebsiteVisitorsComponent } from './website-visitors/website-visitors.component';
+import { VisitorDetailsComponent } from './website-visitors/visitor-details/visitor-details.component';
 
 @NgModule({
     declarations: [
@@ -88,7 +89,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
         ListCoursesComponent,
         NewCourseComponent,
         ListTagsComponent,
-        NewTagComponent,
         TrashedCoursesComponent,
         CourseDetailsComponent,
         CourseInfoComponent,
@@ -117,6 +117,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
         NewAnswerComponent,
         ListCountriesComponent,
         AboutComponent,
+        WebsiteVisitorsComponent,
+        VisitorDetailsComponent,
         
     ],
     imports: [

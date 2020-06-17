@@ -1,3 +1,4 @@
+import { Title } from '@angular/platform-browser';
 import { Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { ConfirmDialogComponent } from './../../../shared/confirm-dialog/confirm-dialog.component';
@@ -46,7 +47,8 @@ export class ListCoursesComponent implements OnInit {
   constructor(
     private store: Store<fromApp.AppState>,
     private translate: TranslateService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private titleService: Title
   ) { }
 
   ngOnInit(): void {
@@ -57,6 +59,11 @@ export class ListCoursesComponent implements OnInit {
       this.displayedColumns = ['id', 'title_FR', 'category', 'level', 'duration', 'isPublished', 'createdBy', 'createdAt', 'actions'];
     }
 
+    this.translate.get(['COURSES.COURSES']).subscribe(trans => {
+      this.titleService.setTitle(`Admin - ${trans['COURSES.COURSES']}`);
+    });
+  
+
     this.translate.onLangChange.subscribe(() => {
       this.currentLang = this.translate.currentLang;
       if (this.currentLang === 'en') {
@@ -64,6 +71,10 @@ export class ListCoursesComponent implements OnInit {
       } else if (this.currentLang === 'fr') {
         this.displayedColumns = ['id', 'title_FR', 'category', 'level', 'duration', 'isPublished', 'createdBy', 'createdAt', 'actions'];
       }
+
+      this.translate.get(['COURSES.COURSES']).subscribe(trans => {
+        this.titleService.setTitle(`Admin - ${trans['COURSES.COURSES']}`);
+      });
     });
 
 

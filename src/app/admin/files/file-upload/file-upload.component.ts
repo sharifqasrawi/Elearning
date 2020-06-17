@@ -1,3 +1,4 @@
+import { Title } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
 import { HttpRequest, HttpClient, HttpEventType, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Store } from '@ngrx/store';
@@ -37,10 +38,21 @@ export class FileUploadComponent implements OnInit {
     private router: Router,
     private store: Store<fromApp.AppState>,
     private http: HttpClient,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private titleService: Title,
   ) { }
 
   ngOnInit(): void {
+
+    this.translate.get(['ADMINISTRATION.FILE_MANAGEMENT.UPLOAD_FILE']).subscribe(trans => {
+      this.titleService.setTitle(`Admin - ${trans['ADMINISTRATION.FILE_MANAGEMENT.UPLOAD_FILE']}`);
+    });
+    this.translate.onLangChange.subscribe(() => {
+
+      this.translate.get(['ADMINISTRATION.FILE_MANAGEMENT.UPLOAD_FILE']).subscribe(trans => {
+        this.titleService.setTitle(`Admin - ${trans['ADMINISTRATION.FILE_MANAGEMENT.UPLOAD_FILE']}`);
+      });
+    });
 
     this.store.select('directories').subscribe(dirState => {
       this.listPaths = dirState.directories;

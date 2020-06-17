@@ -1,6 +1,6 @@
 import { TranslateService } from '@ngx-translate/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer, Title } from '@angular/platform-browser';
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { faSearch, faThumbsUp } from '@fortawesome/free-solid-svg-icons';
@@ -38,12 +38,28 @@ export class MemberCoursesComponent implements OnInit {
     private store: Store<fromApp.AppState>,
     private route: ActivatedRoute,
     private sanitizer: DomSanitizer,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private titleService: Title
   ) { }
 
   ngOnInit(): void {
     this.currentLang = this.translate.currentLang;
-    this.translate.onLangChange.subscribe(() => this.currentLang = this.translate.currentLang);
+    this.translate.get(['DASHBOARD.ENROLLED_COURSES', 'DASHBOARD.FAVORITE_COURSES']).subscribe(trans => {
+      if (this.isFavoritesList)
+        this.titleService.setTitle(`Q E-Learning - ${trans['DASHBOARD.FAVORITE_COURSES']}`);
+      else
+        this.titleService.setTitle(`Q E-Learning - ${trans['DASHBOARD.ENROLLED_COURSES']}`);
+
+    });
+    this.translate.onLangChange.subscribe(() => {
+      this.currentLang = this.translate.currentLang;
+      this.translate.get(['DASHBOARD.ENROLLED_COURSES', 'DASHBOARD.FAVORITE_COURSES']).subscribe(trans => {
+        if (this.isFavoritesList)
+          this.titleService.setTitle(`Q E-Learning - ${trans['DASHBOARD.FAVORITE_COURSES']}`);
+        else
+          this.titleService.setTitle(`Q E-Learning - ${trans['DASHBOARD.ENROLLED_COURSES']}`);
+      });
+    });
 
     this.route.queryParams.subscribe((params: Params) => {
       if (params.fetch === 'favorites') {

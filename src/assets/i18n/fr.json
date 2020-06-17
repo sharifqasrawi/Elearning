@@ -50,8 +50,8 @@
             "FAILED": "Échoué(e)"
         },
         "REPORTS": {
-            "REPORTS": "Rapports",
-            "REPORT": "Rapport",
+            "REPORTS": "Signalements",
+            "REPORT": "Signalements",
             "REPORT_DATE": "Date de signaler",
             "REPORTER_NAME": "Nom",
             "REPORTER_EMAIL": "Email",
@@ -123,8 +123,23 @@
             "CREATE_ANSWER": "Créer un nouveau réponse"
         },
         "REPORTS": {
-            "REPORTS": "Rapports",
-            "REPORT_DETAILS": "Rapport"
+            "REPORTS": "Signalements",
+            "REPORT_DETAILS": "Signalements"
+        },
+        "VISITS": {
+            "VISITS": "Visites du site Web",
+            "IPADDRESS": "Adresse IP",
+            "CONTINENT_NAME": "Nom du continent",
+            "COUNTRY_NAME": "Pays",
+            "CONTINENT_CODE": "Code de continent",
+            "REGION_CODE": "Code de région",
+            "REGION_NAME": "Nom de la région",
+            "BROWSER_INFO": "Info navigateur",
+            "ZIP": "Code postale",
+            "LATITUDE": "Latitude",
+            "LONGITUDE": "Longitude",
+            "CITY": "Ville",
+            "DAY_VISITS_COUNT": "Visites pendant 24H"
         }
     },
     "EDIT_PROFILE": {
@@ -174,7 +189,9 @@
         "ALREADY_HAVE_ACCOUNT": "Vous avez déjà un compte? Connectez-vous maintenant",
         "THANK_REGISTER": "Merci de vous être inscrit",
         "CONFIRMATION_EMAIL_SENT": "Un e-mail de confirmation a été envoyé à votre adresse e-mail. Veuillez confirmer votre e-mail pour vous connecter",
-        "EMAIL_CONFIRMED_MESSAGE": "Merci d'avoir confirmé votre adresse e-mail. Vous pouvez maintenant vous connecter à votre compte"
+        "EMAIL_CONFIRMED_MESSAGE": "Merci d'avoir confirmé votre adresse e-mail. Vous pouvez maintenant vous connecter à votre compte",
+        "TERMS": "Termes et conditions",
+        "ACCEPT_TERMS": "J'ai lu et j'accepte les "
     },
     "LOGOUT": {
         "LOGOUT": "Se déconnecter"
@@ -209,7 +226,7 @@
         "CONTENT": "Contenu",
         "COLLASPE_ALL": "Réduire",
         "EXPAND_ALL": "Développer",
-        "PROGRESS": "Mon progrès",
+        "PROGRESS": "Mon Progression",
         "LOAD_MORE": "Afficher plus",
         "LOAD_LESS": "Afficher moins",
         "AUTHOR": "Auteur(e)",
@@ -242,7 +259,8 @@
         "RATE_WEBSITE": "Notez mon site Web",
         "CHOOSE_STARS": "Choisissez 1 - 5 étoile (s)",
         "THANK_FEEDBACK": "Merci pour votre avis",
-        "LOGIN_TO_RATE_WEBSITE": "Veuillez vous connecter pour noter ce site Web"
+        "LOGIN_TO_RATE_WEBSITE": "Veuillez vous connecter pour noter ce site Web",
+        "PRIVACY_POLICY": "Politique de confidentialité"
     },
     "COMMON": {
         "SEARCH": "Rechercher",
@@ -274,7 +292,7 @@
         "RESET": "Réinitialiser",
         "ID": "Id",
         "DATE": "Date",
-        "ACTIONS": "Actes",
+        "ACTIONS": "Paramètres",
         "TYPE": "Genre",
         "REPLY_DATE": "Date de réponse",
         "SEEN": "Vu(e)",
@@ -345,17 +363,23 @@
         "CLEAR_SELECTION": "Effacer la sélection",
         "PHONE_NUMBER": "Numéro de téléphone",
         "WEBSITE": "Site web",
-        "HELLO": "Bonjour"
+        "HELLO": "Bonjour",
+        "AUTHENTICATION": "Authentification",
+        "EMAIL_CONFIRMATION": "Confirmation de l'émail",
+        "VISITS": "Visites"
     },
     "REPORT_BUG": {
         "REPORT_BUG": "Signaler un bug",
         "SEVERITY": "La gravité",
         "DESCRIPTION": "la description",
         "THANK_FEEDBACK": "Merci pour votre avis",
-        "SENT_MESSAGE": "Votre rapport sera traité dans les plus brefs délais",
+        "SENT_MESSAGE": "Votre Signalement sera traité dans les plus brefs délais",
         "LOW": "Faible",
         "MODERATE": "Modérée",
-        "HIGH": "élevé"
+        "HIGH": "Élevé",
+        "FAIBLE": "Faible",
+        "MODÉRÉE": "Modérée",
+        "ÉLEVÉ": "Élevé"
     },
     "VALIDATION": {
         "REQUIRED": "Ce champ est requis",
@@ -368,13 +392,13 @@
         "ERROR404": "Erreur 404 introuvable",
         "OOPS": "Oops! Une erreur est survenue"
     },
-    "BREADCRUMBS":{
+    "BREADCRUMBS": {
         "HOME": "Acceuil",
         "COURSES": "Cours",
         "QUIZZES": "Quiz"
-
     },
     "LEVELS": {
+        "ALL": "Tout",
         "BASIC": "Fondamental",
         "MEDIUM": "Moyen",
         "ADVANCED": "Avancé"

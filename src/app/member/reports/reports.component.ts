@@ -1,3 +1,5 @@
+import { Title } from '@angular/platform-browser';
+import { TranslateService } from '@ngx-translate/core';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Store } from '@ngrx/store';
@@ -39,10 +41,22 @@ export class ReportsComponent implements OnInit {
 
   constructor(
     private store: Store<fromApp.AppState>,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private translate:TranslateService,
+    private titleService: Title
   ) { }
 
   ngOnInit(): void {
+    this.translate.get(['DASHBOARD.REPORTS.REPORTS']).subscribe(trans => {
+      this.titleService.setTitle(`Q E-Learning - ${trans['DASHBOARD.REPORTS.REPORTS']}`);
+    });
+    this.translate.onLangChange.subscribe(() => {
+      this.translate.get(['DASHBOARD.REPORTS.REPORTS']).subscribe(trans => {
+        this.titleService.setTitle(`Q E-Learning - ${trans['DASHBOARD.REPORTS.REPORTS']}`);
+      });
+    });
+
+
     this.store.dispatch(new ReportsActions.FetchByUserStart());
 
     this.store.select('reports').subscribe(state => {

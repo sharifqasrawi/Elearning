@@ -105,7 +105,7 @@
                         {{ 'QUIZZES.QUIZZES' | translate }}
                     </a>
                 </mat-list-item>
-                <mat-list-item class="mt-3">
+                <mat-list-item class="mt-3" *ngIf="isAuthenticated">
                     <a class="full-width" [routerLink]="[ '/member', 'dashboard' ]" routerlinkactive="active"
                         (click)="sidenav.toggle()">
                         <fa-icon [icon]="faWrench"></fa-icon>

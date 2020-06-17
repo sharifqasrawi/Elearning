@@ -36,6 +36,7 @@ export class MemberEffects {
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
                         .append('language', this.translate.currentLang),
+                    withCredentials: true,
                     params: new HttpParams().set('userId', this.userId)
                 })
                 .pipe(
@@ -69,6 +70,7 @@ export class MemberEffects {
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
                         .append('language', this.translate.currentLang),
+                    withCredentials: true,
                     params: new HttpParams().set('userId', this.userId)
                 })
                 .pipe(
@@ -102,6 +104,7 @@ export class MemberEffects {
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
                         .append('language', this.translate.currentLang),
+                    withCredentials: true,
                     params: new HttpParams().set('userId', this.userId)
                 })
                 .pipe(
@@ -139,6 +142,7 @@ export class MemberEffects {
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
                         .append('language', this.translate.currentLang),
+                    withCredentials: true,
                 })
                 .pipe(
                     map(resData => {
@@ -171,6 +175,7 @@ export class MemberEffects {
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
                         .append('language', this.translate.currentLang),
+                    withCredentials: true,
                     params: new HttpParams().set('id', favData.payload.toString())
                 })
                 .pipe(
@@ -204,6 +209,7 @@ export class MemberEffects {
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
                         .append('language', this.translate.currentLang),
+                    withCredentials: true,
                     params: new HttpParams().set('userId', this.userId)
                 })
                 .pipe(
@@ -237,6 +243,7 @@ export class MemberEffects {
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
                         .append('language', this.translate.currentLang),
+                    withCredentials: true,
                     params: new HttpParams().set('userId', this.userId)
                 })
                 .pipe(
@@ -275,6 +282,7 @@ export class MemberEffects {
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
                         .append('language', this.translate.currentLang),
+                    withCredentials: true,
                 })
                 .pipe(
                     map(resData => {
@@ -307,6 +315,7 @@ export class MemberEffects {
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
                         .append('language', this.translate.currentLang),
+                    withCredentials: true,
                     params: new HttpParams().set('id', sessionData.payload.toString())
                 })
                 .pipe(
@@ -345,6 +354,7 @@ export class MemberEffects {
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
                         .append('language', this.translate.currentLang),
+                    withCredentials: true,
                 })
                 .pipe(
                     map(resData => {
@@ -377,6 +387,7 @@ export class MemberEffects {
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
                         .append('language', this.translate.currentLang),
+                    withCredentials: true,
                     params: new HttpParams().set('sessionId', sessionData.payload.toString())
                         .append('userId', this.userId)
                 })
@@ -412,6 +423,7 @@ export class MemberEffects {
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
                         .append('language', this.translate.currentLang),
+                    withCredentials: true,
                     params: new HttpParams().set('userId', this.userId)
                         .append('courseId', sessionData.payload.toString())
                 })
@@ -446,6 +458,7 @@ export class MemberEffects {
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
                         .append('language', this.translate.currentLang),
+                    withCredentials: true,
                     params: new HttpParams().set('userId', this.userId)
                 })
                 .pipe(
@@ -479,6 +492,7 @@ export class MemberEffects {
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
                         .append('language', this.translate.currentLang),
+                    withCredentials: true,
                     params: new HttpParams().set('userId', this.userId)
                 })
                 .pipe(
@@ -513,6 +527,7 @@ export class MemberEffects {
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
                         .append('language', this.translate.currentLang),
+                    withCredentials: true,
                     params: new HttpParams().set('userId', this.userId)
                 })
                 .pipe(
@@ -520,6 +535,7 @@ export class MemberEffects {
                         return new MemberActions.FetchDashboardInfoSuccess(resData);
                     }),
                     catchError(errorRes => {
+                        console.log(errorRes);
                         this.getErrorsTranslations();
                         switch (errorRes.status) {
                             case 403:

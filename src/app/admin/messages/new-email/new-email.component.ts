@@ -1,3 +1,5 @@
+import { Title } from '@angular/platform-browser';
+import { TranslateService } from '@ngx-translate/core';
 import { Store } from '@ngrx/store';
 import { ActivatedRoute, Params } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
@@ -25,10 +27,21 @@ export class NewEmailComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private store: Store<fromApp.AppState>
+    private store: Store<fromApp.AppState>,
+    private translate:TranslateService,
+    private titleService:Title
   ) { }
 
   ngOnInit(): void {
+    this.translate.get(['ADMINISTRATION.MESSAGING.SEND_EMAIL']).subscribe(trans => {
+      this.titleService.setTitle(`Admin - ${trans['ADMINISTRATION.MESSAGING.SEND_EMAIL']}`);
+    });
+    this.translate.onLangChange.subscribe(() => {
+
+      this.translate.get(['ADMINISTRATION.MESSAGING.SEND_EMAIL']).subscribe(trans => {
+        this.titleService.setTitle(`Admin - ${trans['ADMINISTRATION.MESSAGING.SEND_EMAIL']}`);
+      });
+    });
 
     this.route.queryParams.subscribe((params: Params) => {
         this.email = params.email

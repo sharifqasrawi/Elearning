@@ -1,7 +1,7 @@
 import { TranslateService } from '@ngx-translate/core';
 import { faSearch, faThumbsUp } from '@fortawesome/free-solid-svg-icons';
 import { FormGroup, FormControl } from '@angular/forms';
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer, Title } from '@angular/platform-browser';
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 
@@ -38,12 +38,21 @@ export class HomeComponent implements OnInit {
   constructor(
     private store: Store<fromApp.AppState>,
     private sanitizer: DomSanitizer,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private titleService: Title
   ) { }
 
   ngOnInit(): void {
     this.currentLang = this.translate.currentLang;
-    this.translate.onLangChange.subscribe(() => this.currentLang = this.translate.currentLang);
+    this.translate.get(['HOME.HOME']).subscribe(trans => {
+      this.titleService.setTitle(`Q E-Learning - ${trans['HOME.HOME']}`);
+    });
+    this.translate.onLangChange.subscribe(() => {
+      this.currentLang = this.translate.currentLang;
+      this.translate.get(['HOME.HOME']).subscribe(trans => {
+        this.titleService.setTitle(`Q E-Learning - ${trans['HOME.HOME']}`);
+      });
+    });
 
     this.store.dispatch(new HomeActions.FetchStart());
     this.store.dispatch(new HomeActions.FetchLatestCoursesStart());

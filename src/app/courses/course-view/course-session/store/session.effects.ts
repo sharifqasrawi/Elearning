@@ -31,6 +31,7 @@ export class HomeSessionEffects {
             return this.http.get<{ session: Session }>(environment.API_BASE_URL + 'home/course-session',
                 {
                     headers: new HttpHeaders().append('language', this.translate.currentLang),
+                    withCredentials: true,
                     params: new HttpParams().set('sessionId', sessionData.payload.toString())
                 })
                 .pipe(
@@ -69,7 +70,8 @@ export class HomeSessionEffects {
                 },
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
-                        .append('language', this.translate.currentLang)
+                        .append('language', this.translate.currentLang),
+                    withCredentials: true,
                 })
                 .pipe(
                     map(resData => {

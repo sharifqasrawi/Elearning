@@ -1,3 +1,4 @@
+import { Title } from '@angular/platform-browser';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { TranslateService } from '@ngx-translate/core';
@@ -37,16 +38,23 @@ export class AboutComponent implements OnInit {
   constructor(
     private store: Store<fromApp.AppState>,
     private dialog: MatDialog,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private titleService: Title
   ) { }
 
   ngOnInit(): void {
     this.editLang = this.translate.currentLang;
     this.currentLang = this.translate.currentLang;
+    this.translate.get(['ABOUT_ME.ABOUT_ME']).subscribe(trans => {
+      this.titleService.setTitle(`Admin - ${trans['ABOUT_ME.ABOUT_ME']}`);
+    });
     this.translate.onLangChange.subscribe(() => {
       this.currentLang = this.translate.currentLang;
-    });
 
+      this.translate.get(['ABOUT_ME.ABOUT_ME']).subscribe(trans => {
+        this.titleService.setTitle(`Admin - ${trans['ABOUT_ME.ABOUT_ME']}`);
+      });
+    });
     this.form = new FormGroup({
       name: new FormControl(null, [Validators.required]),
       imagePath: new FormControl(null, [Validators.required]),

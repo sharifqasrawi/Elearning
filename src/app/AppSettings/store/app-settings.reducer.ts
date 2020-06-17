@@ -1,3 +1,4 @@
+import { Visit } from './../../models/visit.model';
 import { AppRating } from './../../models/appRating.model';
 
 import * as AppSettingsAction from './app-settings.actions';
@@ -9,6 +10,15 @@ export interface State {
     rating: boolean,
     rated: boolean,
     errors: string[],
+
+    loadingVisitsAdmin: boolean,
+    totalVisits: number,
+    loadingVisits: boolean,
+
+    visits: Visit[],
+
+    errorsVisits: string[],
+
 }
 
 const initialState: State = {
@@ -17,7 +27,15 @@ const initialState: State = {
     loading: false,
     rating: false,
     rated: false,
-    errors: null
+    errors: null,
+
+    visits: [],
+    totalVisits: 0,
+    loadingVisits: false,
+    loadingVisitsAdmin: false,
+    errorsVisits: null,
+
+
 };
 
 export function appSettingsReducer(state: State = initialState, action: AppSettingsAction.AppSettingsActions) {
@@ -27,6 +45,7 @@ export function appSettingsReducer(state: State = initialState, action: AppSetti
                 ...state,
                 rating: true,
                 rated: false,
+                errors: null
             };
 
         case AppSettingsAction.RATE_SUCCESS:
@@ -49,7 +68,8 @@ export function appSettingsReducer(state: State = initialState, action: AppSetti
         case AppSettingsAction.FETCH_RATE_START:
             return {
                 ...state,
-                loading: true
+                loading: true,
+                errors: null
             };
 
         case AppSettingsAction.FETCH_RATE_SUCCESS:
@@ -69,15 +89,87 @@ export function appSettingsReducer(state: State = initialState, action: AppSetti
 
         //////////////////
 
+        case AppSettingsAction.FETCH_VISITS_CLIENT_START:
+            return {
+                ...state,
+                loadingVisits: true,
+                errorsVisits: null
+            };
+
+        case AppSettingsAction.FETCH_VISITS_CLIENT_SUCCESS:
+            return {
+                ...state,
+                loadingVisits: false,
+                totalVisits: action.payload
+
+            };
+        case AppSettingsAction.FETCH_VISITS_CLIENT_FAIL:
+            return {
+                ...state,
+                loadingVisits: false,
+                errorsVisits: [...action.payload]
+            };
+
+        //////////////////
+
+        case AppSettingsAction.FETCH_VISITS_ADMIN_START:
+            return {
+                ...state,
+                loadingVisitsAdmin: true,
+                errorsVisits: null
+            };
+
+        case AppSettingsAction.FETCH_VISITS_ADMIN_SUCCESS:
+            return {
+                ...state,
+                loadingVisitsAdmin: false,
+                visits: [...action.payload]
+
+            };
+        case AppSettingsAction.FETCH_VISITS_ADMIN_FAIL:
+            return {
+                ...state,
+                loadingVisitsAdmin: false,
+                errorsVisits: [...action.payload]
+            };
+
+        //////////////////
+
+        case AppSettingsAction.VISIT_START:
+            return {
+                ...state,
+                errorsVisits: null,
+            };
+
+        case AppSettingsAction.VISIT_SUCCESS:
+
+            return {
+                ...state,
+                totalVisits: action.payload
+            };
+        case AppSettingsAction.VISIT_FAIL:
+            return {
+                ...state,
+                errorsVisits: [...action.payload]
+            };
+
+        //////////////////
+
+
         case AppSettingsAction.CLEAR_ERRORS:
             return {
                 ...state,
-                errors: null
+                errors: null,
+                errorsVisits: null,
             };
         case AppSettingsAction.CLEAR_STATUS:
             return {
                 ...state,
-                rating: false
+                rating: false,
+                loading: false,
+                loadingVisits: false,
+                loadingVisitsAdmin: false,
+                rated: false
             };
         default:
             return state;

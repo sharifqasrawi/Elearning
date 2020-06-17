@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<url><loc>http://qasrawi.fr</loc><priority>0.5</priority></url>
+<url><loc>http://qasrawi.fr/about-me</loc><priority>0.5</priority></url>
+<url><loc>http://qasrawi.fr/contact-us</loc><priority>0.5</priority></url>
+<url><loc>http://qasrawi.fr/categories</loc><priority>0.5</priority></url>
+<url><loc>http://qasrawi.fr/courses</loc><priority>0.5</priority></url>
+<url><loc>http://qasrawi.fr/quizzes</loc><priority>0.5</priority></url>
+<url><loc>http://qasrawi.fr/member/dashboard</loc><priority>0.5</priority></url>
+<url><loc>http://qasrawi.fr/member/dashboard/courses</loc><priority>0.5</priority></url>
+<url><loc>http://qasrawi.fr/member/dashboard/saved-sessions</loc><priority>0.5</priority></url>
+<url><loc>http://qasrawi.fr/member/dashboard/quizzes</loc><priority>0.5</priority></url>
+<url><loc>http://qasrawi.fr/member/dashboard/reports</loc><priority>0.5</priority></url>
+<url><loc>http://qasrawi.fr/member/edit-profile</loc><priority>0.5</priority></url>
+<url><loc>http://qasrawi.fr/member/change-password</loc><priority>0.5</priority></url>
+<url><loc>http://qasrawi.fr/admin/dashboard</loc><priority>0.5</priority></url>
+<url><loc>http://qasrawi.fr/admin/about</loc><priority>0.5</priority></url>
+<url><loc>http://qasrawi.fr/admin/categories</loc><priority>0.5</priority></url>
+<url><loc>http://qasrawi.fr/admin/categories/trashed</loc><priority>0.5</priority></url>
+<url><loc>http://qasrawi.fr/admin/courses</loc><priority>0.5</priority></url>
+<url><loc>http://qasrawi.fr/admin/courses/trashed</loc><priority>0.5</priority></url>
+<url><loc>http://qasrawi.fr/admin/quizzes</loc><priority>0.5</priority></url>
+<url><loc>http://qasrawi.fr/admin/quizzes/trashed</loc><priority>0.5</priority></url>
+<url><loc>http://qasrawi.fr/admin/users/new-user</loc><priority>0.5</priority></url>
+<url><loc>http://qasrawi.fr/admin/users</loc><priority>0.5</priority></url>
+<url><loc>http://qasrawi.fr/admin/messages/sent-emails</loc><priority>0.5</priority></url>
+<url><loc>http://qasrawi.fr/admin/messages/send-email</loc><priority>0.5</priority></url>
+<url><loc>http://qasrawi.fr/admin/messages</loc><priority>0.5</priority></url>
+<url><loc>http://qasrawi.fr/admin/files</loc><priority>0.5</priority></url>
+<url><loc>http://qasrawi.fr/admin/files/upload</loc><priority>0.5</priority></url>
+<url><loc>http://qasrawi.fr/admin/directories</loc><priority>0.5</priority></url>
+<url><loc>http://qasrawi.fr/admin/tags</loc><priority>0.5</priority></url>
+<url><loc>http://qasrawi.fr/admin/repports</loc><priority>0.5</priority></url>
+
+</urlset>

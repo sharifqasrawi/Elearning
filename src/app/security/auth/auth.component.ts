@@ -1,3 +1,5 @@
+import { Title } from '@angular/platform-browser';
+import { TranslateService } from '@ngx-translate/core';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -8,9 +10,20 @@ import { Component, OnInit } from '@angular/core';
 export class AuthComponent implements OnInit {
   isLogin = true;
 
-  constructor() { }
+  constructor(
+    private translate:TranslateService,
+    private titleService:Title
+  ) { }
 
   ngOnInit(): void {
+    this.translate.get(['COMMON.AUTHENTICATION']).subscribe(trans => {
+      this.titleService.setTitle(`Q E-Learning - ${trans['COMMON.AUTHENTICATION']}`);
+    });
+    this.translate.onLangChange.subscribe(() => {
+      this.translate.get(['COMMON.AUTHENTICATION']).subscribe(trans => {
+        this.titleService.setTitle(`Q E-Learning - ${trans['COMMON.AUTHENTICATION']}`);
+      });
+    });
   }
 
   onChangeAuthMode() {

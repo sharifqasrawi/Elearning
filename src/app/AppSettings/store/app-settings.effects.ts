@@ -1,3 +1,4 @@
+import { Visit } from './../../models/visit.model';
 import { TranslateService } from '@ngx-translate/core';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
@@ -36,6 +37,7 @@ export class AppSettingsEffects {
                 {
                     headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
                         .append('language', this.translate.currentLang),
+                    withCredentials: true
                 })
                 .pipe(
                     map(resData => {
@@ -66,6 +68,7 @@ export class AppSettingsEffects {
             return this.http.get<{ ratings: { total: number, ratings: AppRating[] } }>(environment.API_BASE_URL + 'AppRatings',
                 {
                     headers: new HttpHeaders().append('language', this.translate.currentLang),
+                    withCredentials: true,
                     params: this.userId ? new HttpParams().set('userId', this.userId) : null,
                 })
                 .pipe(
@@ -89,6 +92,100 @@ export class AppSettingsEffects {
                 )
         })
     );
+
+
+    @Effect()
+    visitApp = this.actions$.pipe(
+        ofType(AppSettionsActions.VISIT_START),
+        switchMap(() => {
+            return this.http.post<{ visitsCount: number }>(environment.API_BASE_URL + 'visits', null,
+                {
+                    withCredentials: true
+                })
+                .pipe(
+                    map(resData => {
+                        return new AppSettionsActions.VisitSuccess(resData.visitsCount);
+                    }),
+                    catchError(errorRes => {
+                        this.getErrorsTranslations();
+                        switch (errorRes.status) {
+                            case 403:
+                            case 401:
+                                return of(new AppSettionsActions.VisitFail([this.errorAccessDenied]));
+                            case 404:
+                                return of(new AppSettionsActions.VisitFail([this.error404]));
+                            case 400:
+                                return of(new AppSettionsActions.VisitFail(errorRes.error.errors));
+                            default:
+                                return of(new AppSettionsActions.VisitFail([this.errorOccured]));
+                        }
+                    })
+                )
+        })
+    );
+
+    @Effect()
+    fetchVisitsClient = this.actions$.pipe(
+        ofType(AppSettionsActions.FETCH_VISITS_CLIENT_START),
+        switchMap(() => {
+            return this.http.get<{ visitsCount: number }>(environment.API_BASE_URL + 'visits/client', {
+                headers: new HttpHeaders().append('language', this.translate.currentLang),
+                withCredentials: true
+            })
+                .pipe(
+                    map(resData => {
+                        return new AppSettionsActions.FetchVisitsClientSuccess(resData.visitsCount);
+                    }),
+                    catchError(errorRes => {
+                        this.getErrorsTranslations();
+                        switch (errorRes.status) {
+                            case 403:
+                            case 401:
+                                return of(new AppSettionsActions.FetchVisitsClientFail([this.errorAccessDenied]));
+                            case 404:
+                                return of(new AppSettionsActions.FetchVisitsClientFail([this.error404]));
+                            case 400:
+                                return of(new AppSettionsActions.FetchVisitsClientFail(errorRes.error.errors));
+                            default:
+                                return of(new AppSettionsActions.FetchVisitsClientFail([this.errorOccured]));
+                        }
+                    })
+                )
+        })
+    );
+
+    @Effect()
+    fetchVisitsAdmin = this.actions$.pipe(
+        ofType(AppSettionsActions.FETCH_VISITS_ADMIN_START),
+        switchMap(() => {
+            return this.http.get<{ visits: Visit[] }>(environment.API_BASE_URL + 'visits/admin',
+                {
+                    headers: new HttpHeaders().set('Authorization', 'Bearer ' + this.token)
+                        .append('language', this.translate.currentLang),
+                    withCredentials: true
+                })
+                .pipe(
+                    map(resData => {
+                        return new AppSettionsActions.FetchVisitsAdminSuccess(resData.visits);
+                    }),
+                    catchError(errorRes => {
+                        this.getErrorsTranslations();
+                        switch (errorRes.status) {
+                            case 403:
+                            case 401:
+                                return of(new AppSettionsActions.FetchVisitsAdminFail([this.errorAccessDenied]));
+                            case 404:
+                                return of(new AppSettionsActions.FetchVisitsAdminFail([this.error404]));
+                            case 400:
+                                return of(new AppSettionsActions.FetchVisitsAdminFail(errorRes.error.errors));
+                            default:
+                                return of(new AppSettionsActions.FetchVisitsAdminFail([this.errorOccured]));
+                        }
+                    })
+                )
+        })
+    );
+
 
     constructor(
         private actions$: Actions,

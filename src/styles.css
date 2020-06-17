@@ -1,79 +1,74 @@
 /* You can add global styles to this file, and also import other style files */
-html, body { height: 100%; }
-body { 
-    margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif;
-    background-color: rgb(233, 221, 233);
 
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background-color: rgb(233, 221, 233);
 }
 
 .content0 {
-    padding-top: 100px;
-    padding-bottom: 100px;
+  padding-top: 100px;
+  padding-bottom: 100px;
 }
-
 
 .content {
   margin-top: 30px;
   padding-bottom: 100px;
-
 }
 
-.chipLink{
-    color: white;
+.chipLink {
+  color: white;
 }
 
 .chipLink:hover {
-    color: white;
-    text-decoration: none;
+  color: white;
+  text-decoration: none;
 }
 
-.full-width{
-    width: 100%;
+.full-width {
+  width: 100%;
 }
 
+.adminPageTop {
+  animation: animAdminPageTop 0.3s forwards ease-in-out;
+}
 
-.adminPageTop{
-    animation: animAdminPageTop 0.3s forwards ease-in-out;
+@keyframes animAdminPageTop {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
   }
-
-  @keyframes animAdminPageTop {
-    0% {
-      transform: translateY(-100%);
-      opacity: 0;
-    }
-
-    50% {
-      opacity: 0.2;
-    }
-
-    100% {
-      transform: translateY(0);
-      opacity: 1;
-    }
+  50% {
+    opacity: 0.2;
   }
-
-  .adminPageBottom{
-    animation: animAdminPageBottom 0.3s forwards ease-in-out;
+  100% {
+    transform: translateY(0);
+    opacity: 1;
   }
+}
 
-  @keyframes animAdminPageBottom {
-    0% {
-      transform: translateY(50%);
-      opacity: 0;
-    }
+.adminPageBottom {
+  animation: animAdminPageBottom 0.3s forwards ease-in-out;
+}
 
-    
-    50% {
-      opacity: 0.2;
-    }
-
-    100% {
-      transform: translateY(0);
-      opacity: 1;
-    }
+@keyframes animAdminPageBottom {
+  0% {
+    transform: translateY(50%);
+    opacity: 0;
   }
+  50% {
+    opacity: 0.2;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
 
-  
 .no-padding .mat-dialog-container {
   padding: 0 !important;
   background-color: transparent;
@@ -86,7 +81,6 @@ body {
 .backdropBg {
   background-color: rgba(0, 0, 0, 0.9);
 }
-
 
 /* table */
 
@@ -103,8 +97,8 @@ td, th {
   width: 10%;
 }
 
+/* Structure */
 
- /* Structure */
 .dataTable-container {
   position: relative;
   min-height: 200px;
@@ -141,8 +135,8 @@ table {
 }
 
 /* Column Widths */
-.mat-column-number,
-.mat-column-state {
+
+.mat-column-number, .mat-column-state {
   max-width: 64px;
 }
 
@@ -150,13 +144,11 @@ table {
   max-width: 124px;
 }
 
-
 .center {
   margin: 0 auto;
 }
 
-
-blockquote{
+blockquote {
   border-left: 3px solid #5e35b1;
   padding: 7px 12px 1px 12px;
   background-color: #eee;
@@ -165,8 +157,66 @@ blockquote{
   opacity: 0.8;
 }
 
-.op06{
+.op06 {
   opacity: 0.6;
 }
 
+/* Loader */
+
+.app-loading {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.app-loading .spinner {
+  height: 200px;
+  width: 200px;
+  animation: rotate 2s linear infinite;
+  transform-origin: center center;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
+
+.app-loading .spinner .path {
+  stroke-dasharray: 1, 200;
+  stroke-dashoffset: 0;
+  animation: dash 1.5s ease-in-out infinite;
+  stroke-linecap: round;
+  stroke: #ddd;
+}
+
+@keyframes rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes dash {
+  0% {
+    stroke-dasharray: 1, 200;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dasharray: 89, 200;
+    stroke-dashoffset: -35px;
+  }
+  100% {
+    stroke-dasharray: 89, 200;
+    stroke-dashoffset: -124px;
+  }
+}
+
+.logo {
+  background: url(./assets/images/Q.webp);
+  width: 50px;
+  height: 50px;
+}
 

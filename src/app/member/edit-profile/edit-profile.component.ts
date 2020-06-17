@@ -1,3 +1,5 @@
+import { Title } from '@angular/platform-browser';
+import { TranslateService } from '@ngx-translate/core';
 import { Store } from '@ngrx/store';
 import { HttpClient } from '@angular/common/http';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
@@ -27,10 +29,21 @@ export class EditProfileComponent implements OnInit, OnDestroy {
 
   constructor(
     private http: HttpClient,
-    private store: Store<fromApp.AppState>
+    private store: Store<fromApp.AppState>,
+    private translate:TranslateService,
+    private titleService: Title
   ) { }
 
   ngOnInit(): void {
+    this.translate.get(['EDIT_PROFILE.EDIT_PROFILE']).subscribe(trans => {
+      this.titleService.setTitle(`Q E-Learning - ${trans['EDIT_PROFILE.EDIT_PROFILE']}`);
+    });
+    this.translate.onLangChange.subscribe(() => {
+      this.translate.get(['EDIT_PROFILE.EDIT_PROFILE']).subscribe(trans => {
+        this.titleService.setTitle(`Q E-Learning - ${trans['EDIT_PROFILE.EDIT_PROFILE']}`);
+      });
+    });
+
     this.http.get('https://restcountries.eu/rest/v2/all').subscribe((resData: any[]) => {
       this.listCountries = resData;
     });

@@ -6,7 +6,7 @@ import { CoursePickupDialogComponent } from './course-pickup-dialog/course-picku
 import { ErrorDialogComponent } from './../../shared/error-dialog/error-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { Component, OnInit, ViewChild, ChangeDetectorRef } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer, Title } from '@angular/platform-browser';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { faTag, faThumbsUp, faThumbsDown, faInfoCircle, faComment, faCheck, faCheckDouble, faHeart } from '@fortawesome/free-solid-svg-icons';
@@ -95,6 +95,7 @@ export class CourseViewComponent implements OnInit {
     changeDetectorRef: ChangeDetectorRef,
     media: MediaMatcher,
     private translate: TranslateService,
+    private titleService: Title
   ) {
 
     this.mobileQuery = media.matchMedia('(max-width: 993px)');
@@ -106,7 +107,15 @@ export class CourseViewComponent implements OnInit {
 
   ngOnInit(): void {
     this.currentLang = this.translate.currentLang;
-    this.translate.onLangChange.subscribe(() => this.currentLang = this.translate.currentLang);
+    this.translate.get(['COURSES.COURSES']).subscribe(trans => {
+      this.titleService.setTitle(`Q E-Learning - ${trans['COURSES.COURSES']}`);
+    });
+    this.translate.onLangChange.subscribe(() => {
+      this.currentLang = this.translate.currentLang;
+      this.translate.get(['COURSES.COURSES']).subscribe(trans => {
+        this.titleService.setTitle(`Q E-Learning - ${trans['COURSES.COURSES']}`);
+      });
+    });
 
     this.currentUrl = this.router.url;
 

@@ -1,3 +1,4 @@
+import { Title } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
@@ -44,7 +45,7 @@ export class ListUsersComponent implements OnInit, OnDestroy {
   loaded = false;
   updatingStatus = false;
   deleting = false;
-  searchValue:string = null;
+  searchValue: string = null;
 
 
   displayedColumns: string[] = [
@@ -70,11 +71,19 @@ export class ListUsersComponent implements OnInit, OnDestroy {
     private store: Store<fromApp.AppState>,
     private dialog: MatDialog,
     private translate: TranslateService,
-    private router: Router
+    private router: Router,
+    private titleService: Title
   ) { }
 
   ngOnInit(): void {
-
+    this.translate.get(['ADMINISTRATION.USERS.LIST_USERS']).subscribe(trans => {
+      this.titleService.setTitle(`Admin - ${trans['ADMINISTRATION.USERS.LIST_USERS']}`);
+    });
+    this.translate.onLangChange.subscribe(() => {
+      this.translate.get(['ADMINISTRATION.USERS.LIST_USERS']).subscribe(trans => {
+        this.titleService.setTitle(`Admin - ${trans['ADMINISTRATION.USERS.LIST_USERS']}`);
+      });
+    });
     this.subscription = this.store.select('users')
       .subscribe(usersState => {
         this.loading = usersState.loading;

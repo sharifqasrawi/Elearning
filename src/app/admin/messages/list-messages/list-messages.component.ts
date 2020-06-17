@@ -1,3 +1,4 @@
+import { Title } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 import { ConfirmDialogComponent } from './../../../shared/confirm-dialog/confirm-dialog.component';
@@ -46,12 +47,21 @@ export class ListMessagesComponent implements OnInit {
     private translate: TranslateService,
     private dialog: MatDialog,
     private router: Router,
+    private titleService: Title
   ) {
 
   }
 
   ngOnInit(): void {
+    this.translate.get(['ADMINISTRATION.MESSAGING.INBOX']).subscribe(trans => {
+      this.titleService.setTitle(`Admin - ${trans['ADMINISTRATION.MESSAGING.INBOX']}`);
+    });
+    this.translate.onLangChange.subscribe(() => {
 
+      this.translate.get(['ADMINISTRATION.MESSAGING.INBOX']).subscribe(trans => {
+        this.titleService.setTitle(`Admin - ${trans['ADMINISTRATION.MESSAGING.INBOX']}`);
+      });
+    });
     this.store.dispatch(new MessagesActions.FetchStart());
 
     this.store.select('messages').subscribe(messagesState => {
@@ -69,7 +79,7 @@ export class ListMessagesComponent implements OnInit {
     this.store.dispatch(new MessagesActions.FetchStart());
 
     this.setTable();
-   
+
   }
 
   onSelect(id: number) {

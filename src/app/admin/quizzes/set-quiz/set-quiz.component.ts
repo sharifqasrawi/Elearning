@@ -2,7 +2,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer, Title } from '@angular/platform-browser';
 import { Store } from '@ngrx/store';
 import { ThemePalette } from '@angular/material/core';
 import { MatTableDataSource } from '@angular/material/table';
@@ -45,12 +45,22 @@ export class SetQuizComponent implements OnInit, OnDestroy {
     private store: Store<fromApp.AppState>,
     private route: ActivatedRoute,
     private sanitizer: DomSanitizer,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private titleService: Title
   ) { }
 
   ngOnInit(): void {
     this.currentLang = this.translate.currentLang;
-    this.translate.onLangChange.subscribe(() => this.currentLang = this.translate.currentLang);
+    this.translate.get(['QUIZZES.QUIZZES']).subscribe(trans => {
+      this.titleService.setTitle(`Admin - ${trans['QUIZZES.QUIZZES']}`);
+    });
+    this.translate.onLangChange.subscribe(() => {
+      this.currentLang = this.translate.currentLang;
+      this.translate.get(['QUIZZES.QUIZZES']).subscribe(trans => {
+        this.titleService.setTitle(`Admin - ${trans['QUIZZES.QUIZZES']}`);
+      });
+    });
+
 
     this.store.dispatch(new QuizzesActions.FetchQuizzesStart());
 

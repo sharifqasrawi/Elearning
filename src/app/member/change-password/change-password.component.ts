@@ -1,3 +1,5 @@
+import { Title } from '@angular/platform-browser';
+import { TranslateService } from '@ngx-translate/core';
 import { Store } from '@ngrx/store';
 import { FormGroup, FormControl, Validators, FormGroupDirective } from '@angular/forms';
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
@@ -27,10 +29,21 @@ export class ChangePasswordComponent implements OnInit, OnDestroy {
   hideConfirmPwd = true;
 
   constructor(
-    private store: Store<fromApp.AppState>
+    private store: Store<fromApp.AppState>,
+    private translate: TranslateService,
+    private titleService: Title
   ) { }
 
   ngOnInit(): void {
+    this.translate.get(['CHANGE_PASSWORD.CHANGE_PASSWORD']).subscribe(trans => {
+      this.titleService.setTitle(`Q E-Learning - ${trans['CHANGE_PASSWORD.CHANGE_PASSWORD']}`);
+    });
+    this.translate.onLangChange.subscribe(() => {
+      this.translate.get(['CHANGE_PASSWORD.CHANGE_PASSWORD']).subscribe(trans => {
+        this.titleService.setTitle(`Q E-Learning - ${trans['CHANGE_PASSWORD.CHANGE_PASSWORD']}`);
+      });
+    });
+
     this.form = new FormGroup({
       currentPassword: new FormControl(null, [Validators.required]),
       password: new FormGroup({

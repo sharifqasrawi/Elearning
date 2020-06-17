@@ -1,3 +1,5 @@
+import { Title } from '@angular/platform-browser';
+import { TranslateService } from '@ngx-translate/core';
 import { faUserEdit, faEye } from '@fortawesome/free-solid-svg-icons';
 import { Store } from '@ngrx/store';
 import { Component, OnInit } from '@angular/core';
@@ -23,10 +25,21 @@ export class DashboardComponent implements OnInit {
   loading = false;
 
   constructor(
-    private store: Store<fromApp.AppState>
+    private store: Store<fromApp.AppState>,
+    private translate:TranslateService,
+    private titleService: Title
   ) { }
 
   ngOnInit(): void {
+    this.translate.get(['DASHBOARD.MY_DASHBOARD']).subscribe(trans => {
+      this.titleService.setTitle(`Q E-Learning - ${trans['DASHBOARD.MY_DASHBOARD']}`);
+    });
+    this.translate.onLangChange.subscribe(() => {
+      this.translate.get(['DASHBOARD.MY_DASHBOARD']).subscribe(trans => {
+        this.titleService.setTitle(`Q E-Learning - ${trans['DASHBOARD.MY_DASHBOARD']}`);
+      });
+    });
+
     this.store.select('login').subscribe(state => {
       if (state.user)
         this.fullName = `${state.user.firstName} ${state.user.lastName}`;

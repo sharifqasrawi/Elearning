@@ -2,7 +2,7 @@
     <div class="alert alert-success text-center" *ngIf="confirmed">
         <h1 translate>REGISTER.EMAIL_CONFIRMED_MESSAGE</h1>
         <p>
-           <a [routerLink]="['/auth']" routerLinkActive="active" >
+           <a [routerLink]="['/security', 'auth']" routerLinkActive="active" >
             {{ 'LOGIN.LOGIN' | translate}}
         </a>
         </p>

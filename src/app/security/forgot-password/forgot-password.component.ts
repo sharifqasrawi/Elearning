@@ -1,3 +1,4 @@
+import { Title } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
 import { map, catchError } from 'rxjs/operators';
 import { Component, OnInit } from '@angular/core';
@@ -22,9 +23,18 @@ export class ForgotPasswordComponent implements OnInit {
   sending = false;
   errors: string[] = null;
 
-  constructor(private http: HttpClient, private translate: TranslateService) { }
+  constructor(private http: HttpClient, private translate: TranslateService, private titleService: Title) { }
 
   ngOnInit(): void {
+    this.translate.get(['LOGIN.FORGOT_PASSWORD']).subscribe(trans => {
+      this.titleService.setTitle(`Q E-Learning - ${trans['LOGIN.FORGOT_PASSWORD']}`);
+    });
+    this.translate.onLangChange.subscribe(() => {
+      this.translate.get(['LOGIN.FORGOT_PASSWORD']).subscribe(trans => {
+        this.titleService.setTitle(`Q E-Learning - ${trans['LOGIN.FORGOT_PASSWORD']}`);
+      });
+    });
+
     this.resetPwdForm = new FormGroup({
       email: new FormControl(null, [Validators.required, Validators.email])
     });
@@ -40,7 +50,8 @@ export class ForgotPasswordComponent implements OnInit {
         email: this.resetPwdForm.value.email
       },
       {
-        headers: new HttpHeaders().append('language', this.translate.currentLang)
+        headers: new HttpHeaders().append('language', this.translate.currentLang),
+        withCredentials: true,
       }
     ).pipe(
       map(resData => {

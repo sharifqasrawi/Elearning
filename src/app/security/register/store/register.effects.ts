@@ -31,7 +31,8 @@ export class RegisterEffects {
                     Gender: regData.payload.gender
                 },
                 {
-                    headers: new HttpHeaders().append('language', this.translate.currentLang)
+                    headers: new HttpHeaders().append('language', this.translate.currentLang),
+                    withCredentials: true,
                 })
                 .pipe(
                     map(resData => {

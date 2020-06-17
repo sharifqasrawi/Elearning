@@ -1,3 +1,4 @@
+import { Title } from '@angular/platform-browser';
 import { TranslateService } from '@ngx-translate/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
 import { Store } from '@ngrx/store';
@@ -57,12 +58,24 @@ export class NewQuizComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private router: Router,
     private route: ActivatedRoute,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private titleService:Title
   ) { }
 
 
   ngOnInit(): void {
     this.currentLang = this.translate.currentLang;
+
+    this.translate.get(['QUIZZES.QUIZZES']).subscribe(trans => {
+      this.titleService.setTitle(`Admin - ${trans['QUIZZES.QUIZZES']}`);
+    });
+    this.translate.onLangChange.subscribe(() => {
+      this.currentLang = this.translate.currentLang;
+      this.translate.get(['QUIZZES.QUIZZES']).subscribe(trans => {
+        this.titleService.setTitle(`Admin - ${trans['QUIZZES.QUIZZES']}`);
+      });
+    });
+
 
     this.form = new FormGroup({
       title_EN: new FormControl(null, [Validators.required]),

@@ -5,7 +5,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer, Title } from '@angular/platform-browser';
 import { faSearch, faThumbsUp } from '@fortawesome/free-solid-svg-icons';
 
 import * as HomeCoursesActions from './store/courses.actions';
@@ -40,7 +40,7 @@ export class CoursesComponent implements OnInit, OnDestroy {
   levels: string[] = ['All', 'Basic', 'Medium', 'Advanced'];
   level: string;
 
-  languages: string[] = ['All', 'Arabic', 'English', 'French'];
+  languages: string[] = ['All', 'English', 'Français'];
   language: string;
 
   orderByOptions: string[] = ['Default', 'A-Z', 'Stars +', 'Stars -'];
@@ -55,12 +55,21 @@ export class CoursesComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private sanitizer: DomSanitizer,
     private dialog: MatDialog,
-    private translate: TranslateService
+    private translate: TranslateService,
+    private titleService: Title
   ) { }
 
   ngOnInit(): void {
     this.currentLang = this.translate.currentLang;
-    this.translate.onLangChange.subscribe(() => this.currentLang = this.translate.currentLang);
+    this.translate.get(['COURSES.COURSES']).subscribe(trans => {
+      this.titleService.setTitle(`Q E-Learning - ${trans['COURSES.COURSES']}`);
+    });
+    this.translate.onLangChange.subscribe(() => {
+      this.currentLang = this.translate.currentLang;
+      this.translate.get(['COURSES.COURSES']).subscribe(trans => {
+        this.titleService.setTitle(`Q E-Learning - ${trans['COURSES.COURSES']}`);
+      });
+    });
 
     this.route.queryParams.subscribe((params: Params) => {
       if (params.categoryTitle) {

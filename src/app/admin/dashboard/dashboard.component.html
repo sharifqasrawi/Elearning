@@ -119,13 +119,43 @@
         </div>
     </div>
 
+    <div class="row">
+        <div class="col-md-3">
+            <div class="card-counter darksalmon">
+                <mat-icon class="icon">explore</mat-icon>
+                <span [countUp]="visitsCount" class="count-numbers">0</span>
+                <span class="count-name" translate>ADMINISTRATION.VISITS.VISITS</span>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card-counter deepskyblue">
+                <mat-icon class="icon">notification_important</mat-icon>
+                <span [countUp]="notificationsCount" class="count-numbers">0</span>
+                <span class="count-name" translate>ADMINISTRATION.ADMINISTRATION.NOTIFICATIONS</span>
+            </div>
+        </div>
+    </div>
+
     <hr>
 
-    <app-notifications></app-notifications>
+    <mat-tab-group mat-stretch-tabs class="stretched-tabs mat-elevation-z4">
+        <mat-tab [label]="'ADMINISTRATION.ADMINISTRATION.NOTIFICATIONS' | translate">
+            <div class="p-3">
+                <app-notifications></app-notifications>
+            </div>
+        </mat-tab>
+        <mat-tab [label]="'ADMINISTRATION.ADMINISTRATION.WEBSITE_RATINGS' | translate">
+            <div class="p-3">
+                <app-app-ratings></app-app-ratings>
+            </div>
+        </mat-tab>
+        <mat-tab [label]="'ADMINISTRATION.VISITS.VISITS' | translate">
+            <div class="p-3">
+                <app-website-visitors></app-website-visitors>
+            </div>
+        </mat-tab>
+    </mat-tab-group>
 
-    <hr>
-
-    <app-app-ratings></app-app-ratings>
 
     <div class="mb-5"></div>
 </div>

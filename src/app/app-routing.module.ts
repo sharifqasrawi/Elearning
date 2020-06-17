@@ -83,7 +83,6 @@ const routes: Routes = [
       {
         path: 'about-me',
         component: AboutmeComponent,
-        canActivate: [AuthGuard]
       },
       { path: '', component: HomeComponent, pathMatch: 'full' },
     ],
